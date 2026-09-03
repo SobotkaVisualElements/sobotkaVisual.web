@@ -5,19 +5,19 @@
  */
 export const site = {
   /** サイト名。<title> のテンプレートやロゴ、RSS タイトルに使う */
-  name: 'Kepler',
+  name: 'Sobotka Visual Creations',
   /** トップページなどタイトル未指定時のフルタイトル */
-  title: 'Kepler — The versatile Astro theme',
+  title: 'Sobotka Visual Creations — montaż, animacja i motion design',
   /** タイトルテンプレート。%s に各ページの title が入る */
-  titleTemplate: '%s — Kepler',
+  titleTemplate: '%s — Sobotka Visual Creations',
   /** 既定の meta description。ページ側で上書き可能 */
-  description: 'The versatile Astro starter for blogs, portfolios, and landing pages.',
+  description: 'Montaż, animacje i oprawa graficzna dla klubów sportowych, twórców i firm.',
   /** 本番 URL（末尾スラッシュなし）。デプロイ先に合わせて変更する */
-  url: 'https://astro-kepler.pages.dev',
+  url: 'https://sobotkavisual.pl',
   /** コンテンツ言語 */
-  locale: 'en',
+  locale: 'pl',
   /** 既定の著者。記事 frontmatter で上書き可能 */
-  author: 'Kepler Team',
+  author: 'Krzysztof Sobotka',
   /**
    * 既定の OGP 画像（サイトルート基準の絶対パス）。
    * 用意できない場合は undefined のままでよい（og:image を出力しない）。
@@ -25,8 +25,8 @@ export const site = {
   defaultOgImage: undefined as string | undefined,
   /** SNS ハンドル。空文字なら該当タグを出力しない */
   social: {
-    twitter: '@astro',
-    github: 'https://github.com/kpab/astro-kepler',
+    twitter: '',
+    github: '',
   },
   /** ブログ一覧の1ページあたり記事数 */
   postsPerPage: 6,
