@@ -1,15 +1,15 @@
 ---
 // Hero — Sobotka Visual Creations
-// Nadtytuł: logotyp (public/logo.svg) · H1 · podtytuł · 2x CTA · pasek dowodu
-// Tło: ciemny gradient marki (from-navy -> navy-deep). Gotowe pod wideo w tle (patrz komentarz niżej).
+// Tekst wyrównany do lewej. Nadtytuł = logotyp (public/logo.svg).
+// Tło: ciemny gradient marki. Gotowe pod wideo w tle (patrz zakomentowany blok niżej).
 ---
 
 <section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
 	{/*
 		WIDEO W TLE (dodamy później):
-		odkomentuj i wrzuć plik do public/hero.mp4 + public/hero.webm oraz plakat public/hero-poster.jpg
+		odkomentuj i wrzuć public/hero.mp4 + public/hero.webm + plakat public/hero-poster.jpg
 		<video
-			class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover opacity-35"
+			class="pointer-events-none absolute inset-0 z-0 hidden h-full w-full object-cover opacity-35 md:block"
 			autoplay muted loop playsinline preload="metadata" poster="/hero-poster.jpg"
 		>
 			<source src="/hero.webm" type="video/webm" />
@@ -25,51 +25,51 @@
 		class="pointer-events-none absolute -bottom-40 -left-[120px] z-0 size-[620px] bg-radial from-[rgb(39_24_126/0.55)] to-transparent to-64%"
 	></span>
 
-	<div
-		class="relative z-2 mx-auto flex max-w-[820px] flex-col items-center px-6 pt-24 pb-14 text-center"
-	>
-		<!-- nadtytuł: logotyp SVC -->
-		<img src="/logo.svg" alt="Sobotka Visual Creations" class="h-9 w-auto md:h-11" />
+	<div class="relative z-2 mx-auto max-w-[1200px] px-8 pt-24 pb-14">
+		<div class="max-w-[640px]">
+			<!-- nadtytuł: logotyp SVC -->
+			<img src="/logo.svg" alt="Sobotka Visual Creations" class="h-9 w-auto md:h-11" />
 
-		<h1 class="mt-8 text-5xl leading-[1.02] tracking-[-0.03em] md:text-[68px]">
-			<span class="relative whitespace-nowrap text-orange"
-				>Rozbłyśnij<svg
-					viewBox="0 0 220 20"
-					width="100%"
-					height="16"
-					class="absolute -bottom-2 left-0"
-					preserveAspectRatio="none"
-					aria-hidden="true"
-					><path
-						d="M4 13 C60 4 160 4 216 11"
-						stroke="var(--color-orange)"
-						stroke-width="5"
-						fill="none"
-						stroke-linecap="round"></path></svg
-				></span
-			> z nami!
-		</h1>
+			<h1 class="mt-8 text-[40px] leading-[1.03] tracking-[-0.03em] md:text-[56px]">
+				Bądź <span class="relative whitespace-nowrap text-orange"
+					>wyjątkowy<svg
+						viewBox="0 0 220 20"
+						width="100%"
+						height="16"
+						class="absolute -bottom-2 left-0"
+						preserveAspectRatio="none"
+						aria-hidden="true"
+						><path
+							d="M4 13 C60 4 160 4 216 11"
+							stroke="var(--color-orange)"
+							stroke-width="5"
+							fill="none"
+							stroke-linecap="round"></path></svg
+					></span
+				>
+			</h1>
 
-		<p class="mt-7 max-w-[560px] text-[19px] leading-[1.55] text-sky">
-			Pełna opieka nad Twoimi mediami: montaż, animacje i pełna oprawa wideo dla
-			klubów, twórców i marek. Pokażmy światu Twój potencjał.
-		</p>
+			<p class="mt-6 max-w-[540px] text-[19px] leading-[1.55] text-sky">
+				Pełna opieka nad Twoimi mediami: montaż, animacje i pełna oprawa wideo
+				dla klubów, twórców i marek. Pokażmy światu Twój potencjał.
+			</p>
 
-		<div class="mt-9 flex flex-wrap justify-center gap-3.5">
-			<a
-				href="/#kontakt"
-				class="rounded-full bg-orange px-7 py-[15px] font-bold text-cloud shadow-pop-white transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[7px_7px_0_var(--color-cloud)]"
-				>Bezpłatna wycena</a
-			>
-			<a
-				href="/work"
-				class="rounded-full border-2 border-cloud px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-				>Zobacz realizacje</a
-			>
+			<div class="mt-9 flex flex-wrap gap-3.5">
+				<a
+					href="/#kontakt"
+					class="rounded-full bg-orange px-7 py-[15px] font-bold text-cloud shadow-pop-white transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[7px_7px_0_var(--color-cloud)]"
+					>Bezpłatna wycena</a
+				>
+				<a
+					href="/work"
+					class="rounded-full border-2 border-cloud px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
+					>Zobacz realizacje</a
+				>
+			</div>
 		</div>
 	</div>
 
-	<!-- pasek dowodu (loga dodajemy w miarę podpisywania klientów) -->
+	<!-- pasek dowodu (na razie tekstem; logotypy podmienimy, gdy wgrasz pliki) -->
 	<div class="relative z-2 mx-auto max-w-[1200px] px-8 pb-16">
 		<p
 			class="mb-5 text-center text-[13px] font-bold tracking-[0.14em] text-white/60 uppercase"
@@ -78,7 +78,7 @@
 		</p>
 		<div class="flex flex-wrap items-center justify-center gap-x-11 gap-y-4">
 			{
-				['Delta HR', 'Przemysław Langier'].map((name) => (
+				['Delta HR', 'Przemysław Langier', 'Betters'].map((name) => (
 					<span class="font-display text-[22px] font-bold whitespace-nowrap text-white/80">
 						{name}
 					</span>
