@@ -10,17 +10,3 @@ const h = size === 'md' ? 'h-8' : 'h-7';
 <a href={href} class="inline-flex items-center">
 	<img src="/favicon.svg" alt="Sobotka Visual Creations" class:list={['w-auto', h]} />
 </a>
-
-<a
-	href={href}
-	class:list={[
-		'flex items-center gap-2.5 font-display font-bold tracking-[-0.02em] text-cloud',
-		text,
-	]}
->
-	<span class:list={['relative inline-flex items-center justify-center bg-orange', mark]}>
-		<span class:list={['absolute rounded-full border-2 border-cloud -rotate-[30deg]', ring]}
-		></span>
-		<span class:list={['rounded-full bg-cloud', dot]}></span>
-	</span>
-</a>
