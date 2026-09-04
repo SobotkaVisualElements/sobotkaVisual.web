@@ -21,8 +21,8 @@
   --color-line: rgb(10 6 48 / 0.1); /* cienkie linie */
 
   /* Typography */
-  --font-display: "Space Grotesk", system-ui, sans-serif;
-  --font-body: "Manrope", system-ui, sans-serif;
+  --font-display: "Montserrat", system-ui, sans-serif;
+  --font-body: "Montserrat", system-ui, sans-serif;
 
   /* Hard offset shadows — comic/pop feel. ぼかしは使わない */
   --shadow-pop-sm: 3px 3px 0 var(--color-ink);
