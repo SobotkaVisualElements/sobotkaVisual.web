@@ -3,12 +3,10 @@ import Logo from './Logo.astro';
 
 // LP のセクションへは絶対パス付きアンカーにして、ブログ等の下層ページからも辿れるようにする
 const links = [
-	{ href: '/#features', label: 'Features' },
-	{ href: '/#showcase', label: 'Showcase' },
+	{ href: '/#oferta', label: 'Oferta' },
+	{ href: '/work', label: 'Realizacje' },
 	{ href: '/blog', label: 'Blog' },
-	{ href: '/work', label: 'Work' },
-	{ href: '/#pricing', label: 'Pricing' },
-	{ href: '/#faq', label: 'FAQ' },
+	{ href: '/#kontakt', label: 'Kontakt' },
 ];
 ---
 
@@ -28,12 +26,11 @@ const links = [
 					<line x1="21" y1="21" x2="16.5" y2="16.5"></line>
 				</svg>
 			</a>
-			<a href="#" class="hidden text-[15px] font-semibold text-cloud hover:text-orange sm:inline">Sign in</a>
 			<a
-				href="/#pricing"
-				class="rounded-full bg-orange px-5 py-2.5 text-[15px] font-bold text-cloud shadow-[3px_3px_0_var(--color-cloud)] transition-[transform,box-shadow] hover:-translate-x-px hover:-translate-y-px hover:shadow-[4px_4px_0_var(--color-cloud)]"
-				>Get Kepler</a
-			>
+	href="/#kontakt"
+	class="rounded-full bg-orange px-5 py-2.5 text-[15px] font-bold text-cloud shadow-[3px_3px_0_var(--color-cloud)] transition-[transform,box-shadow] hover:-translate-x-px hover:-translate-y-px hover:shadow-[4px_4px_0_var(--color-cloud)]"
+	>Bezpłatna wycena</a
+>
 		</div>
 	</div>
 </nav>
