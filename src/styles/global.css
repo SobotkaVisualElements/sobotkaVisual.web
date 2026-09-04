@@ -6,19 +6,19 @@
  */
 @theme {
   /* Colors */
-  --color-navy: #1e3a8a; /* primary brand, dark sections, headings on light */
-  --color-navy-deep: #152a63; /* deep gradients, footer */
-  --color-ink: #0f1e42; /* near-black text on light */
-  --color-orange: #f97316; /* primary accent, CTAs */
-  --color-orange-bright: #fb923c; /* gradient start, highlighted words on navy */
-  --color-orange-deep: #ea580c; /* gradient end */
-  --color-orange-glow: #fdba74; /* eyebrow text on navy */
-  --color-orange-soft: #ffedd5; /* tinted backgrounds, chips */
-  --color-sky: #dbeafe; /* soft blue tints, nav links */
-  --color-sky-mist: #c7d2fe; /* secondary text on navy */
-  --color-paper: #fbfaf7; /* warm off-white page background (never pure #fff) */
-  --color-cloud: #ffffff; /* cards on paper */
-  --color-line: rgb(15 30 66 / 0.1); /* hairline borders */
+   --color-navy: #1b0545;          /* marka: ciemne sekcje, nagłówki */
+  --color-navy-deep: #0a0630;     /* najgłębsze sekcje, stopka */
+  --color-ink: #0a0630;           /* tekst na jasnym + twarde cienie + tło nagłówka */
+  --color-orange: #ed244e;        /* akcent, przyciski (Twój róż) */
+  --color-orange-bright: #ff5a78; /* jaśniejszy akcent: gradienty, wyróżnione słowa */
+  --color-orange-deep: #c41339;   /* ciemniejszy akcent: koniec gradientu */
+  --color-orange-glow: #f78ba0;   /* delikatny akcent: nadtytuły na ciemnym */
+  --color-orange-soft: #fde3e8;   /* bardzo jasny róż: tła chipów na jasnym */
+  --color-sky: #d0c9c3;           /* ciepła szarość: linki nawigacji na ciemnym */
+  --color-sky-mist: #d0c9c3;      /* drugorzędny tekst na ciemnym */
+  --color-paper: #f7f7ff;         /* tło strony (nigdy czysta biel) */
+  --color-cloud: #ffffff;         /* karty na tle strony + biały tekst/logo na ciemnym */
+  --color-line: rgb(10 6 48 / 0.1); /* cienkie linie */
 
   /* Typography */
   --font-display: "Space Grotesk", system-ui, sans-serif;
