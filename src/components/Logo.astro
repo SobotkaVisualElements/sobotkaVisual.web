@@ -1,15 +1,15 @@
 ---
-// 軌道マーク＋ワードマーク。size は nav 用(30px)と footer 用(28px)の2種
 interface Props {
 	size?: 'md' | 'sm';
 	href?: string;
 }
 const { size = 'md', href = '/' } = Astro.props;
-const mark = size === 'md' ? 'size-[30px] rounded-[9px]' : 'size-7 rounded-lg';
-const ring = size === 'md' ? 'w-[30px] h-3.5' : 'w-7 h-[13px]';
-const dot = size === 'md' ? 'size-2' : 'size-[7px]';
-const text = size === 'md' ? 'text-[21px]' : 'text-xl';
+const h = size === 'md' ? 'h-8' : 'h-7';
 ---
+
+<a href={href} class="inline-flex items-center">
+	<img src="/favicon.svg" alt="Sobotka Visual Creations" class:list={['w-auto', h]} />
+</a>
 
 <a
 	href={href}
@@ -23,5 +23,4 @@ const text = size === 'md' ? 'text-[21px]' : 'text-xl';
 		></span>
 		<span class:list={['rounded-full bg-cloud', dot]}></span>
 	</span>
-	Sobotka Visual Creations
 </a>
