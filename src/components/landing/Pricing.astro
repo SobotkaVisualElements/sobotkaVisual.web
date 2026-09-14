@@ -3,77 +3,68 @@ import SectionHeader from './SectionHeader.astro';
 
 const tiers = [
 	{
-		name: 'Solo',
-		sub: 'For one personal site.',
-		monthly: 4,
-		yearly: 39,
-		cta: 'Choose Solo',
+		name: 'START',
+		sub: 'Stała obecność, bez materiałów wideo.',
+		price: '2 500',
+		cta: 'Wybieram START',
 		featured: false,
-		features: ['1 project license', 'All three presets', '1 year of updates', 'Community support'],
-	},
-	{
-		name: 'Pro',
-		sub: 'For freelancers & makers.',
-		monthly: 8,
-		yearly: 79,
-		cta: 'Choose Pro',
-		featured: true,
 		features: [
-			'Unlimited projects',
-			'Lifetime updates',
-			'Premium blocks library',
-			'Priority email support',
+			'min. 6 miesięcy',
+			'6 krótkich form pionowych',
+			'6 grafik i miniatur',
+			'1 nowy element animowany',
+			'1 runda poprawek',
+			'Raport miesięczny',
 		],
 	},
 	{
-		name: 'Team',
-		sub: 'For studios & agencies.',
-		monthly: 20,
-		yearly: 199,
-		cta: 'Choose Team',
+		name: 'PRO',
+		sub: 'Pełne zaplecze działu marketingu.',
+		price: '7 200',
+		cta: 'Wybieram PRO',
+		featured: true,
+		features: [
+			'min. 6 miesięcy',
+			'4 materiały wideo',
+			'8 krótkich form pionowych',
+			'8 grafik i miniatur',
+			'3 nowe elementy animowane',
+			'Rozwijany system graficzny',
+			'Harmonogram publikacji i raport',
+		],
+	},
+	{
+		name: 'STUDIO',
+		sub: 'Najwyższy poziom, priorytet i strategia.',
+		price: '12 900',
+		cta: 'Wybieram STUDIO',
 		featured: false,
 		features: [
-			'Everything in Pro',
-			'5 seats included',
-			'Shared component library',
-			'Onboarding call',
+			'min. 6 miesięcy',
+			'6 materiałów wideo',
+			'12 krótkich form pionowych',
+			'16 grafik i miniatur',
+			'5 nowych elementów animowanych',
+			'Dzień zdjęciowy w miesiącu',
+			'2 rundy poprawek w cenie',
+			'Priorytet 24 h i strategia',
 		],
 	},
 ];
 ---
 
 <section
-	id="pricing"
+	id="oferta"
 	class="border-y-4 border-ink bg-linear-160 from-orange-bright from-0% via-orange via-60% to-orange-deep"
 >
 	<div class="mx-auto max-w-[1200px] px-8 py-20">
 		<SectionHeader
-			eyebrow="Pricing"
-			title="One purchase, yours forever"
+			eyebrow="Oferta"
+			title="Trzy pakiety, jeden cel: Twoja marka rośnie"
+			sub="Abonament miesięczny. Ta sama siatka dla klubów, twórców i marek — zmieniają się tylko akcenty."
 			on="orange"
-			class="max-w-[620px] mb-5"
+			class="max-w-[640px] mb-11"
 		/>
-		<div class="mb-11 flex justify-center">
-			<div
-				id="billing-toggle"
-				class="inline-flex gap-1 rounded-full border-2 border-ink bg-cloud p-[5px]"
-			>
-				<button
-					type="button"
-					data-period="monthly"
-					aria-pressed="true"
-					class="cursor-pointer rounded-full bg-navy px-5 py-[9px] text-sm font-bold text-cloud transition-colors duration-150"
-					>Monthly</button
-				>
-				<button
-					type="button"
-					data-period="yearly"
-					aria-pressed="false"
-					class="cursor-pointer rounded-full bg-transparent px-5 py-[9px] text-sm font-bold text-slate-600 transition-colors duration-150"
-					>Yearly&nbsp;<span class="text-orange">-20%</span></button
-				>
-			</div>
-		</div>
 		<div class="grid items-start gap-6 md:grid-cols-3">
 			{
 				tiers.map((tier) => (
@@ -86,47 +77,37 @@ const tiers = [
 					>
 						{tier.featured && (
 							<span class="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full border-2 border-cloud bg-orange px-3.5 py-1.5 text-xs font-bold tracking-[0.05em] whitespace-nowrap text-cloud">
-								MOST POPULAR
+								NAJCZĘŚCIEJ WYBIERANY
 							</span>
 						)}
 						<h3
-							class:list={[
-								'text-xl font-semibold',
-								tier.featured ? 'text-cloud' : 'text-navy',
-							]}
+							class:list={['text-xl font-semibold', tier.featured ? 'text-cloud' : 'text-navy']}
 						>
 							{tier.name}
 						</h3>
 						<p
-							class:list={[
-								'mt-1.5 text-sm',
-								tier.featured ? 'text-sky-mist' : 'text-slate-500',
-							]}
+							class:list={['mt-1.5 text-sm', tier.featured ? 'text-sky-mist' : 'text-slate-500']}
 						>
 							{tier.sub}
 						</p>
-						<div class="mt-5.5 flex items-baseline gap-1">
+						<div class="mt-5.5 flex items-baseline gap-1.5">
 							<span
 								class:list={[
 									'font-display text-[46px] font-bold',
 									tier.featured ? 'text-cloud' : 'text-ink',
 								]}
 							>
-								$<span data-price-monthly={tier.monthly} data-price-yearly={tier.yearly}>
-									{tier.monthly}
-								</span>
+								{tier.price}
+								<span class="text-[22px] font-semibold">zł</span>
 							</span>
 							<span
-								class:list={[
-									'text-[15px]',
-									tier.featured ? 'text-sky-mist' : 'text-slate-500',
-								]}
+								class:list={['text-[15px]', tier.featured ? 'text-sky-mist' : 'text-slate-500']}
 							>
-								/<span data-period-label>mo</span>
+								/mies.
 							</span>
 						</div>
 						<a
-							href="#"
+							href="/#kontakt"
 							class:list={[
 								'mt-6 block rounded-full py-[13px] text-center text-[15px] font-bold transition-[background-color,transform] duration-150',
 								tier.featured
@@ -139,7 +120,7 @@ const tiers = [
 						<ul
 							class:list={[
 								'mt-6 flex flex-col gap-3 text-[15px]',
-								tier.featured ? 'text-[#e0e7ff]' : 'text-slate-700',
+								tier.featured ? 'text-[#e0d7ff]' : 'text-slate-700',
 							]}
 						>
 							{tier.features.map((feature) => (
@@ -160,33 +141,8 @@ const tiers = [
 				))
 			}
 		</div>
+		<p class="mx-auto mt-9 max-w-[620px] text-center text-sm text-[#3a1503]">
+			Modele współpracy (retainer lub pakiet + niższy abonament) oraz pilotaż ustalamy indywidualnie. Napisz po szczegóły.
+		</p>
 	</div>
 </section>
-
-<script>
-	// 料金トグル: Monthly/Yearly で価格と /mo・/yr を切り替える
-	const toggle = document.getElementById('billing-toggle');
-	const buttons = toggle?.querySelectorAll<HTMLButtonElement>('button[data-period]') ?? [];
-	const activeClasses = ['bg-navy', 'text-cloud'];
-	const inactiveClasses = ['bg-transparent', 'text-slate-600'];
-
-	const setPeriod = (period: string) => {
-		const yearly = period === 'yearly';
-		document.querySelectorAll<HTMLElement>('[data-price-monthly]').forEach((el) => {
-			el.textContent = yearly ? el.dataset.priceYearly! : el.dataset.priceMonthly!;
-		});
-		document.querySelectorAll<HTMLElement>('[data-period-label]').forEach((el) => {
-			el.textContent = yearly ? 'yr' : 'mo';
-		});
-		buttons.forEach((btn) => {
-			const active = btn.dataset.period === period;
-			btn.classList.remove(...(active ? inactiveClasses : activeClasses));
-			btn.classList.add(...(active ? activeClasses : inactiveClasses));
-			btn.setAttribute('aria-pressed', String(active));
-		});
-	};
-
-	buttons.forEach((btn) => {
-		btn.addEventListener('click', () => setPeriod(btn.dataset.period!));
-	});
-</script>

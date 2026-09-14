@@ -3,20 +3,24 @@ import SectionHeader from './SectionHeader.astro';
 
 const items = [
 	{
-		q: 'Do I need to know Astro to use Kepler?',
-		a: 'Not really. If you can edit HTML and Markdown, you can ship with Kepler. The docs walk you through everything, and most edits happen in plain content files.',
+		q: 'Jak wygląda współpraca?',
+		a: 'Ustalamy zakres i pakiet, podpisujemy umowę, a potem co miesiąc produkuję materiały według harmonogramu. Ty akceptujesz i publikujesz — całą produkcję biorę na siebie.',
 	},
 	{
-		q: 'Can I use it for client projects?',
-		a: 'Yes. The Pro and Team licenses cover unlimited commercial and client projects. Solo covers one personal site.',
+		q: 'Jaki jest minimalny okres współpracy?',
+		a: 'Pakiety abonamentowe to minimum 6 miesięcy — media buduje się konsekwentnie, nie jednym filmem. Realizacje jednorazowe (np. trailer, pakiet premierowy) wyceniam osobno.',
 	},
 	{
-		q: "What's included in updates?",
-		a: 'New sections, bug fixes, Astro version bumps, and fresh presets. Pro and Team get these for life; Solo for one year.',
+		q: 'Dla kogo są pakiety?',
+		a: 'Dla klubów sportowych, twórców internetowych, firm i instytucji. Siatka jest ta sama, zmieniają się akcenty i nazwy materiałów pod Twoją branżę.',
 	},
 	{
-		q: 'Is there a refund policy?',
-		a: "Absolutely — 14 days, no questions asked. If Kepler isn't the right fit, email us and we'll refund in full.",
+		q: 'Kto ma prawa do materiałów?',
+		a: 'Gotowe materiały przechodzą na Ciebie z chwilą zapłaty. System oprawy (szablony, pliki źródłowe) pozostaje na licencji czasowej — pełne prawa po 12 miesiącach ciągłej współpracy.',
+	},
+	{
+		q: 'Robisz też projekty jednorazowe?',
+		a: 'Tak. Poza abonamentem realizuję pakiety projektowe (np. oprawa premierowa, kampania) oraz osobną ofertę dla wydawnictw — animowane trailery książek rozliczane za tytuł.',
 	},
 ];
 ---
@@ -26,7 +30,7 @@ const items = [
 	class="border-y-4 border-ink bg-linear-160 from-orange-bright from-0% via-orange via-60% to-orange-deep"
 >
 	<div class="mx-auto max-w-[820px] px-8 py-20">
-		<SectionHeader eyebrow="FAQ" title="Questions, answered" on="orange" class="mb-11" />
+		<SectionHeader eyebrow="FAQ" title="Najczęstsze pytania" on="orange" class="mb-11" />
 		<div id="faq-list" class="flex flex-col gap-3.5">
 			{
 				items.map((item, i) => (
@@ -59,7 +63,6 @@ const items = [
 </section>
 
 <script>
-	// アコーディオン: 一度に1つだけ開く（プロトタイプ準拠）
 	const list = document.getElementById('faq-list');
 	const toggles = list?.querySelectorAll<HTMLButtonElement>('[data-faq-toggle]') ?? [];
 

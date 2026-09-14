@@ -1,33 +1,26 @@
 ---
 import SectionHeader from './SectionHeader.astro';
 
+// UWAGA: cytaty to placeholdery. Wklej prawdziwe fragmenty z pisemnych referencji
+// od Adama Przebindy (Delta HR) i Przemysława Langiera przed publikacją.
 const quotes = [
 	{
 		quote:
-			'"Launched my portfolio in a single evening. It scored 100 on Lighthouse without me touching a thing."',
-		initials: 'JK',
+			'„[Tu wklej cytat z pisemnej referencji od Delta HR — do uzupełnienia przed publikacją.]"',
+		initials: 'AP',
 		avatar: 'bg-navy',
-		name: 'Jenna Kim',
-		role: 'Product Designer',
+		name: 'Adam Przebinda',
+		role: 'Delta HR',
 		tilt: '-rotate-[1.2deg]',
 	},
 	{
 		quote:
-			'"We rebuilt our whole marketing site on Kepler. The team preset saved us weeks of setup."',
-		initials: 'MA',
+			'„[Tu wklej cytat z pisemnej referencji od Przemysława Langiera — do uzupełnienia przed publikacją.]"',
+		initials: 'PL',
 		avatar: 'bg-orange',
-		name: 'Marco Alvarez',
-		role: 'Founder, Lumen',
+		name: 'Przemysław Langier',
+		role: 'twórca internetowy',
 		tilt: 'rotate-1',
-	},
-	{
-		quote:
-			'"The MDX setup is exactly what I wanted. I write, I push, it\'s live. No fighting the framework."',
-		initials: 'RS',
-		avatar: 'bg-navy-deep',
-		name: 'Riya Shah',
-		role: 'Indie Developer',
-		tilt: '-rotate-1',
 	},
 ];
 ---
@@ -37,12 +30,12 @@ const quotes = [
 	<span class="absolute right-[7%] bottom-10 size-5 rotate-[18deg] rounded-md bg-orange"></span>
 	<div class="mx-auto max-w-[1200px] px-8 py-20">
 		<SectionHeader
-			eyebrow="Loved by builders"
-			title="Don't take our word for it"
+			eyebrow="Opinie"
+			title="Nie musisz wierzyć mi na słowo"
 			on="navy"
 			class="max-w-[620px] mb-12"
 		/>
-		<div class="grid gap-6 md:grid-cols-3">
+		<div class="grid gap-6 md:grid-cols-2">
 			{
 				quotes.map((q) => (
 					<div
