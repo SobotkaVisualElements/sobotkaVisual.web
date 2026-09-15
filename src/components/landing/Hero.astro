@@ -1,52 +1,32 @@
 ---
-// Hero — Sobotka Visual Creations
-// Tekst wyrównany do lewej. Nadtytuł = logotyp (public/logo.svg).
-// Tło: ciemny gradient marki. Gotowe pod wideo w tle (patrz zakomentowany blok niżej).
+// Hero — SVC. Lewy układ. Nadtytuł = logotyp. Bez podkreślenia w H1.
+// Pasek "Zaufali nam" na logotypach. Silnik animacji (liquid hover + parallax) na dole.
 ---
 
 <section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
 	{/*
-		WIDEO W TLE (dodamy później):
-		odkomentuj i wrzuć public/hero.mp4 + public/hero.webm + plakat public/hero-poster.jpg
-		<video
-			class="pointer-events-none absolute inset-0 z-0 hidden h-full w-full object-cover opacity-35 md:block"
-			autoplay muted loop playsinline preload="metadata" poster="/hero-poster.jpg"
-		>
-			<source src="/hero.webm" type="video/webm" />
-			<source src="/hero.mp4" type="video/mp4" />
+		WIDEO W TLE (później): wrzuć public/hero.mp4 + public/hero.webm + public/hero-poster.jpg i odkomentuj.
+		<video class="pointer-events-none absolute inset-0 z-0 hidden h-full w-full object-cover opacity-35 md:block"
+			autoplay muted loop playsinline preload="metadata" poster="/hero-poster.jpg">
+			<source src="/hero.webm" type="video/webm" /><source src="/hero.mp4" type="video/mp4" />
 		</video>
 	*/}
 
-	<!-- poświaty koloru -->
 	<span
+		data-speed="0.06"
 		class="pointer-events-none absolute -top-[90px] -right-[70px] z-0 size-[660px] bg-radial from-orange/40 to-transparent to-62%"
 	></span>
 	<span
+		data-speed="-0.04"
 		class="pointer-events-none absolute -bottom-40 -left-[120px] z-0 size-[620px] bg-radial from-[rgb(39_24_126/0.55)] to-transparent to-64%"
 	></span>
 
 	<div class="relative z-2 mx-auto max-w-[1200px] px-8 pt-24 pb-14">
 		<div class="max-w-[640px]">
-			<!-- nadtytuł: logotyp SVC -->
 			<img src="/logo.svg" alt="Sobotka Visual Creations" class="h-9 w-auto md:h-11" />
 
 			<h1 class="mt-8 text-[40px] leading-[1.03] tracking-[-0.03em] md:text-[56px]">
-				Bądź <span class="relative whitespace-nowrap text-orange"
-					>wyjątkowy<svg
-						viewBox="0 0 220 20"
-						width="100%"
-						height="16"
-						class="absolute -bottom-2 left-0"
-						preserveAspectRatio="none"
-						aria-hidden="true"
-						><path
-							d="M4 13 C60 4 160 4 216 11"
-							stroke="var(--color-orange)"
-							stroke-width="5"
-							fill="none"
-							stroke-linecap="round"></path></svg
-					></span
-				>
+				Bądź <span class="text-orange">wyjątkowy</span>
 			</h1>
 
 			<p class="mt-6 max-w-[540px] text-[19px] leading-[1.55] text-sky">
@@ -69,21 +49,87 @@
 		</div>
 	</div>
 
-	<!-- pasek dowodu (na razie tekstem; logotypy podmienimy, gdy wgrasz pliki) -->
+	<!-- Zaufali nam — logotypy -->
 	<div class="relative z-2 mx-auto max-w-[1200px] px-8 pb-16">
-		<p
-			class="mb-5 text-center text-[13px] font-bold tracking-[0.14em] text-white/60 uppercase"
-		>
+		<p class="mb-6 text-center text-[13px] font-bold tracking-[0.14em] text-white/55 uppercase">
 			Zaufali nam
 		</p>
-		<div class="flex flex-wrap items-center justify-center gap-x-11 gap-y-4">
-			{
-				['Delta HR', 'Przemysław Langier', 'Betters'].map((name) => (
-					<span class="font-display text-[22px] font-bold whitespace-nowrap text-white/80">
-						{name}
-					</span>
-				))
-			}
+		<div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-6">
+			<img src="/delta-hr.svg" alt="Delta HR" class="h-6 w-auto opacity-70 transition-opacity hover:opacity-100" />
+			<img src="/langier.svg" alt="Przemysław Langier" class="h-8 w-auto opacity-70 transition-opacity hover:opacity-100" />
+			<img src="/betters.svg" alt="Betters" class="h-7 w-auto opacity-70 transition-opacity hover:opacity-100" />
 		</div>
 	</div>
 </section>
+
+<style is:global>
+	.liquid-card {
+		position: relative;
+		transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.3s ease;
+	}
+	.liquid-card::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		border-radius: inherit;
+		pointer-events: none;
+		z-index: 1;
+		background: radial-gradient(
+			220px 220px at var(--mx, 50%) var(--my, 50%),
+			rgba(255, 255, 255, 0.14),
+			rgba(237, 36, 78, 0.18) 35%,
+			transparent 65%
+		);
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+	@media (hover: hover) {
+		.liquid-card:hover {
+			transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
+				translateY(-6px);
+		}
+		.liquid-card:hover::after {
+			opacity: 1;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.liquid-card:hover {
+			transform: none;
+		}
+		[data-speed] {
+			transform: none !important;
+		}
+	}
+</style>
+
+<script>
+	// Liquid hover: połysk + przechył podążający za kursorem
+	const cards = document.querySelectorAll<HTMLElement>('.liquid-card');
+	cards.forEach((card) => {
+		card.addEventListener('pointermove', (e: PointerEvent) => {
+			const r = card.getBoundingClientRect();
+			const x = e.clientX - r.left;
+			const y = e.clientY - r.top;
+			card.style.setProperty('--mx', x + 'px');
+			card.style.setProperty('--my', y + 'px');
+			card.style.setProperty('--ry', ((x / r.width - 0.5) * 7).toFixed(2) + 'deg');
+			card.style.setProperty('--rx', ((0.5 - y / r.height) * 7).toFixed(2) + 'deg');
+		});
+		card.addEventListener('pointerleave', () => {
+			card.style.setProperty('--rx', '0deg');
+			card.style.setProperty('--ry', '0deg');
+		});
+	});
+
+	// Parallax przy scrollu (subtelny, tylko dekoracje z data-speed)
+	const parallax = document.querySelectorAll<HTMLElement>('[data-speed]');
+	const onScroll = () => {
+		const y = window.scrollY;
+		parallax.forEach((el) => {
+			const speed = parseFloat(el.dataset.speed || '0');
+			el.style.transform = `translate3d(0, ${(y * speed).toFixed(1)}px, 0)`;
+		});
+	};
+	window.addEventListener('scroll', onScroll, { passive: true });
+	onScroll();
+</script>

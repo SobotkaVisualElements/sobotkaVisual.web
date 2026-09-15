@@ -1,22 +1,8 @@
 ---
-import SectionHeader from './SectionHeader.astro';
-
 const tiles = [
-	{
-		tag: 'Kluby sportowe',
-		title: 'Kluby sportowe',
-		body: 'Pełna oprawa transmisji, skróty meczowe i social media, które budują markę klubu.',
-	},
-	{
-		tag: 'Twórcy internetowi',
-		title: 'Twórcy internetowi',
-		body: 'Montaż odcinków, miniatury i rolki, które odzyskują Twój czas i podbijają klikalność.',
-	},
-	{
-		tag: 'Marki i firmy',
-		title: 'Marki i firmy',
-		body: 'Materiały produktowe i wizerunkowe. Wy decydujecie, produkcję bierzemy na siebie.',
-	},
+	{ tag: 'Kluby sportowe', title: 'Kluby sportowe', body: 'Pełna oprawa transmisji, skróty meczowe i social media, które budują markę klubu.' },
+	{ tag: 'Twórcy internetowi', title: 'Twórcy internetowi', body: 'Montaż odcinków, miniatury i rolki, które odzyskują Twój czas i podbijają klikalność.' },
+	{ tag: 'Marki i firmy', title: 'Marki i firmy', body: 'Materiały produktowe i wizerunkowe. Wy decydujecie, produkcję bierzemy na siebie.' },
 ];
 ---
 
@@ -24,23 +10,26 @@ const tiles = [
 	id="dla-kogo"
 	class="relative overflow-hidden bg-linear-160 from-navy to-navy-deep text-cloud"
 >
-	<span class="absolute top-10 right-[8%] text-[34px] text-orange">✦</span>
-	<span class="absolute bottom-15 left-[5%] size-5 rotate-[20deg] rounded-md bg-orange"></span>
+	<span data-speed="0.03" class="pointer-events-none absolute top-10 right-[8%] text-[34px] text-orange">✦</span>
+	<span data-speed="-0.05" class="pointer-events-none absolute bottom-15 left-[5%] size-5 rotate-[20deg] rounded-md bg-orange"></span>
 	<div class="mx-auto max-w-[1200px] px-8 py-20">
-		<SectionHeader
-			eyebrow="Dla kogo"
-			title="Media dla tych, którzy chcą się wyróżnić"
-			sub="Ta sama jakość, inne akcenty. Dobieramy zakres do tego, jak działasz i kim chcesz być."
-			on="navy"
-			class="max-w-[640px] mb-13"
-		/>
+		<div class="mx-auto mb-13 max-w-[720px] text-center">
+			<span class="text-[13px] font-bold tracking-[0.12em] text-orange-glow uppercase">Dla kogo</span>
+			<h2 class="mt-3 text-[44px] leading-tight font-bold tracking-[-0.02em] text-cloud">
+				Media dla tych,<br />którzy chcą się wyróżnić
+			</h2>
+		</div>
 		<div class="grid gap-6 md:grid-cols-3">
 			{
 				tiles.map((tile) => (
-					<div class="rounded-tile border border-white/14 bg-white/6 p-4.5">
-						<div class="flex aspect-4/3 items-center justify-center overflow-hidden rounded-xl bg-linear-160 from-navy-deep via-navy to-orange/40">
-							<span class="rounded-md bg-white/10 px-3 py-1 text-[13px] font-bold tracking-[0.08em] text-cloud uppercase">
-								{tile.tag}
+					<div class="liquid-card group rounded-tile border border-white/14 bg-white/6 p-4.5">
+						<div class="relative aspect-4/3 overflow-hidden rounded-xl">
+							{/* Podmień ten gradient na <img> z realizacją, gdy będziesz miał miniatury */}
+							<div class="absolute inset-0 bg-linear-160 from-navy-deep via-navy to-orange/40 transition-transform duration-300 ease-out group-hover:scale-[1.12]" />
+							<span class="absolute inset-0 flex items-center justify-center">
+								<span class="rounded-md bg-white/10 px-3 py-1 text-[13px] font-bold tracking-[0.08em] text-cloud uppercase backdrop-blur-sm">
+									{tile.tag}
+								</span>
 							</span>
 						</div>
 						<h3 class="mt-4 font-display text-xl font-semibold text-cloud">{tile.title}</h3>

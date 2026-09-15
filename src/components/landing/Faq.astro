@@ -4,23 +4,23 @@ import SectionHeader from './SectionHeader.astro';
 const items = [
 	{
 		q: 'Jak wygląda współpraca?',
-		a: 'Ustalamy zakres i pakiet, podpisujemy umowę, a potem co miesiąc produkuję materiały według harmonogramu. Ty akceptujesz i publikujesz — całą produkcję biorę na siebie.',
+		a: 'Ustalamy zakres i pakiet, podpisujemy umowę, a potem co miesiąc produkujemy materiały według harmonogramu. Wy akceptujecie i publikujecie — całą produkcję bierzemy na siebie.',
 	},
 	{
 		q: 'Jaki jest minimalny okres współpracy?',
-		a: 'Pakiety abonamentowe to minimum 6 miesięcy — media buduje się konsekwentnie, nie jednym filmem. Realizacje jednorazowe (np. trailer, pakiet premierowy) wyceniam osobno.',
+		a: 'Pakiety abonamentowe to minimum 6 miesięcy — media buduje się konsekwentnie, nie jednym filmem. Realizacje jednorazowe (np. trailer, pakiet premierowy) wyceniamy osobno.',
 	},
 	{
 		q: 'Dla kogo są pakiety?',
-		a: 'Dla klubów sportowych, twórców internetowych, firm i instytucji. Siatka jest ta sama, zmieniają się akcenty i nazwy materiałów pod Twoją branżę.',
+		a: 'Dla klubów sportowych, twórców internetowych, firm i instytucji. Siatka jest ta sama, zmieniają się akcenty i nazwy materiałów pod daną branżę.',
 	},
 	{
 		q: 'Kto ma prawa do materiałów?',
-		a: 'Gotowe materiały przechodzą na Ciebie z chwilą zapłaty. System oprawy (szablony, pliki źródłowe) pozostaje na licencji czasowej — pełne prawa po 12 miesiącach ciągłej współpracy.',
+		a: 'Gotowe materiały przechodzą na klienta z chwilą zapłaty. System oprawy (szablony, pliki źródłowe) pozostaje na licencji czasowej — pełne prawa po 12 miesiącach ciągłej współpracy.',
 	},
 	{
-		q: 'Robisz też projekty jednorazowe?',
-		a: 'Tak. Poza abonamentem realizuję pakiety projektowe (np. oprawa premierowa, kampania) oraz osobną ofertę dla wydawnictw — animowane trailery książek rozliczane za tytuł.',
+		q: 'Robicie też projekty jednorazowe?',
+		a: 'Tak. Poza abonamentem realizujemy pakiety projektowe (np. oprawa premierowa, kampania) oraz osobną ofertę dla wydawnictw — animowane trailery książek rozliczane za tytuł.',
 	},
 ];
 ---
@@ -65,7 +65,6 @@ const items = [
 <script>
 	const list = document.getElementById('faq-list');
 	const toggles = list?.querySelectorAll<HTMLButtonElement>('[data-faq-toggle]') ?? [];
-
 	toggles.forEach((btn) => {
 		btn.addEventListener('click', () => {
 			const wasOpen = btn.getAttribute('aria-expanded') === 'true';

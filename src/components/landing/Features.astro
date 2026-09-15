@@ -1,43 +1,11 @@
 ---
-import SectionHeader from './SectionHeader.astro';
-
 const features = [
-	{
-		title: 'Montaż wideo',
-		body: 'Długie formy z dynamicznym cięciem, napisami, korekcją dźwięku i color gradingiem.',
-		chip: 'bg-orange-soft',
-		icon: 'triangle',
-	},
-	{
-		title: 'Animacja i motion',
-		body: 'Wektorowa i 2.5D — od pojedynczych elementów oprawy po pełne animowane trailery.',
-		chip: 'bg-sky',
-		icon: 'circle',
-	},
-	{
-		title: 'Rolki i krótkie formy',
-		body: 'Pionowe rolki, shorty i TikToki z wypaloną grafiką, gotowe pod algorytm.',
-		chip: 'bg-orange-soft',
-		icon: 'diamond',
-	},
-	{
-		title: 'Oprawa graficzna',
-		body: 'Miniatury, okładki i spójny system graficzny, który buduje rozpoznawalność.',
-		chip: 'bg-sky',
-		icon: 'ring',
-	},
-	{
-		title: 'Oprawa transmisyjna',
-		body: 'Intro, outro, animowane statystyki, formacje i skład — pełna szata meczowa.',
-		chip: 'bg-orange-soft',
-		icon: 'sparkle',
-	},
-	{
-		title: 'Dźwięk i produkcja',
-		body: 'Opracowanie dźwięku, lektor, dzień zdjęciowy — kompletne zaplecze produkcyjne.',
-		chip: 'bg-sky',
-		icon: 'pill',
-	},
+	{ title: 'Montaż wideo', body: 'Długie formy z dynamicznym cięciem, napisami, korekcją dźwięku i color gradingiem.', icon: '🎬' },
+	{ title: 'Animacja i motion', body: 'Wektorowa i 2.5D — od pojedynczych elementów oprawy po pełne animowane trailery.', icon: '✦' },
+	{ title: 'Rolki i krótkie formy', body: 'Pionowe rolki, shorty i TikToki z wypaloną grafiką, gotowe pod algorytm.', icon: '▶' },
+	{ title: 'Oprawa graficzna', body: 'Miniatury, okładki i spójny system graficzny, który buduje rozpoznawalność.', icon: '🎨' },
+	{ title: 'Oprawa transmisyjna', body: 'Intro, outro, animowane statystyki, formacje i skład — pełna szata meczowa.', icon: '📺' },
+	{ title: 'Dźwięk i produkcja', body: 'Opracowanie dźwięku, lektor, dzień zdjęciowy — kompletne zaplecze produkcyjne.', icon: '🎙️' },
 ];
 ---
 
@@ -46,43 +14,26 @@ const features = [
 	class="border-y-4 border-ink bg-linear-160 from-orange-bright from-0% via-orange via-55% to-orange-deep"
 >
 	<div class="mx-auto max-w-[1200px] px-8 pt-18 pb-21">
-		<SectionHeader
-			eyebrow="Usługi"
-			title="Wszystko, czego potrzebują Twoje media"
-			sub="Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość."
-			on="orange"
-		/>
+		<div class="mx-auto mb-12 max-w-[640px] text-center">
+			<h2 class="font-bold tracking-[-0.02em] text-ink">
+				<span class="block text-[56px] leading-[1]">Wszystko,</span>
+				<span class="mt-1 block text-[27px] leading-tight">czego potrzebują Twoje media</span>
+			</h2>
+			<p class="mt-5 text-lg text-[#3a1503]">
+				Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość.
+			</p>
+		</div>
 		<div class="grid gap-6 md:grid-cols-3">
 			{
 				features.map((f, i) => (
 					<div
 						class:list={[
-							'rounded-card border-2 border-ink bg-cloud p-7 shadow-pop transition-[transform,box-shadow] duration-180 hover:translate-y-[-4px] hover:rotate-0 hover:shadow-pop-lg',
+							'group rounded-card border-2 border-ink bg-cloud p-7 shadow-pop transition-[transform,box-shadow] duration-180 hover:translate-y-[-4px] hover:rotate-0 hover:shadow-pop-lg',
 							i % 2 === 0 ? '-rotate-1' : 'rotate-1',
 						]}
 					>
-						<span
-							class:list={[
-								'mb-4.5 flex size-13 items-center justify-center rounded-chip',
-								f.chip,
-							]}
-						>
-							{f.icon === 'triangle' && (
-								<span class="size-0 border-x-11 border-b-[18px] border-x-transparent border-b-orange" />
-							)}
-							{f.icon === 'circle' && <span class="size-5 rounded-full bg-navy" />}
-							{f.icon === 'diamond' && (
-								<span class="size-5 rotate-45 rounded-[3px] bg-orange" />
-							)}
-							{f.icon === 'ring' && (
-								<span class="size-[22px] rounded-full border-4 border-navy" />
-							)}
-							{f.icon === 'sparkle' && (
-								<span class="text-[26px] leading-none text-orange">✦</span>
-							)}
-							{f.icon === 'pill' && (
-								<span class="h-3.5 w-[22px] rounded-md border-[3px] border-navy" />
-							)}
+						<span class="mb-4.5 flex size-14 items-center justify-center rounded-chip bg-linear-150 from-orange to-orange/45 text-[26px] shadow-[3px_3px_0_var(--color-ink)] transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-6">
+							{f.icon}
 						</span>
 						<h3 class="text-[21px] font-semibold text-ink">{f.title}</h3>
 						<p class="mt-2 text-[15px] leading-normal text-slate-600">{f.body}</p>
