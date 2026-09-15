@@ -1,31 +1,17 @@
 ---
-title: 'Pathfinder'
-description: 'A trip-planning mobile app that turns scattered ideas into a shareable itinerary.'
-category: 'Mobile'
-tech: ['React Native', 'Expo', 'Supabase']
-year: 2024
-role: 'Product Design'
-client: 'Pathfinder'
+title: 'Animacje promocyjne — kanał Przemysław Langier'
+description: 'Zestaw animacji promocyjnych wspierających zasięgi i zapowiedzi materiałów na kanale.'
+category: 'Animacja'
+tech: ['After Effects']
+year: 2025
+role: 'Animacja i motion design'
+client: 'Przemysław Langier'
+featured: false
 order: 4
 ---
 
-## Overview
+## Realizacja
 
-Pathfinder helps small groups plan trips together without a dozen chat threads
-and a spreadsheet. Everyone drops ideas; the app shapes them into a plan.
+Animacje promocyjne przygotowane pod dynamiczne materiały sportowe — mocny haczyk wizualny w pierwszych sekundach.
 
-## The challenge
-
-Group planning is messy. The hard part was not features — it was reducing them,
-so the app felt calm instead of like another inbox.
-
-## Approach
-
-- A single shared timeline as the home surface
-- Lightweight voting instead of endless comment threads
-- Offline-first, because travelers lose signal exactly when they need the plan
-
-## Outcome
-
-Test groups planned a weekend trip in a single sitting, with noticeably fewer
-"wait, what did we decide?" moments.
+_Szczegóły i przykłady realizacji wkrótce._

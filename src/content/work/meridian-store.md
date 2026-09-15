@@ -1,32 +1,17 @@
 ---
-title: 'Meridian Store'
-description: 'A headless storefront tuned for speed, with sub-second navigation on every page.'
-category: 'Website'
-tech: ['Astro', 'Tailwind', 'Stripe', 'Cloudflare']
-year: 2025
-role: 'Frontend'
-client: 'Meridian'
-url: 'https://example.com'
+title: 'Serial dokumentalny o mundialu — kanał Przemysław Langier'
+description: 'Montaż i oprawa serii dokumentalnej o mistrzostwach świata, z dynamiczną narracją wizualną.'
+category: 'Montaż'
+tech: ['Premiere Pro', 'After Effects']
+year: 2026
+role: 'Montaż i oprawa'
+client: 'Przemysław Langier'
+featured: true
 order: 3
 ---
 
-## Overview
+## Realizacja
 
-Meridian sells a small, considered catalog and wanted a storefront that felt as
-crafted as the products. Speed was the brief, and speed was the deliverable.
+Wieloodcinkowy serial dokumentalny o mundialu — montaż, tempo i oprawa graficzna budujące narrację godną dużej produkcji.
 
-## The challenge
-
-Their previous platform shipped megabytes of JavaScript to render a product grid.
-Pages felt sluggish on exactly the mobile connections their customers used.
-
-## Approach
-
-- Rebuilt on Astro with static product pages and a tiny cart island
-- Deferred all non-critical scripts; the catalog is pure HTML and CSS
-- Moved checkout to a hosted Stripe flow to keep the bundle lean
-
-## Outcome
-
-Median page weight fell by 80%, and the store now scores in the high 90s on
-Lighthouse across the board.
+_Szczegóły i przykłady realizacji wkrótce._

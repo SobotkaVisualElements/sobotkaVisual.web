@@ -1,32 +1,16 @@
 ---
-title: 'Atlas Docs'
-description: 'A documentation site with instant search and a reading experience that respects your time.'
-category: 'Web App'
-tech: ['Astro', 'Pagefind', 'MDX']
-year: 2023
-role: 'Design & Frontend'
-client: 'Atlas'
-url: 'https://example.com'
+title: 'Animowana prezentacja zawodników'
+description: 'Animowane prezentacje i sylwetki zawodników — czytelne, dynamiczne, w barwach klienta�.'
+category: 'Animacja'
+tech: ['After Effects', 'Illustrator']
+year: 2026
+role: 'Animacja i motion design'
+featured: false
 order: 6
 ---
 
-## Overview
+## Realizacja
 
-Atlas had great docs trapped in a slow, hard-to-search site. The rebuild kept the
-content and rethought everything around finding and reading it.
+Animowane prezentacje zawodników — formacje, sylwetki i statystyki podane w atrakcyjnej, dynamicznej formie.
 
-## The challenge
-
-Developers bounce when search is slow or results are noisy. The bar was
-"faster than asking a colleague."
-
-## Approach
-
-- Static MDX pages with a fully client-side Pagefind index
-- Search that opens on a keystroke and ranks headings above body text
-- A focused reading column with generous type and clear code blocks
-
-## Outcome
-
-Search went from a second-plus round trip to instant, and support tickets that
-started with "where do I find…" dropped noticeably.
+_Szczegóły i przykłady realizacji wkrótce._
