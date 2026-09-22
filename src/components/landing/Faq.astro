@@ -1,80 +1,43 @@
 ---
 import SectionHeader from './SectionHeader.astro';
-
 const items = [
-	{
-		q: 'Jak wygląda współpraca?',
-		a: 'Ustalamy zakres i pakiet, podpisujemy umowę, a potem co miesiąc produkujemy materiały według harmonogramu. Wy akceptujecie i publikujecie — całą produkcję bierzemy na siebie.',
-	},
-	{
-		q: 'Jaki jest minimalny okres współpracy?',
-		a: 'Pakiety abonamentowe to minimum 6 miesięcy — media buduje się konsekwentnie, nie jednym filmem. Realizacje jednorazowe (np. trailer, pakiet premierowy) wyceniamy osobno.',
-	},
-	{
-		q: 'Dla kogo są pakiety?',
-		a: 'Dla klubów sportowych, twórców internetowych, firm i instytucji. Siatka jest ta sama, zmieniają się akcenty i nazwy materiałów pod daną branżę.',
-	},
-	{
-		q: 'Kto ma prawa do materiałów?',
-		a: 'Gotowe materiały przechodzą na klienta z chwilą zapłaty. System oprawy (szablony, pliki źródłowe) pozostaje na licencji czasowej — pełne prawa po 12 miesiącach ciągłej współpracy.',
-	},
-	{
-		q: 'Robicie też projekty jednorazowe?',
-		a: 'Tak. Poza abonamentem realizujemy pakiety projektowe (np. oprawa premierowa, kampania) oraz osobną ofertę dla wydawnictw — animowane trailery książek rozliczane za tytuł.',
-	},
+	{ q: 'Jak wygląda współpraca?', a: 'Ustalamy zakres i pakiet, podpisujemy umowę, a potem co miesiąc produkujemy materiały według harmonogramu. Wy akceptujecie i publikujecie — całą produkcję bierzemy na siebie.' },
+	{ q: 'Jaki jest minimalny okres współpracy?', a: 'Pakiety abonamentowe to minimum 6 miesięcy — media buduje się konsekwentnie, nie jednym filmem. Realizacje jednorazowe wyceniamy osobno.' },
+	{ q: 'Dla kogo są pakiety?', a: 'Dla marek, firm i twórców internetowych. Siatka jest ta sama, zmieniają się akcenty i nazwy materiałów pod daną branżę.' },
+	{ q: 'Kto ma prawa do materiałów?', a: 'Gotowe materiały przechodzą na klienta z chwilą zapłaty. System oprawy (szablony, pliki źródłowe) pozostaje na licencji czasowej — pełne prawa po 12 miesiącach współpracy.' },
+	{ q: 'Robicie też projekty jednorazowe?', a: 'Tak. Poza abonamentem realizujemy pakiety projektowe (np. oprawa premierowa, kampania) oraz osobną ofertę dla wydawnictw — animowane trailery książek rozliczane za tytuł.' },
 ];
 ---
-
-<section
-	id="faq"
-	class="border-y-4 border-ink bg-linear-160 from-orange-bright from-0% via-orange via-60% to-orange-deep"
->
-	<div class="mx-auto max-w-[820px] px-8 py-20">
-		<SectionHeader eyebrow="FAQ" title="Najczęstsze pytania" on="orange" class="mb-11" />
-		<div id="faq-list" class="flex flex-col gap-3.5">
-			{
-				items.map((item, i) => (
-					<div class="overflow-hidden rounded-2xl border-2 border-ink bg-cloud shadow-[5px_5px_0_var(--color-ink)]">
-						<button
-							type="button"
-							data-faq-toggle
-							aria-expanded={i === 0 ? 'true' : 'false'}
-							class="flex w-full cursor-pointer items-center justify-between gap-4 px-6 py-[22px] text-left font-display text-lg font-semibold text-ink"
-						>
-							{item.q}
-							<span
-								data-faq-icon
-								class:list={[
-									'text-2xl font-bold text-orange transition-transform duration-200',
-									i === 0 && 'rotate-45',
-								]}
-							>
-								+
-							</span>
-						</button>
-						<p data-faq-answer hidden={i !== 0} class="px-6 pb-6 text-base leading-relaxed text-slate-600">
-							{item.a}
-						</p>
-					</div>
-				))
-			}
+<section id="faq" class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
+	<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
+	<div class="relative z-2 mx-auto max-w-[820px] px-8 py-20">
+		<SectionHeader eyebrow="FAQ" title="Najczęstsze pytania" on="navy" class="mb-11" />
+		<div class="flex flex-col gap-3.5">
+			{items.map((item) => (
+				<div class="faq-item glass rounded-2xl">
+					<button type="button" class="faq-btn flex w-full cursor-pointer items-center justify-between gap-4 px-6 py-[22px] text-left font-display text-lg font-semibold text-cloud">
+						{item.q}
+						<span class="faq-icon text-2xl font-bold text-orange transition-transform duration-200">+</span>
+					</button>
+					<p class="faq-answer px-6 text-base leading-relaxed text-sky-mist">{item.a}</p>
+				</div>
+			))}
 		</div>
 	</div>
 </section>
 
+<style is:global>
+	.faq-answer { max-height: 0; overflow: hidden; opacity: 0; padding-bottom: 0; transition: max-height .3s ease, opacity .3s ease, padding-bottom .3s ease; }
+	@media (hover: hover) {
+		.faq-item:hover .faq-answer { max-height: 240px; opacity: 1; padding-bottom: 24px; }
+		.faq-item:hover .faq-icon { transform: rotate(45deg); }
+	}
+	.faq-item.open .faq-answer { max-height: 240px; opacity: 1; padding-bottom: 24px; }
+	.faq-item.open .faq-icon { transform: rotate(45deg); }
+</style>
 <script>
-	const list = document.getElementById('faq-list');
-	const toggles = list?.querySelectorAll<HTMLButtonElement>('[data-faq-toggle]') ?? [];
-	toggles.forEach((btn) => {
-		btn.addEventListener('click', () => {
-			const wasOpen = btn.getAttribute('aria-expanded') === 'true';
-			toggles.forEach((other) => {
-				const open = other === btn && !wasOpen;
-				other.setAttribute('aria-expanded', String(open));
-				other.querySelector('[data-faq-icon]')?.classList.toggle('rotate-45', open);
-				const answer = other.parentElement?.querySelector<HTMLElement>('[data-faq-answer]');
-				if (answer) answer.hidden = !open;
-			});
-		});
+	// tap na mobile (gdzie nie ma hover)
+	document.querySelectorAll<HTMLElement>('.faq-item .faq-btn').forEach((btn) => {
+		btn.addEventListener('click', () => { btn.closest('.faq-item')?.classList.toggle('open'); });
 	});
 </script>

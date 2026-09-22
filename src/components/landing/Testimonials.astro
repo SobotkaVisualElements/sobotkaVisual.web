@@ -1,58 +1,30 @@
 ---
 import SectionHeader from './SectionHeader.astro';
-
 const quotes = [
-	{
-		quote:
-			'„Krzysztof pracuje na naszym celu, nie tylko na warstwie wizualnej. Ponad 100 materiałów, zawsze na czas — wideo, które pracuje na wynik biznesowy."',
-		logo: '/delta-hr-dark.svg',
-		logoAlt: 'Delta HR',
-		name: 'Adam Przebinda',
-		role: 'Delta HR',
-		tilt: '-rotate-[1.2deg]',
-	},
-	{
-		quote:
-			'„Wyczucie tempa montażu, dbałość o detale i umiejętność budowania narracji. Wysoka jakość nawet przy bardzo napiętych terminach — partner, na którym można polegać."',
-		logo: '/langier-dark.svg',
-		logoAlt: 'Przemysław Langier',
-		name: 'Przemysław Langier',
-		role: 'twórca internetowy',
-		tilt: 'rotate-1',
-	},
+	{ quote: '„Krzysztof pracuje na naszym celu, nie tylko na warstwie wizualnej. Ponad 100 materiałów, zawsze na czas — wideo, które pracuje na wynik biznesowy."',
+	  logo: '/delta-hr.svg', logoAlt: 'Delta HR', name: 'Adam Przebinda', role: 'Delta HR' },
+	{ quote: '„Wyczucie tempa montażu, dbałość o detale i umiejętność budowania narracji. Wysoka jakość nawet przy bardzo napiętych terminach — partner, na którym można polegać."',
+	  logo: '/langier.svg', logoAlt: 'Przemysław Langier', name: 'Przemysław Langier', role: 'twórca internetowy' },
 ];
 ---
-
-<section class="relative overflow-hidden bg-linear-160 from-navy to-navy-deep text-cloud">
+<section class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
+	<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
 	<span data-speed="0.04" class="pointer-events-none absolute top-12.5 left-[6%] text-[28px] text-orange">✦</span>
-	<span data-speed="-0.05" class="pointer-events-none absolute right-[7%] bottom-10 size-5 rotate-[18deg] rounded-md bg-orange"></span>
-	<div class="mx-auto max-w-[1200px] px-8 py-20">
-		<SectionHeader
-			eyebrow="Opinie"
-			title="Nie musisz wierzyć mi na słowo"
-			on="navy"
-			class="max-w-[620px] mb-12"
-		/>
+	<div class="relative z-2 mx-auto max-w-[1200px] px-8 py-20">
+		<SectionHeader eyebrow="Opinie" title="Nie musisz wierzyć nam na słowo" on="navy" class="max-w-[620px] mb-12" />
 		<div class="grid gap-6 md:grid-cols-2">
-			{
-				quotes.map((q) => (
-					<div
-						class:list={[
-							'rounded-card border-2 border-ink bg-cloud p-8 shadow-pop-orange transition-transform duration-180 hover:rotate-0',
-							q.tilt,
-						]}
-					>
-						<p class="text-[17px] leading-[1.6] text-slate-800">{q.quote}</p>
-						<div class="mt-6 flex items-center justify-between gap-4 border-t border-slate-200 pt-5">
-							<div>
-								<div class="text-[15px] font-bold text-ink">{q.name}</div>
-								<div class="text-[13px] text-slate-500">{q.role}</div>
-							</div>
-							<img src={q.logo} alt={q.logoAlt} class="h-6 w-auto shrink-0 opacity-85" />
+			{quotes.map((q) => (
+				<div class="liquid-card glass rounded-2xl p-8">
+					<p class="text-[17px] leading-[1.6] text-cloud">{q.quote}</p>
+					<div class="mt-6 flex items-center justify-between gap-4 border-t border-white/12 pt-5">
+						<div>
+							<div class="text-[15px] font-bold text-cloud">{q.name}</div>
+							<div class="text-[13px] text-sky-mist">{q.role}</div>
 						</div>
+						<img src={q.logo} alt={q.logoAlt} class="h-6 w-auto shrink-0 opacity-85" />
 					</div>
-				))
-			}
+				</div>
+			))}
 		</div>
 	</div>
 </section>

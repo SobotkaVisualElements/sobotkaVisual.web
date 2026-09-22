@@ -1,59 +1,36 @@
 ---
-// Hero — SVC. Lewy układ. Nadtytuł = logotyp. Bez podkreślenia w H1.
-// Pasek "Zaufali nam" na logotypach. Silnik animacji (liquid hover + parallax) na dole.
+// Hero — SVC. Ciemny gradient + siatka. Silnik animacji w stopce.
 ---
-
 <section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
 	{/*
 		WIDEO W TLE (później): wrzuć public/hero.mp4 + public/hero.webm + public/hero-poster.jpg i odkomentuj.
-		<video class="pointer-events-none absolute inset-0 z-0 hidden h-full w-full object-cover opacity-35 md:block"
+		<video class="pointer-events-none absolute inset-0 z-0 hidden h-full w-full object-cover opacity-30 md:block"
 			autoplay muted loop playsinline preload="metadata" poster="/hero-poster.jpg">
 			<source src="/hero.webm" type="video/webm" /><source src="/hero.mp4" type="video/mp4" />
 		</video>
 	*/}
-
-	<span
-		data-speed="0.06"
-		class="pointer-events-none absolute -top-[90px] -right-[70px] z-0 size-[660px] bg-radial from-orange/40 to-transparent to-62%"
-	></span>
-	<span
-		data-speed="-0.04"
-		class="pointer-events-none absolute -bottom-40 -left-[120px] z-0 size-[620px] bg-radial from-[rgb(39_24_126/0.55)] to-transparent to-64%"
-	></span>
+	<span class="pointer-events-none absolute inset-0 z-0 bg-grid opacity-35"></span>
+	<span data-speed="0.06" class="pointer-events-none absolute -top-[90px] -right-[70px] z-0 size-[660px] bg-radial from-orange/40 to-transparent to-62%"></span>
+	<span data-speed="-0.04" class="pointer-events-none absolute -bottom-40 -left-[120px] z-0 size-[620px] bg-radial from-[rgb(39_24_126/0.55)] to-transparent to-64%"></span>
 
 	<div class="relative z-2 mx-auto max-w-[1200px] px-8 pt-24 pb-14">
-		<div class="max-w-[640px]">
+		<div class="max-w-[660px]">
 			<img src="/logo.svg" alt="Sobotka Visual Creations" class="h-9 w-auto md:h-11" />
-
 			<h1 class="mt-8 text-[40px] leading-[1.03] tracking-[-0.03em] md:text-[56px]">
 				Bądź <span class="text-orange">wyjątkowy</span>
 			</h1>
-
-			<p class="mt-6 max-w-[540px] text-[19px] leading-[1.55] text-sky">
-				Pełna opieka nad Twoimi mediami: montaż, animacje i pełna oprawa wideo
-				dla klubów, twórców i marek. Pokażmy światu Twój potencjał.
+			<p class="mt-6 max-w-[560px] text-[19px] leading-[1.55] text-sky">
+				Motion design, montaż i color grading dla marek, które chcą pokazać światu swój potencjał.
 			</p>
-
 			<div class="mt-9 flex flex-wrap gap-3.5">
-				<a
-					href="/#kontakt"
-					class="rounded-full bg-orange px-7 py-[15px] font-bold text-cloud shadow-pop-white transition-[transform,box-shadow] hover:-translate-x-0.5 hover:-translate-y-0.5 hover:shadow-[7px_7px_0_var(--color-cloud)]"
-					>Bezpłatna wycena</a
-				>
-				<a
-					href="/work"
-					class="rounded-full border-2 border-cloud px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-x-0.5 hover:-translate-y-0.5"
-					>Zobacz realizacje</a
-				>
+				<a href="/#kontakt" class="btn-saber rounded-full bg-orange px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-y-0.5">Bezpłatna wycena</a>
+				<a href="/work" class="btn-saber rounded-full border-2 border-cloud/70 px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-y-0.5">Zobacz realizacje</a>
 			</div>
 		</div>
 	</div>
 
-	<!-- Zaufali nam — logotypy -->
 	<div class="relative z-2 mx-auto max-w-[1200px] px-8 pb-16">
-		<p class="mb-6 text-center text-[13px] font-bold tracking-[0.14em] text-white/55 uppercase">
-			Zaufali nam
-		</p>
+		<p class="mb-6 text-center text-[13px] font-bold tracking-[0.14em] text-white/55 uppercase">Zaufali nam</p>
 		<div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-6">
 			<img src="/delta-hr.svg" alt="Delta HR" class="h-6 w-auto opacity-70 transition-opacity hover:opacity-100" />
 			<img src="/langier.svg" alt="Przemysław Langier" class="h-8 w-auto opacity-70 transition-opacity hover:opacity-100" />

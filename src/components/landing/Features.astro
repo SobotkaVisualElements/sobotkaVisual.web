@@ -8,38 +8,26 @@ const features = [
 	{ title: 'Dźwięk i produkcja', body: 'Opracowanie dźwięku, lektor, dzień zdjęciowy — kompletne zaplecze produkcyjne.', icon: '🎙️' },
 ];
 ---
-
-<section
-	id="uslugi"
-	class="border-y-4 border-ink bg-linear-160 from-orange-bright from-0% via-orange via-55% to-orange-deep"
->
-	<div class="mx-auto max-w-[1200px] px-8 pt-18 pb-21">
+<section id="uslugi" class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
+	<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
+	<div class="relative z-2 mx-auto max-w-[1200px] px-8 pt-18 pb-21">
 		<div class="mx-auto mb-12 max-w-[640px] text-center">
-			<h2 class="font-bold tracking-[-0.02em] text-ink">
+			<h2 class="font-bold tracking-[-0.02em] text-cloud">
 				<span class="block text-[56px] leading-[1]">Wszystko,</span>
 				<span class="mt-1 block text-[27px] leading-tight">czego potrzebują Twoje media</span>
 			</h2>
-			<p class="mt-5 text-lg text-[#3a1503]">
-				Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość.
-			</p>
+			<p class="mt-5 text-lg text-sky-mist">Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość.</p>
 		</div>
 		<div class="grid gap-6 md:grid-cols-3">
-			{
-				features.map((f, i) => (
-					<div
-						class:list={[
-							'group rounded-card border-2 border-ink bg-cloud p-7 shadow-pop transition-[transform,box-shadow] duration-180 hover:translate-y-[-4px] hover:rotate-0 hover:shadow-pop-lg',
-							i % 2 === 0 ? '-rotate-1' : 'rotate-1',
-						]}
-					>
-						<span class="mb-4.5 flex size-14 items-center justify-center rounded-chip bg-linear-150 from-orange to-orange/45 text-[26px] shadow-[3px_3px_0_var(--color-ink)] transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-6">
-							{f.icon}
-						</span>
-						<h3 class="text-[21px] font-semibold text-ink">{f.title}</h3>
-						<p class="mt-2 text-[15px] leading-normal text-slate-600">{f.body}</p>
-					</div>
-				))
-			}
+			{features.map((f) => (
+				<div class="liquid-card glass group rounded-2xl p-7">
+					<span class="mb-4.5 flex size-14 items-center justify-center rounded-chip bg-linear-150 from-orange to-orange/45 text-[26px] transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-6">
+						{f.icon}
+					</span>
+					<h3 class="text-[21px] font-semibold text-cloud">{f.title}</h3>
+					<p class="mt-2 text-[15px] leading-normal text-sky-mist">{f.body}</p>
+				</div>
+			))}
 		</div>
 	</div>
 </section>
