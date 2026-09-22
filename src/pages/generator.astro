@@ -219,12 +219,18 @@ const oneoff = [
 		const btn = $('gen-send') as HTMLButtonElement;
 		btn.disabled = true; btn.textContent = 'Wysyłanie…';
 		try {
-			const res = await fetch('https://formspree.io/f/mgavkpdv', {
+			const res = await fetch('/api/order', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-				body: JSON.stringify({ _replyto: email, _subject: 'Zapytanie z generatora — ' + (($('gen-firma') as HTMLInputElement).value || email), zamowienie: body }),
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					email,
+					firma: ($('gen-firma') as HTMLInputElement).value,
+					nip: ($('gen-nip') as HTMLInputElement).value,
+					telefon: ($('gen-tel') as HTMLInputElement).value,
+					zamowienie: body,
+				}),
 			});
-			if (!res.ok) throw new Error('formspree');
+			if (!res.ok) throw new Error('api');
 			$('gen-info')?.classList.remove('hidden');
 			btn.textContent = 'Wysłano ✓';
 		} catch (e) {
