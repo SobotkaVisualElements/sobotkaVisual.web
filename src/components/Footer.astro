@@ -2,20 +2,15 @@
 import Logo from './Logo.astro';
 const columns = [
 	{ heading: 'Nawigacja', links: [
-		{ href: '/#oferta', label: 'Oferta' },
-		{ href: '/work', label: 'Realizacje' },
-		{ href: '/#faq', label: 'FAQ' },
-		{ href: '/#kontakt', label: 'Kontakt' },
+		{ href: '/#oferta', label: 'Oferta' }, { href: '/work', label: 'Realizacje' },
+		{ href: '/#faq', label: 'FAQ' }, { href: '/#kontakt', label: 'Kontakt' },
 	]},
 	{ heading: 'Kontakt', links: [
 		{ href: 'mailto:kontakt@sobotkavisual.pl', label: 'kontakt@sobotkavisual.pl' },
-		{ href: 'tel:+48668472759', label: '668 472 759' },
-		{ href: '/#kontakt', label: 'Bezpłatna wycena' },
+		{ href: 'tel:+48668472759', label: '668 472 759' }, { href: '/generator', label: 'Zaprojektuj pakiet' },
 	]},
 	{ heading: 'Social media', links: [
-		{ href: '#', label: 'YouTube' },
-		{ href: '#', label: 'Facebook' },
-		{ href: '#', label: 'TikTok' },
+		{ href: '#', label: 'YouTube' }, { href: '#', label: 'Facebook' }, { href: '#', label: 'TikTok' },
 	]},
 ];
 ---
@@ -24,9 +19,7 @@ const columns = [
 	<div class="relative z-2 mx-auto grid max-w-[1200px] gap-8 px-8 pt-[60px] pb-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
 		<div>
 			<Logo size="sm" />
-			<p class="mt-4 max-w-[280px] text-sm leading-relaxed text-slate-400">
-				Pełna opieka nad Twoimi mediami. Montaż, animacja i oprawa wideo, która buduje marki firm, twórców i klubów.
-			</p>
+			<p class="mt-4 max-w-[280px] text-sm leading-relaxed text-slate-400">Pełna opieka nad Twoimi mediami. Montaż, animacja i oprawa wideo, która buduje marki firm, twórców i klubów.</p>
 		</div>
 		{columns.map((col) => (
 			<div>
@@ -39,8 +32,7 @@ const columns = [
 	</div>
 	<div class="relative z-2 border-t border-white/10">
 		<div class="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-3 px-8 py-5 text-[13px] text-slate-500">
-			<span>© 2026 Sobotka Visual Creations</span>
-			<span>Nysa · Opole</span>
+			<span>© 2026 Sobotka Visual Creations</span><span>Nysa · Opole</span>
 		</div>
 	</div>
 </footer>
@@ -49,47 +41,62 @@ const columns = [
 	.glass { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); }
 	.bg-grid { background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px); background-size: 46px 46px; }
 	.liquid-card { position: relative; transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease, border-color .3s ease; }
-	.liquid-card::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:1;
-		background: radial-gradient(240px 240px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.16), rgba(237,36,78,.20) 35%, transparent 65%);
-		opacity:0; transition:opacity .3s ease; }
+	.liquid-card::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:1; background: radial-gradient(240px 240px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.16), rgba(237,36,78,.20) 35%, transparent 65%); opacity:0; transition:opacity .3s ease; }
 	@media (hover:hover) {
 		.liquid-card:hover { transform: perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-6px); border-color: rgba(237,36,78,.4); }
 		.liquid-card:hover::after { opacity:1; }
 	}
+	[data-parallax] { transition: transform .25s ease-out; will-change: transform; }
 	.reveal { opacity:0; transform: translateY(28px); transition: opacity .6s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
 	.reveal.in { opacity:1; transform:none; }
-	/* Saber: świetlny pierścień krążący po obrysie przycisku podczas hover */
-	.btn-saber { position: relative; z-index:0; }
-	.btn-saber::before { content:''; position:absolute; inset:-2px; border-radius:inherit; padding:2px;
-		background: conic-gradient(from 0deg, transparent 0 68%, #ff5a78 82%, #f7f7ff 90%, transparent 100%);
-		-webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
-		mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude;
-		opacity:0; transition: opacity .25s ease; animation: saber 1.5s linear infinite; animation-play-state: paused; }
-	.btn-saber:hover::before { opacity:1; animation-play-state: running; }
-	@keyframes saber { to { transform: rotate(360deg); } }
+	/* SABER: świetlny segment biegnący po obrysie (trim-path) + glow */
+	.btn-saber { position: relative; z-index: 0; }
+	.saber-svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; opacity:0; transition:opacity .25s ease; z-index:2; }
+	.saber-svg rect { x:1.5px; y:1.5px; width:calc(100% - 3px); height:calc(100% - 3px); rx:999px; ry:999px; fill:none; stroke:#ff5a78; stroke-width:2.5; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-dasharray:22 78; filter: drop-shadow(0 0 3px #ff5a78) drop-shadow(0 0 8px rgba(237,36,78,.8)); }
+	@media (hover:hover) {
+		.btn-saber:hover .saber-svg { opacity:1; }
+		.btn-saber:hover .saber-svg rect { animation: saber-run 1.5s linear infinite; }
+	}
+	@keyframes saber-run { from { stroke-dashoffset:0; } to { stroke-dashoffset:-100; } }
 	@media (prefers-reduced-motion: reduce) {
 		.liquid-card:hover { transform:none; } .reveal { opacity:1; transform:none; transition:none; }
-		[data-speed] { transform:none !important; } .btn-saber::before { animation:none; }
+		[data-speed],[data-parallax] { transform:none !important; } .saber-svg rect { animation:none !important; }
 	}
 </style>
 <script>
 	const track = (el: HTMLElement) => {
+		const inner = el.querySelector<HTMLElement>('[data-parallax]');
 		el.addEventListener('pointermove', (e: PointerEvent) => {
 			const r = el.getBoundingClientRect();
 			const x = e.clientX - r.left, y = e.clientY - r.top;
 			el.style.setProperty('--mx', x + 'px'); el.style.setProperty('--my', y + 'px');
 			el.style.setProperty('--ry', ((x / r.width - .5) * 7).toFixed(2) + 'deg');
 			el.style.setProperty('--rx', ((.5 - y / r.height) * 7).toFixed(2) + 'deg');
+			if (inner) inner.style.transform = `translate3d(${(-(x/r.width-.5)*18).toFixed(1)}px, ${(-(y/r.height-.5)*18).toFixed(1)}px, 0) scale(1.1)`;
 		});
-		el.addEventListener('pointerleave', () => { el.style.setProperty('--rx','0deg'); el.style.setProperty('--ry','0deg'); });
+		el.addEventListener('pointerleave', () => {
+			el.style.setProperty('--rx','0deg'); el.style.setProperty('--ry','0deg');
+			if (inner) inner.style.transform = '';
+		});
 	};
 	document.querySelectorAll<HTMLElement>('.liquid-card').forEach(track);
+
+	// Saber: wstrzyknij SVG z prostokątem-obrysem do każdego .btn-saber
+	document.querySelectorAll<HTMLElement>('.btn-saber').forEach((btn) => {
+		if (btn.querySelector('.saber-svg')) return;
+		const ns = 'http://www.w3.org/2000/svg';
+		const svg = document.createElementNS(ns, 'svg');
+		svg.setAttribute('class', 'saber-svg'); svg.setAttribute('preserveAspectRatio', 'none');
+		const rect = document.createElementNS(ns, 'rect');
+		rect.setAttribute('pathLength', '100');
+		svg.appendChild(rect); btn.appendChild(svg);
+	});
+
 	const targets = document.querySelectorAll<HTMLElement>('.liquid-card, section h2');
 	targets.forEach((t) => t.classList.add('reveal'));
-	const io = new IntersectionObserver((entries) => {
-		entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
-	}, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+	const io = new IntersectionObserver((entries) => { entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }); }, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
 	targets.forEach((t) => io.observe(t));
+
 	const px = document.querySelectorAll<HTMLElement>('[data-speed]');
 	const onScroll = () => { const y = window.scrollY; px.forEach((el) => { const s = parseFloat(el.getAttribute('data-speed') || '0'); el.style.transform = `translate3d(0, ${(y*s).toFixed(1)}px, 0)`; }); };
 	window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
