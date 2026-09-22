@@ -1,60 +1,43 @@
 ---
 import Logo from './Logo.astro';
-
 const columns = [
-	{
-		heading: 'Nawigacja',
-		links: [
-			{ href: '/#oferta', label: 'Oferta' },
-			{ href: '/work', label: 'Realizacje' },
-			{ href: '/#faq', label: 'FAQ' },
-			{ href: '/#kontakt', label: 'Kontakt' },
-		],
-	},
-	{
-		heading: 'Kontakt',
-		links: [
-			{ href: 'mailto:kontakt@sobotkavisual.pl', label: 'kontakt@sobotkavisual.pl' },
-			{ href: 'tel:+48668472759', label: '668 472 759' },
-			{ href: '/#kontakt', label: 'Bezpłatna wycena' },
-		],
-	},
-	{
-		// TODO: wklej prawdziwe adresy profili
-		heading: 'Social media',
-		links: [
-			{ href: '#', label: 'YouTube' },
-			{ href: '#', label: 'Facebook' },
-			{ href: '#', label: 'TikTok' },
-		],
-	},
+	{ heading: 'Nawigacja', links: [
+		{ href: '/#oferta', label: 'Oferta' },
+		{ href: '/work', label: 'Realizacje' },
+		{ href: '/#faq', label: 'FAQ' },
+		{ href: '/#kontakt', label: 'Kontakt' },
+	]},
+	{ heading: 'Kontakt', links: [
+		{ href: 'mailto:kontakt@sobotkavisual.pl', label: 'kontakt@sobotkavisual.pl' },
+		{ href: 'tel:+48668472759', label: '668 472 759' },
+		{ href: '/#kontakt', label: 'Bezpłatna wycena' },
+	]},
+	{ heading: 'Social media', links: [
+		{ href: '#', label: 'YouTube' },
+		{ href: '#', label: 'Facebook' },
+		{ href: '#', label: 'TikTok' },
+	]},
 ];
 ---
-
-<footer class="bg-ink text-sky-mist">
-	<div class="mx-auto grid max-w-[1200px] gap-8 px-8 pt-[60px] pb-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
+<footer class="relative overflow-hidden bg-navy-deep text-sky-mist">
+	<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
+	<div class="relative z-2 mx-auto grid max-w-[1200px] gap-8 px-8 pt-[60px] pb-10 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
 		<div>
 			<Logo size="sm" />
 			<p class="mt-4 max-w-[280px] text-sm leading-relaxed text-slate-400">
-				Pełna opieka nad Twoimi mediami. Montaż, animacja i oprawa wideo, która buduje marki klubów, twórców i firm.
+				Pełna opieka nad Twoimi mediami. Montaż, animacja i oprawa wideo, która buduje marki firm, twórców i klubów.
 			</p>
 		</div>
-		{
-			columns.map((col) => (
-				<div>
-					<div class="mb-3.5 text-sm font-bold text-cloud">{col.heading}</div>
-					<div class="flex flex-col gap-2.5 text-sm">
-						{col.links.map((link) => (
-							<a href={link.href} class="text-sky-mist hover:text-orange">
-								{link.label}
-							</a>
-						))}
-					</div>
+		{columns.map((col) => (
+			<div>
+				<div class="mb-3.5 text-sm font-bold text-cloud">{col.heading}</div>
+				<div class="flex flex-col gap-2.5 text-sm">
+					{col.links.map((link) => <a href={link.href} class="text-sky-mist hover:text-orange">{link.label}</a>)}
 				</div>
-			))
-		}
+			</div>
+		))}
 	</div>
-	<div class="border-t border-white/10">
+	<div class="relative z-2 border-t border-white/10">
 		<div class="mx-auto flex max-w-[1200px] flex-wrap justify-between gap-3 px-8 py-5 text-[13px] text-slate-500">
 			<span>© 2026 Sobotka Visual Creations</span>
 			<span>Nysa · Opole</span>
@@ -63,124 +46,51 @@ const columns = [
 </footer>
 
 <style is:global>
-	.liquid-card {
-		position: relative;
-		transition: transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.3s ease;
+	.glass { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); }
+	.bg-grid { background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px); background-size: 46px 46px; }
+	.liquid-card { position: relative; transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease, border-color .3s ease; }
+	.liquid-card::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:1;
+		background: radial-gradient(240px 240px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.16), rgba(237,36,78,.20) 35%, transparent 65%);
+		opacity:0; transition:opacity .3s ease; }
+	@media (hover:hover) {
+		.liquid-card:hover { transform: perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-6px); border-color: rgba(237,36,78,.4); }
+		.liquid-card:hover::after { opacity:1; }
 	}
-	.glow-card {
-		position: relative;
-	}
-	.liquid-card::after,
-	.glow-card::after {
-		content: '';
-		position: absolute;
-		inset: 0;
-		border-radius: inherit;
-		pointer-events: none;
-		background: radial-gradient(
-			220px 220px at var(--mx, 50%) var(--my, 50%),
-			rgba(255, 255, 255, 0.14),
-			rgba(237, 36, 78, 0.18) 35%,
-			transparent 65%
-		);
-		opacity: 0;
-		transition: opacity 0.3s ease;
-	}
-	.glow-card::after {
-		background: radial-gradient(
-			200px 200px at var(--mx, 50%) var(--my, 50%),
-			rgba(237, 36, 78, 0.13),
-			transparent 60%
-		);
-	}
-	@media (hover: hover) {
-		.liquid-card:hover {
-			transform: perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg))
-				translateY(-6px);
-		}
-		.liquid-card:hover::after,
-		.glow-card:hover::after {
-			opacity: 1;
-		}
-	}
-	.reveal {
-		opacity: 0;
-		transform: translateY(28px);
-		transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
-	}
-	.reveal.in {
-		opacity: 1;
-		transform: none;
-	}
+	.reveal { opacity:0; transform: translateY(28px); transition: opacity .6s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
+	.reveal.in { opacity:1; transform:none; }
+	/* Saber: świetlny pierścień krążący po obrysie przycisku podczas hover */
+	.btn-saber { position: relative; z-index:0; }
+	.btn-saber::before { content:''; position:absolute; inset:-2px; border-radius:inherit; padding:2px;
+		background: conic-gradient(from 0deg, transparent 0 68%, #ff5a78 82%, #f7f7ff 90%, transparent 100%);
+		-webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor;
+		mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite: exclude;
+		opacity:0; transition: opacity .25s ease; animation: saber 1.5s linear infinite; animation-play-state: paused; }
+	.btn-saber:hover::before { opacity:1; animation-play-state: running; }
+	@keyframes saber { to { transform: rotate(360deg); } }
 	@media (prefers-reduced-motion: reduce) {
-		.liquid-card:hover {
-			transform: none;
-		}
-		.reveal {
-			opacity: 1;
-			transform: none;
-			transition: none;
-		}
-		[data-speed] {
-			transform: none !important;
-		}
+		.liquid-card:hover { transform:none; } .reveal { opacity:1; transform:none; transition:none; }
+		[data-speed] { transform:none !important; } .btn-saber::before { animation:none; }
 	}
 </style>
-
 <script>
-	// Hover: liquid (przechył + połysk) oraz glow-card (sam połysk) — kursor śledzony
 	const track = (el: HTMLElement) => {
 		el.addEventListener('pointermove', (e: PointerEvent) => {
 			const r = el.getBoundingClientRect();
-			const x = e.clientX - r.left;
-			const y = e.clientY - r.top;
-			el.style.setProperty('--mx', x + 'px');
-			el.style.setProperty('--my', y + 'px');
-			if (el.classList.contains('liquid-card')) {
-				el.style.setProperty('--ry', ((x / r.width - 0.5) * 7).toFixed(2) + 'deg');
-				el.style.setProperty('--rx', ((0.5 - y / r.height) * 7).toFixed(2) + 'deg');
-			}
+			const x = e.clientX - r.left, y = e.clientY - r.top;
+			el.style.setProperty('--mx', x + 'px'); el.style.setProperty('--my', y + 'px');
+			el.style.setProperty('--ry', ((x / r.width - .5) * 7).toFixed(2) + 'deg');
+			el.style.setProperty('--rx', ((.5 - y / r.height) * 7).toFixed(2) + 'deg');
 		});
-		el.addEventListener('pointerleave', () => {
-			el.style.setProperty('--rx', '0deg');
-			el.style.setProperty('--ry', '0deg');
-		});
+		el.addEventListener('pointerleave', () => { el.style.setProperty('--rx','0deg'); el.style.setProperty('--ry','0deg'); });
 	};
 	document.querySelectorAll<HTMLElement>('.liquid-card').forEach(track);
-	document
-		.querySelectorAll<HTMLElement>('.rounded-card, [class*="rounded-[22px]"]')
-		.forEach((el) => {
-			el.classList.add('glow-card');
-			track(el);
-		});
-
-	// Scroll-reveal — poczucie przestrzenności przy scrollu
-	const targets = document.querySelectorAll<HTMLElement>(
-		'.rounded-card, .rounded-tile, [class*="rounded-[22px]"], section h2'
-	);
+	const targets = document.querySelectorAll<HTMLElement>('.liquid-card, section h2');
 	targets.forEach((t) => t.classList.add('reveal'));
-	const io = new IntersectionObserver(
-		(entries) => {
-			entries.forEach((en) => {
-				if (en.isIntersecting) {
-					en.target.classList.add('in');
-					io.unobserve(en.target);
-				}
-			});
-		},
-		{ threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
-	);
+	const io = new IntersectionObserver((entries) => {
+		entries.forEach((en) => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+	}, { threshold: .12, rootMargin: '0px 0px -40px 0px' });
 	targets.forEach((t) => io.observe(t));
-
-	// Parallax dekoracji
 	const px = document.querySelectorAll<HTMLElement>('[data-speed]');
-	const onScroll = () => {
-		const y = window.scrollY;
-		px.forEach((el) => {
-			const s = parseFloat(el.getAttribute('data-speed') || '0');
-			el.style.transform = `translate3d(0, ${(y * s).toFixed(1)}px, 0)`;
-		});
-	};
-	window.addEventListener('scroll', onScroll, { passive: true });
-	onScroll();
+	const onScroll = () => { const y = window.scrollY; px.forEach((el) => { const s = parseFloat(el.getAttribute('data-speed') || '0'); el.style.transform = `translate3d(0, ${(y*s).toFixed(1)}px, 0)`; }); };
+	window.addEventListener('scroll', onScroll, { passive: true }); onScroll();
 </script>
