@@ -144,6 +144,11 @@ const oneoff = [
 	.tab-btn.active { background:var(--color-orange); color:var(--color-cloud); }
 </style>
 <script>
+
+	const fillSlider = (s: HTMLInputElement) => {
+		const pct = (parseInt(s.value) / parseInt(s.max || '10')) * 100;
+		s.style.background = `linear-gradient(to right, var(--color-orange) 0%, var(--color-orange) ${pct}%, rgba(255,255,255,.15) ${pct}%, rgba(255,255,255,.15) 100%)`;
+	};
 	const fmt = (n: number) => Math.round(n).toLocaleString('pl-PL') + ' zł';
 	let tab: 'stala' | 'jednorazowa' = 'stala';
 
@@ -172,7 +177,7 @@ const oneoff = [
 		return { base, disc, save, price, count };
 	};
 
-	document.querySelectorAll<HTMLInputElement>('.gen-slider').forEach((s) => s.addEventListener('input', calc));
+	document.querySelectorAll<HTMLInputElement>('.gen-slider').forEach((s) => { s.addEventListener('input', () => { fillSlider(s); calc(); }); fillSlider(s); });
 	document.querySelectorAll<HTMLInputElement>('input[name="pakiet"]').forEach((r) => r.addEventListener('change', calc));
 
 	document.querySelectorAll<HTMLButtonElement>('.tab-btn').forEach((btn) => {
@@ -193,7 +198,7 @@ const oneoff = [
 	(document.querySelector('.tab-btn[data-tab="stala"]') as HTMLElement)?.classList.add('active');
 	calc();
 
-	$('gen-send')?.addEventListener('click', () => {
+	$('gen-send')?.addEventListener('click', async () => {
 		const r = calc();
 		const email = ($('gen-email') as HTMLInputElement).value.trim();
 		if (!email) { alert('Podaj e-mail, żebyśmy mogli odpisać.'); return; }
@@ -211,7 +216,20 @@ const oneoff = [
 			`E-mail: ${email}`,
 			`Telefon: ${($('gen-tel') as HTMLInputElement).value || '-'}`,
 		].join('\n');
-		window.location.href = `mailto:kontakt@sobotkavisual.pl?subject=${encodeURIComponent('Zapytanie z generatora')}&body=${encodeURIComponent(body)}`;
-		$('gen-info')?.classList.remove('hidden');
+		const btn = $('gen-send') as HTMLButtonElement;
+		btn.disabled = true; btn.textContent = 'Wysyłanie…';
+		try {
+			const res = await fetch('https://formspree.io/f/mgavkpdv', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+				body: JSON.stringify({ _replyto: email, _subject: 'Zapytanie z generatora — ' + (($('gen-firma') as HTMLInputElement).value || email), zamowienie: body }),
+			});
+			if (!res.ok) throw new Error('formspree');
+			$('gen-info')?.classList.remove('hidden');
+			btn.textContent = 'Wysłano ✓';
+		} catch (e) {
+			window.location.href = `mailto:kontakt@sobotkavisual.pl?subject=${encodeURIComponent('Zapytanie z generatora')}&body=${encodeURIComponent(body)}`;
+			btn.disabled = false; btn.textContent = 'Wyślij zapytanie';
+		}
 	});
 </script>
