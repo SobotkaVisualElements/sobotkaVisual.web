@@ -52,7 +52,7 @@ const columns = [
 	/* SABER: świetlny segment biegnący po obrysie (trim-path) + glow */
 	.btn-saber { position: relative; z-index: 0; }
 	.saber-svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; opacity:0; transition:opacity .25s ease; z-index:2; }
-	.saber-svg rect { x:1.5px; y:1.5px; width:calc(100% - 3px); height:calc(100% - 3px); rx:999px; ry:999px; fill:none; stroke:#ff5a78; stroke-width:2.5; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-dasharray:22 78; filter: drop-shadow(0 0 3px #ff5a78) drop-shadow(0 0 8px rgba(237,36,78,.8)); }
+	.saber-svg rect { fill:none; stroke:#ff5a78; stroke-width:2.5; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-dasharray:22 78; filter: drop-shadow(0 0 3px #ff5a78) drop-shadow(0 0 8px rgba(237,36,78,.8)); }
 	@media (hover:hover) {
 		.btn-saber:hover .saber-svg { opacity:1; }
 		.btn-saber:hover .saber-svg rect { animation: saber-run 1.5s linear infinite; }
@@ -88,7 +88,11 @@ const columns = [
 		const svg = document.createElementNS(ns, 'svg');
 		svg.setAttribute('class', 'saber-svg'); svg.setAttribute('preserveAspectRatio', 'none');
 		const rect = document.createElementNS(ns, 'rect');
+		rect.setAttribute('x', '0'); rect.setAttribute('y', '0');
+		rect.setAttribute('width', '100%'); rect.setAttribute('height', '100%');
 		rect.setAttribute('pathLength', '100');
+		const setRx = () => { const h = btn.getBoundingClientRect().height; const r = Math.max(0, h / 2 - 1); rect.setAttribute('rx', String(r)); rect.setAttribute('ry', String(r)); };
+		setRx(); window.addEventListener('resize', setRx, { passive: true });
 		svg.appendChild(rect); btn.appendChild(svg);
 	});
 
