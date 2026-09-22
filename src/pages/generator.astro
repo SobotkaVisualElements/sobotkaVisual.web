@@ -1,6 +1,12 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+const packages = [
+	{ id: 'start', name: 'START', price: 2500, desc: 'Stała obecność, bez wideo' },
+	{ id: 'pro', name: 'PRO', price: 7200, desc: 'Pełne zaplecze marketingu' },
+	{ id: 'studio', name: 'STUDIO', price: 12900, desc: 'Najwyższy poziom + strategia' },
+	{ id: 'none', name: 'Bez pakietu', price: 0, desc: 'Tylko wybrane pozycje' },
+];
 const items = [
 	{ id: 'montaz-long', name: 'Montaż długiej formy (10–20 min)', price: 1250, unit: 'szt.' },
 	{ id: 'skrot', name: 'Skrót meczowy / materiał eventowy', price: 950, unit: 'szt.' },
@@ -21,40 +27,61 @@ const items = [
 		<div class="relative z-2 mx-auto max-w-[980px] px-8 pt-24 pb-20">
 			<span class="text-[13px] font-bold tracking-[0.12em] text-orange-glow uppercase">Generator</span>
 			<h1 class="mt-3 text-[38px] font-bold tracking-[-0.02em] md:text-[52px]">Zaprojektuj własny pakiet</h1>
-			<p class="mt-4 max-w-[560px] text-[18px] text-sky-mist">Zaznacz, czego potrzebujesz. Wycena liczy się na żywo — to kwota orientacyjna, ostateczną potwierdzam po rozmowie.</p>
+			<p class="mt-4 max-w-[560px] text-[18px] text-sky-mist">Wybierz pakiet bazowy i dołóż pojedyncze pozycje. Wycena liczy się na żywo — to kwota orientacyjna, ostateczną potwierdzam po rozmowie.</p>
 
-			<div class="mt-10 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
-				<!-- pozycje -->
-				<div class="glass rounded-2xl p-6">
-					<div class="flex flex-col divide-y divide-white/10">
-						{items.map((it) => (
-							<div class="flex items-center justify-between gap-4 py-3.5">
-								<div>
-									<div class="font-semibold text-cloud">{it.name}</div>
-									<div class="text-[13px] text-sky-mist">{it.price} zł / {it.unit}</div>
+			<!-- 1. Pakiet bazowy -->
+			<h2 class="mt-10 mb-4 text-lg font-bold text-cloud">1. Pakiet bazowy</h2>
+			<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				{packages.map((pkg, i) => (
+					<label class="cursor-pointer">
+						<input type="radio" name="pakiet" value={pkg.id} data-price={pkg.price} data-name={pkg.name} checked={i === 3} class="peer sr-only" />
+						<span class="block h-full rounded-2xl border border-white/12 bg-white/5 p-4 transition-colors peer-checked:border-orange peer-checked:bg-orange/10">
+							<span class="block font-display text-lg font-bold text-cloud">{pkg.name}</span>
+							<span class="mt-0.5 block text-[13px] text-sky-mist">{pkg.desc}</span>
+							<span class="mt-2 block font-semibold text-orange-glow">{pkg.price ? pkg.price.toLocaleString('pl-PL') + ' zł/mies.' : '—'}</span>
+						</span>
+					</label>
+				))}
+			</div>
+
+			<div class="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+				<!-- 2. Pozycje -->
+				<div>
+					<h2 class="mb-4 text-lg font-bold text-cloud">2. Dodaj pojedyncze pozycje</h2>
+					<div class="glass rounded-2xl p-6">
+						<div class="flex flex-col divide-y divide-white/10">
+							{items.map((it) => (
+								<div class="flex items-center justify-between gap-4 py-3.5">
+									<div>
+										<div class="font-semibold text-cloud">{it.name}</div>
+										<div class="text-[13px] text-sky-mist">{it.price} zł / {it.unit}</div>
+									</div>
+									<input type="number" min="0" value="0" data-price={it.price} data-name={it.name}
+										class="gen-qty w-16 rounded-lg border border-white/15 bg-white/5 px-2.5 py-1.5 text-center font-semibold text-cloud outline-none focus:border-orange" />
 								</div>
-								<input type="number" min="0" value="0" data-price={it.price} data-name={it.name}
-									class="gen-qty w-16 rounded-lg border border-white/15 bg-white/5 px-2.5 py-1.5 text-center font-semibold text-cloud outline-none focus:border-orange" />
-							</div>
-						))}
+							))}
+						</div>
 					</div>
 				</div>
 
-				<!-- podsumowanie + kontakt -->
-				<div class="glass rounded-2xl p-6">
-					<div class="flex items-baseline justify-between">
-						<span class="text-sm text-sky-mist">Wycena orientacyjna</span>
-						<span id="gen-total" class="font-display text-[34px] font-bold text-orange">0 zł</span>
+				<!-- 3. Podsumowanie + kontakt -->
+				<div>
+					<h2 class="mb-4 text-lg font-bold text-cloud">3. Wyślij zapytanie</h2>
+					<div class="glass rounded-2xl p-6">
+						<div class="flex items-baseline justify-between">
+							<span class="text-sm text-sky-mist">Wycena orientacyjna</span>
+							<span id="gen-total" class="font-display text-[32px] font-bold text-orange">0 zł</span>
+						</div>
+						<div class="mt-5 flex flex-col gap-3">
+							<input id="gen-firma" type="text" placeholder="Nazwa / firma" class="rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-cloud placeholder:text-slate-400 outline-none focus:border-orange" />
+							<input id="gen-nip" type="text" placeholder="NIP (opcjonalnie)" class="rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-cloud placeholder:text-slate-400 outline-none focus:border-orange" />
+							<input id="gen-email" type="email" placeholder="Twój e-mail *" class="rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-cloud placeholder:text-slate-400 outline-none focus:border-orange" />
+							<input id="gen-tel" type="tel" placeholder="Telefon (opcjonalnie)" class="rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-cloud placeholder:text-slate-400 outline-none focus:border-orange" />
+							<textarea id="gen-opis" rows="3" placeholder="Krótko o projekcie" class="rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-cloud placeholder:text-slate-400 outline-none focus:border-orange"></textarea>
+						</div>
+						<button id="gen-send" type="button" class="btn-saber mt-5 w-full rounded-full bg-orange py-3.5 font-bold text-cloud transition-transform hover:-translate-y-0.5">Wyślij zapytanie</button>
+						<p id="gen-info" class="mt-4 hidden text-center text-sm text-orange-glow">Dziękujemy! Skontaktujemy się do 48 godzin.</p>
 					</div>
-					<div class="mt-5 flex flex-col gap-3">
-						<input id="gen-firma" type="text" placeholder="Nazwa / firma" class="rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-cloud placeholder:text-slate-400 outline-none focus:border-orange" />
-						<input id="gen-nip" type="text" placeholder="NIP (opcjonalnie)" class="rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-cloud placeholder:text-slate-400 outline-none focus:border-orange" />
-						<input id="gen-email" type="email" placeholder="Twój e-mail *" class="rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-cloud placeholder:text-slate-400 outline-none focus:border-orange" />
-						<input id="gen-tel" type="tel" placeholder="Telefon (opcjonalnie)" class="rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-cloud placeholder:text-slate-400 outline-none focus:border-orange" />
-						<textarea id="gen-opis" rows="3" placeholder="Krótko o projekcie" class="rounded-lg border border-white/15 bg-white/5 px-3.5 py-2.5 text-cloud placeholder:text-slate-400 outline-none focus:border-orange"></textarea>
-					</div>
-					<button id="gen-send" type="button" class="btn-saber mt-5 w-full rounded-full bg-orange py-3.5 font-bold text-cloud transition-transform hover:-translate-y-0.5">Wyślij zapytanie</button>
-					<p id="gen-info" class="mt-4 hidden text-center text-sm text-orange-glow">Dziękujemy! Skontaktujemy się do 48 godzin.</p>
 				</div>
 			</div>
 		</div>
@@ -63,18 +90,32 @@ const items = [
 
 <script>
 	const fmt = (n: number) => n.toLocaleString('pl-PL') + ' zł';
+	const pkgRadios = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="pakiet"]'));
 	const qtys = Array.from(document.querySelectorAll<HTMLInputElement>('.gen-qty'));
 	const totalEl = document.getElementById('gen-total');
+
+	const selectedPkg = () => pkgRadios.find((r) => r.checked) || null;
 	const calc = () => {
-		let sum = 0;
+		let sum = parseFloat(selectedPkg()?.dataset.price || '0');
 		qtys.forEach((q) => { sum += (parseInt(q.value) || 0) * parseFloat(q.dataset.price || '0'); });
 		if (totalEl) totalEl.textContent = fmt(sum);
 		return sum;
 	};
+	pkgRadios.forEach((r) => r.addEventListener('change', calc));
 	qtys.forEach((q) => q.addEventListener('input', calc));
+
+	// wstępny wybór pakietu z adresu (?pakiet=pro)
+	const param = new URLSearchParams(location.search).get('pakiet');
+	if (param) {
+		const match = pkgRadios.find((r) => r.value === param);
+		if (match) match.checked = true;
+	}
+	calc();
 
 	document.getElementById('gen-send')?.addEventListener('click', () => {
 		const total = calc();
+		const pkg = selectedPkg();
+		const pkgLine = pkg && pkg.value !== 'none' ? `${pkg.dataset.name} (${pkg.dataset.price} zł/mies.)` : 'brak (tylko pozycje)';
 		const lines = qtys.filter((q) => (parseInt(q.value) || 0) > 0).map((q) => `- ${q.dataset.name}: ${q.value} x ${q.dataset.price} zł`);
 		const email = (document.getElementById('gen-email') as HTMLInputElement)?.value.trim();
 		if (!email) { alert('Podaj swój e-mail, żebyśmy mogli odpisać.'); return; }
@@ -84,7 +125,8 @@ const items = [
 		const opis = (document.getElementById('gen-opis') as HTMLTextAreaElement)?.value;
 		const body = [
 			'Zapytanie z generatora pakietów', '',
-			'Zakres:', ...(lines.length ? lines : ['(nie wybrano pozycji)']), '',
+			`Pakiet bazowy: ${pkgLine}`, '',
+			'Dodatkowe pozycje:', ...(lines.length ? lines : ['(brak)']), '',
 			`Wycena orientacyjna: ${fmt(total)}`, '',
 			`Firma: ${firma || '-'}`, `NIP: ${nip || '-'}`, `E-mail: ${email}`, `Telefon: ${tel || '-'}`, '',
 			`Opis: ${opis || '-'}`,
