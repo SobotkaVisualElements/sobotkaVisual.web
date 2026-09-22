@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sobotkavisual.pl/sitemap-index.xml
