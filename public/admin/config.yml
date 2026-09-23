@@ -1,0 +1,50 @@
+backend:
+  name: github
+  repo: SobotkaVisualElements/sobotkaVisual.web
+  branch: main
+  base_url: https://sobotkavisual.pl
+  auth_endpoint: oauth
+
+media_folder: "public/uploads"
+public_folder: "/uploads"
+locale: pl
+
+collections:
+  - name: realizacje
+    label: Realizacje
+    label_singular: Realizacja
+    folder: "src/content/work"
+    create: true
+    slug: "{{slug}}"
+    media_folder: "/public/uploads/realizacje"
+    public_folder: "/uploads/realizacje"
+    fields:
+      - { name: title, label: "Tytuł", widget: string }
+      - { name: description, label: "Krótki opis", widget: text }
+      - { name: category, label: "Kategoria", widget: select, options: ["Montaż", "Animacja", "Identyfikacja", "Oprawa transmisyjna", "Grafika"] }
+      - { name: client, label: "Klient", widget: string, required: false }
+      - { name: role, label: "Rola / zakres", widget: string, required: false }
+      - { name: year, label: "Rok", widget: number, value_type: int, default: 2026 }
+      - { name: tech, label: "Narzędzia", widget: list, required: false }
+      - { name: cover, label: "Zdjęcie główne", widget: image, required: false }
+      - { name: featured, label: "Wyróżniona", widget: boolean, default: false }
+      - { name: order, label: "Kolejność", widget: number, value_type: int, default: 10 }
+      - { name: body, label: "Treść", widget: markdown }
+
+  - name: strona_glowna
+    label: "Strona główna"
+    files:
+      - name: kafelki
+        label: "Kafelki „Dla kogo”"
+        file: "src/data/home.json"
+        fields:
+          - name: tiles
+            label: Kafelki
+            widget: list
+            max: 2
+            fields:
+              - { name: tag, label: "Etykieta na obrazku", widget: string }
+              - { name: title, label: "Tytuł", widget: string }
+              - { name: body, label: "Opis", widget: text }
+              - { name: note, label: "Dodatkowe zdanie", widget: text, required: false }
+              - { name: image, label: "Obrazek (parallax)", widget: image, required: false }
