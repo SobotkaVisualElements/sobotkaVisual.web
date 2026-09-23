@@ -1,114 +1,146 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// Ceny z Cennika Master 2026
+// Ceny wprost z Cennika Master 2026
 const packages = [
-	{ id: 'start', name: 'START', price: 2500, desc: 'Stała obecność, bez wideo' },
-	{ id: 'pro', name: 'PRO', price: 7200, desc: 'Pełne zaplecze marketingu' },
-	{ id: 'studio', name: 'STUDIO', price: 12900, desc: 'Najwyższy poziom + strategia' },
+	{ id: 'none',   name: 'Bez pakietu', price: 0,     desc: 'Składam sam z elementów', preset: {} },
+	{ id: 'start',  name: 'START',  price: 2500,  desc: 'Stała obecność, bez wideo',
+	  preset: { rolki: 6, miniatury: 6, animacja: 1 } },
+	{ id: 'pro',    name: 'PRO',    price: 7200,  desc: 'Pełne zaplecze marketingu', recommended: true,
+	  preset: { montaz: 4, rolki: 8, miniatury: 8, animacja: 3 } },
+	{ id: 'studio', name: 'STUDIO', price: 12900, desc: 'Najwyższy poziom + strategia',
+	  preset: { montaz: 6, rolki: 12, miniatury: 16, animacja: 5, zdjecia: 1 } },
 ];
-const addons = [
-	{ id: 'rolki', name: 'Rolki / shorty', price: 320, unit: 'szt.' },
-	{ id: 'montaz', name: 'Montaż długiej formy', price: 1250, unit: 'szt.' },
-	{ id: 'miniatury', name: 'Miniatury / okładki', price: 220, unit: 'szt.' },
-	{ id: 'animacja', name: 'Animacje / motion', price: 900, unit: 'szt.' },
-	{ id: 'grafika', name: 'Grafiki statyczne', price: 180, unit: 'szt.' },
+
+const groups = [
+	{ title: 'Wideo i krótkie formy', items: [
+		{ id: 'montaz',    name: 'Montaż długiej formy',      price: 1250, max: 12, hint: 'Odcinki, wywiady, materiały 10–20 min' },
+		{ id: 'rolki',     name: 'Rolki / shorty / TikTok',   price: 320,  max: 20, hint: 'Najszybszy zasięg', rec: true },
+		{ id: 'skrot',     name: 'Skrót meczowy / eventowy',  price: 950,  max: 8 },
+		{ id: 'wizerunek', name: 'Materiał wizerunkowy 2 min', price: 4500, max: 4 },
+	]},
+	{ title: 'Animacja i motion', items: [
+		{ id: 'animacja',  name: 'Element animowany (belka, plansza)', price: 675, max: 12, hint: 'Buduje rozpoznawalność' },
+		{ id: 'trailer',   name: 'Trailer animowany 30–45 s', price: 4300, max: 4 },
+		{ id: 'okladka',   name: 'Animowana okładka / motion cover', price: 1150, max: 8 },
+	]},
+	{ title: 'Grafika i opakowanie', items: [
+		{ id: 'miniatury', name: 'Miniatury / okładki',       price: 220, max: 24, hint: 'Decydują o klikalności', rec: true },
+		{ id: 'grafika',   name: 'Grafika statyczna (post, baner)', price: 180, max: 24 },
+		{ id: 'postani',   name: 'Animowany post promocyjny', price: 280, max: 12 },
+	]},
+	{ title: 'Koncepcja, dźwięk, produkcja', items: [
+		{ id: 'scenariusz', name: 'Scenariusz materiału',     price: 600, max: 8 },
+		{ id: 'dzwiek',     name: 'Opracowanie dźwięku + licencja', price: 400, max: 12 },
+		{ id: 'lektor',     name: 'Lektor profesjonalny',     price: 900, max: 8 },
+		{ id: 'napisy',     name: 'Napisy',                   price: 150, max: 16 },
+		{ id: 'zdjecia',    name: 'Dzień zdjęciowy',          price: 1150, max: 4, hint: 'Świeży materiał zamiast archiwum' },
+	]},
 ];
-const oneoff = [
-	{ id: 'o-montaz', name: 'Montaż długiej formy (10–20 min)', price: 1250, unit: 'szt.' },
-	{ id: 'o-skrot', name: 'Skrót meczowy / eventowy', price: 950, unit: 'szt.' },
-	{ id: 'o-wizerunek', name: 'Materiał wizerunkowy do 2 min', price: 4500, unit: 'szt.' },
-	{ id: 'o-rolka', name: 'Rolka / short / TikTok', price: 320, unit: 'szt.' },
-	{ id: 'o-trailer', name: 'Trailer animowany 30–45 s', price: 4300, unit: 'szt.' },
-	{ id: 'o-animacja', name: 'Animacja na zamówienie', price: 3200, unit: 'min' },
-	{ id: 'o-miniatura', name: 'Miniatura / okładka', price: 220, unit: 'szt.' },
-	{ id: 'o-oprawa', name: 'System oprawy graficznej', price: 5500, unit: 'pakiet' },
-	{ id: 'o-trans', name: 'Oprawa transmisyjna', price: 6000, unit: 'pakiet' },
+
+// Dopłaty i warunki handlowe — zaznaczane „ptaszkiem" (mnożniki wg Cennika, cz. C)
+const extras = [
+	{ id: 'system',  name: 'System oprawy graficznej (wdrożenie)', type: 'flat', value: 5500, hint: 'Spójny system: intro, outro, belki, kolory' },
+	{ id: 'trans',   name: 'Pakiet oprawy transmisyjnej',          type: 'flat', value: 6000 },
+	{ id: 'express', name: 'Tryb ekspresowy (poniżej 48 h)',       type: 'pct',  value: 50 },
+	{ id: 'format',  name: 'Dodatkowy format lub wersja językowa', type: 'pct',  value: 15 },
+	{ id: 'prawa',   name: 'Rozszerzenie praw o kampanie płatne',  type: 'pct',  value: 25 },
+	{ id: 'wylacz',  name: 'Wyłączność w branży na obszarze',      type: 'pct',  value: 30 },
 ];
 ---
 
 <BaseLayout title="Zaprojektuj własny pakiet" description="Skonfiguruj współpracę i zobacz, ile zyskujesz — Sobotka Visual Creations.">
 	<section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
 		<span class="pointer-events-none absolute inset-0 bg-grid opacity-35"></span>
-		<div class="relative z-2 mx-auto max-w-[1080px] px-6 pt-24 pb-20 sm:px-8">
+		<div class="relative z-2 mx-auto max-w-[1100px] px-5 pt-24 pb-20 sm:px-8">
 			<span class="text-[13px] font-bold tracking-[0.12em] text-orange-glow uppercase">Generator</span>
-			<h1 class="mt-3 text-[36px] font-bold tracking-[-0.02em] md:text-[52px]">Zaprojektuj współpracę</h1>
-			<p class="mt-4 max-w-[560px] text-[18px] text-sky-mist">Przesuń suwaki, a wycena policzy się sama. Im więcej elementów, tym większy rabat — do 30%.</p>
+			<h1 class="mt-3 text-[34px] font-bold tracking-[-0.02em] md:text-[52px]">Zaprojektuj współpracę</h1>
+			<p class="mt-4 max-w-[600px] text-[18px] text-sky-mist">Wybierz pakiet — suwaki ustawią się same i zobaczysz dokładnie, co dostajesz. Możesz wszystko zmienić.</p>
 
-			<!-- ZAKŁADKI -->
 			<div class="mt-8 inline-flex rounded-full glass p-1">
-				<button data-tab="stala" class="tab-btn rounded-full px-6 py-2.5 text-[15px] font-bold text-cloud transition-colors">Współpraca stała</button>
+				<button data-tab="stala" class="tab-btn active rounded-full px-6 py-2.5 text-[15px] font-bold text-cloud transition-colors">Współpraca stała</button>
 				<button data-tab="jednorazowa" class="tab-btn rounded-full px-6 py-2.5 text-[15px] font-bold text-sky-mist transition-colors">Jednorazowa</button>
 			</div>
 
-			<div class="mt-8 grid gap-6 lg:grid-cols-[1.5fr_1fr]">
+			<div class="mt-8 grid gap-6 lg:grid-cols-[1.55fr_1fr]">
 				<div>
-					<!-- PANEL: STAŁA -->
-					<div data-panel="stala">
-						<h2 class="mb-4 text-lg font-bold text-cloud">Pakiet bazowy</h2>
-						<div class="grid gap-3 sm:grid-cols-3">
-							{packages.map((pkg, i) => (
-								<label class="cursor-pointer">
-									<input type="radio" name="pakiet" value={pkg.id} data-price={pkg.price} data-name={pkg.name} checked={i === 1} class="peer sr-only" />
+					<div data-only="stala">
+						<h2 class="mb-1 text-lg font-bold text-cloud">1. Wybierz punkt startowy</h2>
+						<p class="mb-4 text-sm text-sky-mist">Kliknij pakiet — ustawimy zawartość za Ciebie.</p>
+						<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+							{packages.map((pkg) => (
+								<label class="relative cursor-pointer">
+									<input type="radio" name="pakiet" value={pkg.id} data-price={pkg.price} data-name={pkg.name} data-preset={JSON.stringify(pkg.preset)} checked={pkg.id === 'pro'} class="peer sr-only" />
 									<span class="block h-full rounded-2xl border border-white/12 bg-white/5 p-4 transition-colors peer-checked:border-orange peer-checked:bg-orange/10">
+										{pkg.recommended && <span class="mb-1.5 inline-block rounded-full bg-emerald-400/20 px-2 py-0.5 text-[10px] font-bold tracking-wide text-emerald-300 uppercase">Polecany</span>}
 										<span class="block font-display text-lg font-bold text-cloud">{pkg.name}</span>
 										<span class="mt-0.5 block text-[12px] text-sky-mist">{pkg.desc}</span>
-										<span class="mt-2 block font-semibold text-orange-glow">{pkg.price.toLocaleString('pl-PL')} zł/mies.</span>
+										<span class="mt-2 block font-semibold text-orange-glow">{pkg.price ? pkg.price.toLocaleString('pl-PL') + ' zł/mies.' : 'od zera'}</span>
 									</span>
 								</label>
 							))}
 						</div>
-						<h2 class="mt-7 mb-3 text-lg font-bold text-cloud">Dorzuć elementy miesięczne</h2>
-						<div class="glass flex flex-col gap-5 rounded-2xl p-6">
-							{addons.map((a) => (
-								<div class="gen-row" data-price={a.price} data-name={a.name}>
-									<div class="flex items-center justify-between text-[15px]">
-										<span class="font-semibold text-cloud">{a.name}</span>
-										<span class="text-sky-mist"><b class="gen-qty text-cloud">0</b> × {a.price} zł</span>
-									</div>
-									<input type="range" min="0" max="12" value="0" class="gen-slider mt-2 w-full" />
-								</div>
-							))}
-						</div>
 					</div>
 
-					<!-- PANEL: JEDNORAZOWA -->
-					<div data-panel="jednorazowa" class="hidden">
-						<h2 class="mb-3 text-lg font-bold text-cloud">Złóż projekt z elementów</h2>
-						<div class="glass flex flex-col gap-5 rounded-2xl p-6">
-							{oneoff.map((a) => (
-								<div class="gen-row" data-price={a.price} data-name={a.name}>
-									<div class="flex items-center justify-between text-[15px]">
-										<span class="font-semibold text-cloud">{a.name}</span>
-										<span class="text-sky-mist"><b class="gen-qty text-cloud">0</b> × {a.price} zł</span>
-									</div>
-									<input type="range" min="0" max="10" value="0" class="gen-slider mt-2 w-full" />
+					<h2 class="mt-8 mb-1 text-lg font-bold text-cloud">2. Dopasuj zawartość</h2>
+					<p class="mb-4 text-sm text-sky-mist">Każdy dodany element zwiększa Twój rabat.</p>
+					<div class="flex flex-col gap-4">
+						{groups.map((g) => (
+							<div class="glass rounded-2xl p-5 sm:p-6">
+								<h3 class="mb-4 text-[15px] font-bold tracking-wide text-orange-glow uppercase">{g.title}</h3>
+								<div class="flex flex-col gap-5">
+									{g.items.map((it) => (
+										<div class="gen-row" data-id={it.id} data-price={it.price} data-name={it.name}>
+											<div class="flex items-start justify-between gap-3 text-[15px]">
+												<div>
+													<span class="font-semibold text-cloud">{it.name}</span>
+													{it.rec && <span class="ml-2 rounded-full bg-emerald-400/15 px-2 py-0.5 text-[10px] font-bold text-emerald-300 uppercase">Polecane</span>}
+													{it.hint && <span class="block text-[12px] text-slate-400">{it.hint}</span>}
+												</div>
+												<span class="shrink-0 text-right text-sky-mist"><b class="gen-qty text-cloud">0</b> × {it.price} zł</span>
+											</div>
+											<input type="range" min="0" max={it.max} value="0" class="gen-slider mt-2 w-full" />
+										</div>
+									))}
 								</div>
-							))}
+							</div>
+						))}
+
+						<div class="glass rounded-2xl p-5 sm:p-6">
+							<h3 class="mb-1 text-[15px] font-bold tracking-wide text-orange-glow uppercase">Rozszerzenia i warunki</h3>
+							<p class="mb-4 text-[12px] text-slate-400">Opcjonalne — zaznacz tylko to, czego potrzebujesz.</p>
+							<div class="flex flex-col gap-3">
+								{extras.map((ex) => (
+									<label class="flex cursor-pointer items-start gap-3 rounded-xl border border-white/10 bg-white/[0.03] p-3 transition-colors hover:border-orange/40">
+										<input type="checkbox" class="gen-extra mt-0.5 size-4 shrink-0 accent-[#ed244e]" data-type={ex.type} data-value={ex.value} data-name={ex.name} />
+										<span class="flex-1">
+											<span class="block text-[15px] font-semibold text-cloud">{ex.name}</span>
+											{ex.hint && <span class="block text-[12px] text-slate-400">{ex.hint}</span>}
+										</span>
+										<span class="shrink-0 text-[13px] font-semibold text-sky-mist">{ex.type === 'pct' ? '+' + ex.value + '%' : '+' + ex.value.toLocaleString('pl-PL') + ' zł'}</span>
+									</label>
+								))}
+							</div>
 						</div>
 					</div>
 				</div>
 
-				<!-- PODSUMOWANIE -->
 				<div>
 					<div class="glass sticky top-24 rounded-2xl p-6">
-						<!-- pasek rabatu (Duolingo) -->
 						<div class="mb-1 flex items-center justify-between text-[13px]">
-							<span class="text-sky-mist">Odblokowany rabat</span>
+							<span class="text-sky-mist">Twój rabat</span>
 							<span id="gen-disc" class="font-bold text-emerald-400">0%</span>
 						</div>
 						<div class="h-2.5 w-full overflow-hidden rounded-full bg-white/10">
 							<div id="gen-bar" class="h-full w-0 rounded-full bg-emerald-400 transition-all duration-300"></div>
 						</div>
-						<p id="gen-nudge" class="mt-2 text-[12px] text-emerald-300/90">Dodawaj elementy, aby odblokować większy rabat (do 30%).</p>
+						<p id="gen-nudge" class="mt-2 text-[12px] text-emerald-300/90">Dodaj element, aby odblokować rabat.</p>
 
-						<!-- ZYSKUJESZ -->
 						<div class="mt-5 rounded-xl bg-emerald-400/10 p-4 text-center">
 							<div class="text-[13px] font-bold tracking-wide text-emerald-300 uppercase">Zyskujesz do</div>
-							<div id="gen-save" class="font-display text-[38px] font-bold text-emerald-400">0 zł</div>
+							<div id="gen-save" class="font-display text-[38px] leading-tight font-bold text-emerald-400">0 zł</div>
 						</div>
 
-						<!-- cena -->
 						<div class="mt-4 flex items-baseline justify-between">
 							<span class="text-sm text-sky-mist">Twoja cena</span>
 							<div class="text-right">
@@ -123,10 +155,11 @@ const oneoff = [
 							<input id="gen-nip" type="text" placeholder="NIP (opcjonalnie)" class="gen-inp" />
 							<input id="gen-email" type="email" placeholder="Twój e-mail *" class="gen-inp" />
 							<input id="gen-tel" type="tel" placeholder="Telefon (opcjonalnie)" class="gen-inp" />
+							<input id="gen-hp" type="text" tabindex="-1" autocomplete="off" class="hidden" />
 						</div>
 						<button id="gen-send" type="button" class="btn-saber mt-4 w-full rounded-full bg-orange py-3.5 font-bold text-cloud transition-transform hover:-translate-y-0.5">Wyślij zapytanie</button>
 						<p id="gen-info" class="mt-3 hidden text-center text-sm text-emerald-300">Dziękujemy! Odezwiemy się do 48 godzin.</p>
-						<p class="mt-3 text-center text-[11px] text-slate-500">Wycena orientacyjna. Rabat przy współpracy 3+ mies.</p>
+						<p class="mt-3 text-center text-[11px] text-slate-500">Wycena orientacyjna, bez zobowiązań. Rabat przy współpracy 3+ mies.</p>
 					</div>
 				</div>
 			</div>
@@ -144,94 +177,124 @@ const oneoff = [
 	.tab-btn.active { background:var(--color-orange); color:var(--color-cloud); }
 </style>
 <script>
+	const fmt = (n) => Math.round(n).toLocaleString('pl-PL') + ' zł';
+	const $ = (id) => document.getElementById(id);
+	let tab = 'stala';
 
-	const fillSlider = (s: HTMLInputElement) => {
+	const fillSlider = (s) => {
 		const pct = (parseInt(s.value) / parseInt(s.max || '10')) * 100;
 		s.style.background = `linear-gradient(to right, var(--color-orange) 0%, var(--color-orange) ${pct}%, rgba(255,255,255,.15) ${pct}%, rgba(255,255,255,.15) 100%)`;
 	};
-	const fmt = (n: number) => Math.round(n).toLocaleString('pl-PL') + ' zł';
-	let tab: 'stala' | 'jednorazowa' = 'stala';
-
-	const $ = (id: string) => document.getElementById(id);
-	const rows = () => Array.from(document.querySelectorAll<HTMLElement>(`[data-panel="${tab}"] .gen-row`));
-	const pkg = () => document.querySelector<HTMLInputElement>('input[name="pakiet"]:checked');
+	const sliders = () => Array.from(document.querySelectorAll('.gen-slider'));
+	const rows = () => Array.from(document.querySelectorAll('.gen-row'));
+	const extrasEls = () => Array.from(document.querySelectorAll('.gen-extra'));
+	const pkg = () => document.querySelector('input[name="pakiet"]:checked');
 
 	const calc = () => {
 		let base = 0, count = 0;
-		if (tab === 'stala') { const p = pkg(); if (p) { base += parseFloat(p.dataset.price || '0'); count += 1; } }
+		const p = pkg();
+		if (tab === 'stala' && p && p.value !== 'none') { base += parseFloat(p.dataset.price || '0'); count += 1; }
+
 		rows().forEach((r) => {
-			const q = parseInt(r.querySelector<HTMLInputElement>('.gen-slider')!.value) || 0;
-			(r.querySelector('.gen-qty') as HTMLElement).textContent = String(q);
-			if (q > 0) { base += q * parseFloat(r.dataset.price || '0'); count += 1; }
+			const s = r.querySelector('.gen-slider');
+			const q = parseInt(s.value) || 0;
+			r.querySelector('.gen-qty').textContent = String(q);
+			// w pakiecie zawartość jest wliczona — liczymy tylko nadwyżkę ponad preset
+			const inc = parseInt(s.dataset.included || '0') || 0;
+			const paid = Math.max(0, q - inc);
+			if (paid > 0) base += paid * parseFloat(r.dataset.price || '0');
+			if (q > 0) count += 1;
 		});
-		const disc = Math.min(30, count * 5);           // rośnie stopniowo, do 30%
+
+		let pctAdd = 0;
+		extrasEls().forEach((e) => {
+			if (!e.checked) return;
+			count += 1;
+			if (e.dataset.type === 'flat') base += parseFloat(e.dataset.value);
+			else pctAdd += parseFloat(e.dataset.value);
+		});
+		base = base * (1 + pctAdd / 100);
+
+		const disc = Math.min(30, count * 4);
 		const save = base * disc / 100;
 		const price = base - save;
-		($('gen-disc') as HTMLElement).textContent = disc + '%';
-		($('gen-bar') as HTMLElement).style.width = (disc / 30 * 100) + '%';
-		($('gen-save') as HTMLElement).textContent = fmt(save);
-		($('gen-price') as HTMLElement).textContent = fmt(price);
-		($('gen-old') as HTMLElement).textContent = save > 0 ? fmt(base) : '';
-		($('gen-per') as HTMLElement).textContent = tab === 'stala' ? '/mies.' : '';
-		($('gen-nudge') as HTMLElement).textContent = disc >= 30 ? 'Maksymalny rabat 30% odblokowany! 🎉' : 'Dodawaj elementy, aby odblokować większy rabat (do 30%).';
-		return { base, disc, save, price, count };
+
+		$('gen-disc').textContent = disc + '%';
+		$('gen-bar').style.width = (disc / 30 * 100) + '%';
+		$('gen-save').textContent = fmt(save);
+		$('gen-price').textContent = fmt(price);
+		$('gen-old').textContent = save > 0 ? fmt(base) : '';
+		$('gen-per').textContent = tab === 'stala' ? '/mies.' : '';
+		$('gen-nudge').textContent = disc >= 30
+			? 'Maksymalny rabat 30% odblokowany!'
+			: `Dodaj jeszcze 1 element, aby zyskać kolejne 4% (do 30%).`;
+		return { base, disc, save, price };
 	};
 
-	document.querySelectorAll<HTMLInputElement>('.gen-slider').forEach((s) => { s.addEventListener('input', () => { fillSlider(s); calc(); }); fillSlider(s); });
-	document.querySelectorAll<HTMLInputElement>('input[name="pakiet"]').forEach((r) => r.addEventListener('change', calc));
+	const applyPreset = () => {
+		const p = pkg();
+		let preset = {};
+		try { preset = JSON.parse(p?.dataset.preset || '{}'); } catch (e) {}
+		rows().forEach((r) => {
+			const s = r.querySelector('.gen-slider');
+			const v = preset[r.dataset.id] || 0;
+			s.value = String(v);
+			s.dataset.included = String(v);
+			fillSlider(s);
+		});
+		calc();
+	};
 
-	document.querySelectorAll<HTMLButtonElement>('.tab-btn').forEach((btn) => {
+	sliders().forEach((s) => { s.addEventListener('input', () => { fillSlider(s); calc(); }); fillSlider(s); });
+	extrasEls().forEach((e) => e.addEventListener('change', calc));
+	document.querySelectorAll('input[name="pakiet"]').forEach((r) => r.addEventListener('change', applyPreset));
+
+	document.querySelectorAll('.tab-btn').forEach((btn) => {
 		btn.addEventListener('click', () => {
-			tab = (btn.dataset.tab as 'stala' | 'jednorazowa');
-			document.querySelectorAll<HTMLButtonElement>('.tab-btn').forEach((b) => {
-				const on = b === btn; b.classList.toggle('active', on);
-				b.classList.toggle('text-cloud', on); b.classList.toggle('text-sky-mist', !on);
+			tab = btn.dataset.tab;
+			document.querySelectorAll('.tab-btn').forEach((b) => {
+				const on = b === btn;
+				b.classList.toggle('active', on);
+				b.classList.toggle('text-cloud', on);
+				b.classList.toggle('text-sky-mist', !on);
 			});
-			document.querySelectorAll<HTMLElement>('[data-panel]').forEach((p) => p.classList.toggle('hidden', p.dataset.panel !== tab));
+			document.querySelectorAll('[data-only]').forEach((el) => el.classList.toggle('hidden', el.dataset.only !== tab));
+			if (tab === 'jednorazowa') {
+				rows().forEach((r) => { const s = r.querySelector('.gen-slider'); s.dataset.included = '0'; });
+			} else { applyPreset(); return; }
 			calc();
 		});
 	});
 
-	// wstępny pakiet z ?pakiet=
 	const param = new URLSearchParams(location.search).get('pakiet');
-	if (param) { const m = document.querySelector<HTMLInputElement>(`input[name="pakiet"][value="${param}"]`); if (m) m.checked = true; }
-	(document.querySelector('.tab-btn[data-tab="stala"]') as HTMLElement)?.classList.add('active');
-	calc();
+	if (param) { const m = document.querySelector(`input[name="pakiet"][value="${param}"]`); if (m) m.checked = true; }
+	applyPreset();
 
 	$('gen-send')?.addEventListener('click', async () => {
 		const r = calc();
-		const email = ($('gen-email') as HTMLInputElement).value.trim();
+		const email = $('gen-email').value.trim();
 		if (!email) { alert('Podaj e-mail, żebyśmy mogli odpisać.'); return; }
-		const lines = rows().filter((x) => (parseInt(x.querySelector<HTMLInputElement>('.gen-slider')!.value) || 0) > 0)
-			.map((x) => `- ${x.dataset.name}: ${x.querySelector<HTMLInputElement>('.gen-slider')!.value} x ${x.dataset.price} zł`);
+		const lines = rows().filter((x) => (parseInt(x.querySelector('.gen-slider').value) || 0) > 0)
+			.map((x) => `- ${x.dataset.name}: ${x.querySelector('.gen-slider').value} szt.`);
+		const ex = extrasEls().filter((e) => e.checked).map((e) => `- ${e.dataset.name}`);
 		const p = pkg();
 		const body = [
 			`Zapytanie z generatora — współpraca ${tab === 'stala' ? 'STAŁA' : 'JEDNORAZOWA'}`, '',
-			...(tab === 'stala' && p ? [`Pakiet: ${p.dataset.name} (${p.dataset.price} zł/mies.)`, ''] : []),
-			'Elementy:', ...(lines.length ? lines : ['(brak)']), '',
-			`Rabat: ${r.disc}%  |  Zysk: ${fmt(r.save)}`,
-			`Cena: ${fmt(r.price)}${tab === 'stala' ? '/mies.' : ''}`, '',
-			`Firma: ${($('gen-firma') as HTMLInputElement).value || '-'}`,
-			`NIP: ${($('gen-nip') as HTMLInputElement).value || '-'}`,
-			`E-mail: ${email}`,
-			`Telefon: ${($('gen-tel') as HTMLInputElement).value || '-'}`,
+			...(tab === 'stala' && p ? [`Pakiet: ${p.dataset.name}`, ''] : []),
+			'Zawartość:', ...(lines.length ? lines : ['(brak)']), '',
+			...(ex.length ? ['Rozszerzenia:', ...ex, ''] : []),
+			`Rabat: ${r.disc}% | Zysk: ${fmt(r.save)}`,
+			`Cena: ${fmt(r.price)}${tab === 'stala' ? '/mies.' : ''}`,
 		].join('\n');
-		const btn = $('gen-send') as HTMLButtonElement;
+		const btn = $('gen-send');
 		btn.disabled = true; btn.textContent = 'Wysyłanie…';
 		try {
 			const res = await fetch('/api/order', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({
-					email,
-					firma: ($('gen-firma') as HTMLInputElement).value,
-					nip: ($('gen-nip') as HTMLInputElement).value,
-					telefon: ($('gen-tel') as HTMLInputElement).value,
-					zamowienie: body,
-				}),
+				method: 'POST', headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ email, firma: $('gen-firma').value, nip: $('gen-nip').value, telefon: $('gen-tel').value, firma_www: $('gen-hp').value, zamowienie: body }),
 			});
 			if (!res.ok) throw new Error('api');
-			$('gen-info')?.classList.remove('hidden');
+			$('gen-info').classList.remove('hidden');
 			btn.textContent = 'Wysłano ✓';
 		} catch (e) {
 			window.location.href = `mailto:kontakt@sobotkavisual.pl?subject=${encodeURIComponent('Zapytanie z generatora')}&body=${encodeURIComponent(body)}`;
