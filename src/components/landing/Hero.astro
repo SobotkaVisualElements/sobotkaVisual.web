@@ -41,15 +41,68 @@
 
 <script type="application/ld+json" set:html={JSON.stringify({
 	"@context": "https://schema.org",
-	"@type": "ProfessionalService",
-	"name": "Sobotka Visual Creations",
-	"image": "https://sobotkavisual.pl/logo.svg",
-	"url": "https://sobotkavisual.pl",
-	"email": "kontakt@sobotkavisual.pl",
-	"telephone": "+48668472759",
-	"description": "Montaż wideo, motion design, animacja i pełna oprawa wideo dla marek, twórców i klubów sportowych.",
-	"areaServed": "PL",
-	"address": { "@type": "PostalAddress", "addressLocality": "Opole", "addressRegion": "Opolskie", "addressCountry": "PL" },
-	"founder": { "@type": "Person", "name": "Krzysztof Sobotka" },
-	"knowsAbout": ["montaż wideo", "motion design", "animacja", "oprawa transmisyjna", "grafika"]
+	"@graph": [
+		{
+			"@type": ["ProfessionalService", "LocalBusiness"],
+			"@id": "https://sobotkavisual.pl/#firma",
+			"name": "Sobotka Visual Creations",
+			"alternateName": "SVC",
+			"image": "https://sobotkavisual.pl/logo.svg",
+			"logo": "https://sobotkavisual.pl/logo.svg",
+			"url": "https://sobotkavisual.pl",
+			"email": "kontakt@sobotkavisual.pl",
+			"telephone": "+48668472759",
+			"priceRange": "2500-12900 PLN",
+			"currenciesAccepted": "PLN",
+			"description": "Studio motion designu i montażu wideo z Opola. Animacje, rolki, oprawa transmisyjna i grafika dla firm, twórców internetowych i klubów sportowych.",
+			"slogan": "Bądź wyjątkowy",
+			"address": { "@type": "PostalAddress", "addressLocality": "Opole", "addressRegion": "opolskie", "addressCountry": "PL" },
+			"geo": { "@type": "GeoCoordinates", "latitude": 50.6751, "longitude": 17.9213 },
+			"areaServed": [
+				{ "@type": "AdministrativeArea", "name": "województwo opolskie" },
+				{ "@type": "AdministrativeArea", "name": "województwo śląskie" },
+				{ "@type": "AdministrativeArea", "name": "województwo dolnośląskie" },
+				{ "@type": "Country", "name": "Polska" }
+			],
+			"founder": { "@type": "Person", "name": "Krzysztof Sobotka", "jobTitle": "3D Visual & Motion Artist", "alumniOf": "Akademia Sztuk Pięknych we Wrocławiu" },
+			"knowsAbout": ["montaż wideo", "motion design", "animacja 2D", "animacja 2.5D", "color grading", "oprawa transmisyjna", "projektowanie graficzne", "rolki", "social media"],
+			"hasOfferCatalog": {
+				"@type": "OfferCatalog",
+				"name": "Pakiety abonamentowe",
+				"itemListElement": [
+					{ "@type": "Offer", "name": "START", "price": "2500", "priceCurrency": "PLN", "description": "Stała obecność w social media bez materiałów wideo." },
+					{ "@type": "Offer", "name": "PRO", "price": "7200", "priceCurrency": "PLN", "description": "Pełne zaplecze produkcyjne działu marketingu." },
+					{ "@type": "Offer", "name": "STUDIO", "price": "12900", "priceCurrency": "PLN", "description": "Najwyższy poziom: wideo, animacje, dzień zdjęciowy, strategia." }
+				]
+			}
+		},
+		{
+			"@type": "Service",
+			"@id": "https://sobotkavisual.pl/#uslugi",
+			"serviceType": "Montaż wideo, motion design i animacja",
+			"provider": { "@id": "https://sobotkavisual.pl/#firma" },
+			"areaServed": { "@type": "Country", "name": "Polska" },
+			"description": "Montaż długich form, animacje i motion design, rolki pionowe, miniatury, oprawa transmisyjna oraz produkcja wideo.",
+			"offers": { "@type": "Offer", "priceCurrency": "PLN", "lowPrice": "180", "highPrice": "12900", "url": "https://sobotkavisual.pl/generator" }
+		},
+		{
+			"@type": "FAQPage",
+			"@id": "https://sobotkavisual.pl/#faq",
+			"mainEntity": [
+				{ "@type": "Question", "name": "Jak wygląda współpraca?", "acceptedAnswer": { "@type": "Answer", "text": "Ustalamy zakres i pakiet, podpisujemy umowę, a potem co miesiąc produkujemy materiały według harmonogramu. Klient akceptuje i publikuje — całą produkcję bierzemy na siebie." } },
+				{ "@type": "Question", "name": "Jaki jest minimalny okres współpracy?", "acceptedAnswer": { "@type": "Answer", "text": "Pakiety abonamentowe to minimum 6 miesięcy. Realizacje jednorazowe wyceniamy osobno." } },
+				{ "@type": "Question", "name": "Dla kogo są pakiety?", "acceptedAnswer": { "@type": "Answer", "text": "Dla marek, firm i twórców internetowych, a także klubów sportowych i instytucji. Siatka jest ta sama, zmieniają się akcenty i nazwy materiałów pod daną branżę." } },
+				{ "@type": "Question", "name": "Kto ma prawa do materiałów?", "acceptedAnswer": { "@type": "Answer", "text": "Gotowe materiały przechodzą na klienta z chwilą zapłaty. System oprawy pozostaje na licencji czasowej — pełne prawa po 12 miesiącach współpracy." } },
+				{ "@type": "Question", "name": "Ile kosztuje montaż wideo?", "acceptedAnswer": { "@type": "Answer", "text": "Montaż długiej formy 10–20 minut kosztuje od 1000 zł netto, rolka pionowa od 320 zł, a abonament miesięczny zaczyna się od 2500 zł. Dokładną wycenę można złożyć w generatorze na stronie." } }
+			]
+		},
+		{
+			"@type": "WebSite",
+			"@id": "https://sobotkavisual.pl/#strona",
+			"url": "https://sobotkavisual.pl",
+			"name": "Sobotka Visual Creations",
+			"inLanguage": "pl-PL",
+			"publisher": { "@id": "https://sobotkavisual.pl/#firma" }
+		}
+	]
 })} />
