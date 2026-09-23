@@ -1,0 +1,16 @@
+---
+import LocalPage from '../../components/LocalPage.astro';
+const problemy = ["Transmisja wygląda jak amatorskie nagranie.", "Sponsorzy nie mają gdzie się wyeksponować.", "Brak spójnej identyfikacji w meczu i social mediach.", "Statystyki i składy podawane są bez oprawy."];
+const zakres = [{"name": "Pakiet oprawy transmisyjnej", "price": "3 500–8 000 zł"}, {"name": "Intro i outro transmisji", "price": "w pakiecie"}, {"name": "Animowane statystyki i skład", "price": "w pakiecie"}, {"name": "Obecność na wydarzeniu", "price": "500 zł"}, {"name": "Abonament PRO", "price": "7 200 zł/mies."}];
+const faq = [{"q": "Ile kosztuje oprawa transmisyjna w klubie?", "a": "Oprawa transmisyjna zaczyna się od 3 500 zł netto. Ostateczna cena zależy od długości materiału, liczby sztuk i terminu. Pełną wycenę policzysz sam w generatorze na stronie."}, {"q": "Czy pracujecie zdalnie z klientami z klubie?", "a": "Tak. Materiały odbieramy przez internet, a na zdjęcia lub wydarzenia dojeżdżamy na miejsce. Dojazd do 40 km jest w cenie."}, {"q": "Jak długo trwa realizacja?", "a": "Standardowo 5–10 dni roboczych w zależności od zakresu. Tryb ekspresowy poniżej 48 godzin jest możliwy za dopłatą 50%."}, {"q": "Czy można zamówić jednorazowo, bez abonamentu?", "a": "Tak. Realizujemy pojedyncze zlecenia i pakiety projektowe. Abonament jest tańszy w przeliczeniu na materiał, ale nie jest obowiązkowy."}];
+---
+<LocalPage
+	h1={"Oprawa transmisji dla klubu sportowego"}
+	miasto={"Kluby sportowe"}
+	title={"Oprawa transmisji meczowej — grafika dla klubów | SVC"}
+	description={"Oprawa transmisyjna dla klubów sportowych: intro, animowane statystyki, składy, przejścia. Pakiet od 3 500 zł."}
+	intro={"Budujemy pełną szatę transmisyjną: intro i outro, animowane statystyki, formacje, skład 11 i podpisy zawodników. Klub wygląda jak liga wyżej."}
+	problemy={problemy}
+	zakres={zakres}
+	faq={faq}
+/>

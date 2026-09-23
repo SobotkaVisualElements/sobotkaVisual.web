@@ -1,0 +1,16 @@
+---
+import LocalPage from '../../components/LocalPage.astro';
+const problemy = ["Reklama nie zatrzymuje uwagi w pierwszych sekundach.", "Marka nie ma własnego języka wizualnego.", "Materiały nie działają na różnych formatach.", "Potrzebna animacja pod kampanię płatną."];
+const zakres = [{"name": "Animacja na zamówienie", "price": "2 500–4 000 zł / min"}, {"name": "Trailer animowany 30–45 s", "price": "od 3 800 zł"}, {"name": "Element oprawy (belka, plansza)", "price": "450–900 zł"}, {"name": "Animowana okładka", "price": "od 900 zł"}, {"name": "System oprawy graficznej", "price": "3 500–8 000 zł"}];
+const faq = [{"q": "Ile kosztuje motion design w Katowicach?", "a": "Motion design zaczyna się od 2 500 zł netto za minutę. Ostateczna cena zależy od długości materiału, liczby sztuk i terminu. Pełną wycenę policzysz sam w generatorze na stronie."}, {"q": "Czy pracujecie zdalnie z klientami z Katowicach?", "a": "Tak. Materiały odbieramy przez internet, a na zdjęcia lub wydarzenia dojeżdżamy na miejsce. Dojazd do 40 km jest w cenie."}, {"q": "Jak długo trwa realizacja?", "a": "Standardowo 5–10 dni roboczych w zależności od zakresu. Tryb ekspresowy poniżej 48 godzin jest możliwy za dopłatą 50%."}, {"q": "Czy można zamówić jednorazowo, bez abonamentu?", "a": "Tak. Realizujemy pojedyncze zlecenia i pakiety projektowe. Abonament jest tańszy w przeliczeniu na materiał, ale nie jest obowiązkowy."}];
+---
+<LocalPage
+	h1={"Motion design Katowice"}
+	miasto={"Katowice"}
+	title={"Motion design Katowice — animacje dla firm | SVC"}
+	description={"Motion design i animacje dla firm z Katowic i Śląska: trailery, oprawa, animowane reklamy. Sprawdź cennik."}
+	intro={"Animacje i oprawa graficzna dla firm ze Śląska. Trailery, animowane reklamy, systemy oprawy — projektowane pod konkretną kampanię."}
+	problemy={problemy}
+	zakres={zakres}
+	faq={faq}
+/>

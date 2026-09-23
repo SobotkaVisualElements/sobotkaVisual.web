@@ -1,0 +1,16 @@
+---
+import LocalPage from '../../components/LocalPage.astro';
+const problemy = ["Dobre materiały mają słabą klikalność.", "Miniatury robione na szybko w telefonie.", "Kanał nie ma rozpoznawalnego stylu.", "Brak czasu na grafikę przy każdej publikacji."];
+const zakres = [{"name": "Miniatura lub okładka", "price": "220 zł / szt."}, {"name": "Opakowanie kanału 8 szt./mies.", "price": "1 200–1 800 zł"}, {"name": "Grafika statyczna", "price": "180 zł / szt."}, {"name": "Animowany post promocyjny", "price": "280 zł / szt."}, {"name": "System oprawy graficznej", "price": "3 500–8 000 zł"}];
+const faq = [{"q": "Ile kosztuje projektowanie miniatur w kanale?", "a": "Projektowanie miniatur zaczyna się od 220 zł netto za sztukę. Ostateczna cena zależy od długości materiału, liczby sztuk i terminu. Pełną wycenę policzysz sam w generatorze na stronie."}, {"q": "Czy pracujecie zdalnie z klientami z kanale?", "a": "Tak. Materiały odbieramy przez internet, a na zdjęcia lub wydarzenia dojeżdżamy na miejsce. Dojazd do 40 km jest w cenie."}, {"q": "Jak długo trwa realizacja?", "a": "Standardowo 5–10 dni roboczych w zależności od zakresu. Tryb ekspresowy poniżej 48 godzin jest możliwy za dopłatą 50%."}, {"q": "Czy można zamówić jednorazowo, bez abonamentu?", "a": "Tak. Realizujemy pojedyncze zlecenia i pakiety projektowe. Abonament jest tańszy w przeliczeniu na materiał, ale nie jest obowiązkowy."}];
+---
+<LocalPage
+	h1={"Miniatury i oprawa kanału YouTube"}
+	miasto={"YouTube"}
+	title={"Miniatury YouTube i oprawa kanału — projektowanie | SVC"}
+	description={"Projektowanie miniatur YouTube i oprawy kanału: miniatury, intro, belki, spójny system. Miniatura od 220 zł."}
+	intro={"Projektujemy miniatury i pełne opakowanie kanału. Miniatura decyduje, czy ktokolwiek obejrzy materiał, w który włożyłeś pracę."}
+	problemy={problemy}
+	zakres={zakres}
+	faq={faq}
+/>

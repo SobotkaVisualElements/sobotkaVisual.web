@@ -1,0 +1,16 @@
+---
+import LocalPage from '../../components/LocalPage.astro';
+const problemy = ["Rolki nie dowożą zasięgów.", "Brak czasu na regularne publikowanie.", "Materiały poziome nie działają pionowo.", "Każda rolka wygląda inaczej."];
+const zakres = [{"name": "Rolka pionowa / short / TikTok", "price": "320 zł / szt."}, {"name": "Animowana rolka", "price": "650 zł / szt."}, {"name": "Pakiet 8 rolek", "price": "2 000 zł"}, {"name": "Miniatura / okładka", "price": "220 zł / szt."}, {"name": "Abonament START", "price": "2 500 zł/mies."}];
+const faq = [{"q": "Ile kosztuje produkcja rolek w Opolu?", "a": "Produkcja rolek zaczyna się od 320 zł netto za sztukę. Ostateczna cena zależy od długości materiału, liczby sztuk i terminu. Pełną wycenę policzysz sam w generatorze na stronie."}, {"q": "Czy pracujecie zdalnie z klientami z Opolu?", "a": "Tak. Materiały odbieramy przez internet, a na zdjęcia lub wydarzenia dojeżdżamy na miejsce. Dojazd do 40 km jest w cenie."}, {"q": "Jak długo trwa realizacja?", "a": "Standardowo 5–10 dni roboczych w zależności od zakresu. Tryb ekspresowy poniżej 48 godzin jest możliwy za dopłatą 50%."}, {"q": "Czy można zamówić jednorazowo, bez abonamentu?", "a": "Tak. Realizujemy pojedyncze zlecenia i pakiety projektowe. Abonament jest tańszy w przeliczeniu na materiał, ale nie jest obowiązkowy."}];
+---
+<LocalPage
+	h1={"Rolki i social media Opole"}
+	miasto={"Opole"}
+	title={"Rolki i krótkie formy Opole — produkcja pod social media | SVC"}
+	description={"Produkcja rolek, shortów i TikToków w Opolu. Montaż, napisy, grafika. Rolka od 320 zł, pakiet 8 rolek 2 000 zł."}
+	intro={"Produkujemy pionowe rolki, shorty i TikToki gotowe pod algorytm: mocny haczyk w pierwszej sekundzie, wypalone napisy, spójna grafika."}
+	problemy={problemy}
+	zakres={zakres}
+	faq={faq}
+/>

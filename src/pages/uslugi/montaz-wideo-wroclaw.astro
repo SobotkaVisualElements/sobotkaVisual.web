@@ -1,0 +1,16 @@
+---
+import LocalPage from '../../components/LocalPage.astro';
+const problemy = ["Agencja jest za droga na stały montaż.", "Freelancerzy znikają w połowie projektu.", "Potrzebna powtarzalna jakość co miesiąc.", "Rolki i długie formy robią dwie różne osoby — brak spójności."];
+const zakres = [{"name": "Montaż długiej formy 10–20 min", "price": "od 1 000 zł"}, {"name": "Skrót meczowy lub eventowy", "price": "od 700 zł"}, {"name": "Materiał wizerunkowy do 2 min", "price": "od 3 000 zł"}, {"name": "Abonament 4 materiały/mies.", "price": "od 3 600 zł"}, {"name": "Opracowanie dźwięku i napisy", "price": "od 150 zł"}];
+const faq = [{"q": "Ile kosztuje montaż wideo w Wrocławiu?", "a": "Montaż wideo zaczyna się od 1 000 zł netto. Ostateczna cena zależy od długości materiału, liczby sztuk i terminu. Pełną wycenę policzysz sam w generatorze na stronie."}, {"q": "Czy pracujecie zdalnie z klientami z Wrocławiu?", "a": "Tak. Materiały odbieramy przez internet, a na zdjęcia lub wydarzenia dojeżdżamy na miejsce. Dojazd do 40 km jest w cenie."}, {"q": "Jak długo trwa realizacja?", "a": "Standardowo 5–10 dni roboczych w zależności od zakresu. Tryb ekspresowy poniżej 48 godzin jest możliwy za dopłatą 50%."}, {"q": "Czy można zamówić jednorazowo, bez abonamentu?", "a": "Tak. Realizujemy pojedyncze zlecenia i pakiety projektowe. Abonament jest tańszy w przeliczeniu na materiał, ale nie jest obowiązkowy."}];
+---
+<LocalPage
+	h1={"Montaż wideo Wrocław"}
+	miasto={"Wrocław"}
+	title={"Montaż wideo Wrocław — montażysta i postprodukcja | SVC"}
+	description={"Montaż wideo dla firm z Wrocławia: filmy wizerunkowe, produktowe, rolki i skróty. Zdalnie i na miejscu."}
+	intro={"Montujemy materiały dla wrocławskich marek, agencji i twórców. Pracujemy zdalnie, a na zdjęcia dojeżdżamy na miejsce."}
+	problemy={problemy}
+	zakres={zakres}
+	faq={faq}
+/>

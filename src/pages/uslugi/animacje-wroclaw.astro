@@ -1,0 +1,16 @@
+---
+import LocalPage from '../../components/LocalPage.astro';
+const problemy = ["Trzeba wytłumaczyć skomplikowany produkt w 60 sekund.", "Prezentacje i raporty nikogo nie angażują.", "Kampania potrzebuje mocnego materiału otwierającego.", "Brak animowanego logo i oprawy."];
+const zakres = [{"name": "Animacja na zamówienie", "price": "2 500–4 000 zł / min"}, {"name": "Trailer animowany 30–45 s", "price": "od 3 800 zł"}, {"name": "Element oprawy (belka, plansza)", "price": "450–900 zł"}, {"name": "Animowana okładka", "price": "od 900 zł"}, {"name": "System oprawy graficznej", "price": "3 500–8 000 zł"}];
+const faq = [{"q": "Ile kosztuje animacja w Wrocławiu?", "a": "Animacja zaczyna się od 2 500 zł netto za minutę. Ostateczna cena zależy od długości materiału, liczby sztuk i terminu. Pełną wycenę policzysz sam w generatorze na stronie."}, {"q": "Czy pracujecie zdalnie z klientami z Wrocławiu?", "a": "Tak. Materiały odbieramy przez internet, a na zdjęcia lub wydarzenia dojeżdżamy na miejsce. Dojazd do 40 km jest w cenie."}, {"q": "Jak długo trwa realizacja?", "a": "Standardowo 5–10 dni roboczych w zależności od zakresu. Tryb ekspresowy poniżej 48 godzin jest możliwy za dopłatą 50%."}, {"q": "Czy można zamówić jednorazowo, bez abonamentu?", "a": "Tak. Realizujemy pojedyncze zlecenia i pakiety projektowe. Abonament jest tańszy w przeliczeniu na materiał, ale nie jest obowiązkowy."}];
+---
+<LocalPage
+	h1={"Animacje Wrocław"}
+	miasto={"Wrocław"}
+	title={"Animacje Wrocław — animacja 2D i motion design | SVC"}
+	description={"Animacje na zamówienie we Wrocławiu: animacja 2D, 2.5D, trailery, infografiki. Wycena online w 60 sekund."}
+	intro={"Tworzymy animacje dla wrocławskich firm i twórców: od krótkich elementów oprawy po trailery i animowane infografiki."}
+	problemy={problemy}
+	zakres={zakres}
+	faq={faq}
+/>
