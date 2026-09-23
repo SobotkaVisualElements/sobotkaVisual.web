@@ -40,22 +40,35 @@ const columns = [
 <style is:global>
 	.glass { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%); }
 	.bg-grid { background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px); background-size: 46px 46px; }
+
+	/* REVEAL — używa 'translate' (nie 'transform'), żeby NIE kolidować z hoverem */
+	.reveal { opacity: 0; translate: 0 28px; transition: opacity .6s ease, translate .7s cubic-bezier(.2,.7,.2,1); }
+	.reveal.in { opacity: 1; translate: 0 0; }
+
+	/* LIQUID CARD */
 	.liquid-card { position: relative; transition: transform .3s cubic-bezier(.2,.7,.2,1), box-shadow .3s ease, border-color .3s ease; }
-	.liquid-card::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:1; background: radial-gradient(240px 240px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.16), rgba(237,36,78,.20) 35%, transparent 65%); opacity:0; transition:opacity .3s ease; }
-	@media (hover:hover) {
-		.liquid-card:hover { transform: perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-6px); border-color: rgba(237,36,78,.4); }
-		.liquid-card:hover::after { opacity:1; }
+	.liquid-card::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:1;
+		background: radial-gradient(240px 240px at var(--mx,50%) var(--my,50%), rgba(255,255,255,.18), rgba(237,36,78,.22) 35%, transparent 65%);
+		opacity:0; transition:opacity .3s ease; }
+	@media (hover: hover) {
+		.liquid-card:hover { transform: perspective(1000px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(-6px) !important; border-color: rgba(237,36,78,.45); box-shadow: 0 18px 40px rgba(0,0,0,.45); }
+		.liquid-card:hover::after { opacity: 1 !important; }
 	}
 	[data-parallax] { transition: transform .25s ease-out; will-change: transform; }
-	.reveal { opacity:0; transform: translateY(28px); transition: opacity .6s ease, transform .7s cubic-bezier(.2,.7,.2,1); }
-	.reveal.in { opacity:1; transform:none; }
-	/* SABER: wygląd (ruch nadaje JS) */
+
+	/* SABER — obrys biegnący dookoła przycisku */
 	.btn-saber { position: relative; z-index: 0; }
 	.saber-svg { position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; opacity:0; transition:opacity .25s ease; z-index:2; }
-	.saber-svg rect { fill:none; stroke:#ff5a78; stroke-width:2.5; vector-effect:non-scaling-stroke; stroke-linecap:round; filter: drop-shadow(0 0 3px #ff5a78) drop-shadow(0 0 8px rgba(237,36,78,.85)); }
-	@media (hover:hover) { .btn-saber:hover .saber-svg { opacity:1; } }
+	.saber-svg rect { fill:none; stroke:#ff5a78; stroke-width:2.5; vector-effect:non-scaling-stroke; stroke-linecap:round; stroke-dasharray:24 76;
+		filter: drop-shadow(0 0 3px #ff5a78) drop-shadow(0 0 9px rgba(237,36,78,.9));
+		animation: saber-run 1.5s linear infinite; }
+	@keyframes saber-run { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -100; } }
+	@media (hover: hover) { .btn-saber:hover .saber-svg { opacity: 1 !important; } }
+	/* fallback: gdy JS nie zadziała, przycisk i tak się podświetla */
+	@media (hover: hover) { .btn-saber:hover { box-shadow: 0 0 18px rgba(237,36,78,.65); } }
+
 	@media (prefers-reduced-motion: reduce) {
-		.liquid-card:hover { transform:none; } .reveal { opacity:1; transform:none; transition:none; }
+		.liquid-card:hover { transform: none !important; } .reveal { opacity:1; translate:0 0; transition:none; }
 		[data-speed],[data-parallax] { transform:none !important; } .saber-svg rect { animation:none !important; }
 	}
 </style>
@@ -99,6 +112,8 @@ const columns = [
 		};
 		size();
 		window.addEventListener('resize', size, { passive: true });
+		setTimeout(size, 300);
+		if ((document as any).fonts?.ready) (document as any).fonts.ready.then(size);
 		svg.appendChild(rect); btn.appendChild(svg);
 
 		if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
