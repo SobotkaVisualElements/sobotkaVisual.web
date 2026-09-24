@@ -1,11 +1,6 @@
 ---
-const tiles = [
-	{ tag: 'Twórcy internetowi', title: 'Twórcy internetowi',
-	  body: 'Montaż odcinków, miniatury i rolki, które odzyskują Twój czas i podbijają klikalność.', note: '' },
-	{ tag: 'Marki i firmy', title: 'Marki i firmy',
-	  body: 'Materiały produktowe i wizerunkowe na najwyższym poziomie.',
-	  note: 'Wy decydujecie, co pokazać — produkcję bierzemy na siebie.' },
-];
+import home from '../../data/home.json';
+const tiles = home.tiles;
 ---
 <section id="dla-kogo" class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
 	<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
@@ -22,7 +17,9 @@ const tiles = [
 				<div class="liquid-card glass group rounded-tile p-5">
 					<div class="relative aspect-video overflow-hidden rounded-xl">
 						{/* Podmień gradient na <img> z realizacją, gdy będą miniatury */}
-						<div data-parallax class="absolute inset-0 bg-linear-160 from-navy-deep via-navy to-orange/40" />
+						{tile.image
+							? <img data-parallax src={tile.image} alt={tile.title} class="absolute inset-0 h-full w-full scale-110 object-cover" />
+							: <div data-parallax class="absolute inset-0 bg-linear-160 from-navy-deep via-navy to-orange/40" />}
 						<span class="absolute inset-0 flex items-center justify-center">
 							<span class="rounded-md bg-white/10 px-3 py-1 text-[13px] font-bold tracking-[0.08em] text-cloud uppercase backdrop-blur-sm">{tile.tag}</span>
 						</span>
