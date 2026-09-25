@@ -89,11 +89,11 @@ const columns = [
 			el.style.setProperty('--mx', x + 'px'); el.style.setProperty('--my', y + 'px');
 			el.style.setProperty('--ry', ((x / r.width - .5) * 7).toFixed(2) + 'deg');
 			el.style.setProperty('--rx', ((.5 - y / r.height) * 7).toFixed(2) + 'deg');
-			if (inner) inner.style.transform = `translate3d(${(-(x/r.width-.5)*18).toFixed(1)}px, ${(-(y/r.height-.5)*18).toFixed(1)}px, 0) scale(1.1)`;
+			if (inner) { const z = inner.dataset.zoom || '1.1'; inner.style.transform = `translate3d(${(-(x/r.width-.5)*18).toFixed(1)}px, ${(-(y/r.height-.5)*18).toFixed(1)}px, 0) scale(${z})`; }
 		});
 		el.addEventListener('pointerleave', () => {
 			el.style.setProperty('--rx','0deg'); el.style.setProperty('--ry','0deg');
-			if (inner) inner.style.transform = '';
+			if (inner) inner.style.transform = `scale(${inner.dataset.zoom || '1.1'})`;
 		});
 	};
 	document.querySelectorAll<HTMLElement>('.liquid-card').forEach(track);
