@@ -1,7 +1,7 @@
 ---
 import home from '../../data/home.json';
 const tiles = home.tiles;
-const t = home.dlaKogo;
+const t = { eyebrow: 'Dla kogo', titleLine1: 'Media dla tych,', titleLine2: 'którzy chcą się wyróżnić', ...(home as any).dlaKogo };
 ---
 <section id="dla-kogo" class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
 	<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>

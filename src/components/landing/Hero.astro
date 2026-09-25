@@ -1,14 +1,20 @@
 ---
-// Hero — SVC. Ciemny gradient + siatka. Silnik animacji w stopce.
+import home from '../../data/home.json';
+const h = { h1prefix: 'Bądź', h1accent: 'wyjątkowy', lead: 'Motion design, montaż i color grading dla marek, które chcą pokazać światu swój potencjał.', ctaPrimaryLabel: 'Bezpłatna wycena', ctaPrimaryHref: '/#kontakt', ctaSecondaryLabel: 'Zobacz realizacje', ctaSecondaryHref: '/work', video: '', poster: '', videoOpacity: 30, clientsLabel: 'Zaufali nam', ...(home as any).hero };
 ---
 <section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
-	{/*
-		WIDEO W TLE (później): wrzuć public/hero.mp4 + public/hero.webm + public/hero-poster.jpg i odkomentuj.
-		<video class="pointer-events-none absolute inset-0 z-0 hidden h-full w-full object-cover opacity-30 md:block"
-			autoplay muted loop playsinline preload="metadata" poster="/hero-poster.jpg">
-			<source src="/hero.webm" type="video/webm" /><source src="/hero.mp4" type="video/mp4" />
+	{h.video && (
+		<video
+			class="pointer-events-none absolute inset-0 z-0 hidden h-full w-full object-cover md:block"
+			style={`opacity:${(h.videoOpacity ?? 30) / 100}`}
+			autoplay muted loop playsinline preload="metadata" poster={h.poster || undefined}
+		>
+			<source src={h.video} />
 		</video>
-	*/}
+	)}
+	{h.poster && !h.video && (
+		<img src={h.poster} alt="" class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover" style={`opacity:${(h.videoOpacity ?? 30) / 100}`} />
+	)}
 	<span class="pointer-events-none absolute inset-0 z-0 bg-grid opacity-35"></span>
 	<span data-speed="0.06" class="pointer-events-none absolute -top-[90px] -right-[70px] z-0 size-[660px] bg-radial from-orange/40 to-transparent to-62%"></span>
 	<span data-speed="-0.04" class="pointer-events-none absolute -bottom-40 -left-[120px] z-0 size-[620px] bg-radial from-[rgb(39_24_126/0.55)] to-transparent to-64%"></span>
@@ -17,14 +23,14 @@
 		<div class="max-w-[660px]">
 			<img src="/logo.svg" alt="Sobotka Visual Creations" class="h-9 w-auto md:h-11" />
 			<h1 class="mt-8 text-[40px] leading-[1.03] tracking-[-0.03em] md:text-[56px]">
-				Bądź <span class="text-orange">wyjątkowy</span>
+				{h.h1prefix} <span class="text-orange">{h.h1accent}</span>
 			</h1>
 			<p class="mt-6 max-w-[560px] text-[19px] leading-[1.55] text-sky">
-				Motion design, montaż i color grading dla marek, które chcą pokazać światu swój potencjał.
+				{h.lead}
 			</p>
 			<div class="mt-9 flex flex-wrap gap-3.5">
-				<a href="/#kontakt" class="btn-saber rounded-full bg-orange px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-y-0.5">Bezpłatna wycena</a>
-				<a href="/work" class="btn-saber rounded-full border-2 border-cloud/70 px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-y-0.5">Zobacz realizacje</a>
+				<a href="/#kontakt" class="btn-saber rounded-full bg-orange px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-y-0.5">{h.ctaPrimaryLabel}</a>
+				<a href="/work" class="btn-saber rounded-full border-2 border-cloud/70 px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-y-0.5">{h.ctaSecondaryLabel}</a>
 			</div>
 		</div>
 	</div>

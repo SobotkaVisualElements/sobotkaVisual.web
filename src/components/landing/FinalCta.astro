@@ -1,10 +1,12 @@
 ---
+import home from '../../data/home.json';
+const t = { title: 'Pokażmy światu Twój potencjał', lead: 'Napisz w dwóch zdaniach, czym się zajmujesz i czego potrzebujesz. Odezwiemy się z bezpłatną wyceną.', ...(home as any).kontakt };
 ---
 <section id="kontakt" class="relative overflow-hidden border-t border-white/6 bg-linear-160 from-navy to-navy-deep text-cloud">
 	<span class="pointer-events-none absolute inset-0 bg-grid opacity-30"></span>
 	<span data-speed="0.03" class="pointer-events-none absolute top-7.5 right-[12%] text-[30px] text-orange">✦</span>
 	<div class="relative z-2 mx-auto max-w-[820px] px-8 py-[90px] text-center">
-		<h2 class="text-4xl font-bold tracking-[-0.02em] text-cloud md:text-[52px]">Pokażmy światu Twój potencjał</h2>
+		<h2 class="text-4xl font-bold tracking-[-0.02em] text-cloud md:text-[52px]">{t.title}</h2>
 		<p class="mx-auto mt-4.5 max-w-[520px] text-[19px] text-sky-mist">Napisz w dwóch zdaniach, czym się zajmujesz i czego potrzebujesz. Odezwiemy się z bezpłatną wyceną.</p>
 		<div class="mt-8.5 flex flex-wrap justify-center gap-3.5">
 			<a href="mailto:kontakt@sobotkavisual.pl" class="btn-saber rounded-full bg-orange px-8 py-4 font-bold text-cloud transition-transform hover:-translate-y-0.5">Napisz do nas</a>

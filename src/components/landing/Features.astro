@@ -1,4 +1,6 @@
 ---
+import home from '../../data/home.json';
+const t = { titleBig: 'Wszystko,', titleSmall: 'czego potrzebują Twoje media', lead: 'Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość.', ...(home as any).uslugi };
 const features = [
 	{ title: 'Montaż wideo', body: 'Długie formy z dynamicznym cięciem, napisami, korekcją dźwięku i color gradingiem.', icon: '🎬' },
 	{ title: 'Animacja i motion', body: 'Wektorowa i 2.5D — od pojedynczych elementów oprawy po pełne animowane trailery.', icon: '✦' },
@@ -13,8 +15,8 @@ const features = [
 	<div class="relative z-2 mx-auto max-w-[1200px] px-8 pt-18 pb-21">
 		<div class="mx-auto mb-12 max-w-[640px] text-center">
 			<h2 class="font-bold tracking-[-0.02em] text-cloud">
-				<span class="block text-[56px] leading-[1]">Wszystko,</span>
-				<span class="mt-1 block text-[27px] leading-tight">czego potrzebują Twoje media</span>
+				<span class="block text-[56px] leading-[1]">{t.titleBig}</span>
+				<span class="mt-1 block text-[27px] leading-tight">{t.titleSmall}</span>
 			</h2>
 			<p class="mt-5 text-lg text-sky-mist">Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość.</p>
 		</div>
