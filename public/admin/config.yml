@@ -34,6 +34,47 @@ collections:
   - name: strona_glowna
     label: "Strona główna"
     files:
+      - name: hero
+        label: "Hero — pierwszy ekran"
+        file: "src/data/home.json"
+        description: "Nagłówek, opis, przyciski i wideo w tle. Zmiany zobaczysz w podglądzie przed publikacją."
+        fields:
+          - name: hero
+            label: "Hero"
+            widget: object
+            fields:
+              - { name: h1prefix, label: "Nagłówek — pierwsze słowo", widget: string }
+              - { name: h1accent, label: "Nagłówek — słowo w kolorze", widget: string }
+              - { name: lead, label: "Zdanie pod nagłówkiem", widget: text }
+              - { name: ctaPrimaryLabel, label: "Przycisk główny — napis", widget: string }
+              - { name: ctaPrimaryHref, label: "Przycisk główny — dokąd prowadzi", widget: string, default: "/#kontakt" }
+              - { name: ctaSecondaryLabel, label: "Przycisk drugi — napis", widget: string }
+              - { name: ctaSecondaryHref, label: "Przycisk drugi — dokąd prowadzi", widget: string, default: "/work" }
+              - { name: video, label: "Wideo w tle (MP4)", widget: file, required: false, hint: "Krótka pętla, wyciszona, do 3 MB. Na telefonie pokaże się plakat zamiast wideo." }
+              - { name: poster, label: "Plakat / klatka zastępcza", widget: image, required: false, hint: "Widoczny na telefonie i zanim wideo się wczyta." }
+              - { name: videoOpacity, label: "Przyciemnienie tła (%)", widget: number, value_type: int, default: 30, min: 5, max: 70, hint: "Im mniej, tym ciemniejsze tło i czytelniejszy tekst." }
+              - { name: clientsLabel, label: "Napis nad logotypami", widget: string, default: "Zaufali nam" }
+          - name: uslugi
+            label: "Sekcja: Usługi"
+            widget: object
+            fields:
+              - { name: titleBig, label: "Duże słowo", widget: string }
+              - { name: titleSmall, label: "Druga linia", widget: string }
+              - { name: lead, label: "Zdanie pod tytułem", widget: text }
+          - name: dlaKogo
+            label: "Sekcja: Dla kogo"
+            widget: object
+            fields:
+              - { name: eyebrow, label: "Nadtytuł", widget: string }
+              - { name: titleLine1, label: "Tytuł — linia 1", widget: string }
+              - { name: titleLine2, label: "Tytuł — linia 2", widget: string }
+          - name: kontakt
+            label: "Sekcja: Kontakt"
+            widget: object
+            fields:
+              - { name: title, label: "Tytuł", widget: string }
+              - { name: lead, label: "Zdanie pod tytułem", widget: text }
+
       - name: kafelki
         label: "Kafelki „Dla kogo”"
         file: "src/data/home.json"
