@@ -1,15 +1,16 @@
 ---
 import home from '../../data/home.json';
 const tiles = home.tiles;
+const t = home.dlaKogo;
 ---
 <section id="dla-kogo" class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
 	<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
 	<span data-speed="0.03" class="pointer-events-none absolute top-10 right-[8%] text-[34px] text-orange">✦</span>
 	<div class="relative z-2 mx-auto max-w-[1200px] px-8 py-20">
 		<div class="mx-auto mb-13 max-w-[720px] text-center">
-			<span class="text-[13px] font-bold tracking-[0.12em] text-orange-glow uppercase">Dla kogo</span>
+			<span class="text-[13px] font-bold tracking-[0.12em] text-orange-glow uppercase">{t.eyebrow}</span>
 			<h2 class="mt-3 text-[44px] leading-tight font-bold tracking-[-0.02em] text-cloud">
-				Media dla tych,<br />którzy chcą się wyróżnić
+				{t.titleLine1}<br />{t.titleLine2}
 			</h2>
 		</div>
 		<div class="mx-auto grid max-w-[900px] gap-7 md:grid-cols-2">
