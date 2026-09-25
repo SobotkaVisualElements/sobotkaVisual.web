@@ -1,4 +1,31 @@
 {
+  "hero": {
+    "h1prefix": "Bądź",
+    "h1accent": "wyjątkowy",
+    "lead": "Motion design, montaż i color grading dla marek, które chcą pokazać światu swój potencjał.",
+    "ctaPrimaryLabel": "Bezpłatna wycena",
+    "ctaPrimaryHref": "/#kontakt",
+    "ctaSecondaryLabel": "Zobacz realizacje",
+    "ctaSecondaryHref": "/work",
+    "video": "",
+    "poster": "",
+    "videoOpacity": 30,
+    "clientsLabel": "Zaufali nam"
+  },
+  "uslugi": {
+    "titleBig": "Wszystko,",
+    "titleSmall": "czego potrzebują Twoje media",
+    "lead": "Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość."
+  },
+  "dlaKogo": {
+    "eyebrow": "Dla kogo",
+    "titleLine1": "Media dla tych,",
+    "titleLine2": "którzy chcą się wyróżnić"
+  },
+  "kontakt": {
+    "title": "Pokażmy światu Twój potencjał",
+    "lead": "Napisz w dwóch zdaniach, czym się zajmujesz i czego potrzebujesz. Odezwiemy się z bezpłatną wyceną."
+  },
   "tiles": [
     {
       "tag": "Twórcy internetowi",
