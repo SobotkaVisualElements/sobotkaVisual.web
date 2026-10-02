@@ -1,4 +1,29 @@
+# Sobotka Visual Creations — sobotkavisual.pl
+
 User-agent: *
+Allow: /
+Disallow: /admin/
+
+# Roboty wyszukiwarek AI — jawnie dozwolone (cytowania w AI Overviews, Copilot, ChatGPT, Perplexity)
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
 Allow: /
 
 Sitemap: https://sobotkavisual.pl/sitemap-index.xml
