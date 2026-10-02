@@ -89,3 +89,22 @@ collections:
               - { name: body, label: "Opis", widget: text }
               - { name: note, label: "Dodatkowe zdanie", widget: text, required: false }
               - { name: image, label: "Obrazek (parallax)", widget: image, required: false }
+
+  - name: podstrony
+    label: Podstrony
+    label_singular: Podstrona
+    folder: "src/content/pages"
+    create: true
+    slug: "{{slug}}"
+    media_folder: "/public/uploads/podstrony"
+    public_folder: "/uploads/podstrony"
+    summary: "{{title}}"
+    description: "Nowe strony pojawiają się pod adresem sobotkavisual.pl/nazwa-strony"
+    fields:
+      - { name: title, label: "Tytuł (dla Google)", widget: string, hint: "Widoczny w wynikach wyszukiwania. Do 60 znaków." }
+      - { name: description, label: "Opis (dla Google)", widget: text, hint: "Widoczny pod tytułem w Google. 120–160 znaków." }
+      - { name: eyebrow, label: "Nadtytuł", widget: string, required: false, hint: "Mały napis nad nagłówkiem, np. nazwa miasta." }
+      - { name: heading, label: "Nagłówek na stronie", widget: string, required: false, hint: "Jeśli pusty, użyjemy tytułu." }
+      - { name: draft, label: "Szkic (niewidoczna na stronie)", widget: boolean, default: true }
+      - { name: noindex, label: "Ukryj przed Google", widget: boolean, default: false }
+      - { name: body, label: "Treść", widget: markdown }
