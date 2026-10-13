@@ -1,0 +1,13 @@
+# Stare adresy z szablonu → nowe (301 = przeniesione na stałe)
+/work/orbit-analytics      /work/identyfikacja-wizualna-delta-hr      301
+/work/kepler-brand         /work/identyfikacja-kanalu-przemyslaw-langier  301
+/work/meridian-store       /work/serial-dokumentalny-mundial          301
+/work/pathfinder-app       /work/animacje-promocyjne-langier          301
+/work/nova-design-system   /work/oprawa-transmisyjna-dla-firmy        301
+/work/atlas-docs           /work/animowana-prezentacja-zawodnikow     301
+/blog                      /                                          301
+/blog/*                    /                                          301
+/tags                      /                                          301
+/tags/*                    /                                          301
+/rss.xml                   /                                          301
+/search                    /                                          301
