@@ -23,7 +23,7 @@ Założycielem studia jest **Krzysztof Sobotka** — 3D Visual & Motion Artist, 
 
 ## Z kim pracujemy
 
-Od października 2025 roku współpracujemy z **Delta HR**, dla której przygotowaliśmy ponad 100 materiałów wideo wykorzystywanych w rekrutacji kierowców zawodowych — w powtarzalnym formacie, zawsze na czas. Odpowiadamy za montaż materiałów na kanale YouTube **Przemysława Langiera**, w tym serię dokumentalną o mistrzostwach świata. Współpracujemy także z marką **Betters**.
+Od października 2025 do października 2026 roku współpracowaliśmy z **Delta HR** — przez rok przygotowaliśmy ponad 150 rolek rekrutacyjnych dla kierowców zawodowych (3 tygodniowo, ze scenariuszem, montażem i miniaturami), regularnie przekraczających 60 tys. wyświetleń na Facebooku. Odpowiadamy za montaż materiałów na kanale YouTube **Przemysława Langiera**, w tym serię dokumentalną o mistrzostwach świata. Współpracujemy także z marką **Betters**.
 
 ## Jak pracujemy
 

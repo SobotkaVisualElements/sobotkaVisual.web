@@ -9,7 +9,7 @@ interface Props {
 }
 
 const { project, index = 0 } = Astro.props;
-const { title, description, category, tech, year, thumbnail } = project.data;
+const { title, description, category, tech, year, thumbnail, cover, coverFocalX, coverFocalY } = project.data;
 
 // サムネイル未設定時のプレースホルダ配色（navy 系 / orange 系を交互に）
 const themes = [
@@ -27,7 +27,15 @@ const monogram = title.charAt(0).toUpperCase();
 >
 	<div class="relative aspect-[16/10] overflow-hidden border-b-2 border-ink">
 		{
-			thumbnail ? (
+			cover ? (
+				<img
+					src={cover}
+					alt={title}
+					loading="lazy"
+					style={`object-position:${coverFocalX ?? 50}% ${coverFocalY ?? 50}%`}
+					class="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
+				/>
+			) : thumbnail ? (
 				<Image
 					src={thumbnail}
 					alt={title}

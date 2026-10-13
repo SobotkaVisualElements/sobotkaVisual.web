@@ -8,13 +8,13 @@ interface Props {
 }
 
 const { project, next } = Astro.props;
-const { title, description, category, tech, year, role, client, url, repo } = project.data;
+const { title, description, category, tech, year, role, client, url, repo, cover, coverFocalX, coverFocalY } = project.data;
 
 const facts = [
-	role && { label: 'Role', value: role },
-	client && { label: 'Client', value: client },
-	{ label: 'Year', value: String(year) },
-	{ label: 'Category', value: category },
+	role && { label: 'Zakres', value: role },
+	client && { label: 'Klient', value: client },
+	{ label: 'Rok', value: String(year) },
+	{ label: 'Kategoria', value: category },
 ].filter(Boolean) as { label: string; value: string }[];
 ---
 
@@ -26,7 +26,7 @@ const facts = [
 					href="/work"
 					class="inline-flex items-center gap-1 text-sm font-bold text-orange-deep hover:text-orange"
 				>
-					← Back to work
+					← Wszystkie realizacje
 				</a>
 
 				<div class="mt-6 flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.1em] text-orange-deep">
@@ -39,6 +39,14 @@ const facts = [
 					{title}
 				</h1>
 				<p class="mt-4 max-w-[640px] text-lg text-ink/70">{description}</p>
+				{cover && (
+					<img
+						src={cover}
+						alt={title}
+						style={`object-position:${coverFocalX ?? 50}% ${coverFocalY ?? 50}%`}
+						class="mt-8 aspect-[16/9] w-full rounded-card border-2 border-ink object-cover shadow-pop"
+					/>
+				)}
 
 				{
 					(url || repo) && (
@@ -50,7 +58,7 @@ const facts = [
 									rel="noopener noreferrer"
 									class="inline-flex items-center gap-1.5 rounded-full bg-orange px-5 py-2.5 text-sm font-bold text-cloud shadow-pop-sm transition-[transform,box-shadow] hover:-translate-x-px hover:-translate-y-px hover:shadow-pop"
 								>
-									Visit site →
+									Zobacz projekt →
 								</a>
 							)}
 							{repo && (
@@ -103,14 +111,14 @@ const facts = [
 
 	{
 		next && (
-			<nav class="mx-auto max-w-[860px] px-6 pb-20" aria-label="Next project">
+			<nav class="mx-auto max-w-[860px] px-6 pb-20" aria-label="Następna realizacja">
 				<a
 					href={`/work/${next.id}`}
 					class="group flex items-center justify-between gap-4 rounded-card border-2 border-ink bg-cloud p-6 shadow-pop-sm transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-pop"
 				>
 					<span>
 						<span class="text-xs font-bold uppercase tracking-wider text-ink/45">
-							Next project
+							Następna realizacja
 						</span>
 						<span class="mt-1 block text-xl font-bold text-ink group-hover:text-navy">
 							{next.data.title}

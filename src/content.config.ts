@@ -44,6 +44,10 @@ const work = defineCollection({
 			repo: z.string().url().optional(),
 			/** サムネイル（任意）。無い場合はグラデーションのプレースホルダを表示 */
 			thumbnail: image().optional(),
+			/** Okładka wgrana przez panel CMS (ścieżka w /public/uploads) */
+			cover: z.string().optional(),
+			coverFocalX: z.number().optional(),
+			coverFocalY: z.number().optional(),
 			featured: z.boolean().default(false),
 			/** 並び順（小さいほど前）。同値は year の新しい順 */
 			order: z.number().default(0),
