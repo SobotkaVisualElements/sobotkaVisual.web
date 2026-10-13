@@ -11,7 +11,7 @@ import { site } from './src/site.config.ts';
 export default defineConfig({
   // sitemap / RSS / canonical URL の絶対化に使う。デプロイ先に合わせて site.config.ts で変更する
   site: site.url,
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/admin') && !page.includes('/search') })],
   vite: {
     plugins: [tailwindcss()],
   },
