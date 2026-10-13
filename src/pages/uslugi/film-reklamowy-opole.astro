@@ -1,0 +1,16 @@
+---
+import LocalPage from '../../components/LocalPage.astro';
+const problemy = ["Strona firmy nie ma żadnego wideo.", "Kampania potrzebuje materiału, który zatrzyma uwagę.", "Nagrania są, ale nikt ich nie zmontował.", "Film wizerunkowy sprzed lat jest już nieaktualny."];
+const zakres = [{"name": "Film reklamowy / wizerunkowy do 2 min", "price": "3 000–6 000 zł"}, {"name": "Dzień zdjęciowy (do 6 h)", "price": "900–1 400 zł"}, {"name": "Montaż materiału 10–20 min", "price": "1 000–1 500 zł"}, {"name": "Rolka pionowa na social media", "price": "320 zł / szt."}, {"name": "Animowana rolka", "price": "650 zł / szt."}];
+const faq = [{"q": "Ile kosztuje film reklamowy w Opolu?", "a": "Film wizerunkowy do 2 minut kosztuje 3 000–6 000 zł netto. Dzień zdjęciowy w Opolu to 900–1 400 zł, dojazd w cenie."}, {"q": "Czy pomagacie przygotować scenariusz?", "a": "Tak. Scenariusz materiału kosztuje 600 zł, a przy filmach wizerunkowych pracę koncepcyjną wliczamy w wycenę."}, {"q": "Jak długo trwa produkcja?", "a": "Zwykle 7–14 dni roboczych od nagrania. Tryb ekspresowy poniżej 48 godzin jest możliwy za dopłatą."}, {"q": "Czy film będzie dopasowany do social mediów?", "a": "Tak. Przygotowujemy wersję główną oraz skróty w formatach pionowych na Instagram, TikTok i YouTube Shorts."}];
+---
+<LocalPage
+	h1={"Film reklamowy Opole"}
+	miasto={"Opole"}
+	title={"Film reklamowy Opole — produkcja wideo dla firm | SVC"}
+	description={"Filmy reklamowe i wizerunkowe w Opolu: nagranie, montaż, color grading i wersje na social media. Produkcja wideo dla firm z Opola."}
+	intro={"Produkujemy filmy reklamowe i wizerunkowe dla firm z Opola. Od koncepcji i nagrania po montaż, color grading i komplet wersji na social media."}
+	problemy={problemy}
+	zakres={zakres}
+	faq={faq}
+/>

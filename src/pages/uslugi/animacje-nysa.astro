@@ -1,0 +1,16 @@
+---
+import LocalPage from '../../components/LocalPage.astro';
+const problemy = ["Produkt jest trudny do pokazania na zwykłym filmie.", "Statyczne logo ginie w materiałach wideo.", "Dane i liczby nikogo nie interesują w formie tabeli.", "Reklama nie zatrzymuje uwagi podczas przewijania."];
+const zakres = [{"name": "Animacja na zamówienie", "price": "2 500–4 000 zł / min"}, {"name": "Animowane logo", "price": "od 900 zł"}, {"name": "Animowana infografika lub mapa", "price": "od 1 800 zł"}, {"name": "Trailer animowany 30–45 s", "price": "3 800–4 900 zł"}, {"name": "Element oprawy (belka, plansza)", "price": "450–900 zł"}];
+const faq = [{"q": "Ile kosztuje animacja w Nysie?", "a": "Animacja na zamówienie kosztuje 2 500–4 000 zł netto za minutę. Animowane logo zaczyna się od 900 zł, a animowana infografika od 1 800 zł."}, {"q": "Jakie animacje wykonujecie?", "a": "Animacje wektorowe i 2.5D, animowane logo, infografiki, mapy, prezentacje produktów oraz pełne trailery reklamowe."}, {"q": "Czy animacja może powstać z moich materiałów?", "a": "Tak. Animujemy istniejące logo, ilustracje i grafiki — nie trzeba projektować wszystkiego od zera."}, {"q": "W jakich formatach otrzymam animację?", "a": "Standardowo MP4 w formatach pod stronę i social media. Na życzenie także wersje z kanałem alfa do dalszego montażu."}];
+---
+<LocalPage
+	h1={"Animacje Nysa"}
+	miasto={"Nysa"}
+	title={"Animacje Nysa — animowane logo, infografiki, reklamy | SVC"}
+	description={"Animacje na zamówienie w Nysie: animowane logo, infografiki, mapy, trailery i reklamy. Motion design dla firm z powiatu nyskiego."}
+	intro={"Tworzymy animacje dla firm z Nysy: animowane logo, infografiki tłumaczące produkt, animowane mapy i krótkie reklamy. Ruch, który zatrzymuje uwagę w pierwszej sekundzie."}
+	problemy={problemy}
+	zakres={zakres}
+	faq={faq}
+/>

@@ -1,0 +1,16 @@
+---
+import LocalPage from '../../components/LocalPage.astro';
+const problemy = ["Grafiki robią różne osoby i nic do siebie nie pasuje.", "Marka nie wyróżnia się na tle opolskiej konkurencji.", "Brak gotowych szablonów do szybkich publikacji.", "Materiały drukowane nie trzymają kolorów marki."];
+const zakres = [{"name": "Logo i identyfikacja wizualna", "price": "od 1 500 zł"}, {"name": "Grafika na social media (post, baner)", "price": "180 zł / szt."}, {"name": "Miniatura lub okładka", "price": "220 zł / szt."}, {"name": "Ulotka, plakat, roll-up", "price": "od 250 zł"}, {"name": "System oprawy graficznej marki", "price": "3 500–8 000 zł"}];
+const faq = [{"q": "Ile kosztuje grafik w Opolu?", "a": "Grafika na social media kosztuje 180 zł netto za sztukę, miniatura 220 zł, a logo z identyfikacją od 1 500 zł."}, {"q": "Czy przygotowujecie szablony do samodzielnej edycji?", "a": "Tak. Możemy przygotować szablony postów i grafik, które później sam uzupełniasz treścią."}, {"q": "Czy działacie lokalnie w Opolu?", "a": "Tak, studio działa w Opolu. Spotkania na miejscu są możliwe bez dopłat."}, {"q": "Jak zamówić grafikę?", "a": "Najszybciej przez generator na stronie — wybierasz zakres, widzisz cenę i wysyłasz zapytanie. Odpowiadamy w ciągu 48 godzin."}];
+---
+<LocalPage
+	h1={"Grafika Opole"}
+	miasto={"Opole"}
+	title={"Grafika Opole — projektowanie graficzne dla firm | SVC"}
+	description={"Grafik w Opolu: logo, identyfikacja wizualna, grafiki na social media i materiały drukowane. Studio graficzne z Opola. Wyceń online."}
+	intro={"Projektujemy grafikę dla firm z Opola: logo, identyfikację wizualną, materiały drukowane i grafiki na social media. Jedno studio dla całej oprawy marki."}
+	problemy={problemy}
+	zakres={zakres}
+	faq={faq}
+/>

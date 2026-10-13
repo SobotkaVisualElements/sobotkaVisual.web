@@ -1,0 +1,16 @@
+---
+import LocalPage from '../../components/LocalPage.astro';
+const problemy = ["Firma nie ma żadnego filmu, który pokazuje, czym się zajmuje.", "Nagrania z telefonu nie wyglądają profesjonalnie.", "Film powstał, ale nie ma wersji na Instagram i TikTok.", "Agencje z dużych miast są za drogie na lokalny biznes."];
+const zakres = [{"name": "Film reklamowy / wizerunkowy do 2 min", "price": "3 000–6 000 zł"}, {"name": "Dzień zdjęciowy (do 6 h)", "price": "900–1 400 zł"}, {"name": "Montaż materiału 10–20 min", "price": "1 000–1 500 zł"}, {"name": "Rolka pionowa na social media", "price": "320 zł / szt."}, {"name": "Animowana rolka", "price": "650 zł / szt."}];
+const faq = [{"q": "Ile kosztuje film reklamowy w Nysie?", "a": "Film wizerunkowy do 2 minut kosztuje od 3 000 do 6 000 zł netto, w zależności od liczby dni zdjęciowych i złożoności montażu. Dzień zdjęciowy w Nysie to 900–1 400 zł."}, {"q": "Czy przyjeżdżacie nagrywać na miejsce?", "a": "Tak. Dojazd do 40 km od Opola jest w cenie, więc Nysa i okolice nie generują dodatkowych kosztów dojazdu."}, {"q": "Ile trwa realizacja filmu?", "a": "Od nagrania do gotowego materiału zwykle 7–14 dni roboczych. Wersje na social media przygotowujemy równolegle."}, {"q": "Czy dostanę wersje na social media?", "a": "Tak. Z jednego nagrania przygotowujemy wersję główną oraz skróty 30, 15 i 6 sekund w formatach pionowych i kwadratowych."}];
+---
+<LocalPage
+	h1={"Film reklamowy i wideo Nysa"}
+	miasto={"Nysa"}
+	title={"Film reklamowy Nysa — produkcja wideo dla firm | SVC"}
+	description={"Filmy reklamowe i wizerunkowe w Nysie: nagranie, montaż, color grading, rolki na social media. Produkcja wideo dla firm. Wycena online."}
+	intro={"Realizujemy filmy reklamowe i wizerunkowe dla firm z Nysy: od pomysłu i nagrania, przez montaż i color grading, po wersje skrócone na social media. Jeden materiał, wiele formatów."}
+	problemy={problemy}
+	zakres={zakres}
+	faq={faq}
+/>

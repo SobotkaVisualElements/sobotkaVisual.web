@@ -1,0 +1,16 @@
+---
+import LocalPage from '../../components/LocalPage.astro';
+const problemy = ["Firma używa kilku wersji logo jednocześnie.", "Brak zasad, jak stosować kolory i czcionki.", "Marka wygląda inaczej w druku, a inaczej online.", "Logo nie sprawdza się w animacji i wideo."];
+const zakres = [{"name": "Logo i identyfikacja wizualna", "price": "od 1 500 zł"}, {"name": "Grafika na social media (post, baner)", "price": "180 zł / szt."}, {"name": "Miniatura lub okładka", "price": "220 zł / szt."}, {"name": "Ulotka, plakat, roll-up", "price": "od 250 zł"}, {"name": "System oprawy graficznej marki", "price": "3 500–8 000 zł"}];
+const faq = [{"q": "Ile kosztuje projekt logo w Nysie?", "a": "Projekt logo z podstawową identyfikacją zaczyna się od 1 500 zł netto. Pełny system oprawy graficznej marki to 3 500–8 000 zł."}, {"q": "Co obejmuje identyfikacja wizualna?", "a": "Logo w wersjach, paletę kolorów, typografię, zasady stosowania znaku oraz wzory podstawowych materiałów firmowych."}, {"q": "Czy logo będzie działać w animacji?", "a": "Tak — to nasza specjalność. Projektujemy znak z myślą o ruchu, więc od razu nadaje się do animowanego intro i oprawy wideo."}, {"q": "Ile trwa projekt identyfikacji?", "a": "Zwykle 2–4 tygodnie, w zależności od liczby rund poprawek i zakresu materiałów."}];
+---
+<LocalPage
+	h1={"Projektowanie graficzne Nysa"}
+	miasto={"Nysa"}
+	title={"Projektowanie graficzne Nysa — logo i identyfikacja | SVC"}
+	description={"Projektowanie graficzne w Nysie: logo, identyfikacja wizualna, księga znaku, materiały firmowe. Studio z Nysy, absolwent ASP Wrocław."}
+	intro={"Projektujemy spójną identyfikację wizualną dla firm z Nysy: logo, kolory, typografię i zasady stosowania znaku. Marka, która wygląda tak samo dobrze na szyldzie, w internecie i w filmie."}
+	problemy={problemy}
+	zakres={zakres}
+	faq={faq}
+/>

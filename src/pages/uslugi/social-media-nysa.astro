@@ -1,0 +1,16 @@
+---
+import LocalPage from '../../components/LocalPage.astro';
+const problemy = ["Profil firmy jest martwy od kilku miesięcy.", "Brakuje czasu na regularne publikowanie.", "Rolki nie zdobywają zasięgów.", "Treści wyglądają inaczej za każdym razem."];
+const zakres = [{"name": "Abonament START (6 rolek + 6 grafik)", "price": "2 500 zł / mies."}, {"name": "Pakiet 8 rolek", "price": "2 000 zł"}, {"name": "Animowany post promocyjny", "price": "280 zł / szt."}, {"name": "Grafika statyczna", "price": "180 zł / szt."}, {"name": "Opakowanie kanału YouTube", "price": "1 200–1 800 zł / mies."}];
+const faq = [{"q": "Ile kosztuje prowadzenie social mediów w Nysie?", "a": "Abonament START kosztuje 2 500 zł netto miesięcznie i obejmuje 6 rolek, 6 grafik oraz element animowany. Pojedyncza rolka to 320 zł."}, {"q": "Czy publikujecie za mnie?", "a": "Przygotowujemy gotowe materiały i harmonogram publikacji. Publikację możesz zostawić sobie albo ustalimy ją w ramach współpracy."}, {"q": "Na jakie platformy tworzycie treści?", "a": "Instagram, Facebook, TikTok, YouTube Shorts i LinkedIn — każda treść przygotowana w odpowiednim formacie."}, {"q": "Jaki jest minimalny okres współpracy?", "a": "Abonament to minimum 6 miesięcy, bo regularność buduje zasięgi. Pojedyncze rolki i grafiki możesz zamówić bez abonamentu."}];
+---
+<LocalPage
+	h1={"Social media Nysa"}
+	miasto={"Nysa"}
+	title={"Social media Nysa — rolki, grafiki i prowadzenie profili | SVC"}
+	description={"Obsługa social media w Nysie: rolki, shorty, TikToki, grafiki i stały abonament treści. Regularne publikacje bez Twojego czasu. Od 2 500 zł/mies."}
+	intro={"Dostarczamy treści do social mediów dla firm z Nysy: rolki, grafiki i animowane posty w stałym rytmie. Ty zatwierdzasz i publikujesz, produkcję bierzemy na siebie."}
+	problemy={problemy}
+	zakres={zakres}
+	faq={faq}
+/>
