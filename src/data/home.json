@@ -41,5 +41,27 @@
       "note": "Wy decydujecie, co pokazać — produkcję bierzemy na siebie.",
       "image": ""
     }
+  ],
+  "clients": [
+    {
+      "name": "Delta HR",
+      "logo": "/delta-hr.svg",
+      "height": 24
+    },
+    {
+      "name": "Przemysław Langier",
+      "logo": "/langier.svg",
+      "height": 32
+    },
+    {
+      "name": "Betters",
+      "logo": "/betters.svg",
+      "height": 28
+    },
+    {
+      "name": "Fabryka Słów",
+      "logo": "/fabryka-slow.svg",
+      "height": 48
+    }
   ]
 }

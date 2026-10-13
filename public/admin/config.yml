@@ -54,6 +54,16 @@ collections:
               - { name: poster, label: "Plakat / klatka zastępcza", widget: image, required: false, hint: "Widoczny na telefonie i zanim wideo się wczyta." }
               - { name: videoOpacity, label: "Przyciemnienie tła (%)", widget: number, value_type: int, default: 30, min: 5, max: 70, hint: "Im mniej, tym ciemniejsze tło i czytelniejszy tekst." }
               - { name: clientsLabel, label: "Napis nad logotypami", widget: string, default: "Zaufali nam" }
+          - name: clients
+            label: "Logotypy „Zaufali nam”"
+            label_singular: Logotyp
+            widget: list
+            summary: "{{fields.name}}"
+            hint: "Przeciągnij, aby zmienić kolejność. Używaj białych logotypów (SVG lub PNG z przezroczystym tłem)."
+            fields:
+              - { name: name, label: "Nazwa klienta", widget: string, hint: "Wyświetla się czytnikom ekranu i Google" }
+              - { name: logo, label: "Logotyp", widget: image }
+              - { name: height, label: "Wysokość (px)", widget: number, value_type: int, default: 28, min: 16, max: 80, hint: "Wyrównaj wizualnie z resztą. Typowo 24–36, wysokie logo nawet 48." }
           - name: uslugi
             label: "Sekcja: Usługi"
             widget: object

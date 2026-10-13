@@ -1,5 +1,10 @@
 ---
 import home from '../../data/home.json';
+const clients: { name: string; logo: string; height?: number }[] = (home as any).clients ?? [
+	{ name: 'Delta HR', logo: '/delta-hr.svg', height: 24 },
+	{ name: 'Przemysław Langier', logo: '/langier.svg', height: 32 },
+	{ name: 'Betters', logo: '/betters.svg', height: 28 },
+];
 const h = { h1prefix: 'Bądź', h1accent: 'wyjątkowy', lead: 'Motion design, montaż i color grading dla marek, które chcą pokazać światu swój potencjał.', ctaPrimaryLabel: 'Bezpłatna wycena', ctaPrimaryHref: '/#kontakt', ctaSecondaryLabel: 'Zobacz realizacje', ctaSecondaryHref: '/work', video: '', poster: '', videoOpacity: 30, clientsLabel: 'Zaufali nam', ...(home as any).hero };
 ---
 <section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
@@ -36,11 +41,11 @@ const h = { h1prefix: 'Bądź', h1accent: 'wyjątkowy', lead: 'Motion design, mo
 	</div>
 
 	<div class="relative z-2 mx-auto max-w-[1200px] px-8 pb-16">
-		<p class="mb-6 text-center text-[13px] font-bold tracking-[0.14em] text-white/55 uppercase">Zaufali nam</p>
+		<p class="mb-6 text-center text-[13px] font-bold tracking-[0.14em] text-white/55 uppercase">{h.clientsLabel}</p>
 		<div class="flex flex-wrap items-center justify-center gap-x-14 gap-y-6">
-			<img src="/delta-hr.svg" alt="Delta HR" class="h-6 w-auto opacity-70 transition-opacity hover:opacity-100" />
-			<img src="/langier.svg" alt="Przemysław Langier" class="h-8 w-auto opacity-70 transition-opacity hover:opacity-100" />
-			<img src="/betters.svg" alt="Betters" class="h-7 w-auto opacity-70 transition-opacity hover:opacity-100" />
+			{clients.filter((c) => c.logo).map((c) => (
+				<img src={c.logo} alt={c.name} style={`height:${c.height ?? 28}px`} class="w-auto opacity-70 transition-opacity hover:opacity-100" loading="lazy" />
+			))}
 		</div>
 	</div>
 </section>
