@@ -12,36 +12,6 @@
     "videoOpacity": 30,
     "clientsLabel": "Zaufali nam"
   },
-  "uslugi": {
-    "titleBig": "Wszystko,",
-    "titleSmall": "czego potrzebują Twoje media",
-    "lead": "Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość."
-  },
-  "dlaKogo": {
-    "eyebrow": "Dla kogo",
-    "titleLine1": "Media dla tych,",
-    "titleLine2": "którzy chcą się wyróżnić"
-  },
-  "kontakt": {
-    "title": "Pokażmy światu Twój potencjał",
-    "lead": "Napisz w dwóch zdaniach, czym się zajmujesz i czego potrzebujesz. Odezwiemy się z bezpłatną wyceną."
-  },
-  "tiles": [
-    {
-      "tag": "Twórcy internetowi",
-      "title": "Twórcy internetowi",
-      "body": "Montaż odcinków, miniatury i rolki, które odzyskują Twój czas i podbijają klikalność.",
-      "note": "",
-      "image": "https://picsum.photos/id/378/1920/1280.webp"
-    },
-    {
-      "tag": "Marki i firmy",
-      "title": "Marki i firmy",
-      "body": "Materiały produktowe i wizerunkowe na najwyższym poziomie.",
-      "note": "Wy decydujecie, co pokazać — produkcję bierzemy na siebie.",
-      "image": ""
-    }
-  ],
   "clients": [
     {
       "name": "Delta HR",
@@ -61,7 +31,37 @@
     {
       "name": "Fabryka Słów",
       "logo": "/fabryka-slow.svg",
-      "height": 48
+      "height": 60
+    }
+  ],
+  "uslugi": {
+    "titleBig": "Wszystko,",
+    "titleSmall": "czego potrzebują Twoje media",
+    "lead": "Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość."
+  },
+  "dlaKogo": {
+    "eyebrow": "Dla kogo",
+    "titleLine1": "Media dla tych,",
+    "titleLine2": "którzy chcą się wyróżnić"
+  },
+  "kontakt": {
+    "title": "Pokażmy światu Twój potencjał",
+    "lead": "Napisz w dwóch zdaniach, czym się zajmujesz i czego potrzebujesz. Odezwiemy się z bezpłatną wyceną."
+  },
+  "tiles": [
+    {
+      "body": "Montaż odcinków, miniatury i rolki, które odzyskują Twój czas i podbijają klikalność.",
+      "image": "https://picsum.photos/id/378/1920/1280.webp",
+      "note": "",
+      "tag": "Twórcy internetowi",
+      "title": "Twórcy internetowi"
+    },
+    {
+      "body": "Materiały produktowe i wizerunkowe na najwyższym poziomie.",
+      "image": "",
+      "note": "Wy decydujecie, co pokazać — produkcję bierzemy na siebie.",
+      "tag": "Marki i firmy",
+      "title": "Marki i firmy"
     }
   ]
 }
