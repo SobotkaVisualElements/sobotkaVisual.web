@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Blocks from '../components/blocks/Blocks.astro';
 
 export async function getStaticPaths() {
 	const pages = await getCollection('pages', ({ data }) => !data.draft);
@@ -31,6 +32,7 @@ const { Content } = await render(page);
 			<article class="prose-svc">
 				<Content />
 			</article>
+			{page.data.blocks?.length ? <Blocks blocks={page.data.blocks} theme="dark" /> : null}
 			<a href="/generator" class="liquid-card mt-12 flex flex-col items-center gap-4 rounded-[24px] border-2 border-orange bg-linear-100 from-orange-deep via-orange to-orange-bright px-7 py-8 text-center shadow-[0_18px_50px_-12px_rgba(237,36,78,.65)] sm:flex-row sm:justify-between sm:text-left">
 				<span>
 					<span class="block font-display text-[24px] leading-tight font-bold text-cloud">Policz swój pakiet</span>

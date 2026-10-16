@@ -1,14 +1,17 @@
 ---
 import home from '../../data/home.json';
+import LayerTile from '../ui/LayerTile.astro';
+import SvcIcon from '../ui/SvcIcon.astro';
 const t = { titleBig: 'Wszystko,', titleSmall: 'czego potrzebują Twoje media', lead: 'Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość.', ...(home as any).uslugi };
-const features = [
-	{ title: 'Montaż wideo', body: 'Długie formy z dynamicznym cięciem, napisami, korekcją dźwięku i color gradingiem.', icon: '🎬' },
-	{ title: 'Animacja i motion', body: 'Wektorowa i 2.5D — od pojedynczych elementów oprawy po pełne animowane trailery.', icon: '✦' },
-	{ title: 'Rolki i krótkie formy', body: 'Pionowe rolki, shorty i TikToki z wypaloną grafiką, gotowe pod algorytm.', icon: '▶' },
-	{ title: 'Oprawa graficzna', body: 'Miniatury, okładki i spójny system graficzny, który buduje rozpoznawalność.', icon: '🎨' },
-	{ title: 'Oprawa transmisyjna', body: 'Intro, outro, animowane statystyki, formacje i skład — pełna szata meczowa.', icon: '📺' },
-	{ title: 'Dźwięk i produkcja', body: 'Opracowanie dźwięku, lektor, dzień zdjęciowy — kompletne zaplecze produkcyjne.', icon: '🎙️' },
+const fallback = [
+	{ title: 'Montaż wideo', body: 'Długie formy z dynamicznym cięciem, napisami, korekcją dźwięku i color gradingiem.', icon: 'montaz' },
+	{ title: 'Animacja i motion', body: 'Wektorowa i 2.5D — od pojedynczych elementów oprawy po pełne animowane trailery.', icon: 'motion' },
+	{ title: 'Rolki i krótkie formy', body: 'Pionowe rolki, shorty i TikToki z wypaloną grafiką, gotowe pod algorytm.', icon: 'rolki' },
+	{ title: 'Oprawa graficzna', body: 'Miniatury, okładki i spójny system graficzny, który buduje rozpoznawalność.', icon: 'grafika' },
+	{ title: 'Oprawa transmisyjna', body: 'Intro, outro, animowane statystyki, formacje i skład — pełna szata meczowa.', icon: 'transmisja' },
+	{ title: 'Dźwięk i produkcja', body: 'Opracowanie dźwięku, lektor, dzień zdjęciowy — kompletne zaplecze produkcyjne.', icon: 'dzwiek' },
 ];
+const features: any[] = (home as any).features?.length ? (home as any).features : fallback;
 ---
 <section id="uslugi" class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
 	<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
@@ -18,18 +21,36 @@ const features = [
 				<span class="block text-[56px] leading-[1]">{t.titleBig}</span>
 				<span class="mt-1 block text-[27px] leading-tight">{t.titleSmall}</span>
 			</h2>
-			<p class="mt-5 text-lg text-sky-mist">Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość.</p>
+			<p class="mt-5 text-lg text-sky-mist">{t.lead}</p>
 		</div>
 		<div class="grid gap-6 md:grid-cols-3">
-			{features.map((f) => (
-				<div class="liquid-card glass group rounded-2xl p-7">
-					<span class="mb-4.5 flex size-14 items-center justify-center rounded-chip bg-linear-150 from-orange to-orange/45 text-[26px] transition-transform duration-200 group-hover:scale-110 group-hover:-rotate-6">
-						{f.icon}
-					</span>
-					<h3 class="text-[21px] font-semibold text-cloud">{f.title}</h3>
-					<p class="mt-2 text-[15px] leading-normal text-sky-mist">{f.body}</p>
-				</div>
-			))}
+			{features.map((f) => {
+				const hasLayers = (f.layers ?? []).some((l: any) => l?.image);
+				const inner = (
+					<>
+						<h3 class="text-[21px] font-semibold text-cloud">{f.title}</h3>
+						<p class="mt-2 text-[15px] leading-normal text-sky-mist">{f.body}</p>
+					</>
+				);
+				return hasLayers ? (
+					<div class="liquid-card glass group overflow-hidden rounded-2xl p-4">
+						<div class="relative overflow-hidden rounded-xl">
+							<LayerTile layers={f.layers} strength={f.strength ?? 100} alt={f.title} />
+							<span class="absolute bottom-3 left-3 z-10 flex size-12 items-center justify-center rounded-xl border border-white/25 bg-navy-deep/55 p-2.5 text-cloud backdrop-blur-md">
+								<SvcIcon name={f.icon || 'montaz'} />
+							</span>
+						</div>
+						<div class="px-3 pt-5 pb-3">{inner}</div>
+					</div>
+				) : (
+					<div data-layers data-strength={f.strength ?? 100} class="liquid-card glass group rounded-2xl p-7">
+						<span data-depth="25" data-scale="100" class="mb-5 flex size-14 items-center justify-center rounded-chip border border-white/20 bg-white/[0.04] p-3 text-cloud transition-colors duration-300 group-hover:border-orange/60 group-hover:text-orange-glow">
+							<SvcIcon name={f.icon || 'montaz'} />
+						</span>
+						{inner}
+					</div>
+				);
+			})}
 		</div>
 	</div>
 </section>

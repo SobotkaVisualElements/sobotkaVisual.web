@@ -1,5 +1,6 @@
 ---
 import home from '../../data/home.json';
+import LayerTile from '../ui/LayerTile.astro';
 const tiles = home.tiles;
 const t = { eyebrow: 'Dla kogo', titleLine1: 'Media dla tych,', titleLine2: 'którzy chcą się wyróżnić', ...(home as any).dlaKogo };
 ---
@@ -14,16 +15,10 @@ const t = { eyebrow: 'Dla kogo', titleLine1: 'Media dla tych,', titleLine2: 'kt�
 			</h2>
 		</div>
 		<div class="mx-auto grid max-w-[900px] gap-7 md:grid-cols-2">
-			{tiles.map((tile) => (
+			{tiles.map((tile: any) => (
 				<div class="liquid-card glass group rounded-tile p-5">
-					<div class="relative aspect-video overflow-hidden rounded-xl">
-						{/* Podmień gradient na <img> z realizacją, gdy będą miniatury */}
-						{tile.image
-							? <img data-parallax src={tile.image} alt={tile.title} class="absolute inset-0 h-full w-full scale-110 object-cover" />
-							: <div data-parallax class="absolute inset-0 bg-linear-160 from-navy-deep via-navy to-orange/40" />}
-						<span class="absolute inset-0 flex items-center justify-center">
-							<span class="rounded-md bg-white/10 px-3 py-1 text-[13px] font-bold tracking-[0.08em] text-cloud uppercase backdrop-blur-sm">{tile.tag}</span>
-						</span>
+					<div class="overflow-hidden rounded-xl">
+						<LayerTile layers={(tile as any).layers} image={tile.image} strength={(tile as any).strength ?? 100} alt={tile.title} />
 					</div>
 					<h3 class="mt-5 font-display text-[22px] font-semibold text-cloud">{tile.title}</h3>
 					<p class="mt-2 text-[15px] leading-normal text-sky-mist">{tile.body}</p>

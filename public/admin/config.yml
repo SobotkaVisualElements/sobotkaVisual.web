@@ -26,10 +26,105 @@ collections:
       - { name: role, label: "Rola / zakres", widget: string, required: false }
       - { name: year, label: "Rok", widget: number, value_type: int, default: 2026 }
       - { name: tech, label: "Narzędzia", widget: list, required: false }
-      - { name: cover, label: "Zdjęcie główne", widget: image, required: false }
+      - { name: cover, label: "Zdjęcie główne (1920×1200)", widget: image, required: false, hint: "Używane, gdy nie dodasz warstw parallaksy." }
+      - name: layers
+        label: "Warstwy parallaksy (do 3)"
+        label_singular: Warstwa
+        widget: list
+        required: false
+        max: 3
+        summary: "Głębia {{fields.depth}} · skala {{fields.scale}}%"
+        hint: "Szablon 1920×1200 px (16:10). Pierwsza warstwa = tło, ostatnia = przód. Warstwy 2 i 3 jako PNG z przezroczystością. Przeciągnij, aby zmienić kolejność."
+        fields: &layerfields
+          - { name: image, label: "Obraz (PNG/JPG/WebP 1920×1200)", widget: image }
+          - { name: depth, label: "Głębia — jak mocno się rusza (0–100)", widget: number, value_type: int, default: 30, min: 0, max: 100, hint: "Tło 10–20, środek 30–45, przód 55–80. Większa różnica między warstwami = mocniejszy efekt 3D." }
+          - { name: scale, label: "Skala (%)", widget: number, value_type: int, default: 112, min: 100, max: 160, hint: "Zapas na ruch, żeby nie było widać krawędzi. Im większa głębia, tym większa skala." }
+      - { name: parallaxStrength, label: "Siła parallaksy całego kafelka (%)", widget: number, value_type: int, default: 100, min: 0, max: 200, required: false, hint: "0 = brak ruchu, 100 = standard, 200 = mocno" }
       - { name: featured, label: "Wyróżniona", widget: boolean, default: false }
       - { name: order, label: "Kolejność", widget: number, value_type: int, default: 10 }
       - { name: body, label: "Treść", widget: markdown }
+      - name: blocks
+        label: "Klocki treści (+)"
+        label_singular: Klocek
+        widget: list
+        required: false
+        hint: "Kliknij „Dodaj”, wybierz typ klocka. Klocki pojawiają się pod treścią, w tej kolejności — przeciągnij, aby zmienić."
+        types: &blocktypes
+          - name: tekst
+            label: "Tekst"
+            widget: object
+            summary: "{{fields.text}}"
+            fields:
+              - { name: text, label: "Tekst", widget: markdown, hint: "## nagłówek, **pogrubienie**, - lista, [link](/generator)" }
+          - name: zdjecie
+            label: "Zdjęcie"
+            widget: object
+            summary: "{{fields.caption}}"
+            fields:
+              - { name: image, label: "Zdjęcie", widget: image }
+              - { name: caption, label: "Podpis", widget: string, required: false }
+              - { name: alt, label: "Opis dla Google (alt)", widget: string, required: false }
+              - { name: width, label: "Szerokość", widget: select, default: pelna, options: [{ label: "Pełna", value: pelna }, { label: "Wąska", value: waska }] }
+          - name: karuzela
+            label: "Karuzela zdjęć"
+            widget: object
+            fields:
+              - name: images
+                label: "Zdjęcia (16:10)"
+                label_singular: Zdjęcie
+                widget: list
+                fields:
+                  - { name: image, label: "Zdjęcie", widget: image }
+                  - { name: caption, label: "Podpis", widget: string, required: false }
+          - name: wideo
+            label: "Wideo"
+            widget: object
+            summary: "{{fields.youtube}}"
+            fields:
+              - { name: youtube, label: "Link YouTube", widget: string, required: false, hint: "Zwykły link do filmu lub shorta. Ładuje się dopiero po kliknięciu — strona zostaje szybka." }
+              - { name: file, label: "albo plik MP4", widget: file, required: false }
+              - { name: format, label: "Format", widget: select, default: "16:9", options: ["16:9", "9:16"] }
+              - { name: caption, label: "Podpis", widget: string, required: false }
+          - name: parallaksa
+            label: "Kafelek z parallaksą"
+            widget: object
+            fields:
+              - name: layers
+                label: "Warstwy (do 3, 1920×1200)"
+                label_singular: Warstwa
+                widget: list
+                max: 3
+                fields: *layerfields
+              - { name: strength, label: "Siła parallaksy (%)", widget: number, value_type: int, default: 100, min: 0, max: 200 }
+              - { name: caption, label: "Podpis", widget: string, required: false }
+          - name: wykres_liniowy
+            label: "Wykres liniowy (animowany)"
+            widget: object
+            summary: "{{fields.value}}{{fields.suffix}} — {{fields.label}}"
+            fields:
+              - { name: value, label: "Wartość (duża liczba)", widget: number, value_type: float, hint: "Np. 21 dla „+21%”. Ujemna = spadek." }
+              - { name: label, label: "Czego dotyczy", widget: string, hint: "Np. „CTR miniatur w 1. godzinie”" }
+              - { name: points, label: "Punkty wykresu (opcjonalnie)", widget: string, required: false, hint: "Prawdziwe dane po przecinku, np. „21, 15, 15, 9”. Puste = krzywa wzrostu do wartości." }
+              - { name: prefix, label: "Przed liczbą", widget: string, required: false, hint: "Puste = automatycznie „+” lub „−”. Wpisz spację, żeby nie było znaku." }
+              - { name: suffix, label: "Po liczbie", widget: string, default: "%", required: false }
+              - { name: description, label: "Opis pod wykresem", widget: text, required: false }
+          - name: wykres_kolowy
+            label: "Wykres kołowy % (animowany)"
+            widget: object
+            summary: "{{fields.value}}% — {{fields.label}}"
+            fields:
+              - { name: value, label: "Wartość (0–100)", widget: number, value_type: float, min: 0, max: 100 }
+              - { name: label, label: "Czego dotyczy", widget: string }
+              - { name: suffix, label: "Po liczbie", widget: string, default: "%", required: false }
+              - { name: description, label: "Opis", widget: text, required: false }
+          - name: cytat
+            label: "Cytat / opinia"
+            widget: object
+            summary: "{{fields.author}}"
+            fields:
+              - { name: text, label: "Treść (bez cudzysłowu)", widget: text }
+              - { name: author, label: "Autor", widget: string, required: false }
+              - { name: role, label: "Rola / firma", widget: string, required: false }
 
   - name: strona_glowna
     label: "Strona główna"
@@ -94,11 +189,54 @@ collections:
             widget: list
             max: 2
             fields:
-              - { name: tag, label: "Etykieta na obrazku", widget: string }
               - { name: title, label: "Tytuł", widget: string }
               - { name: body, label: "Opis", widget: text }
               - { name: note, label: "Dodatkowe zdanie", widget: text, required: false }
-              - { name: image, label: "Obrazek (parallax)", widget: image, required: false }
+              - { name: image, label: "Obrazek (gdy brak warstw)", widget: image, required: false, hint: "1920×1200 px" }
+              - name: layers
+                label: "Warstwy parallaksy (do 3)"
+                label_singular: Warstwa
+                widget: list
+                required: false
+                max: 3
+                hint: "1920×1200 px. Pierwsza = tło, ostatnia = przód (PNG z przezroczystością)."
+                fields: *layerfields
+              - { name: strength, label: "Siła parallaksy (%)", widget: number, value_type: int, default: 100, min: 0, max: 200, required: false }
+
+      - name: uslugi_kafelki
+        label: "Kafelki „Wszystko, czego potrzebują Twoje media”"
+        file: "src/data/home.json"
+        fields:
+          - name: features
+            label: Kafelki usług
+            label_singular: Kafelek
+            widget: list
+            summary: "{{fields.title}}"
+            hint: "Przeciągnij, aby zmienić kolejność. Warstwy są opcjonalne — bez nich kafelek pokazuje samą ikonę."
+            fields:
+              - { name: icon, label: "Ikona (animowana)", widget: select, default: montaz, options: [{ label: "Montaż (oś czasu)", value: montaz }, { label: "Motion (krzywa ruchu)", value: motion }, { label: "Rolki (telefon)", value: rolki }, { label: "Grafika (kadr)", value: grafika }, { label: "Transmisja (ekran z belką)", value: transmisja }, { label: "Dźwięk (fala)", value: dzwiek }, { label: "Kamera", value: kamera }, { label: "Strategia (cel)", value: strategia }] }
+              - { name: title, label: "Tytuł", widget: string }
+              - { name: body, label: "Opis", widget: text }
+              - name: layers
+                label: "Warstwy parallaksy (opcjonalnie, do 3)"
+                label_singular: Warstwa
+                widget: list
+                required: false
+                max: 3
+                hint: "1920×1200 px. Pierwsza = tło, ostatnia = przód."
+                fields: *layerfields
+              - { name: strength, label: "Siła parallaksy (%)", widget: number, value_type: int, default: 100, min: 0, max: 200, required: false }
+
+      - name: kolejnosc
+        label: "Kolejność sekcji"
+        file: "src/data/home.json"
+        description: "Hero zawsze jest na górze. Przeciągnij sekcje, aby zmienić kolejność. Usunięta sekcja znika ze strony (możesz ją dodać z powrotem)."
+        fields:
+          - name: sections
+            label: "Sekcje pod Hero"
+            label_singular: Sekcja
+            widget: list
+            field: { name: section, label: "Sekcja", widget: select, options: [{ label: "Usługi — Wszystko, czego potrzebują Twoje media", value: uslugi }, { label: "Dla kogo", value: dlaKogo }, { label: "Oferta — pakiety", value: oferta }, { label: "Opinie", value: opinie }, { label: "FAQ — pytania", value: faq }, { label: "Kontakt — końcowe wezwanie", value: kontakt }] }
 
   - name: podstrony
     label: Podstrony
@@ -118,3 +256,10 @@ collections:
       - { name: draft, label: "Szkic (niewidoczna na stronie)", widget: boolean, default: true }
       - { name: noindex, label: "Ukryj przed Google", widget: boolean, default: false }
       - { name: body, label: "Treść", widget: markdown }
+      - name: blocks
+        label: "Klocki treści (+)"
+        label_singular: Klocek
+        widget: list
+        required: false
+        hint: "Kliknij „Dodaj”, wybierz typ klocka. Klocki pojawiają się pod treścią, w tej kolejności — przeciągnij, aby zmienić."
+        types: *blocktypes

@@ -216,3 +216,15 @@
     margin: 2.4em 0;
   }
 }
+
+/* Białe szkło — jasne karty (realizacje, case study) */
+.liquid-light {
+  background: linear-gradient(160deg, rgba(255,255,255,.92), rgba(255,255,255,.62));
+  border: 1px solid rgba(10,6,48,.08);
+  box-shadow: 0 10px 30px -12px rgba(10,6,48,.18), inset 0 1px 0 rgba(255,255,255,.9);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+@media (hover: hover) {
+  .liquid-light:hover { box-shadow: 0 24px 50px -16px rgba(10,6,48,.28), inset 0 1px 0 #fff !important; border-color: rgba(237,36,78,.35); }
+}

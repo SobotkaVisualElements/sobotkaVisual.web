@@ -1,0 +1,57 @@
+---
+/*
+ * Kafelek warstwowy 16:10 (szablon 1920×1200).
+ * Warstwy: pierwsza = najdalej (tło), ostatnia = najbliżej (przód).
+ *  depth  0–100  jak mocno warstwa się rusza (odległość między warstwami)
+ *  scale  100–160 skala warstwy w %, zapas na ruch, żeby nie było widać krawędzi
+ */
+export interface Layer { image?: string; depth?: number; scale?: number }
+interface Props {
+	layers?: Layer[];
+	image?: string; // pojedynczy obrazek (stary format) — traktowany jak 1 warstwa
+	alt?: string;
+	strength?: number; // ogólna siła parallaksy w % (domyślnie 100)
+	focalX?: number;
+	focalY?: number;
+	class?: string;
+	placeholder?: 'dark' | 'light';
+	eager?: boolean;
+}
+const { layers = [], image, alt = '', strength = 100, focalX, focalY, class: cls = '', placeholder = 'dark', eager = false } = Astro.props;
+const defaults = [15, 40, 70];
+let list = (layers || []).filter((l) => l && l.image).slice(0, 3);
+if (!list.length && image) list = [{ image, depth: 20, scale: 112 }];
+const pos = `object-position:${focalX ?? 50}% ${focalY ?? 50}%`;
+---
+<div data-layers data-strength={strength} class:list={['svc-tile relative aspect-[16/10] overflow-hidden', cls]}>
+	{list.length ? (
+		list.map((l, i) => (
+			<img
+				src={l.image}
+				alt={i === 0 ? alt : ''}
+				aria-hidden={i === 0 ? undefined : 'true'}
+				data-depth={l.depth ?? defaults[i]}
+				data-scale={l.scale ?? 110 + i * 4}
+				loading={eager ? 'eager' : 'lazy'}
+				decoding="async"
+				style={pos}
+				class="pointer-events-none absolute inset-0 h-full w-full object-cover will-change-transform"
+			/>
+		))
+	) : (
+		<div
+			data-depth="20" data-scale="112"
+			class:list={[
+				'absolute inset-0',
+				placeholder === 'dark' ? 'bg-linear-160 from-navy-deep via-navy to-orange/40' : 'bg-linear-160 from-paper via-orange-soft to-orange/30',
+			]}
+		/>
+	)}
+	<slot />
+</div>
+<style>
+	.svc-tile img, .svc-tile > div { transition: transform .35s cubic-bezier(.2,.7,.2,1); }
+</style>
+<script>
+	import '../../scripts/parallax.ts';
+</script>

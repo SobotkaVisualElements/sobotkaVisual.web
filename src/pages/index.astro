@@ -7,14 +7,18 @@ import Pricing from '../components/landing/Pricing.astro';
 import Testimonials from '../components/landing/Testimonials.astro';
 import Faq from '../components/landing/Faq.astro';
 import FinalCta from '../components/landing/FinalCta.astro';
+import home from '../data/home.json';
+
+// Kolejność sekcji ustawiana w panelu (Strona główna → Kolejność sekcji).
+// Hero zawsze pierwsze (tam jest nagłówek H1 dla Google). Usunięta z listy sekcja znika ze strony.
+const map: Record<string, any> = { uslugi: Features, dlaKogo: Showcase, oferta: Pricing, opinie: Testimonials, faq: Faq, kontakt: FinalCta };
+const fallback = ['uslugi', 'dlaKogo', 'oferta', 'opinie', 'faq', 'kontakt'];
+const order: string[] = ((home as any).sections?.length ? (home as any).sections : fallback)
+	.map((s: any) => (typeof s === 'string' ? s : s?.section))
+	.filter((s: string, i: number, arr: string[]) => map[s] && arr.indexOf(s) === i);
 ---
 
 <BaseLayout>
 	<Hero />
-	<Features />
-	<Showcase />
-	<Pricing />
-	<Testimonials />
-	<Faq />
-	<FinalCta />
+	{order.map((id) => { const C = map[id]; return <C />; })}
 </BaseLayout>

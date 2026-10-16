@@ -1,6 +1,10 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
+/* Warstwy parallaksy (do 3 PNG 1920×1200) i klocki treści z panelu CMS */
+const layer = z.object({ image: z.string().optional(), depth: z.number().optional(), scale: z.number().optional() });
+const blocks = z.array(z.object({ type: z.string() }).passthrough()).optional();
+
 /*
  * ブログ記事コレクション。frontmatter は型付きで検証される。
  * 記事は src/content/blog/ に .md / .mdx で追加する（テーマ利用者のコンテンツ領域）。
@@ -48,6 +52,9 @@ const work = defineCollection({
 			cover: z.string().optional(),
 			coverFocalX: z.number().optional(),
 			coverFocalY: z.number().optional(),
+			layers: z.array(layer).optional(),
+			parallaxStrength: z.number().optional(),
+			blocks,
 			featured: z.boolean().default(false),
 			/** 並び順（小さいほど前）。同値は year の新しい順 */
 			order: z.number().default(0),
@@ -66,6 +73,7 @@ const pages = defineCollection({
 		eyebrow: z.string().optional(),
 		draft: z.boolean().default(false),
 		noindex: z.boolean().default(false),
+		blocks,
 	}),
 });
 

@@ -18,13 +18,16 @@ const categories = collectCategories(projects);
 		sub="Montaż, animacje i oprawa wideo dla marek, twórców i klubów."
 	/>
 
-	<div class="mx-auto max-w-[1200px] px-8 py-12">
+	<div class="relative overflow-hidden">
+	<span class="pointer-events-none absolute -top-40 -right-40 size-[620px] rounded-full bg-radial from-orange/18 to-transparent to-65%"></span>
+	<span class="pointer-events-none absolute top-[40%] -left-52 size-[680px] rounded-full bg-radial from-[rgb(27_5_69/0.12)] to-transparent to-65%"></span>
+	<div class="relative mx-auto max-w-[1200px] px-8 py-12">
 		{
 			categories.length > 1 && (
-				<div class="mb-10 flex flex-wrap gap-2.5" role="group" aria-label="Filter projects">
+				<div class="mb-10 flex flex-wrap gap-2.5" role="group" aria-label="Filtruj realizacje">
 					<button
 						type="button"
-						class="filter-btn is-active rounded-full border-2 border-ink px-4 py-1.5 text-sm font-bold transition-colors"
+						class="filter-btn is-active rounded-full border border-ink/12 px-4 py-1.5 backdrop-blur text-sm font-bold transition-colors"
 						data-filter="all"
 					>
 						Wszystkie
@@ -32,7 +35,7 @@ const categories = collectCategories(projects);
 					{categories.map((cat) => (
 						<button
 							type="button"
-							class="filter-btn rounded-full border-2 border-ink px-4 py-1.5 text-sm font-bold transition-colors"
+							class="filter-btn rounded-full border border-ink/12 px-4 py-1.5 backdrop-blur text-sm font-bold transition-colors"
 							data-filter={cat.slug}
 						>
 							{cat.name}
@@ -47,14 +50,15 @@ const categories = collectCategories(projects);
 		</div>
 
 		<p id="no-results" class="hidden py-16 text-center text-ink/50">
-			No projects in this category yet.
+			Brak realizacji w tej kategorii.
 		</p>
+	</div>
 	</div>
 </BaseLayout>
 
 <style>
 	.filter-btn {
-		background: var(--color-cloud);
+		background: rgba(255,255,255,.7);
 		color: var(--color-ink);
 	}
 	.filter-btn:hover {

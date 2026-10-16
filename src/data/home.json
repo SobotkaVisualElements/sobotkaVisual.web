@@ -4,7 +4,7 @@
     "h1accent": "wyjątkowy",
     "lead": "Motion design, montaż i color grading dla marek, które chcą pokazać światu swój potencjał.",
     "ctaPrimaryLabel": "Bezpłatna wycena",
-    "ctaPrimaryHref": "/#generator",
+    "ctaPrimaryHref": "/generator",
     "ctaSecondaryLabel": "Zobacz realizacje",
     "ctaSecondaryHref": "/work",
     "video": "/uploads/Reklama WEB.mp4",
@@ -53,15 +53,53 @@
       "body": "Montaż odcinków, miniatury i rolki, które odzyskują Twój czas i podbijają klikalność.",
       "image": "https://picsum.photos/id/378/1920/1280.webp",
       "note": "",
-      "tag": "Twórcy internetowi",
       "title": "Twórcy internetowi"
     },
     {
       "body": "Materiały produktowe i wizerunkowe na najwyższym poziomie.",
       "image": "",
       "note": "Wy decydujecie, co pokazać — produkcję bierzemy na siebie.",
-      "tag": "Marki i firmy",
       "title": "Marki i firmy"
     }
+  ],
+  "features": [
+    {
+      "icon": "montaz",
+      "title": "Montaż wideo",
+      "body": "Długie formy z dynamicznym cięciem, napisami, korekcją dźwięku i color gradingiem."
+    },
+    {
+      "icon": "motion",
+      "title": "Animacja i motion",
+      "body": "Wektorowa i 2.5D — od pojedynczych elementów oprawy po pełne animowane trailery."
+    },
+    {
+      "icon": "rolki",
+      "title": "Rolki i krótkie formy",
+      "body": "Pionowe rolki, shorty i TikToki z wypaloną grafiką, gotowe pod algorytm."
+    },
+    {
+      "icon": "grafika",
+      "title": "Oprawa graficzna",
+      "body": "Miniatury, okładki i spójny system graficzny, który buduje rozpoznawalność."
+    },
+    {
+      "icon": "transmisja",
+      "title": "Oprawa transmisyjna",
+      "body": "Intro, outro, animowane statystyki, formacje i skład — pełna szata meczowa."
+    },
+    {
+      "icon": "dzwiek",
+      "title": "Dźwięk i produkcja",
+      "body": "Opracowanie dźwięku, lektor, dzień zdjęciowy — kompletne zaplecze produkcyjne."
+    }
+  ],
+  "sections": [
+    "uslugi",
+    "dlaKogo",
+    "oferta",
+    "opinie",
+    "faq",
+    "kontakt"
   ]
 }

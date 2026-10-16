@@ -1,6 +1,8 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import type { Project } from '../lib/projects';
+import Blocks from '../components/blocks/Blocks.astro';
+import LayerTile from '../components/ui/LayerTile.astro';
 
 interface Props {
 	project: Project;
@@ -39,13 +41,12 @@ const facts = [
 					{title}
 				</h1>
 				<p class="mt-4 max-w-[640px] text-lg text-ink/70">{description}</p>
-				{cover && (
-					<img
-						src={cover}
-						alt={title}
-						style={`object-position:${coverFocalX ?? 50}% ${coverFocalY ?? 50}%`}
-						class="mt-8 aspect-[16/9] w-full rounded-card border-2 border-ink object-cover shadow-pop"
-					/>
+				{((project.data as any).layers?.some((l: any) => l?.image) || cover) && (
+					<div class="liquid-card liquid-light mt-8 rounded-[24px] p-3">
+						<div class="overflow-hidden rounded-[16px]">
+							<LayerTile layers={(project.data as any).layers} image={cover} strength={(project.data as any).parallaxStrength ?? 100} focalX={coverFocalX} focalY={coverFocalY} alt={title} placeholder="light" eager />
+						</div>
+					</div>
 				)}
 
 				{
@@ -106,6 +107,7 @@ const facts = [
 			<div class="prose max-w-none">
 				<slot />
 			</div>
+			{(project.data as any).blocks?.length > 0 && <Blocks blocks={(project.data as any).blocks} theme="light" />}
 		</div>
 	</article>
 

@@ -8,6 +8,17 @@ role: 'Identyfikacja wizualna, miniatury, motion design'
 client: 'Przemysław Langier'
 featured: true
 order: 3
+blocks:
+  - type: wykres_kolowy
+    value: 21
+    label: 'CTR miniatur w pierwszej godzinie po publikacji'
+    description: 'Ponad co piąta osoba, której YouTube pokazał miniaturę, kliknęła w film.'
+  - type: wykres_liniowy
+    value: 21
+    prefix: ' '
+    label: 'Klikalność miniatur w kolejnych godzinach'
+    points: '21, 15, 15, 9'
+    description: '1. godzina: 21% · 2.–3. godzina: 15% · później ok. 9% — gdy YouTube pokazuje film szerszej, mniej zaangażowanej widowni.'
 ---
 
 ## Klient i cel
