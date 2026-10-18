@@ -1,0 +1,18 @@
+---
+// Pięć pływających gwiazdek — każda z innym opóźnieniem, delikatna poświata.
+interface Props { class?: string; size?: number }
+const { class: cls = '', size = 20 } = Astro.props;
+---
+<span class:list={['svc-stars', cls]} role="img" aria-label="Ocena 5 na 5">
+	{[0, 1, 2, 3, 4].map((i) => (
+		<svg viewBox="0 0 24 24" width={size} height={size} style={`--i:${i}`} aria-hidden="true">
+			<path d="M12 2.6l2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.4l-5.8 3.1 1.1-6.5L2.6 9.4l6.5-.9z" />
+		</svg>
+	))}
+</span>
+<style is:global>
+	.svc-stars { display: inline-flex; gap: 4px; }
+	.svc-stars svg { fill: #ff5a78; filter: drop-shadow(0 0 6px rgba(255,90,120,.65)); animation: svc-star 3.2s calc(var(--i) * .22s) ease-in-out infinite; }
+	@keyframes svc-star { 0%,100% { transform: translateY(0) rotate(0deg) scale(1); } 50% { transform: translateY(-5px) rotate(calc((var(--i) - 2) * 4deg)) scale(1.08); } }
+	@media (prefers-reduced-motion: reduce) { .svc-stars svg { animation: none; } }
+</style>

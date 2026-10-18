@@ -1,0 +1,50 @@
+---
+/*
+ * Wykres porównawczy: słupki rosną przy wejściu w ekran.
+ * Wyróżnione (highlight) = nasze wyniki, w kolorze akcentu; reszta = tło porównania.
+ * range: [od, do] rysuje zakres (np. typowy CTR 2–10%).
+ */
+export interface Bar { label: string; value: number; range?: [number, number]; highlight?: boolean; note?: string; display?: string }
+interface Props { title: string; sub?: string; bars: Bar[]; unit?: string; max?: number; source?: string; float?: number }
+const { title, sub, bars, unit = '', max, source, float = 24 } = Astro.props;
+const top = max ?? Math.max(...bars.map((b) => b.range ? b.range[1] : b.value)) * 1.08;
+const pct = (v: number) => Math.max(1.5, (v / top) * 100);
+---
+<div class="cb glass svc-anim rounded-[22px] p-6 sm:p-8" data-float={float}>
+	<h3 class="text-[20px] font-bold text-cloud">{title}</h3>
+	{sub && <p class="mt-1.5 text-[14px] text-sky-mist">{sub}</p>}
+	<div class="mt-6 flex flex-col gap-4">
+		{bars.map((b, i) => (
+			<div class:list={['cb-row', b.highlight && 'is-hl']} style={`--d:${i * 0.12}s`}>
+				<div class="flex items-baseline justify-between gap-3 text-[14px]">
+					<span class:list={['font-semibold', b.highlight ? 'text-cloud' : 'text-sky-mist']}>{b.label}</span>
+					<span class:list={['cb-val shrink-0 font-display font-bold tabular-nums', b.highlight ? 'text-[22px] text-orange-bright' : 'text-[16px] text-sky-mist']}>
+						{b.display ?? (b.range
+							? `${b.range[0]}–${b.range[1]}${unit}`
+							: <span data-count={b.value} data-suffix={unit}>0{unit}</span>)}
+					</span>
+				</div>
+				<div class="cb-track mt-1.5">
+					{b.range
+						? <span class="cb-fill cb-range" style={`--w:${pct(b.range[1] - b.range[0])}%;margin-left:${pct(b.range[0])}%`}></span>
+						: <span class="cb-fill" style={`--w:${pct(b.value)}%`}></span>}
+				</div>
+				{b.note && <p class="mt-1 text-[12px] text-slate-400">{b.note}</p>}
+			</div>
+		))}
+	</div>
+	{source && <p class="mt-5 text-[11px] text-slate-500">Źródło: {source}</p>}
+</div>
+<style is:global>
+	.cb { will-change: transform; }
+	.cb-track { position: relative; height: 12px; border-radius: 999px; background: rgba(255,255,255,.07); overflow: hidden; }
+	.cb-fill { display: block; height: 100%; width: 0; border-radius: 999px; background: rgba(208,201,195,.38); transition: width 1.4s cubic-bezier(.65,0,.35,1) var(--d, 0s); }
+	.cb-range { background: repeating-linear-gradient(-45deg, rgba(208,201,195,.4) 0 6px, rgba(208,201,195,.2) 6px 12px); }
+	.is-hl .cb-track { height: 16px; }
+	.is-hl .cb-fill { background: linear-gradient(90deg, var(--color-orange-deep), var(--color-orange-bright)); box-shadow: 0 0 18px rgba(237,36,78,.55); }
+	.cb.is-in .cb-fill { width: var(--w); }
+	@media (prefers-reduced-motion: reduce) { .cb-fill { width: var(--w); transition: none; } }
+</style>
+<script>
+	import '../../scripts/parallax.ts';
+</script>
