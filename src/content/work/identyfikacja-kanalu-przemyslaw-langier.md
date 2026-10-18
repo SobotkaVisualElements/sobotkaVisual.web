@@ -1,23 +1,43 @@
 ---
-title: 'Identyfikacja wizualna kanału Przemysława Langiera — CTR miniatur 21%'
+title: Identyfikacja wizualna kanału Przemysława Langiera — CTR miniatur 21%
 description: 'Kompletna paczka graficzna kanału YouTube: miniatury, profilowe, tło, banery, animowane belki i intro. Klikalność miniatur 21% w pierwszej godzinie po publikacji.'
-category: 'Identyfikacja'
-tech: ['Photoshop', 'Illustrator', 'After Effects']
+category: Identyfikacja
+client: Przemysław Langier
+role: Identyfikacja wizualna, miniatury, motion design
 year: 2026
-role: 'Identyfikacja wizualna, miniatury, motion design'
-client: 'Przemysław Langier'
+tech:
+  - Photoshop
+  - Illustrator
+  - After Effects
+cover: ''
+layers: []
+parallaxStrength: 100
 featured: true
 order: 3
 blocks:
+  - type: karuzela
+    images:
+      - image: /uploads/realizacje/maxresdefault (1).jpg
+        caption: ''
+      - image: /uploads/realizacje/maxresdefault (3).jpg
+        caption: ''
+      - image: /uploads/realizacje/maxresdefault.jpg
+        caption: ''
+      - image: /uploads/realizacje/maxresdefault (2).jpg
+        caption: ''
+      - image: /uploads/realizacje/maxresdefault.webp
+        caption: ''
   - type: wykres_kolowy
     value: 21
-    label: 'CTR miniatur w pierwszej godzinie po publikacji'
-    description: 'Ponad co piąta osoba, której YouTube pokazał miniaturę, kliknęła w film.'
+    label: CTR miniatur w pierwszej godzinie po publikacji
+    suffix: '%'
+    description: Ponad co piąta osoba, której YouTube pokazał miniaturę, kliknęła w film.
   - type: wykres_liniowy
     value: 21
-    prefix: ' '
-    label: 'Klikalność miniatur w kolejnych godzinach'
-    points: '21, 15, 15, 9'
+    label: Klikalność miniatur w kolejnych godzinach
+    points: 21, 15, 15, 9
+    prefix: ''
+    suffix: '%'
     description: '1. godzina: 21% · 2.–3. godzina: 15% · później ok. 9% — gdy YouTube pokazuje film szerszej, mniej zaangażowanej widowni.'
 ---
 
