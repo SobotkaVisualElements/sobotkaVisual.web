@@ -1,39 +1,48 @@
 ---
 /*
- * Landingi ofert: /oferta/dzial-wideo, /oferta/kampania-wideo, /oferta/kanal-youtube
- * Treść: src/data/offers.ts (z PDF „Propozycja współpracy”). Opinie: src/data/opinie.ts.
+ * Landingi ofert: /oferta/<adres>
+ * Treść: src/data/oferty/<adres>.json — edytowana w panelu (/admin → Landingi ofert).
+ * Każdy tekst przechodzi przez tx(): polskie twarde spacje, Enter = nowa linia, **pogrubienie**.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectCard from '../../components/work/ProjectCard.astro';
 import CompareBars from '../../components/ui/CompareBars.astro';
 import Stars from '../../components/ui/Stars.astro';
 import Blocks from '../../components/blocks/Blocks.astro';
-import { offers, type Offer } from '../../data/offers';
 import { opinie } from '../../data/opinie';
 import { getPublishedProjects } from '../../lib/projects';
+import { tx, alignCls } from '../../lib/typo';
 import home from '../../data/home.json';
 
 export function getStaticPaths() {
-	return offers.map((o) => ({ params: { slug: o.slug }, props: { o } }));
+	const files = import.meta.glob('../../data/oferty/*.json', { eager: true }) as Record<string, any>;
+	return Object.keys(files).map((path) => ({ params: { slug: path.split('/').pop()!.replace('.json', '') } }));
 }
-const { o } = Astro.props as { o: Offer };
-const site = 'https://sobotkavisual.pl';
-const url = `${site}/oferta/${o.slug}`;
-const gen = `/generator?pakiet=${o.pkg}&utm_source=oferta&utm_campaign=${o.slug}`;
-const clients = ((home as any).clients ?? []).filter((c: any) => c.logo);
-const projects = (await getPublishedProjects()).filter((p) => p.data.featured).slice(0, 3);
-const thumbs = ['/uploads/realizacje/maxresdefault (1).jpg', '/uploads/realizacje/maxresdefault (3).jpg', '/uploads/realizacje/maxresdefault.jpg'];
-const others = offers.filter((x) => x.slug !== o.slug);
-const names: Record<string, string> = { 'dzial-wideo': 'Dział wideo (Pakiet PRO)', 'kampania-wideo': 'Kampania wideo', 'kanal-youtube': 'Kanał na YouTube' };
 
-// Realne wyniki — dane z YouTube Studio klienta i pomocy YouTube (tło porównania)
-const ctrBars = [
-	{ label: 'Typowy CTR na YouTube (połowa kanałów)', value: 10, range: [2, 10] as [number, number], note: 'zakres podawany przez YouTube' },
-	{ label: 'Kanał Przemysława Langiera · 1. godzina', value: 21, highlight: true },
-	{ label: 'Kanał Przemysława Langiera · 2.–3. godzina', value: 15, highlight: true },
-	{ label: 'Kanał Przemysława Langiera · później', value: 9, display: 'ok. 9%' },
-];
-const ctrSource = 'YouTube Help „Wyświetlenia i CTR” (zakres 2–10%); YouTube Studio kanału klienta.';
+const files = import.meta.glob('../../data/oferty/*.json', { eager: true }) as Record<string, any>;
+const all = Object.entries(files)
+	.map(([path, mod]) => ({ slug: path.split('/').pop()!.replace('.json', ''), ...(mod.default ?? mod) }))
+	.sort((a: any, b: any) => (a.order ?? 99) - (b.order ?? 99)) as any[];
+
+const { slug } = Astro.params;
+const o: any = all.find((x) => x.slug === slug);
+const site = 'https://sobotkavisual.pl';
+const url = `${site}/oferta/${slug}`;
+const utm = `utm_source=oferta&utm_campaign=${slug}`;
+const gen = `/generator?pakiet=${o.pkg || 'pro'}&${utm}`;
+const withUtm = (h: string = '/generator') => `${h || '/generator'}${(h || '').includes('?') ? '&' : '?'}${utm}`;
+const clients = ((home as any).clients ?? []).filter((c: any) => c.logo);
+const projects = o.projects?.show === false ? [] : (await getPublishedProjects()).filter((p) => p.data.featured).slice(0, 3);
+const thumbs = ['/uploads/realizacje/maxresdefault (1).jpg', '/uploads/realizacje/maxresdefault (3).jpg', '/uploads/realizacje/maxresdefault.jpg'];
+const others = all.filter((x) => x.slug !== slug);
+const cards: any[] = o.invest?.cards ?? [];
+const featured = cards.find((c) => c.featured) ?? cards[0];
+const paras = (t: string = '') => String(t).split(/\n\s*\n/).filter((x) => x.trim());
+const toBars = (bars: any[] = []) => bars.map((b) => ({
+	...b, value: Number(b.value) || 0,
+	range: b.from !== undefined && b.from !== null && b.from !== '' && b.to ? [Number(b.from), Number(b.to)] as [number, number] : undefined,
+}));
+const sp: any = o.special ?? {};
 
 const deltaBlocks = [{
 	type: 'wykres_liniowy', value: 150, prefix: '', suffix: '+', label: 'rolek rekrutacyjnych dla Delta HR w 12 miesięcy',
@@ -45,22 +54,18 @@ const ld = {
 	'@context': 'https://schema.org',
 	'@graph': [
 		{
-			'@type': 'Service', '@id': `${url}#usluga`, name: o.service, serviceType: o.service, url,
-			description: o.seoDesc,
+			'@type': 'Service', '@id': `${url}#usluga`, name: o.service, serviceType: o.service, url, description: o.seoDesc,
 			provider: { '@id': `${site}/#firma` },
 			areaServed: [{ '@type': 'AdministrativeArea', name: 'województwo opolskie' }, { '@type': 'Country', name: 'Polska' }],
-			offers: o.invest.cards.map((c) => ({ '@type': 'Offer', name: c.name, priceCurrency: 'PLN', price: c.price.replace(/[^\d]/g, ''), description: c.note })),
+			offers: cards.map((c) => ({ '@type': 'Offer', name: c.name, priceCurrency: 'PLN', price: String(c.price).replace(/[^\d]/g, ''), description: c.note })),
 		},
-		{
-			'@type': 'FAQPage', '@id': `${url}#faq`,
-			mainEntity: o.faq.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
-		},
+		{ '@type': 'FAQPage', '@id': `${url}#faq`, mainEntity: (o.faq?.items ?? []).map((f: any) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
 		{
 			'@type': 'BreadcrumbList',
 			itemListElement: [
 				{ '@type': 'ListItem', position: 1, name: 'Strona główna', item: `${site}/` },
 				{ '@type': 'ListItem', position: 2, name: 'Oferta', item: `${site}/#oferta` },
-				{ '@type': 'ListItem', position: 3, name: names[o.slug], item: url },
+				{ '@type': 'ListItem', position: 3, name: o.name, item: url },
 			],
 		},
 	],
@@ -68,9 +73,9 @@ const ld = {
 ---
 <BaseLayout title={o.seoTitle} description={o.seoDesc}>
 	<div class="of">
-		<!-- 01 HERO -->
+		<!-- HERO -->
 		<section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
-			{o.slug !== 'kanal-youtube' && (
+			{!o.hero?.thumbs && (
 				<video class="pointer-events-none absolute inset-0 z-0 hidden h-full w-full object-cover opacity-20 md:block" autoplay muted loop playsinline preload="metadata">
 					<source src="/uploads/Reklama WEB.mp4" />
 				</video>
@@ -78,18 +83,16 @@ const ld = {
 			<span class="pointer-events-none absolute inset-0 bg-grid opacity-35"></span>
 			<span data-speed="0.06" class="pointer-events-none absolute -top-24 -right-20 size-[640px] bg-radial from-orange/35 to-transparent to-62%"></span>
 			<div class="relative z-2 mx-auto grid max-w-[1200px] items-center gap-12 px-6 pt-24 pb-20 sm:px-8 lg:grid-cols-[1.2fr_1fr]">
-				<div>
-					<div class="flex flex-wrap items-center gap-3 text-[12px] font-bold tracking-[0.14em] uppercase">
-						<span class="text-orange-glow">{o.eyebrow}</span>
-					</div>
+				<div class={alignCls(o.hero.align)}>
+					<p class="text-[12px] font-bold tracking-[0.14em] text-orange-glow uppercase" set:html={tx(o.hero.eyebrow)} />
 					<h1 class="of-h mt-6 text-[52px] leading-[0.98] md:text-[84px]">
-						<span class="block font-light">{o.title[0]}</span>
-						{o.title[1] && <span class="block font-extrabold">{o.title[1]}</span>}
+						<span class="block font-light" set:html={tx(o.hero.title)} />
+						{o.hero.titleBold && <span class="block font-extrabold" set:html={tx(o.hero.titleBold)} />}
 					</h1>
-					<p class="mt-7 max-w-[560px] text-[19px] leading-[1.55] text-sky">{o.lead}</p>
+					<p class="of-text mt-7 max-w-[560px] text-[19px] leading-[1.55] text-sky" set:html={tx(o.hero.lead)} />
 					<div class="mt-9 flex flex-wrap gap-3.5">
 						<a href="#inwestycja" class="btn-saber rounded-full bg-orange px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-y-0.5">Zobacz inwestycję →</a>
-						<a href={o.pdf} download class="btn-saber rounded-full border-2 border-cloud/60 px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-y-0.5">Pobierz PDF</a>
+						{o.pdf && <a href={o.pdf} download class="btn-saber rounded-full border-2 border-cloud/60 px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-y-0.5">Pobierz PDF</a>}
 					</div>
 					<div class="mt-9 flex flex-wrap items-center gap-x-5 gap-y-3 text-[13px] text-sky-mist">
 						<span class="of-chip">🇵🇱 Polska firma · Opole</span>
@@ -97,7 +100,7 @@ const ld = {
 					</div>
 				</div>
 
-				{o.slug === 'kanal-youtube' ? (
+				{o.hero?.thumbs ? (
 					<div data-layers data-strength="120" class="relative mx-auto aspect-[4/3.4] w-full max-w-[520px]">
 						{thumbs.map((t, i) => (
 							<img src={t} alt={i === 0 ? 'Miniatury kanału Przemysława Langiera' : ''} data-depth={[18, 40, 65][i]} data-scale="100"
@@ -109,20 +112,20 @@ const ld = {
 							<div class="font-display text-[34px] leading-none font-extrabold text-orange-bright">21%</div>
 						</div>
 					</div>
-				) : (
+				) : featured && (
 					<div class="glass liquid-card relative rounded-[26px] p-7 sm:p-8">
 						<div class="flex items-center justify-between">
-							<span class="text-[12px] font-bold tracking-[0.12em] text-orange-glow uppercase">{o.invest.cards.find((c) => c.featured)?.name}</span>
+							<span class="text-[12px] font-bold tracking-[0.12em] text-orange-glow uppercase" set:html={tx(featured.name)} />
 							<Stars size={16} />
 						</div>
 						<div class="mt-4 flex items-baseline gap-2">
-							<span class="font-display text-[52px] leading-none font-bold">{o.invest.cards.find((c) => c.featured)?.price}</span>
-							<span class="text-sky-mist">{o.invest.cards.find((c) => c.featured)?.per}</span>
+							<span class="font-display text-[52px] leading-none font-bold" set:html={tx(featured.price)} />
+							<span class="text-sky-mist" set:html={tx(featured.per)} />
 						</div>
 						<ul class="mt-6 flex flex-col gap-2.5 text-[15px] text-sky">
-							{o.invest.cards.find((c) => c.featured)?.items.slice(0, 5).map((it) => <li class="flex gap-2.5"><span class="text-orange-bright">✓</span>{it}</li>)}
+							{(featured.items ?? []).slice(0, 5).map((it: string) => <li class="flex gap-2.5"><span class="text-orange-bright">✓</span><span set:html={tx(it)} /></li>)}
 						</ul>
-						<p class="mt-6 border-t border-white/10 pt-5 text-[15px] leading-relaxed text-cloud">„{opinie[0].short}”</p>
+						<p class="mt-6 border-t border-white/10 pt-5 text-[15px] leading-relaxed text-cloud" set:html={tx(`„${opinie[0].short}”`)} />
 						<p class="mt-2 text-[13px] text-sky-mist">{opinie[0].name} · {opinie[0].role}</p>
 					</div>
 				)}
@@ -138,140 +141,114 @@ const ld = {
 			)}
 		</section>
 
-		<!-- 02 ZANIM ZACZNIEMY -->
+		<!-- ZANIM ZACZNIEMY -->
 		<section class="of-sec">
-			<div class="of-wrap grid gap-10 md:grid-cols-[1fr_1.1fr] md:items-end">
+			<div class:list={['of-wrap grid gap-10 md:grid-cols-[1fr_1.1fr] md:items-end', alignCls(o.intro.align)]}>
 				<div>
-					<p class="of-eyebrow">Zanim zaczniemy</p>
-					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">{o.intro.title[0]} <span class="of-light">{o.intro.title[1]}</span></h2>
+					<p class="of-eyebrow" set:html={tx(o.intro.eyebrow)} />
+					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.intro.title)} /> <span class="of-light" set:html={tx(o.intro.titleLight)} /></h2>
 				</div>
-				<div class="flex flex-col gap-4 text-[17px] leading-relaxed text-sky-mist">
-					{o.intro.paras.map((p) => <p>{p}</p>)}
-					<p class="mt-2 text-[15px] text-cloud"><b>Krzysztof Sobotka</b> <span class="text-sky-mist">· Sobotka Visual Creations · Opole</span></p>
+				<div class="of-text flex flex-col gap-4 text-[17px] leading-relaxed text-sky-mist">
+					{paras(o.intro.text).map((p) => <p set:html={tx(p)} />)}
+					{o.intro.signature && <p class="mt-2 text-[15px] text-cloud"><b>{o.intro.signature}</b> <span class="text-sky-mist">· {o.intro.signatureRole}</span></p>}
 				</div>
 			</div>
 		</section>
 
-		<!-- 03 KIM SIĘ STAJESZ -->
+		<!-- KIM SIĘ STAJESZ -->
 		<section class="of-sec">
-			<div class="of-wrap">
-				<p class="of-eyebrow">Kim się stajesz</p>
-				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">{o.become.title[0]} <span class="of-light">{o.become.title[1]}</span></h2>
-				<p class="mt-4 max-w-[620px] text-[17px] text-sky-mist">{o.become.lead}</p>
-				<div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-					{o.become.items.map((it, i) => (
+			<div class:list={['of-wrap', alignCls(o.become.align)]}>
+				<p class="of-eyebrow" set:html={tx(o.become.eyebrow)} />
+				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.become.title)} /> <span class="of-light" set:html={tx(o.become.titleLight)} /></h2>
+				<p class="of-text mt-4 max-w-[620px] text-[17px] text-sky-mist" set:html={tx(o.become.lead)} />
+				<div class="mt-10 grid gap-5 text-left sm:grid-cols-2 lg:grid-cols-4">
+					{(o.become.items ?? []).map((it: any, i: number) => (
 						<div class="liquid-card glass rounded-2xl p-6">
 							<span class="font-display text-[13px] font-bold text-orange-glow">0{i + 1}</span>
-							<h3 class="mt-3 text-[19px] font-bold text-cloud">{it.t}</h3>
-							<p class="mt-2 text-[14.5px] leading-relaxed text-sky-mist">{it.d}</p>
+							<h3 class="mt-3 text-[19px] font-bold text-cloud" set:html={tx(it.t)} />
+							<p class="mt-2 text-[14.5px] leading-relaxed text-sky-mist" set:html={tx(it.d)} />
 						</div>
 					))}
 				</div>
-				<p class="mt-8 text-[18px] text-cloud">{o.become.punch}</p>
+				{o.become.punch && <p class="of-text mt-8 text-[18px] text-cloud" set:html={tx(o.become.punch)} />}
 			</div>
 		</section>
 
-		<!-- 04 LICZBY RYNKU -->
-		<section class="of-sec">
-			<div class="of-wrap">
-				<div class="flex flex-wrap items-end justify-between gap-6">
-					<div>
-						<p class="of-eyebrow">Liczby, które grają na Ciebie</p>
-						<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">{o.stats.title[0]} <span class="of-light">{o.stats.title[1]}</span></h2>
+		<!-- LICZBY RYNKU -->
+		{o.stats?.items?.length > 0 && (
+			<section class="of-sec">
+				<div class="of-wrap">
+					<div class="flex flex-wrap items-end justify-between gap-6">
+						<div>
+							<p class="of-eyebrow" set:html={tx(o.stats.eyebrow)} />
+							<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.stats.title)} /> <span class="of-light" set:html={tx(o.stats.titleLight)} /></h2>
+						</div>
+						<p class="max-w-[280px] text-[13px] text-sky-mist" set:html={tx(o.stats.note)} />
 					</div>
-					<p class="max-w-[280px] text-[13px] text-sky-mist">To dane o rynku, nie obietnice wyników. Pokazują, gdzie zapadają decyzje Twoich klientów.</p>
-				</div>
-				<div class="svc-anim mt-12 grid gap-8 border-t border-white/10 pt-10 sm:grid-cols-2 lg:grid-cols-4">
-					{o.stats.items.map((s) => (
-						<div data-float="18">
-							<div class="font-display text-[64px] leading-none font-light tracking-[-0.04em] text-cloud">
-								<span data-count={s.v} data-suffix="">0</span><span class="text-[26px] text-orange-glow">{s.suf}</span>
+					<div class="svc-anim mt-12 grid gap-8 border-t border-white/10 pt-10 sm:grid-cols-2 lg:grid-cols-4">
+						{o.stats.items.map((s: any) => (
+							<div data-float="18">
+								<div class="font-display text-[64px] leading-none font-light tracking-[-0.04em] text-cloud">
+									<span data-count={s.v} data-suffix="">0</span><span class="text-[26px] text-orange-glow">{s.suf}</span>
+								</div>
+								<p class="mt-3 text-[14.5px] leading-relaxed text-sky-mist" set:html={tx(s.d)} />
+								<p class="mt-2 text-[11px] text-slate-500">{s.src}</p>
 							</div>
-							<p class="mt-3 text-[14.5px] leading-relaxed text-sky-mist">{s.d}</p>
-							<p class="mt-2 text-[11px] text-slate-500">{s.src}</p>
-						</div>
-					))}
+						))}
+					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		)}
 
-		<!-- 05 WYNIKI — realne wzrosty na tle porównania -->
-		<section class="of-sec relative overflow-hidden">
-			<span class="pointer-events-none absolute top-1/3 -left-40 size-[560px] bg-radial from-orange/20 to-transparent to-65%"></span>
-			<div class="of-wrap relative">
-				<p class="of-eyebrow">Wyniki, nie obietnice</p>
-				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">Nasze liczby <span class="of-light">na tle reszty.</span></h2>
-				<p class="mt-4 max-w-[640px] text-[16px] text-sky-mist">Wyniki z realnych realizacji, ze statystyk klientów. Tło porównania pochodzi z publicznych danych — bez naciągania.</p>
-
-				<div class="mt-10 grid gap-6 lg:grid-cols-2">
-					<CompareBars title="Klikalność miniatur (CTR)" sub="Ile osób, którym YouTube pokazał miniaturę, kliknęło w film." unit="%" bars={ctrBars} max={24} source={ctrSource} />
-
-					{o.slug === 'dzial-wideo' && (
-						<CompareBars title="Pół roku w liczbach: START vs PRO" sub="Ile materiałów dostajesz w 6 miesięcy (minimalny okres współpracy)." bars={[
-							{ label: 'Materiały wideo · START', value: 0, display: '0' },
-							{ label: 'Materiały wideo · PRO', value: 24, highlight: true },
-							{ label: 'Rolki i krótkie formy · START', value: 36 },
-							{ label: 'Rolki i krótkie formy · PRO', value: 48, highlight: true },
-							{ label: 'Nowe elementy animowane · START', value: 6 },
-							{ label: 'Nowe elementy animowane · PRO', value: 18, highlight: true },
-						]} max={52} source="cennik pakietów SVC 2026" />
-					)}
-					{o.slug === 'kampania-wideo' && (
-						<CompareBars title="Ile razy klient zobaczy Twoją markę" sub="Liczba gotowych materiałów z jednej produkcji." bars={[
-							{ label: 'Pojedynczy spot reklamowy', value: 1 },
-							{ label: 'Kampania premierowa (klip + 12 rolek)', value: 13, highlight: true },
-							{ label: 'Kampania w PRO · 6 miesięcy', value: 119, highlight: true, note: 'klip główny + 22 materiały wideo + 48 rolek + 48 grafik' },
-						]} max={125} source="zakres ofert SVC 2026" />
-					)}
-					{o.slug === 'kanal-youtube' && (
-						<CompareBars title="Pół roku produkcji kanału" sub="Co powstaje w 6 miesięcy pakietu PRO." bars={[
-							{ label: 'Surowe nagranie bez montażu', value: 0, display: '0 dodatków' },
-							{ label: 'Odcinki z pełnym montażem', value: 24, highlight: true },
-							{ label: 'Shorty z odcinków', value: 48, highlight: true },
-							{ label: 'Miniatury i grafiki', value: 48, highlight: true },
-						]} max={52} source="zakres pakietu PRO" />
-					)}
+		<!-- WYNIKI -->
+		{o.proof?.charts?.length > 0 && (
+			<section class="of-sec relative overflow-hidden">
+				<span class="pointer-events-none absolute top-1/3 -left-40 size-[560px] bg-radial from-orange/20 to-transparent to-65%"></span>
+				<div class:list={['of-wrap relative', alignCls(o.proof.align)]}>
+					<p class="of-eyebrow" set:html={tx(o.proof.eyebrow)} />
+					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.proof.title)} /> <span class="of-light" set:html={tx(o.proof.titleLight)} /></h2>
+					<p class="of-text mt-4 max-w-[640px] text-[16px] text-sky-mist" set:html={tx(o.proof.lead)} />
+					<div class="mt-10 grid gap-6 text-left lg:grid-cols-2">
+						{o.proof.charts.map((c: any) => (
+							<CompareBars title={c.title} sub={c.sub} unit={c.unit ?? ''} bars={toBars(c.bars)} max={c.max ? Number(c.max) : undefined} source={c.source} />
+						))}
+					</div>
+					{o.proof.deltaLine && <div class="mt-6 text-left"><Blocks blocks={deltaBlocks} theme="dark" /></div>}
 				</div>
+			</section>
+		)}
 
-				{o.slug === 'dzial-wideo' && (
-					<div class="mt-6"><Blocks blocks={deltaBlocks} theme="dark" /></div>
-				)}
-			</div>
-		</section>
-
-		<!-- 06 CO W ŚRODKU -->
+		<!-- CO W ŚRODKU -->
 		<section class="of-sec">
-			<div class="of-wrap">
-				<p class="of-eyebrow">{o.inside.eyebrow}</p>
-				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">{o.inside.title[0]} <span class="of-light">{o.inside.title[1]}</span></h2>
-				<p class="mt-4 max-w-[620px] text-[17px] text-sky-mist">{o.inside.lead}</p>
+			<div class:list={['of-wrap', alignCls(o.inside.align)]}>
+				<p class="of-eyebrow" set:html={tx(o.inside.eyebrow)} />
+				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.inside.title)} /> <span class="of-light" set:html={tx(o.inside.titleLight)} /></h2>
+				<p class="of-text mt-4 max-w-[620px] text-[17px] text-sky-mist" set:html={tx(o.inside.lead)} />
 
-				{o.special === 'anatomia' ? (
-					<div class="mt-10 grid gap-6 lg:grid-cols-[1fr_1.3fr]">
-						<div class="liquid-card glass flex flex-col justify-between rounded-[22px] p-7">
-							<div>
-								<span class="text-[12px] font-bold tracking-[0.12em] text-orange-glow uppercase">Klip główny · 30–45 s · poziom i pion</span>
-								<h3 class="of-h mt-4 text-[34px] leading-tight">Wizytówka, <span class="of-light">która sprzedaje.</span></h3>
-								<p class="mt-3 text-[15px] text-sky-mist">Pokazuje, kim jesteś i co zmieniasz w życiu klienta. Pracuje na stronie, w reklamie płatnej, na targach i w prezentacji handlowej.</p>
-							</div>
+				{o.inside.cardTitle ? (
+					<div class="mt-10 grid gap-6 text-left lg:grid-cols-[1fr_1.3fr]">
+						<div class="liquid-card glass rounded-[22px] p-7">
+							<span class="text-[12px] font-bold tracking-[0.12em] text-orange-glow uppercase" set:html={tx(o.inside.cardEyebrow)} />
+							<h3 class="of-h mt-4 text-[34px] leading-tight"><b set:html={tx(o.inside.cardTitle)} /> <span class="of-light" set:html={tx(o.inside.cardTitleLight)} /></h3>
+							<p class="mt-3 text-[15px] text-sky-mist" set:html={tx(o.inside.cardText)} />
 						</div>
 						<div class="glass rounded-[22px] p-7">
-							<span class="text-[12px] font-bold tracking-[0.12em] text-sky-mist uppercase">Seria rolek · przykładowe tematy</span>
+							<span class="text-[12px] font-bold tracking-[0.12em] text-sky-mist uppercase" set:html={tx(o.inside.listEyebrow)} />
 							<ol class="mt-4 grid gap-x-6 sm:grid-cols-2">
-								{o.inside.items.map((it) => (
-									<li class="flex gap-3 border-b border-white/8 py-3"><span class="font-display text-[13px] font-bold text-orange-glow">{it.n}</span><span><b class="text-cloud">{it.t}</b> <span class="text-[14px] text-sky-mist">— {it.d}</span></span></li>
+								{(o.inside.items ?? []).map((it: any) => (
+									<li class="flex gap-3 border-b border-white/8 py-3"><span class="font-display text-[13px] font-bold text-orange-glow">{it.n}</span><span><b class="text-cloud" set:html={tx(it.t)} /> <span class="text-[14px] text-sky-mist" set:html={tx(`— ${it.d}`)} /></span></li>
 								))}
 							</ol>
 						</div>
 					</div>
 				) : (
-					<div class:list={['mt-10 grid gap-5', o.inside.items.length === 3 ? 'lg:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-3']}>
-						{o.inside.items.map((it) => (
+					<div class:list={['mt-10 grid gap-5 text-left', (o.inside.items ?? []).length === 3 ? 'lg:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-3']}>
+						{(o.inside.items ?? []).map((it: any) => (
 							<div class="liquid-card glass flex gap-5 rounded-2xl p-6">
 								<span class="font-display text-[48px] leading-none font-light text-orange-bright">{it.n}</span>
 								<div>
-									<h3 class="text-[18px] font-bold text-cloud">{it.t}</h3>
-									<p class="mt-1.5 text-[14.5px] leading-relaxed text-sky-mist">{it.d}</p>
+									<h3 class="text-[18px] font-bold text-cloud" set:html={tx(it.t)} />
+									<p class="mt-1.5 text-[14.5px] leading-relaxed text-sky-mist" set:html={tx(it.d)} />
 								</div>
 							</div>
 						))}
@@ -280,97 +257,87 @@ const ld = {
 			</div>
 		</section>
 
-		<!-- 07 SEKCJA SPECJALNA -->
-		{o.special === 'rytm' && (
+		<!-- SEKCJA SPECJALNA -->
+		{sp.kind && (
 			<section class="of-sec">
-				<div class="of-wrap">
-					<p class="of-eyebrow">Rytm miesiąca</p>
-					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">Regularność <span class="of-light">to podstawa.</span></h2>
-					<p class="mt-4 max-w-[620px] text-[17px] text-sky-mist">Klienci nie pamiętają jednego świetnego posta sprzed kwartału. Pamiętają firmę, którą widzą regularnie.</p>
-					<div class="glass svc-anim of-rytm mt-10 overflow-x-auto rounded-[22px] p-2 sm:p-4">
-						<table class="w-full min-w-[560px] text-left text-[15px]">
-							<thead><tr class="text-[12px] tracking-[0.12em] text-sky-mist uppercase"><th class="p-4 font-bold">Tydzień</th>{['01', '02', '03', '04'].map((w) => <th class="p-4 text-center font-display text-[20px] font-light text-cloud">{w}</th>)}</tr></thead>
-							<tbody>
-								{[['Materiał wideo', '×1', '×1', '×1', '×1'], ['Rolki', '×2', '×2', '×2', '×2'], ['Grafiki i miniatury', '×2', '×2', '×2', '×2'], ['Element animowany', '×1', '×1', '×1', '—'], ['Raport i plan', '—', '—', '—', '✓']].map((r, ri) => (
-									<tr class="border-t border-white/8">
-										<td class="p-4 font-semibold text-cloud">{r[0]}</td>
-										{r.slice(1).map((c, ci) => <td class="p-4 text-center"><span class:list={['of-pill', c === '—' && 'is-empty']} style={`--d:${(ri * 4 + ci) * 0.05}s`}>{c}</span></td>)}
-									</tr>
+				<div class:list={['of-wrap', alignCls(sp.align)]}>
+					<p class="of-eyebrow" set:html={tx(sp.eyebrow)} />
+					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(sp.title)} /> <span class="of-light" set:html={tx(sp.titleLight)} /></h2>
+					{sp.lead && <p class="of-text mt-4 max-w-[640px] text-[17px] text-sky-mist" set:html={tx(sp.lead)} />}
+
+					{sp.kind === 'rytm' && sp.table?.length > 0 && (
+						<div class="glass svc-anim of-rytm mt-10 overflow-x-auto rounded-[22px] p-2 sm:p-4">
+							<table class="w-full min-w-[560px] text-left text-[15px]">
+								<thead><tr class="text-[12px] tracking-[0.12em] text-sky-mist uppercase"><th class="p-4 font-bold">Tydzień</th>{['01', '02', '03', '04'].map((w) => <th class="p-4 text-center font-display text-[20px] font-light text-cloud">{w}</th>)}</tr></thead>
+								<tbody>
+									{sp.table.map((r: any, ri: number) => (
+										<tr class="border-t border-white/8">
+											<td class="p-4 font-semibold text-cloud">{r.label}</td>
+											{[r.w1, r.w2, r.w3, r.w4].map((c: string, ci: number) => <td class="p-4 text-center"><span class:list={['of-pill', (!c || c === '—') && 'is-empty']} style={`--d:${(ri * 4 + ci) * 0.05}s`}>{c || '—'}</span></td>)}
+										</tr>
+									))}
+								</tbody>
+							</table>
+						</div>
+					)}
+
+					{sp.kind === 'anatomia' && sp.timeline?.length > 0 && (
+						<div class="svc-anim of-anat mt-12 text-left">
+							<div class="flex h-14 gap-1.5">
+								{sp.timeline.map((s: any, i: number) => (
+									<div class="of-seg" style={`--g:${Number(s.sec) || 1};--d:${i * 0.18}s`} data-hl={s.highlight ? '1' : undefined}><span>{s.label}</span></div>
 								))}
-							</tbody>
-						</table>
-					</div>
-					<p class="mt-4 text-[13px] text-slate-400">Rozkład przykładowy. Dokładny harmonogram ustalamy na początku miesiąca pod Wasze wydarzenia i premiery.</p>
-				</div>
-			</section>
-		)}
-
-		{o.special === 'anatomia' && (
-			<section class="of-sec">
-				<div class="of-wrap">
-					<p class="of-eyebrow">Anatomia 45 sekund</p>
-					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">Każda sekunda <span class="of-light">ma swoje zadanie.</span></h2>
-					<p class="mt-4 max-w-[620px] text-[17px] text-sky-mist">Piękno bierze się z proporcji. W reklamie liczy się nie to, ile pokażesz, ale w jakiej kolejności.</p>
-					<div class="svc-anim of-anat mt-12">
-						<div class="flex h-14 gap-1.5">
-							{[[3, 'Haczyk'], [9, 'Problem'], [20, 'Produkt w akcji'], [8, 'Dowód'], [5, 'Wezwanie']].map(([w, l], i) => (
-								<div class="of-seg" style={`--g:${w};--d:${i * 0.18}s`} data-hl={i === 2 ? '1' : undefined}><span>{l}</span></div>
-							))}
-						</div>
-						<div class="mt-2 flex justify-between text-[11px] text-slate-500 tabular-nums">{[0, 5, 10, 15, 20, 25, 30, 35, 40, 45].map((s) => <span>{s}s</span>)}</div>
-						<div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-							{[['0–3 s', 'Haczyk', 'Obraz albo zdanie, które zatrzymuje kciuk. Nie zaczynamy od logo — logo nikogo nie zatrzymuje.'], ['3–12 s', 'Problem', 'Sytuacja, w której klient rozpoznaje siebie. Dopiero wtedy zaczyna słuchać.'], ['12–32 s', 'Produkt w akcji', 'Nie lista cech, tylko zmiana: jak wygląda dzień z Twoim produktem.'], ['32–40 s', 'Dowód', 'Detal, liczba albo opinia — coś, co zamienia „ładne” w „wiarygodne”.'], ['40–45 s', 'Wezwanie', 'Jedno konkretne działanie. Jedno, nie pięć.']].map(([t, h, d]) => (
-								<div><span class="text-[12px] font-bold text-orange-glow tabular-nums">{t}</span><h3 class="mt-1 text-[17px] font-bold text-cloud">{h}</h3><p class="mt-1.5 text-[14px] leading-relaxed text-sky-mist">{d}</p></div>
-							))}
-						</div>
-					</div>
-					<div class="mt-14 grid gap-5 md:grid-cols-4">
-						{[['Krok 1', 'Brief', 'Produkt, klient, miejsca emisji i jedno zdanie, które ma zostać w głowie.'], ['Krok 2', 'Scenariusz i storyboard', 'Rozpisujemy klip sekunda po sekundzie i tematy rolek. Akceptujesz plan przed produkcją.'], ['Krok 3', 'Produkcja', 'Animacja, ruch na zdjęciach produktu albo montaż Twoich nagrań — dobieramy do produktu i budżetu.'], ['Krok 4', 'Premiera i seria', 'Klip startuje, a rolki wychodzą według harmonogramu przez kolejne tygodnie.']].map(([k, h, d]) => (
-							<div class="liquid-card glass rounded-2xl p-6"><span class="text-[12px] font-bold tracking-[0.12em] text-orange-glow uppercase">{k}</span><h3 class="mt-2 text-[18px] font-bold text-cloud">{h}</h3><p class="mt-2 text-[14px] leading-relaxed text-sky-mist">{d}</p></div>
-						))}
-					</div>
-				</div>
-			</section>
-		)}
-
-		{o.special === 'algorytm' && (
-			<section class="of-sec">
-				<div class="of-wrap">
-					<p class="of-eyebrow">Algorytm</p>
-					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">Algorytm to matematyka. <span class="of-light">A my ją rozumiemy.</span></h2>
-					<p class="mt-4 max-w-[640px] text-[17px] text-sky-mist">YouTube pokazuje filmy, które ludzie klikają, oglądają do końca i do których wracają. Nie ma w tym magii — są dane, które da się czytać i na które da się pracować.</p>
-					<div class="svc-anim of-funnel mt-10 grid gap-3 sm:grid-cols-5">
-						{[['Short', 'zatrzymuje uwagę'], ['Miniatura', 'składa obietnicę'], ['Odcinek', 'dotrzymuje jej'], ['Subskrypcja', 'widz zostaje'], ['Powrót', 'w kolejnym tygodniu']].map(([h, d], i) => (
-							<div class="of-step glass rounded-2xl p-5" style={`--d:${i * 0.15}s`}>
-								<span class="font-display text-[12px] font-bold text-orange-glow">0{i + 1}</span>
-								<h3 class="mt-1 text-[18px] font-bold text-cloud">{h}</h3>
-								<p class="text-[13px] text-sky-mist">{d}</p>
 							</div>
-						))}
-					</div>
-					<div class="mt-6 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-						{[['Klikalność', 'Miniatura i tytuł to obietnica. Projektujemy je razem z odcinkiem, a nie po nim.'], ['Utrzymanie', 'Pierwsze 30 sekund decyduje o reszcie. Montaż usuwa wszystko, co nie prowadzi dalej.'], ['Zadowolenie', 'Widz, który nie żałuje straconego czasu, wraca. To działa zawsze.'], ['Regularność', 'Stały dzień i godzina budują nawyk. Harmonogram pilnujemy my.']].map(([h, d]) => (
-							<div class="border-t border-white/12 pt-4"><h3 class="text-[17px] font-bold text-cloud">{h}</h3><p class="mt-1.5 text-[14px] leading-relaxed text-sky-mist">{d}</p></div>
-						))}
-					</div>
-					<h2 class="of-h mt-20 text-[34px] leading-[1.05] md:text-[44px]">Od rozmowy do premiery <span class="of-light">w miesiąc.</span></h2>
-					<div class="mt-8 grid gap-5 md:grid-cols-4">
-						{[['Tydzień 1', 'Rozmowa i brief', 'Format, ton, nazwa, rytm publikacji. Ustalamy stałe cykle, żeby nigdy nie zabrakło tematów.'], ['Tydzień 2–3', 'Identyfikacja i pilot', 'Powstaje oprawa kanału i pierwszy odcinek. Poprawiamy, aż poczujesz, że to Twój kanał.'], ['Tydzień 4', 'Premiera', 'Pierwszy odcinek i seria krótkich form, które niosą go przez cały tydzień.'], ['Miesiąc 2–6', 'Rytm i wzrost', 'Stały harmonogram, raport co miesiąc i korekty oparte na danych.']].map(([k, h, d]) => (
-							<div class="liquid-card glass rounded-2xl p-6"><span class="text-[12px] font-bold tracking-[0.12em] text-orange-glow uppercase">{k}</span><h3 class="mt-2 text-[18px] font-bold text-cloud">{h}</h3><p class="mt-2 text-[14px] leading-relaxed text-sky-mist">{d}</p></div>
-						))}
-					</div>
-					<p class="mt-5 text-[14px] text-sky-mist"><b class="text-cloud">Twój czas:</b> Ty nagrywasz i akceptujesz. Resztę bierzemy na siebie.</p>
+							<div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
+								{sp.timeline.map((s: any) => (
+									<div><span class="text-[12px] font-bold text-orange-glow tabular-nums">{s.time}</span><h3 class="mt-1 text-[17px] font-bold text-cloud" set:html={tx(s.label)} /><p class="mt-1.5 text-[14px] leading-relaxed text-sky-mist" set:html={tx(s.desc)} /></div>
+								))}
+							</div>
+						</div>
+					)}
+
+					{sp.kind === 'algorytm' && sp.steps?.length > 0 && (
+						<div class="svc-anim of-funnel mt-10 grid gap-3 text-left sm:grid-cols-5">
+							{sp.steps.map((s: any, i: number) => (
+								<div class="of-step glass rounded-2xl p-5" style={`--d:${i * 0.15}s`}>
+									<span class="font-display text-[12px] font-bold text-orange-glow">0{i + 1}</span>
+									<h3 class="mt-1 text-[18px] font-bold text-cloud" set:html={tx(s.t)} />
+									<p class="text-[13px] text-sky-mist" set:html={tx(s.d)} />
+								</div>
+							))}
+						</div>
+					)}
+
+					{sp.cards?.length > 0 && (
+						<div class:list={['grid gap-5 text-left sm:grid-cols-2 lg:grid-cols-4', sp.kind === 'algorytm' ? 'mt-6' : 'mt-14']}>
+							{sp.cards.map((c: any) => (
+								c.k
+									? <div class="liquid-card glass rounded-2xl p-6"><span class="text-[12px] font-bold tracking-[0.12em] text-orange-glow uppercase">{c.k}</span><h3 class="mt-2 text-[18px] font-bold text-cloud" set:html={tx(c.t)} /><p class="mt-2 text-[14px] leading-relaxed text-sky-mist" set:html={tx(c.d)} /></div>
+									: <div class="border-t border-white/12 pt-4"><h3 class="text-[17px] font-bold text-cloud" set:html={tx(c.t)} /><p class="mt-1.5 text-[14px] leading-relaxed text-sky-mist" set:html={tx(c.d)} /></div>
+							))}
+						</div>
+					)}
+
+					{sp.title2 && <h2 class="of-h mt-20 text-[34px] leading-[1.05] md:text-[44px]"><span set:html={tx(sp.title2)} /> <span class="of-light" set:html={tx(sp.title2Light)} /></h2>}
+					{sp.cards2?.length > 0 && (
+						<div class="mt-8 grid gap-5 text-left md:grid-cols-4">
+							{sp.cards2.map((c: any) => (
+								<div class="liquid-card glass rounded-2xl p-6"><span class="text-[12px] font-bold tracking-[0.12em] text-orange-glow uppercase">{c.k}</span><h3 class="mt-2 text-[18px] font-bold text-cloud" set:html={tx(c.t)} /><p class="mt-2 text-[14px] leading-relaxed text-sky-mist" set:html={tx(c.d)} /></div>
+							))}
+						</div>
+					)}
+					{sp.note && <p class="of-text mt-5 text-[14px] text-sky-mist" set:html={tx(sp.note)} />}
 				</div>
 			</section>
 		)}
 
-		<!-- 08 OPINIE -->
+		<!-- OPINIE -->
 		<section class="of-sec">
 			<div class="of-wrap">
 				<div class="flex flex-wrap items-end justify-between gap-6">
 					<div>
-						<p class="of-eyebrow">Opinie</p>
-						<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">Nie musisz wierzyć <span class="of-light">nam na słowo.</span></h2>
+						<p class="of-eyebrow" set:html={tx(o.opinie?.eyebrow ?? 'Opinie')} />
+						<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.opinie?.title)} /> <span class="of-light" set:html={tx(o.opinie?.titleLight)} /></h2>
 					</div>
 					<Stars size={30} class="of-stars-big" />
 				</div>
@@ -378,7 +345,7 @@ const ld = {
 					{opinie.map((q) => (
 						<figure class="liquid-card glass relative rounded-[22px] p-8">
 							<Stars size={18} />
-							<blockquote class="mt-5 text-[18px] leading-[1.6] text-cloud">„{q.quote}”</blockquote>
+							<blockquote class="mt-5 text-[18px] leading-[1.6] text-cloud" set:html={tx(`„${q.quote}”`)} />
 							<figcaption class="mt-6 flex items-center justify-between gap-4 border-t border-white/12 pt-5">
 								<span><b class="block text-[15px] text-cloud">{q.name}</b><span class="text-[13px] text-sky-mist">{q.role}</span></span>
 								<img src={q.logo} alt={q.logoAlt} class="h-6 w-auto opacity-85" loading="lazy" />
@@ -389,12 +356,12 @@ const ld = {
 			</div>
 		</section>
 
-		<!-- 09 REALIZACJE -->
+		<!-- REALIZACJE -->
 		{projects.length > 0 && (
 			<section class="of-sec">
 				<div class="of-wrap">
-					<p class="of-eyebrow">Realizacje</p>
-					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">Zobacz, <span class="of-light">jak to wygląda w praktyce.</span></h2>
+					<p class="of-eyebrow" set:html={tx(o.projects?.eyebrow ?? 'Realizacje')} />
+					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.projects?.title)} /> <span class="of-light" set:html={tx(o.projects?.titleLight)} /></h2>
 					<div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 						{projects.map((p, i) => <ProjectCard project={p} index={i} />)}
 					</div>
@@ -402,91 +369,100 @@ const ld = {
 			</section>
 		)}
 
-		<!-- 10 PYTANIA -->
-		<section class="of-sec">
-			<div class="of-wrap">
-				<p class="of-eyebrow">Pytania, których jeszcze nie zadałeś</p>
-				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">Odpowiadamy, <span class="of-light">zanim zapytasz.</span></h2>
-				<div class="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
-					{o.faq.map((f) => (
-						<div class="border-t border-white/12 pt-5"><h3 class="text-[17px] font-bold text-cloud">{f.q}</h3><p class="mt-2 text-[14.5px] leading-relaxed text-sky-mist">{f.a}</p></div>
-					))}
-				</div>
-			</div>
-		</section>
-
-		<!-- 11 WĄTPLIWOŚCI -->
-		<section class="of-sec">
-			<div class="of-wrap">
-				<p class="of-eyebrow">Wątpliwości</p>
-				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">Każde „ale” zasługuje <span class="of-light">na uczciwą odpowiedź.</span></h2>
-				<div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-					{o.doubts.map((d) => (
-						<div class="liquid-card glass rounded-2xl p-6"><h3 class="text-[17px] font-bold text-cloud">{d.q}</h3><p class="mt-2 text-[14.5px] leading-relaxed text-sky-mist">{d.a}</p></div>
-					))}
-					<div class="flex flex-col justify-center rounded-2xl border border-orange/40 bg-orange/10 p-6">
-						<p class="text-[15px] text-cloud">Masz inne pytanie? Zadzwoń — wolę je usłyszeć teraz niż za pół roku.</p>
-						<a href="tel:+48668472759" class="mt-3 font-display text-[26px] font-bold text-orange-bright hover:underline">668 472 759</a>
+		<!-- PYTANIA -->
+		{o.faq?.items?.length > 0 && (
+			<section class="of-sec">
+				<div class:list={['of-wrap', alignCls(o.faq.align)]}>
+					<p class="of-eyebrow" set:html={tx(o.faq.eyebrow)} />
+					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.faq.title)} /> <span class="of-light" set:html={tx(o.faq.titleLight)} /></h2>
+					<div class="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+						{o.faq.items.map((f: any) => (
+							<div class="border-t border-white/12 pt-5"><h3 class="text-[17px] font-bold text-cloud" set:html={tx(f.q)} /><p class="of-text mt-2 text-[14.5px] leading-relaxed text-sky-mist" set:html={tx(f.a)} /></div>
+						))}
 					</div>
 				</div>
-			</div>
-		</section>
+			</section>
+		)}
 
-		<!-- 12 INWESTYCJA -->
+		<!-- WĄTPLIWOŚCI -->
+		{o.doubts?.items?.length > 0 && (
+			<section class="of-sec">
+				<div class:list={['of-wrap', alignCls(o.doubts.align)]}>
+					<p class="of-eyebrow" set:html={tx(o.doubts.eyebrow)} />
+					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.doubts.title)} /> <span class="of-light" set:html={tx(o.doubts.titleLight)} /></h2>
+					<div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+						{o.doubts.items.map((d: any) => (
+							<div class="liquid-card glass rounded-2xl p-6"><h3 class="text-[17px] font-bold text-cloud" set:html={tx(d.q)} /><p class="of-text mt-2 text-[14.5px] leading-relaxed text-sky-mist" set:html={tx(d.a)} /></div>
+						))}
+						{(o.doubts.callText || o.doubts.phone) && (
+							<div class="flex flex-col justify-center rounded-2xl border border-orange/40 bg-orange/10 p-6">
+								<p class="of-text text-[15px] leading-relaxed text-cloud" set:html={tx(o.doubts.callText)} />
+								{o.doubts.phone && <a href={`tel:+48${String(o.doubts.phone).replace(/\D/g, '')}`} class="mt-3 font-display text-[26px] font-bold text-orange-bright hover:underline">{o.doubts.phone}</a>}
+							</div>
+						)}
+					</div>
+				</div>
+			</section>
+		)}
+
+		<!-- INWESTYCJA -->
 		<section id="inwestycja" class="of-sec scroll-mt-20">
 			<div class="of-wrap">
-				<p class="of-eyebrow">Inwestycja</p>
-				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]">{o.invest.title[0]} <span class="of-light">{o.invest.title[1]}</span></h2>
-				<div class:list={['mt-10 grid items-start gap-6', o.invest.cards.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-2']}>
-					{o.invest.cards.map((c) => (
+				<p class="of-eyebrow" set:html={tx(o.invest.eyebrow)} />
+				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.invest.title)} /> <span class="of-light" set:html={tx(o.invest.titleLight)} /></h2>
+				<div class:list={['mt-10 grid items-start gap-6', cards.length >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2']}>
+					{cards.map((c) => (
 						<div class:list={['liquid-card glass rounded-[24px] p-8', c.featured && 'border-orange/50 shadow-[0_0_50px_-10px_rgba(237,36,78,.55)]']}>
 							<span class:list={['inline-block rounded-full px-3 py-1 text-[11px] font-bold tracking-[0.08em] uppercase', c.featured ? 'bg-orange text-cloud' : 'bg-white/8 text-sky-mist']}>{c.tag}</span>
-							<h3 class="mt-4 text-[20px] font-bold text-cloud">{c.name}</h3>
+							<h3 class="mt-4 text-[20px] font-bold text-cloud" set:html={tx(c.name)} />
 							<div class="mt-4 flex flex-wrap items-baseline gap-x-2">
-								<span class="font-display text-[48px] leading-none font-bold text-cloud">{c.price}</span>
-								<span class="text-[14px] text-sky-mist">{c.per}</span>
+								<span class="font-display text-[48px] leading-none font-bold text-cloud" set:html={tx(c.price)} />
+								<span class="text-[14px] text-sky-mist" set:html={tx(c.per)} />
 							</div>
-							<p class="mt-2 text-[13px] text-sky-mist">{c.note}</p>
+							<p class="mt-2 text-[13px] text-sky-mist" set:html={tx(c.note)} />
 							<ul class="mt-6 flex flex-col gap-2.5 text-[15px] text-sky">
-								{c.items.map((it) => <li class="flex gap-2.5"><span class="text-orange-bright">✓</span>{it}</li>)}
+								{(c.items ?? []).map((it: string) => <li class="flex gap-2.5"><span class="text-orange-bright">✓</span><span set:html={tx(it)} /></li>)}
 							</ul>
-							{c.cta && (
-								<a href={`${c.cta.href}${c.cta.href.includes('?') ? '&' : '?'}utm_source=oferta&utm_campaign=${o.slug}`} class:list={['btn-saber mt-7 block rounded-full py-3.5 text-center font-bold transition-transform hover:-translate-y-0.5', c.featured ? 'bg-orange text-cloud' : 'border-2 border-cloud/50 text-cloud']}>{c.cta.label} →</a>
+							{c.ctaLabel && (
+								<a href={withUtm(c.ctaHref)} class:list={['btn-saber mt-7 block rounded-full py-3.5 text-center font-bold transition-transform hover:-translate-y-0.5', c.featured ? 'bg-orange text-cloud' : 'border-2 border-cloud/50 text-cloud']}>{c.ctaLabel} →</a>
 							)}
 						</div>
 					))}
 				</div>
-				{o.invest.footnote && <p class="mt-6 text-[14px] text-sky-mist">{o.invest.footnote}</p>}
+				{o.invest.footnote && <p class="mt-6 text-[14px] text-sky-mist" set:html={tx(o.invest.footnote)} />}
 			</div>
 		</section>
 
-		<!-- 13 NASTĘPNY KROK -->
+		<!-- NASTĘPNY KROK -->
 		<section class="relative overflow-hidden border-t border-white/6 bg-linear-160 from-navy to-navy-deep text-cloud">
 			<span class="pointer-events-none absolute inset-0 bg-grid opacity-35"></span>
 			<span data-speed="0.03" class="pointer-events-none absolute top-10 right-[10%] text-[34px] text-orange">✦</span>
-			<div class="of-wrap relative z-2 py-24">
-				<p class="of-eyebrow">Następny krok</p>
-				<h2 class="of-h mt-4 text-[44px] leading-[1.02] md:text-[72px]">{o.final.title[0]} <span class="block font-extrabold">{o.final.title[1]}</span></h2>
-				<p class="mt-6 max-w-[600px] text-[18px] text-sky">{o.final.lead}</p>
+			<div class:list={['of-wrap relative z-2 py-24', alignCls(o.final.align)]}>
+				<p class="of-eyebrow" set:html={tx(o.final.eyebrow)} />
+				<h2 class="of-h mt-4 text-[44px] leading-[1.02] md:text-[72px]"><span class="font-light" set:html={tx(o.final.title)} /> <span class="block font-extrabold" set:html={tx(o.final.titleBold)} /></h2>
+				<p class="of-text mt-6 max-w-[600px] text-[18px] text-sky" set:html={tx(o.final.lead)} />
 				<div class="mt-9 flex flex-wrap gap-3.5">
 					<a href={gen} class="btn-saber rounded-full bg-orange px-8 py-4 font-bold text-cloud transition-transform hover:-translate-y-0.5">{o.final.cta} →</a>
 					<a href="tel:+48668472759" class="btn-saber rounded-full border-2 border-cloud/60 px-8 py-4 font-bold text-cloud transition-transform hover:-translate-y-0.5">Zadzwoń: 668 472 759</a>
 				</div>
-				<p class="mt-8 text-[14px] text-sky-mist">kontakt@sobotkavisual.pl · <a href={o.pdf} download class="underline hover:text-cloud">pobierz ofertę w PDF</a></p>
-				<div class="mt-14 border-t border-white/10 pt-8">
-					<p class="text-[12px] font-bold tracking-[0.14em] text-white/50 uppercase">Zobacz też</p>
-					<div class="mt-4 flex flex-wrap gap-3">
-						{others.map((x) => <a href={`/oferta/${x.slug}`} class="of-chip hover:border-orange/60 hover:text-cloud">{names[x.slug]} →</a>)}
+				<p class="mt-8 text-[14px] text-sky-mist">kontakt@sobotkavisual.pl{o.pdf && <> · <a href={o.pdf} download class="underline hover:text-cloud">pobierz ofertę w PDF</a></>}</p>
+				{others.length > 0 && (
+					<div class="mt-14 border-t border-white/10 pt-8">
+						<p class="text-[12px] font-bold tracking-[0.14em] text-white/50 uppercase">Zobacz też</p>
+						<div class="mt-4 flex flex-wrap gap-3">
+							{others.map((x) => <a href={`/oferta/${x.slug}`} class="of-chip hover:border-orange/60 hover:text-cloud">{x.name} →</a>)}
+						</div>
 					</div>
-				</div>
+				)}
 			</div>
 		</section>
 
-		<!-- mobilny pasek CTA -->
-		<div class="fixed inset-x-0 bottom-0 z-50 flex items-center justify-between gap-3 border-t border-white/12 bg-navy-deep/95 px-5 py-3 backdrop-blur-xl md:hidden">
-			<span class="text-[13px] text-sky-mist">{o.invest.cards.find((c) => c.featured)?.name} · <b class="text-cloud">{o.invest.cards.find((c) => c.featured)?.price} zł</b></span>
-			<a href={gen} class="rounded-full bg-orange px-5 py-2.5 text-sm font-bold text-cloud">Skonfiguruj →</a>
-		</div>
+		{featured && (
+			<div class="fixed inset-x-0 bottom-0 z-50 flex items-center justify-between gap-3 border-t border-white/12 bg-navy-deep/95 px-5 py-3 backdrop-blur-xl md:hidden">
+				<span class="text-[13px] text-sky-mist">{featured.name} · <b class="text-cloud" set:html={tx(`${featured.price} zł`)} /></span>
+				<a href={gen} class="rounded-full bg-orange px-5 py-2.5 text-sm font-bold text-cloud">Skonfiguruj →</a>
+			</div>
+		)}
 	</div>
 
 	<script type="application/ld+json" set:html={JSON.stringify(ld)} />
@@ -498,28 +474,28 @@ const ld = {
 	.of-wrap { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
 	@media (min-width: 640px) { .of-wrap { padding: 0 2rem; } }
 	@media (max-width: 767px) { .of-sec { padding: 4.5rem 0; } .of { padding-bottom: 64px; } }
-	.of-h { font-family: var(--font-display); font-weight: 300; letter-spacing: -0.035em; color: var(--color-cloud); }
-	.of-h b { font-weight: 700; } h1.of-h { font-weight: 300; } h1.of-h .font-light { font-weight: 300; }
+	.of-h { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.035em; color: var(--color-cloud); }
+	h1.of-h { font-weight: 300; }
 	.of-light { font-weight: 300 !important; color: rgba(208,201,195,.55); }
-	h2.of-h { font-weight: 700; } h2.of-h .of-light { font-weight: 300; }
 	.of-eyebrow { display: flex; align-items: center; gap: .75rem; font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--color-orange-glow); }
 	.of-eyebrow::before { content: ''; width: 28px; height: 2px; background: var(--color-orange); }
+	.text-center .of-eyebrow { justify-content: center; }
+	.text-center .of-text { margin-left: auto; margin-right: auto; }
+	.text-right .of-eyebrow { justify-content: flex-end; }
+	.text-right .of-text { margin-left: auto; }
 	.of-chip { display: inline-flex; align-items: center; gap: .4rem; border: 1px solid rgba(255,255,255,.15); border-radius: 999px; padding: .4rem .9rem; font-size: 13px; color: var(--color-sky-mist); background: rgba(255,255,255,.04); transition: border-color .2s, color .2s; }
 	.of-stars-big svg { filter: drop-shadow(0 0 10px rgba(255,90,120,.8)); }
 
-	/* rytm: pigułki wskakują po kolei */
 	.of-pill { display: inline-block; min-width: 44px; padding: .3rem .7rem; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); font-weight: 700; font-size: 13px; color: var(--color-cloud); opacity: 0; transform: scale(.6); transition: opacity .4s var(--d), transform .5s cubic-bezier(.3,1.6,.5,1) var(--d); }
 	.of-pill.is-empty { border-color: transparent; color: rgba(208,201,195,.35); }
 	.of-rytm.is-in .of-pill { opacity: 1; transform: none; }
 
-	/* anatomia: segmenty osi czasu rosną */
 	.of-seg { flex: var(--g) 1 0; position: relative; border-radius: 10px; background: rgba(255,255,255,.08); overflow: hidden; display: flex; align-items: center; padding: 0 .6rem; }
 	.of-seg::before { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(237,36,78,.35), rgba(255,90,120,.5)); transform: scaleX(0); transform-origin: left; transition: transform .9s cubic-bezier(.65,0,.35,1) var(--d); }
 	.of-seg[data-hl]::before { background: linear-gradient(90deg, var(--color-orange-deep), var(--color-orange-bright)); box-shadow: 0 0 24px rgba(237,36,78,.6); }
 	.of-seg span { position: relative; font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 	.of-anat.is-in .of-seg::before { transform: scaleX(1); }
 
-	/* lejek algorytmu */
 	.of-step { position: relative; opacity: 0; transform: translateY(16px); transition: opacity .6s var(--d), transform .6s var(--d); }
 	.of-funnel.is-in .of-step { opacity: 1; transform: none; }
 	@media (min-width: 640px) { .of-step:not(:last-child)::after { content: '→'; position: absolute; right: -14px; top: 50%; translate: 0 -50%; color: var(--color-orange); font-weight: 700; z-index: 2; } }

@@ -2,10 +2,12 @@
  * Mały konwerter Markdown → HTML dla klocków „Tekst” z panelu.
  * Obsługuje: ## / ### nagłówki, akapity, listy „- ”, **pogrubienie**, *kursywę*, [link](adres).
  */
+import { nbsp } from './typo';
+
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
 const inline = (s: string) =>
-	esc(s)
+	nbsp(esc(s))
 		.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
 		.replace(/(^|[^*])\*(?!\s)(.+?)\*/g, '$1<em>$2</em>')
 		.replace(/\[([^\]]+)\]\(((?:https?:\/\/|\/|#|mailto:)[^)\s]*)\)/g, '<a href="$2">$1</a>');

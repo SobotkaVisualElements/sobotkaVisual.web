@@ -1,0 +1,391 @@
+{
+  "order": 2,
+  "name": "Kampania wideo",
+  "seoTitle": "Kampania wideo: klip reklamowy + seria rolek | Opole",
+  "seoDesc": "Klip reklamowy 30–45 s i seria 12 rolek, które niosą go przez kolejne tygodnie. Scenariusz i storyboard przed produkcją. Kampania premierowa od 7 400 zł netto.",
+  "service": "Produkcja klipu reklamowego i serii rolek",
+  "pdf": "/oferty/SVC_Propozycja_Kampania_Wideo.pdf",
+  "pkg": "pro",
+  "hero": {
+    "eyebrow": "Propozycja współpracy · Kampania wideo",
+    "title": "Produkt, którego",
+    "titleBold": "nikt nie przewija.",
+    "lead": "Główny klip reklamowy i seria rolek, które niosą go przez kolejne tygodnie — wszędzie tam, gdzie są Twoi klienci.",
+    "align": "lewo",
+    "thumbs": false
+  },
+  "intro": {
+    "eyebrow": "Zanim zaczniemy",
+    "title": "Ludzie nie kupują produktu.",
+    "titleLight": "Kupują to, kim się z nim stają.",
+    "text": "Pierwsze wrażenie powstaje dziś na ekranie telefonu, między jednym przewinięciem a drugim.\n\nTwój produkt może być najlepszy w swojej kategorii. Ale jeśli na ekranie wygląda jak wszystko inne, klient nie będzie tego sprawdzał.\n\nTa propozycja jest o tym, żeby te dwie sekundy pracowały na Ciebie: jeden dopracowany klip, który pokazuje, kim jesteś, i seria rolek, która przypomina o tym tak długo, aż klient zapamięta.",
+    "signature": "Krzysztof Sobotka",
+    "signatureRole": "Sobotka Visual Creations · Opole",
+    "align": "lewo"
+  },
+  "become": {
+    "eyebrow": "Kim się stajesz",
+    "title": "Marka,",
+    "titleLight": "którą się poleca.",
+    "lead": "Dobra reklama nie krzyczy „kup”. Sprawia, że klient sam chce o Tobie opowiedzieć.",
+    "items": [
+      {
+        "t": "Profesjonalny odbiór",
+        "d": "Klient ocenia jakość produktu po tym, jak go pokazujesz. Dopracowany obraz mówi: tu nic nie jest przypadkowe."
+      },
+      {
+        "t": "Więcej współprac",
+        "d": "Dystrybutorzy, sklepy i partnerzy dostają gotowy materiał. Łatwiej im Cię sprzedawać, więc robią to chętniej."
+      },
+      {
+        "t": "Nowe kanały",
+        "d": "Ten sam klip trafia na stronę, do reklam płatnych, na targi, ekran w punkcie i do prezentacji handlowej."
+      },
+      {
+        "t": "Spokojna głowa",
+        "d": "Jedna produkcja daje materiał na miesiące. Nie musisz co tydzień wymyślać, co opublikować."
+      }
+    ],
+    "punch": "Konkurencja pokazuje zdjęcie produktu. Ty pokażesz, jak zmienia dzień klienta.",
+    "align": "lewo"
+  },
+  "stats": {
+    "eyebrow": "Liczby, które grają na Ciebie",
+    "title": "Klient chce zobaczyć,",
+    "titleLight": "zanim kupi.",
+    "note": "To dane o rynku, nie obietnice wyników. Pokazują, gdzie zapadają decyzje Twoich klientów.",
+    "items": [
+      {
+        "v": 85,
+        "suf": "%",
+        "d": "ludzi mówi, że film przekonał ich do zakupu produktu lub usługi.",
+        "src": "Wyzowl, za: SocialPilot"
+      },
+      {
+        "v": 63,
+        "suf": "%",
+        "d": "konsumentów woli obejrzeć krótki film o produkcie niż czytać opis czy instrukcję.",
+        "src": "Wyzowl, za: SocialPilot"
+      },
+      {
+        "v": 83,
+        "suf": "%",
+        "d": "marketerów mówi, że wideo bezpośrednio zwiększyło ich sprzedaż.",
+        "src": "Wyzowl, za: SocialPilot"
+      },
+      {
+        "v": 29,
+        "suf": " mln",
+        "d": "użytkowników YouTube w Polsce. Twoi klienci już tam są.",
+        "src": "DataReportal, „Digital 2025: Poland”, za: Radio Kielce"
+      }
+    ]
+  },
+  "proof": {
+    "eyebrow": "Wyniki, nie obietnice",
+    "title": "Nasze liczby",
+    "titleLight": "na tle reszty.",
+    "lead": "Wyniki z realnych realizacji, ze statystyk klientów. Tło porównania pochodzi z publicznych danych — bez naciągania.",
+    "charts": [
+      {
+        "title": "Klikalność miniatur (CTR)",
+        "sub": "Ile osób, którym YouTube pokazał miniaturę, kliknęło w film.",
+        "unit": "%",
+        "max": 24,
+        "source": "YouTube Help „Wyświetlenia i CTR” (zakres 2–10%); YouTube Studio kanału klienta.",
+        "bars": [
+          {
+            "label": "Typowy CTR na YouTube (połowa kanałów)",
+            "value": 10,
+            "from": 2,
+            "to": 10,
+            "note": "zakres podawany przez YouTube"
+          },
+          {
+            "label": "Kanał Przemysława Langiera · 1. godzina",
+            "value": 21,
+            "highlight": true
+          },
+          {
+            "label": "Kanał Przemysława Langiera · 2.–3. godzina",
+            "value": 15,
+            "highlight": true
+          },
+          {
+            "label": "Kanał Przemysława Langiera · później",
+            "value": 9,
+            "display": "ok. 9%"
+          }
+        ]
+      },
+      {
+        "title": "Ile razy klient zobaczy Twoją markę",
+        "sub": "Liczba gotowych materiałów z jednej produkcji.",
+        "unit": "",
+        "max": 125,
+        "source": "zakres ofert SVC 2026",
+        "bars": [
+          {
+            "label": "Pojedynczy spot reklamowy",
+            "value": 1
+          },
+          {
+            "label": "Kampania premierowa (klip + 12 rolek)",
+            "value": 13,
+            "highlight": true
+          },
+          {
+            "label": "Kampania w PRO · 6 miesięcy",
+            "value": 119,
+            "highlight": true,
+            "note": "klip główny + 22 materiały wideo + 48 rolek + 48 grafik"
+          }
+        ]
+      }
+    ],
+    "deltaLine": false,
+    "align": "lewo"
+  },
+  "inside": {
+    "eyebrow": "Jeden klip, wiele miejsc",
+    "title": "Jedna historia.",
+    "titleLight": "Opowiedziana wszędzie.",
+    "lead": "Klip główny buduje wrażenie. Rolki powtarzają je z różnych stron — bo klient rzadko kupuje po pierwszym kontakcie.",
+    "items": [
+      {
+        "n": "01",
+        "t": "Problem",
+        "d": "sytuacja, w której klient rozpoznaje siebie"
+      },
+      {
+        "n": "02",
+        "t": "Pokaz",
+        "d": "produkt w działaniu"
+      },
+      {
+        "n": "03",
+        "t": "Detal",
+        "d": "zbliżenie, które buduje wartość"
+      },
+      {
+        "n": "04",
+        "t": "Pytanie klienta",
+        "d": "odpowiedź na to, o co ludzie pytają"
+      },
+      {
+        "n": "05",
+        "t": "Kulisy",
+        "d": "ludzie i miejsce, w którym powstaje"
+      },
+      {
+        "n": "06",
+        "t": "Porównanie",
+        "d": "przed i po"
+      },
+      {
+        "n": "07",
+        "t": "Zastosowanie",
+        "d": "jeden dzień z produktem"
+      },
+      {
+        "n": "08",
+        "t": "Oferta",
+        "d": "jasne wezwanie do działania"
+      }
+    ],
+    "align": "lewo",
+    "cardEyebrow": "Klip główny · 30–45 s · poziom i pion",
+    "cardTitle": "Wizytówka,",
+    "cardTitleLight": "która sprzedaje.",
+    "cardText": "Pokazuje, kim jesteś i co zmieniasz w życiu klienta. Pracuje na stronie, w reklamie płatnej, na targach i w prezentacji handlowej.",
+    "listEyebrow": "Seria rolek · przykładowe tematy"
+  },
+  "special": {
+    "kind": "anatomia",
+    "eyebrow": "Anatomia 45 sekund",
+    "title": "Każda sekunda",
+    "titleLight": "ma swoje zadanie.",
+    "lead": "Piękno bierze się z proporcji. W reklamie liczy się nie to, ile pokażesz, ale w jakiej kolejności.",
+    "timeline": [
+      {
+        "sec": 3,
+        "time": "0–3 s",
+        "label": "Haczyk",
+        "desc": "Obraz albo zdanie, które zatrzymuje kciuk. Nie zaczynamy od logo — logo nikogo nie zatrzymuje.",
+        "highlight": false
+      },
+      {
+        "sec": 9,
+        "time": "3–12 s",
+        "label": "Problem",
+        "desc": "Sytuacja, w której klient rozpoznaje siebie. Dopiero wtedy zaczyna słuchać.",
+        "highlight": false
+      },
+      {
+        "sec": 20,
+        "time": "12–32 s",
+        "label": "Produkt w akcji",
+        "desc": "Nie lista cech, tylko zmiana: jak wygląda dzień z Twoim produktem.",
+        "highlight": true
+      },
+      {
+        "sec": 8,
+        "time": "32–40 s",
+        "label": "Dowód",
+        "desc": "Detal, liczba albo opinia — coś, co zamienia „ładne” w „wiarygodne”.",
+        "highlight": false
+      },
+      {
+        "sec": 5,
+        "time": "40–45 s",
+        "label": "Wezwanie",
+        "desc": "Jedno konkretne działanie. Jedno, nie pięć.",
+        "highlight": false
+      }
+    ],
+    "cards": [
+      {
+        "k": "Krok 1",
+        "t": "Brief",
+        "d": "Produkt, klient, miejsca emisji i jedno zdanie, które ma zostać w głowie."
+      },
+      {
+        "k": "Krok 2",
+        "t": "Scenariusz i storyboard",
+        "d": "Rozpisujemy klip sekunda po sekundzie i tematy rolek. Akceptujesz plan przed produkcją."
+      },
+      {
+        "k": "Krok 3",
+        "t": "Produkcja",
+        "d": "Animacja, ruch na zdjęciach produktu albo montaż Twoich nagrań — dobieramy do produktu i budżetu."
+      },
+      {
+        "k": "Krok 4",
+        "t": "Premiera i seria",
+        "d": "Klip startuje, a rolki wychodzą według harmonogramu przez kolejne tygodnie."
+      }
+    ]
+  },
+  "opinie": {
+    "eyebrow": "Opinie",
+    "title": "Nie musisz wierzyć",
+    "titleLight": "nam na słowo."
+  },
+  "projects": {
+    "show": true,
+    "eyebrow": "Realizacje",
+    "title": "Zobacz,",
+    "titleLight": "jak to wygląda w praktyce."
+  },
+  "faq": {
+    "eyebrow": "Pytania, których jeszcze nie zadałeś",
+    "title": "Odpowiadamy,",
+    "titleLight": "zanim zapytasz.",
+    "items": [
+      {
+        "q": "Czy musimy cokolwiek nagrywać?",
+        "a": "Nie zawsze. Klip może powstać w całości z animacji albo z ruchu na zdjęciach produktu. Jeśli macie nagrania — wykorzystamy je."
+      },
+      {
+        "q": "Po co rolki, skoro mamy klip?",
+        "a": "Klip to wizytówka, rolki to codzienna obecność. Klient zwykle musi zobaczyć markę kilka razy, zanim kupi."
+      },
+      {
+        "q": "Gdzie to wszystko publikować?",
+        "a": "Ustalamy to w briefie: strona, social media, reklama płatna, targi, ekran w punkcie. Formaty dobieramy do miejsc."
+      },
+      {
+        "q": "Jak sprawdzimy, czy działa?",
+        "a": "Rolki to też test. Różne pierwsze sekundy, ten sam produkt — po kilku tygodniach dane pokazują, co sprzedaje najlepiej."
+      },
+      {
+        "q": "Do kogo należą materiały?",
+        "a": "Gotowe materiały są Twoje po zapłacie. Publikujesz je, gdzie chcesz i jak długo chcesz."
+      },
+      {
+        "q": "Ile to zajmie mojego czasu?",
+        "a": "Brief, akceptacja scenariusza i akceptacja gotowego materiału. Nie musisz znać się na montażu."
+      }
+    ],
+    "align": "lewo"
+  },
+  "doubts": {
+    "eyebrow": "Wątpliwości",
+    "title": "Każde „ale” zasługuje",
+    "titleLight": "na uczciwą odpowiedź.",
+    "items": [
+      {
+        "q": "„Mamy już zdjęcia produktu.”",
+        "a": "To dobry punkt wyjścia. Zdjęcie pokazuje, jak produkt wygląda. Wideo pokazuje, co zmienia — a kupuje się to drugie."
+      },
+      {
+        "q": "„Reklama to koszt.”",
+        "a": "Koszt jest wtedy, gdy materiał żyje tydzień. Klip i seria rolek pracują miesiącami: na stronie, w kampaniach, u partnerów."
+      },
+      {
+        "q": "„Nagramy to telefonem.”",
+        "a": "Możecie. Tylko że klient porówna Was z marką, która tego nie zrobiła — i nie powie, dlaczego wybrał ją."
+      },
+      {
+        "q": "„AI zrobi to taniej.”",
+        "a": "Może szybciej. Ale klienci coraz lepiej rozpoznają generowane treści i coraz mniej im ufają. U nas każdą klatkę układa człowiek."
+      },
+      {
+        "q": "„Nie wiemy, czy to zadziała.”",
+        "a": "Dlatego rolki wychodzą seriami. Każda to mały test, a dane po kilku tygodniach mówią więcej niż obietnice."
+      }
+    ],
+    "callText": "Masz pytanie, którego tu nie ma?\nChętnie porozmawiam — zadzwoń albo napisz.",
+    "phone": "668 472 759",
+    "align": "lewo"
+  },
+  "invest": {
+    "eyebrow": "Inwestycja",
+    "title": "Raz",
+    "titleLight": "albo na stałe.",
+    "cards": [
+      {
+        "tag": "Opcja 1 · jednorazowo",
+        "name": "Kampania premierowa",
+        "price": "od 7 400",
+        "per": "zł netto",
+        "note": "Dokładna wycena po briefie.",
+        "items": [
+          "klip główny 30–45 s (od 3 800 zł)",
+          "seria 12 rolek ze scenariuszami (3 600 zł)",
+          "formaty pod ustalone miejsca emisji"
+        ],
+        "featured": false,
+        "ctaLabel": "Zapytaj o wycenę",
+        "ctaHref": "/generator"
+      },
+      {
+        "tag": "Opcja 2 · najczęściej wybierany",
+        "name": "Kampania w PRO",
+        "price": "7 200",
+        "per": "zł netto / mies.",
+        "note": "Min. 6 miesięcy · klip główny w 1. miesiącu zamiast 2 z 4 materiałów wideo.",
+        "items": [
+          "4 materiały wideo",
+          "8 krótkich form pionowych",
+          "8 grafik i miniatur",
+          "3 nowe elementy animowane",
+          "rozwijany system graficzny",
+          "harmonogram publikacji i raport"
+        ],
+        "featured": true,
+        "ctaLabel": "Skonfiguruj PRO",
+        "ctaHref": "/generator?pakiet=pro"
+      }
+    ],
+    "footnote": "Po pół roku masz klip główny, 22 materiały wideo, 48 rolek i 48 grafik w jednym, spójnym stylu."
+  },
+  "final": {
+    "eyebrow": "Następny krok",
+    "title": "Daj produktowi",
+    "titleBold": "scenę.",
+    "lead": "Pierwszy krok to 30 minut rozmowy o produkcie i kliencie. Wyjdziesz z niej z pomysłem na klip — nawet jeśli nie zdecydujesz się od razu.",
+    "cta": "Skonfiguruj pakiet PRO",
+    "align": "lewo"
+  }
+}

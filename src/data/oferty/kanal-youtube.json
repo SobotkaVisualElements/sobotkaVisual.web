@@ -1,0 +1,376 @@
+{
+  "order": 3,
+  "name": "Kanał na YouTube",
+  "seoTitle": "Kanał na YouTube pod klucz: oprawa, montaż, algorytm | Opole",
+  "seoDesc": "Identyfikacja kanału, montaż odcinków, shorty, miniatury i opieka nad algorytmem. Od rozmowy do premiery w miesiąc. Fundament od 3 500 zł netto, produkcja w pakiecie PRO.",
+  "service": "Prowadzenie i produkcja kanału YouTube",
+  "pdf": "/oferty/SVC_Propozycja_Kanal.pdf",
+  "pkg": "pro",
+  "hero": {
+    "eyebrow": "Propozycja współpracy · Kanał na YouTube i w social mediach",
+    "title": "Twój kanał.",
+    "titleBold": "Twoje zasady.",
+    "lead": "Identyfikacja wizualna, montaż na YouTube i social media oraz stała opieka nad kanałami — razem z wiedzą o tym, jak działa algorytm.",
+    "align": "lewo",
+    "thumbs": true
+  },
+  "intro": {
+    "eyebrow": "Zanim zaczniemy",
+    "title": "Wykorzystaj falę",
+    "titleLight": "i wybij się w internecie.",
+    "text": "Coraz więcej ludzi szuka rozmów, komentarzy i programów w internecie. To dobry moment, żeby mieć własny kanał.\n\nNie musisz czekać, aż ktoś zaprosi Cię do studia. Własny kanał to miejsce, w którym mówisz pełnym głosem, w swoim tempie, do ludzi, którzy przyszli właśnie do Ciebie.\n\nTy przynosisz treść i swoją twarz. My zajmujemy się resztą: oprawą, montażem, publikacją i tym, żeby widzowie zostawali do końca.",
+    "signature": "Krzysztof Sobotka",
+    "signatureRole": "Sobotka Visual Creations · Opole",
+    "align": "lewo"
+  },
+  "become": {
+    "eyebrow": "Kim się stajesz",
+    "title": "Zostań",
+    "titleLight": "twórcą.",
+    "lead": "Nie chodzi o to, żeby mieć kanał. Chodzi o to, żeby ludzie na niego wracali — a marki chciały na nim być.",
+    "items": [
+      {
+        "t": "Profesjonalny odbiór",
+        "d": "Spójna oprawa sprawia, że od pierwszego kadru widać przemyślany projekt, a nie przypadkowe nagranie."
+      },
+      {
+        "t": "Więcej współprac",
+        "d": "Marki szukają twórców, przy których ich logo dobrze wygląda. Dopracowany kanał to gotowa propozycja dla partnerów."
+      },
+      {
+        "t": "Własny kanał komunikacji",
+        "d": "Mówisz wtedy, kiedy chcesz, i tyle, ile chcesz. Bez skracania i bez cudzej interpretacji."
+      },
+      {
+        "t": "Spokojna głowa",
+        "d": "Montaż, miniatury, harmonogram i publikacja przestają być Twoim zmartwieniem. Ty nagrywasz — reszta dzieje się sama."
+      }
+    ],
+    "punch": "Większość kanałów publikuje surowe nagrania. Twój będzie wyglądał jak program.",
+    "align": "lewo"
+  },
+  "stats": {
+    "eyebrow": "Liczby, które grają na Ciebie",
+    "title": "Widzowie już tam są.",
+    "titleLight": "Pytanie, czy oglądają Ciebie.",
+    "note": "To dane o rynku, nie obietnice wyników. Pokazują, gdzie zapadają decyzje Twoich klientów.",
+    "items": [
+      {
+        "v": 29,
+        "suf": " mln",
+        "d": "użytkowników YouTube w Polsce — ponad trzy czwarte mieszkańców kraju.",
+        "src": "DataReportal, „Digital 2025: Poland”, za: Radio Kielce"
+      },
+      {
+        "v": 84.2,
+        "suf": "%",
+        "d": "polskich internautów w zasięgu reklam na YouTube.",
+        "src": "DataReportal, „Digital 2025: Poland”, za: Radio Kielce"
+      },
+      {
+        "v": 53,
+        "suf": " dni",
+        "d": "tyle zajęło Kanałowi Zero zdobycie miliona subskrypcji. Polacy chcą oglądać programy w sieci.",
+        "src": "android.com.pl, 24.03.2024"
+      },
+      {
+        "v": 3,
+        "suf": " mld",
+        "d": "wyszukiwań miesięcznie. Dobry odcinek znajduje widzów jeszcze długo po premierze.",
+        "src": "Radio Kielce (dane globalne)"
+      }
+    ]
+  },
+  "proof": {
+    "eyebrow": "Wyniki, nie obietnice",
+    "title": "Nasze liczby",
+    "titleLight": "na tle reszty.",
+    "lead": "Wyniki z realnych realizacji, ze statystyk klientów. Tło porównania pochodzi z publicznych danych — bez naciągania.",
+    "charts": [
+      {
+        "title": "Klikalność miniatur (CTR)",
+        "sub": "Ile osób, którym YouTube pokazał miniaturę, kliknęło w film.",
+        "unit": "%",
+        "max": 24,
+        "source": "YouTube Help „Wyświetlenia i CTR” (zakres 2–10%); YouTube Studio kanału klienta.",
+        "bars": [
+          {
+            "label": "Typowy CTR na YouTube (połowa kanałów)",
+            "value": 10,
+            "from": 2,
+            "to": 10,
+            "note": "zakres podawany przez YouTube"
+          },
+          {
+            "label": "Kanał Przemysława Langiera · 1. godzina",
+            "value": 21,
+            "highlight": true
+          },
+          {
+            "label": "Kanał Przemysława Langiera · 2.–3. godzina",
+            "value": 15,
+            "highlight": true
+          },
+          {
+            "label": "Kanał Przemysława Langiera · później",
+            "value": 9,
+            "display": "ok. 9%"
+          }
+        ]
+      },
+      {
+        "title": "Pół roku produkcji kanału",
+        "sub": "Co powstaje w 6 miesięcy pakietu PRO.",
+        "unit": "",
+        "max": 52,
+        "source": "zakres pakietu PRO",
+        "bars": [
+          {
+            "label": "Surowe nagranie bez montażu",
+            "value": 0,
+            "display": "0 dodatków"
+          },
+          {
+            "label": "Odcinki z pełnym montażem",
+            "value": 24,
+            "highlight": true
+          },
+          {
+            "label": "Shorty z odcinków",
+            "value": 48,
+            "highlight": true
+          },
+          {
+            "label": "Miniatury i grafiki",
+            "value": 48,
+            "highlight": true
+          }
+        ]
+      }
+    ],
+    "deltaLine": false,
+    "align": "lewo"
+  },
+  "inside": {
+    "eyebrow": "Co robimy",
+    "title": "Trzy etapy.",
+    "titleLight": "Jeden kanał.",
+    "lead": "Najpierw tożsamość, potem rytm, na końcu wzrost. W tej kolejności — bo bez fundamentu każdy odcinek zaczyna się od zera.",
+    "items": [
+      {
+        "n": "01",
+        "t": "Fundament: identyfikacja kanału",
+        "d": "Animowany ident i czołówka · intro, outro i przejścia · belki z nazwiskami i plansze · szablon miniatur · awatary i banery na platformy."
+      },
+      {
+        "n": "02",
+        "t": "Co miesiąc: produkcja",
+        "d": "4 odcinki — montaż, napisy, dźwięk, kolor · 8 krótkich form z odcinków · 8 grafik i miniatur · 3 nowe elementy animowane · rozwijany system graficzny."
+      },
+      {
+        "n": "03",
+        "t": "Na bieżąco: opieka i algorytm",
+        "d": "Harmonogram publikacji · tytuły, opisy, rozdziały · testy miniatur w YouTube Studio · analiza utrzymania widzów · raport miesięczny z wnioskami."
+      }
+    ],
+    "align": "lewo"
+  },
+  "special": {
+    "kind": "algorytm",
+    "eyebrow": "Algorytm",
+    "title": "Algorytm to matematyka.",
+    "titleLight": "A my ją rozumiemy.",
+    "lead": "YouTube pokazuje filmy, które ludzie klikają, oglądają do końca i do których wracają. Nie ma w tym magii — są dane, które da się czytać i na które da się pracować.",
+    "steps": [
+      {
+        "t": "Short",
+        "d": "zatrzymuje uwagę"
+      },
+      {
+        "t": "Miniatura",
+        "d": "składa obietnicę"
+      },
+      {
+        "t": "Odcinek",
+        "d": "dotrzymuje jej"
+      },
+      {
+        "t": "Subskrypcja",
+        "d": "widz zostaje"
+      },
+      {
+        "t": "Powrót",
+        "d": "w kolejnym tygodniu"
+      }
+    ],
+    "cards": [
+      {
+        "k": "",
+        "t": "Klikalność",
+        "d": "Miniatura i tytuł to obietnica. Projektujemy je razem z odcinkiem, a nie po nim."
+      },
+      {
+        "k": "",
+        "t": "Utrzymanie",
+        "d": "Pierwsze 30 sekund decyduje o reszcie. Montaż usuwa wszystko, co nie prowadzi dalej."
+      },
+      {
+        "k": "",
+        "t": "Zadowolenie",
+        "d": "Widz, który nie żałuje straconego czasu, wraca. To działa zawsze."
+      },
+      {
+        "k": "",
+        "t": "Regularność",
+        "d": "Stały dzień i godzina budują nawyk. Harmonogram pilnujemy my."
+      }
+    ],
+    "title2": "Od rozmowy do premiery",
+    "title2Light": "w miesiąc.",
+    "cards2": [
+      {
+        "k": "Tydzień 1",
+        "t": "Rozmowa i brief",
+        "d": "Format, ton, nazwa, rytm publikacji. Ustalamy stałe cykle, żeby nigdy nie zabrakło tematów."
+      },
+      {
+        "k": "Tydzień 2–3",
+        "t": "Identyfikacja i pilot",
+        "d": "Powstaje oprawa kanału i pierwszy odcinek. Poprawiamy, aż poczujesz, że to Twój kanał."
+      },
+      {
+        "k": "Tydzień 4",
+        "t": "Premiera",
+        "d": "Pierwszy odcinek i seria krótkich form, które niosą go przez cały tydzień."
+      },
+      {
+        "k": "Miesiąc 2–6",
+        "t": "Rytm i wzrost",
+        "d": "Stały harmonogram, raport co miesiąc i korekty oparte na danych."
+      }
+    ],
+    "note": "**Twój czas:** Ty nagrywasz i akceptujesz. Resztę bierzemy na siebie."
+  },
+  "opinie": {
+    "eyebrow": "Opinie",
+    "title": "Nie musisz wierzyć",
+    "titleLight": "nam na słowo."
+  },
+  "projects": {
+    "show": true,
+    "eyebrow": "Realizacje",
+    "title": "Zobacz,",
+    "titleLight": "jak to wygląda w praktyce."
+  },
+  "faq": {
+    "eyebrow": "Pytania, których jeszcze nie zadałeś",
+    "title": "Odpowiadamy,",
+    "titleLight": "zanim zapytasz.",
+    "items": [
+      {
+        "q": "Co, jeśli skończą mi się tematy?",
+        "a": "Kanał opieramy na stałych cyklach: rubryka, gość, komentarz tygodnia. Projektujemy je na starcie, więc zawsze wiesz, co nagrywasz."
+      },
+      {
+        "q": "Czy muszę być wszędzie?",
+        "a": "Nie. Wybieramy dwie, trzy platformy, na których są Twoi widzowie. Z jednego nagrania powstaje komplet na każdą z nich."
+      },
+      {
+        "q": "A jeśli nagram słabszy odcinek?",
+        "a": "Od tego jest montaż. Tempo, cięcia, grafika i napisy sprawiają, że słabszy dzień wygląda dobrze."
+      },
+      {
+        "q": "Do kogo należą materiały?",
+        "a": "Gotowe materiały są Twoje po zapłacie. System oprawy działa na licencji czasowej i po 12 miesiącach przechodzi na Ciebie w całości."
+      },
+      {
+        "q": "Ile to zajmie mojego czasu?",
+        "a": "Nagranie i jedna akceptacja w tygodniu. Nie uczysz się montażu ani statystyk YouTube Studio."
+      },
+      {
+        "q": "Czy kanał może na siebie zarobić?",
+        "a": "Zasięg otwiera drzwi do współprac z markami. Ty dajesz treść, my dbamy o to, żeby wyglądała na wartą ich budżetu."
+      }
+    ],
+    "align": "lewo"
+  },
+  "doubts": {
+    "eyebrow": "Wątpliwości",
+    "title": "Każde „ale” zasługuje",
+    "titleLight": "na uczciwą odpowiedź.",
+    "items": [
+      {
+        "q": "„To dużo pieniędzy.”",
+        "a": "Policz, ile kosztuje Cię dziś godzina nad montażem zamiast nad tym, na czym zarabiasz. Montażysta, grafik, animator, sprzęt, licencje — tu masz to w jednej fakturze."
+      },
+      {
+        "q": "„Mam znajomego, który montuje.”",
+        "a": "Świetnie, jeśli przez pół roku co tydzień znajdzie czas, zna algorytm i nie zniknie przed premierą. Kanał to nie jeden film, tylko system."
+      },
+      {
+        "q": "„AI zrobi to taniej.”",
+        "a": "Może szybciej. Ale widzowie i marki coraz lepiej wyczuwają generowane treści. U nas każdą klatkę układa człowiek — i to jest Twoja przewaga."
+      },
+      {
+        "q": "„Pół roku umowy to długo.”",
+        "a": "Kanał buduje się konsekwentnie. Sześć miesięcy to minimum, żeby widzowie i algorytm zdążyli Cię poznać, a Ty zobaczył realne dane."
+      },
+      {
+        "q": "„A jeśli się nie przyjmie?”",
+        "a": "Co miesiąc dostajesz raport: co działa, co nie i co zmieniamy. Nie czekamy pół roku z korektą."
+      }
+    ],
+    "callText": "Masz pytanie, którego tu nie ma?\nChętnie porozmawiam — zadzwoń albo napisz.",
+    "phone": "668 472 759",
+    "align": "lewo"
+  },
+  "invest": {
+    "eyebrow": "Inwestycja",
+    "title": "Jeden fundament.",
+    "titleLight": "Stały rytm.",
+    "cards": [
+      {
+        "tag": "Etap 1 · jednorazowo",
+        "name": "Fundament — identyfikacja kanału",
+        "price": "od 3 500",
+        "per": "zł netto",
+        "note": "Dokładna wycena po briefie.",
+        "items": [
+          "ident, czołówka, intro i outro",
+          "belki, plansze, przejścia",
+          "szablon miniatur i banery"
+        ],
+        "featured": false,
+        "ctaLabel": "Zapytaj o wycenę",
+        "ctaHref": "/generator"
+      },
+      {
+        "tag": "Etap 2 · najczęściej wybierany",
+        "name": "Produkcja i opieka nad kanałami",
+        "price": "7 200",
+        "per": "zł netto / mies.",
+        "note": "Minimum 6 miesięcy · zakres opieki doprecyzowujemy w umowie.",
+        "items": [
+          "4 materiały wideo",
+          "8 krótkich form pionowych",
+          "8 grafik i miniatur",
+          "3 nowe elementy animowane",
+          "rozwijany system graficzny",
+          "harmonogram publikacji i raport"
+        ],
+        "featured": true,
+        "ctaLabel": "Skonfiguruj PRO",
+        "ctaHref": "/generator?pakiet=pro"
+      }
+    ],
+    "footnote": ""
+  },
+  "final": {
+    "eyebrow": "Następny krok",
+    "title": "Zacznijmy tworzyć",
+    "titleBold": "Twoją społeczność.",
+    "lead": "Pierwszy krok to 30 minut rozmowy. Ustalimy format, rytm i wygląd Twojego kanału. Bez zobowiązań — z konkretnym planem na koniec.",
+    "cta": "Skonfiguruj pakiet PRO",
+    "align": "lewo"
+  }
+}
