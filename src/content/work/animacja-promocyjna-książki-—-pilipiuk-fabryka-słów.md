@@ -20,7 +20,7 @@ layers:
     scale: 112
   - image: /uploads/realizacje/APJW_Przód.png
     depth: 58
-    scale: 112
+    scale: 100
 parallaxStrength: 100
 featured: false
 order: 10
