@@ -14,12 +14,12 @@ cover: ''
 layers:
   - image: /uploads/realizacje/APJW_Tło.png
     depth: 10
-    scale: 112
+    scale: 100
   - image: /uploads/realizacje/APJW_Środek.png
-    depth: 30
-    scale: 112
+    depth: 20
+    scale: 100
   - image: /uploads/realizacje/APJW_Przód.png
-    depth: 40
+    depth: 30
     scale: 100
 parallaxStrength: 100
 featured: true
