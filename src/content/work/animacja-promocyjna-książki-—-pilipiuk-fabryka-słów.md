@@ -16,15 +16,20 @@ layers:
     depth: 10
     scale: 112
   - image: /uploads/realizacje/APJW_Środek.png
-    depth: 45
+    depth: 30
     scale: 112
   - image: /uploads/realizacje/APJW_Przód.png
-    depth: 58
+    depth: 40
     scale: 100
 parallaxStrength: 100
-featured: false
+featured: true
 order: 10
-blocks: []
+blocks:
+  - type: wideo
+    caption: ''
+    youtube: ''
+    file: ''
+    format: '9:16'
 ---
 
 XYZ
