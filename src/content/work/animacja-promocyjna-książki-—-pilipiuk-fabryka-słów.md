@@ -28,7 +28,7 @@ blocks:
   - type: wideo
     caption: ''
     youtube: ''
-    file: ''
+    file: /uploads/realizacje/Andrzej Pilipiuk Jw _Web.mp4
     format: '9:16'
 ---
 
