@@ -1,0 +1,326 @@
+{
+  "name": "Święta 2026 — wideo dla firm",
+  "layout": "kinetyczny",
+  "theme": "swiateczny",
+  "draft": false,
+  "noindex": true,
+  "order": 4,
+  "seoTitle": "Świąteczne wideo dla firm: życzenia, rolki, podsumowanie roku | Opole",
+  "seoDesc": "Animowane życzenia z logo, 6 świątecznych rolek i podsumowanie roku w jednym pakiecie. Zamówienia do 30 listopada, premiera do 15 grudnia. Od 1 490 zł netto.",
+  "service": "Świąteczne wideo dla firm",
+  "pdf": "",
+  "pkg": "pro",
+  "marquee": "Świąteczne życzenia / Rolki / Podsumowanie roku / Kartka wideo",
+  "hero": {
+    "eyebrow": "Oferta świąteczna · zamówienia do 30 listopada",
+    "title": "Święta, które",
+    "titleBold": "klienci zapamiętają.",
+    "lead": "Animowane życzenia z Twoim logo, seria świątecznych rolek i podsumowanie roku w 60 sekund. Ty akceptujesz — my produkujemy. Gotowe do 15 grudnia.",
+    "bgImage": "",
+    "bgVideo": "",
+    "bgOpacity": 20,
+    "sideImage": "",
+    "sideAlt": "",
+    "thumbs": false,
+    "align": "lewo",
+    "chipValue": "15.12",
+    "chipLabel": "premiera przed świętami"
+  },
+  "intro": {
+    "eyebrow": "Zanim zaczniemy",
+    "title": "Grudzień to najgłośniejszy",
+    "titleLight": "miesiąc w social mediach.",
+    "text": "W grudniu życzenia składa każda firma. Większość robi to tak samo: zdjęcie choinki i trzy zdania. Klient przewija i po chwili nie pamięta, od kogo były.\n\nTa oferta jest o tym, żeby Twoje życzenia ktoś obejrzał do końca, udostępnił i zapamiętał. Krótka animacja z Twoim logo, rolki, które niosą świąteczny nastrój przez cały grudzień, i podsumowanie roku, które pokazuje, ile razem zrobiliście.",
+    "signature": "Krzysztof Sobotka",
+    "signatureRole": "Sobotka Visual Creations · Opole",
+    "align": "lewo"
+  },
+  "become": {
+    "eyebrow": "Jak to wygląda",
+    "title": "Od zamówienia",
+    "titleLight": "do premiery w 3 tygodnie.",
+    "lead": "",
+    "items": [
+      {
+        "t": "Tydzień 1 — brief",
+        "d": "15 minut rozmowy: logo, kolory, ton i to, co chcecie powiedzieć klientom. Przesyłacie zdjęcia i nagrania z roku, jeśli macie."
+      },
+      {
+        "t": "Tydzień 2 — produkcja",
+        "d": "Powstają życzenia, rolki i podsumowanie roku. Dostajecie wersję do akceptacji z jedną rundą poprawek."
+      },
+      {
+        "t": "Tydzień 3 — premiera",
+        "d": "Pliki we wszystkich formatach: pion na rolki, poziom na stronę i LinkedIn, kwadrat na posty. Plus plan publikacji na grudzień."
+      }
+    ],
+    "punch": "Ty akceptujesz. Resztę bierzemy na siebie.",
+    "align": "lewo"
+  },
+  "stats": {
+    "eyebrow": "Liczby, które grają na Ciebie",
+    "title": "Grudzień",
+    "titleLight": "to sezon wideo.",
+    "note": "To dane o rynku, nie obietnice wyników. Pokazują, gdzie zapadają decyzje Twoich klientów.",
+    "items": [
+      {
+        "v": 85,
+        "suf": "%",
+        "d": "ludzi mówi, że film przekonał ich do zakupu produktu lub usługi.",
+        "src": "Wyzowl, za: SocialPilot"
+      },
+      {
+        "v": 83,
+        "suf": "%",
+        "d": "marketerów mówi, że wideo bezpośrednio zwiększyło ich sprzedaż.",
+        "src": "Wyzowl, za: SocialPilot"
+      },
+      {
+        "v": 63,
+        "suf": "%",
+        "d": "konsumentów woli krótki film o produkcie niż tekst czy rozmowę handlową.",
+        "src": "Wyzowl, za: SocialPilot"
+      },
+      {
+        "v": 29,
+        "suf": " mln",
+        "d": "użytkowników YouTube w Polsce. Twoi klienci już tam są.",
+        "src": "DataReportal, „Digital 2025: Poland”, za: Radio Kielce"
+      }
+    ]
+  },
+  "proof": {
+    "eyebrow": "Wyniki, nie obietnice",
+    "title": "Nasze liczby",
+    "titleLight": "na tle reszty.",
+    "lead": "Wyniki z realnych realizacji i zakres pakietów. Tło porównania z publicznych danych — bez naciągania.",
+    "charts": [
+      {
+        "title": "Klikalność miniatur (CTR)",
+        "sub": "Ile osób, którym YouTube pokazał miniaturę, kliknęło w film.",
+        "unit": "%",
+        "max": 24,
+        "source": "YouTube Help „Wyświetlenia i CTR” (zakres 2–10%); YouTube Studio kanału klienta.",
+        "bars": [
+          {
+            "label": "Typowy CTR na YouTube (połowa kanałów)",
+            "value": 10,
+            "from": 2,
+            "to": 10,
+            "note": "zakres podawany przez YouTube"
+          },
+          {
+            "label": "Kanał Przemysława Langiera · 1. godzina",
+            "value": 21,
+            "highlight": true
+          },
+          {
+            "label": "Kanał Przemysława Langiera · 2.–3. godzina",
+            "value": 15,
+            "highlight": true
+          },
+          {
+            "label": "Kanał Przemysława Langiera · później",
+            "value": 9,
+            "display": "ok. 9%"
+          }
+        ]
+      },
+      {
+        "title": "Ile materiałów z jednej produkcji",
+        "sub": "Ile razy klient zobaczy Twoją markę w grudniu i później.",
+        "unit": "",
+        "max": 135,
+        "source": "zakres pakietów SVC 2026",
+        "bars": [
+          {
+            "label": "Same życzenia (kartka wideo)",
+            "value": 1
+          },
+          {
+            "label": "Pakiet Święta",
+            "value": 14,
+            "highlight": true,
+            "note": "życzenia + 6 rolek + podsumowanie roku + 6 grafik"
+          },
+          {
+            "label": "Święta + PRO przez 6 miesięcy",
+            "value": 134,
+            "highlight": true,
+            "note": "Pakiet Święta + 24 wideo, 48 rolek, 48 grafik"
+          }
+        ]
+      }
+    ],
+    "deltaLine": false,
+    "align": "lewo"
+  },
+  "inside": {
+    "eyebrow": "Co dostajesz",
+    "title": "Cały grudzień",
+    "titleLight": "w jednej produkcji.",
+    "lead": "Jedna rozmowa, jedna akceptacja — i masz materiał na cały świąteczny sezon.",
+    "items": [
+      {
+        "n": "01",
+        "t": "Animowane życzenia",
+        "d": "15–20 sekund z Twoim logo i kolorami. Pion i poziom."
+      },
+      {
+        "n": "02",
+        "t": "6 świątecznych rolek",
+        "d": "Kulisy, zespół, podziękowania dla klientów — na cały grudzień."
+      },
+      {
+        "n": "03",
+        "t": "Podsumowanie roku",
+        "d": "45–60 sekund z Waszych zdjęć i nagrań. Najmocniejszy materiał na LinkedIn."
+      },
+      {
+        "n": "04",
+        "t": "Grafiki i okładki",
+        "d": "6 grafik i miniatur w świątecznej odsłonie Twojej marki."
+      }
+    ],
+    "align": "lewo"
+  },
+  "special": {
+    "kind": "",
+    "eyebrow": "Dlaczego teraz",
+    "title": "",
+    "titleLight": "",
+    "lead": "",
+    "title2": "Dlaczego listopad,",
+    "title2Light": "a nie grudzień.",
+    "cards2": [
+      {
+        "k": "Termin",
+        "t": "Zamówienia do 30 listopada",
+        "d": "Produkcja trwa 2–3 tygodnie. Zamówienie w grudniu to premiera po świętach."
+      },
+      {
+        "k": "Miejsca",
+        "t": "6 firm w tym sezonie",
+        "d": "Tyle produkcji zrobimy porządnie przed 15 grudnia. Potem zamykamy zapisy."
+      },
+      {
+        "k": "Bonus",
+        "t": "Pakiet Święta w prezencie",
+        "d": "Podpisz PRO od stycznia, a świąteczny pakiet dostajesz gratis."
+      }
+    ],
+    "align": "lewo"
+  },
+  "opinie": {
+    "eyebrow": "Opinie",
+    "title": "Nie musisz wierzyć",
+    "titleLight": "nam na słowo."
+  },
+  "projects": {
+    "show": true,
+    "eyebrow": "Realizacje",
+    "title": "Zobacz,",
+    "titleLight": "jak to wygląda w praktyce."
+  },
+  "faq": {
+    "eyebrow": "Pytania",
+    "title": "Odpowiadamy,",
+    "titleLight": "zanim zapytasz.",
+    "align": "lewo",
+    "items": [
+      {
+        "q": "Czy musimy coś nagrywać?",
+        "a": "Nie. Życzenia powstają z animacji i Waszego logo. Do podsumowania roku wykorzystamy zdjęcia i nagrania, które już macie — nawet z telefonu."
+      },
+      {
+        "q": "Ile to zajmie naszego czasu?",
+        "a": "15 minut briefu i jedna akceptacja. Resztę robimy my."
+      },
+      {
+        "q": "Czy może być wersja po angielsku lub niemiecku?",
+        "a": "Tak. Dodatkowa wersja językowa to +15% do ceny pakietu."
+      },
+      {
+        "q": "Co, jeśli zamówimy po 30 listopada?",
+        "a": "Napisz — jeśli zostanie wolne miejsce, zrobimy. Ale nie obiecamy premiery przed świętami."
+      },
+      {
+        "q": "Do kogo należą materiały?",
+        "a": "Do Was, po zapłacie. Publikujecie je, gdzie chcecie i jak długo chcecie."
+      }
+    ]
+  },
+  "doubts": {
+    "eyebrow": "Wątpliwości",
+    "title": "Każde „ale”",
+    "titleLight": "zasługuje na odpowiedź.",
+    "items": [],
+    "callText": "",
+    "phone": "668 472 759",
+    "align": "lewo"
+  },
+  "invest": {
+    "eyebrow": "Inwestycja",
+    "title": "Wybierz",
+    "titleLight": "swój grudzień.",
+    "cards": [
+      {
+        "tag": "Szybko i elegancko",
+        "name": "Kartka wideo",
+        "price": "1 490",
+        "per": "zł netto",
+        "note": "Jednorazowo. Gotowe w 7 dni roboczych.",
+        "items": [
+          "animowane życzenia 15–20 s z logo",
+          "2 formaty: pion i poziom",
+          "1 runda poprawek"
+        ],
+        "featured": false,
+        "ctaLabel": "Zamawiam kartkę",
+        "ctaHref": "/generator"
+      },
+      {
+        "tag": "Najczęściej wybierany",
+        "name": "Pakiet Święta",
+        "price": "4 900",
+        "per": "zł netto",
+        "note": "Jednorazowo. Osobno te elementy kosztują ok. 6 000 zł.",
+        "items": [
+          "animowane życzenia 15–20 s",
+          "6 świątecznych rolek",
+          "podsumowanie roku 45–60 s",
+          "6 grafik i okładek",
+          "plan publikacji na grudzień"
+        ],
+        "featured": true,
+        "ctaLabel": "Rezerwuję termin",
+        "ctaHref": "/generator"
+      },
+      {
+        "tag": "Najlepsza wartość",
+        "name": "Święta + PRO od stycznia",
+        "price": "7 200",
+        "per": "zł netto / mies.",
+        "note": "Min. 6 miesięcy od stycznia. Pakiet Święta w prezencie (wartość 4 900 zł).",
+        "items": [
+          "Pakiet Święta gratis w grudniu",
+          "od stycznia: 4 wideo, 8 rolek, 8 grafik co miesiąc",
+          "3 nowe elementy animowane co miesiąc",
+          "harmonogram i raport"
+        ],
+        "featured": false,
+        "ctaLabel": "Wybieram PRO",
+        "ctaHref": "/generator?pakiet=pro"
+      }
+    ],
+    "footnote": "Zamówienia do 30 listopada 2026, premiera do 15 grudnia 2026."
+  },
+  "final": {
+    "eyebrow": "Następny krok",
+    "title": "Zarezerwuj",
+    "titleBold": "termin.",
+    "lead": "15 minut rozmowy wystarczy, żeby ustalić życzenia, rolki i datę premiery. W tym sezonie robimy 6 produkcji.",
+    "cta": "Rezerwuję termin",
+    "align": "lewo"
+  }
+}

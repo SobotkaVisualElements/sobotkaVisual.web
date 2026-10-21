@@ -13,6 +13,7 @@ import { opinie } from '../../data/opinie';
 import { getPublishedProjects } from '../../lib/projects';
 import { tx, alignCls } from '../../lib/typo';
 import home from '../../data/home.json';
+import KineticLanding from '../../components/kinetic/KineticLanding.astro';
 
 export function getStaticPaths() {
 	const files = import.meta.glob('../../data/oferty/*.json', { eager: true }) as Record<string, any>;
@@ -45,6 +46,7 @@ const toBars = (bars: any[] = []) => bars.map((b) => ({
 	range: b.from !== undefined && b.from !== null && b.from !== '' && b.to ? [Number(b.from), Number(b.to)] as [number, number] : undefined,
 }));
 const sp: any = o.special ?? {};
+const kinetic = o.layout === 'kinetyczny';
 
 const deltaBlocks = [{
 	type: 'wykres_liniowy', value: 150, prefix: '', suffix: '+', label: 'rolek rekrutacyjnych dla Delta HR w 12 miesięcy',
@@ -74,6 +76,9 @@ const ld = {
 };
 ---
 <BaseLayout title={o.seoTitle} description={o.seoDesc} noindex={!!o.noindex}>
+	{kinetic ? (
+		<KineticLanding o={o} slug={slug!} gen={gen} others={others} projects={projects} withUtm={withUtm} />
+	) : (
 	<div class="of">
 		<!-- HERO -->
 		<section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
@@ -472,6 +477,7 @@ const ld = {
 			</div>
 		)}
 	</div>
+	)}
 
 	<script type="application/ld+json" set:html={JSON.stringify(ld)} />
 </BaseLayout>

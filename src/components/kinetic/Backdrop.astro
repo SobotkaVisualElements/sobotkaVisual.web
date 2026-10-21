@@ -1,0 +1,96 @@
+---
+/*
+ * Tło „za szkłem” dla landingu kinetycznego.
+ * variant="xmas"     — rozmyte świąteczne kształty 3D w kilku planach głębi + padający śnieg
+ * variant="abstract" — miękkie, rozmyte plamy i orbity w kolorach marki (wersja ogólna)
+ * Plany: 1 = blisko (ostre, szybkie), 3 = daleko (mocno rozmyte, wolne). Ruch: postęp strony + kursor.
+ */
+import XmasShape from '../xmas/XmasShape.astro';
+interface Props { variant: 'xmas' | 'abstract' | 'iso' }
+const { variant } = Astro.props;
+const xmas = [
+	{ n: 'choinka', x: 3, y: 10, s: 17, d: 3, r: -8 },
+	{ n: 'gwiazda', x: 84, y: 7, s: 9, d: 1, r: 12 },
+	{ n: 'prezent', x: 80, y: 60, s: 13, d: 2, r: 8 },
+	{ n: 'dzwonek', x: 9, y: 66, s: 10, d: 1, r: -14 },
+	{ n: 'czapka', x: 90, y: 33, s: 8, d: 3, r: 18 },
+	{ n: 'sniezka', x: 38, y: 3, s: 7, d: 2, r: 0 },
+	{ n: 'kometa', x: 55, y: 80, s: 12, d: 3, r: -6 },
+	{ n: 'piernik', x: -2, y: 40, s: 11, d: 2, r: 6 },
+	{ n: 'sanie', x: 62, y: 24, s: 15, d: 3, r: -4 },
+	{ n: 'bombka', x: 27, y: 84, s: 8, d: 1, r: 10 },
+	{ n: 'sniezka', x: 93, y: 86, s: 6, d: 1, r: 20 },
+	{ n: 'choinka', x: 72, y: -6, s: 10, d: 2, r: 6 },
+	{ n: 'gwiazda', x: 20, y: 38, s: 5, d: 3, r: -20 },
+	{ n: 'bombka', x: 46, y: 50, s: 6, d: 3, r: 0 },
+];
+const blobs = [
+	{ x: -8, y: 5, s: 42, c: 'rgba(237,36,78,.22)', d: 3 },
+	{ x: 70, y: 18, s: 36, c: 'rgba(27,5,69,.16)', d: 2 },
+	{ x: 30, y: 70, s: 44, c: 'rgba(160,120,255,.16)', d: 3 },
+	{ x: 82, y: 72, s: 26, c: 'rgba(237,36,78,.16)', d: 1 },
+];
+const flakes = Array.from({ length: 46 }, (_, i) => ({
+	x: (i * 37.7) % 100, s: 2 + ((i * 7) % 5), dur: 9 + ((i * 13) % 11), del: -((i * 5.3) % 18), b: i % 3 === 0 ? 2 : 0, o: 0.35 + ((i * 11) % 6) / 10,
+}));
+---
+<div class:list={['bd', `bd-${variant}`]} aria-hidden="true">
+	{variant === 'iso' ? (
+		<>
+			<div class="bd-isogrid"></div>
+			{[{ x: 6, y: 18, s: 9, d: 3 }, { x: 84, y: 12, s: 7, d: 2 }, { x: 74, y: 70, s: 11, d: 3 }, { x: 12, y: 78, s: 6, d: 1 }, { x: 46, y: 6, s: 5, d: 2 }, { x: 92, y: 46, s: 5, d: 1 }, { x: 30, y: 52, s: 4, d: 3 }].map((b) => (
+				<div class="bd-it" data-bd={[0.34, 0.2, 0.09][b.d - 1]} data-rot="0" style={`left:${b.x}vw;top:${b.y}vh;width:${b.s}vw;--blur:${[1, 4, 9][b.d - 1]}px;--op:${[0.9, 0.7, 0.5][b.d - 1]}`}>
+					<svg viewBox="0 0 100 70" class="bd-cube" style={`filter:blur(var(--blur));opacity:var(--op)`}>
+						<polygon points="50,6 94,28 50,50 6,28" fill="#6d4dff" /><polygon points="6,28 50,50 50,62 6,40" fill="#3a2399" /><polygon points="94,28 50,50 50,62 94,40" fill="#24166b" />
+						<polyline points="6,28 50,6 94,28" fill="none" stroke="#8ff4ff" stroke-width="1.2" />
+					</svg>
+				</div>
+			))}
+			<div class="bd-streaks">{Array.from({ length: 26 }, (_, i) => <i style={`left:${(i * 37.3) % 100}%;animation-duration:${4 + (i % 5)}s;animation-delay:${-((i * 1.7) % 6)}s;height:${18 + (i % 4) * 10}px;opacity:${0.25 + (i % 4) * 0.15}`} />)}</div>
+		</>
+	) : variant === 'xmas' ? (
+		<>
+			{xmas.map((it) => (
+				<div class="bd-it" data-bd={[0.38, 0.22, 0.1][it.d - 1]} data-rot={it.r}
+					style={`left:${it.x}vw;top:${it.y}vh;width:${it.s}vw;--blur:${[1.5, 5, 11][it.d - 1]}px;--op:${[0.95, 0.8, 0.6][it.d - 1]};--fd:${6 + it.d * 2}s;--fl:${(it.x % 5) * -1}s`}>
+					<div class="bd-3d"><XmasShape name={it.n} mode="static" /></div>
+				</div>
+			))}
+			<div class="bd-snow">
+				{flakes.map((f) => <i style={`left:${f.x}%;width:${f.s}px;height:${f.s}px;animation-duration:${f.dur}s;animation-delay:${f.del}s;filter:blur(${f.b}px);opacity:${f.o}`} />)}
+			</div>
+		</>
+	) : (
+		<>
+			{blobs.map((b) => (
+				<div class="bd-it bd-blob" data-bd={[0.3, 0.18, 0.08][b.d - 1]} data-rot="0" style={`left:${b.x}vw;top:${b.y}vh;width:${b.s}vw;--c:${b.c}`}></div>
+			))}
+			<div class="bd-it" data-bd="0.12" data-rot="40" style="left:58vw;top:8vh;width:46vw;--blur:0px;--op:1">
+				<svg viewBox="0 0 200 200" class="bd-orbit"><circle cx="100" cy="100" r="98" /><circle cx="100" cy="100" r="66" /><circle cx="100" cy="100" r="34" /><circle class="o-dot" cx="100" cy="2" r="3" /><circle class="o-dot" cx="166" cy="100" r="2.5" /></svg>
+			</div>
+		</>
+	)}
+</div>
+
+<style is:global>
+	.bd { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+	.bd-it { position: absolute; will-change: transform; }
+	.bd-3d { filter: blur(var(--blur)) drop-shadow(0 18px 24px rgba(60,30,20,.18)); opacity: var(--op); transform-style: preserve-3d; animation: bd-float var(--fd) var(--fl) ease-in-out infinite; }
+	.bd-3d svg { width: 100%; height: auto; display: block; }
+	@keyframes bd-float { 0%,100% { transform: perspective(600px) rotateY(-14deg) rotateX(6deg) translateY(0); } 50% { transform: perspective(600px) rotateY(16deg) rotateX(-4deg) translateY(-14px); } }
+	.bd-blob { aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 40%, var(--c), transparent 68%); filter: blur(30px); }
+	.bd-orbit { width: 100%; fill: none; stroke: rgba(27,5,69,.08); stroke-width: .6; }
+	.kt-dark .bd-orbit { stroke: rgba(255,255,255,.08); }
+	.bd-orbit .o-dot { fill: var(--acc); stroke: none; }
+	.bd-snow i { position: absolute; top: -10px; border-radius: 50%; background: #fff; box-shadow: 0 0 6px rgba(255,255,255,.9); animation: bd-snow linear infinite; }
+	@keyframes bd-snow { to { transform: translate3d(40px, 110vh, 0); } }
+	.bd-isogrid { position: absolute; left: -20%; right: -20%; bottom: -10%; height: 70%; opacity: .5;
+		background-image: linear-gradient(30deg, rgba(143,244,255,.09) 1px, transparent 1px), linear-gradient(150deg, rgba(143,244,255,.09) 1px, transparent 1px);
+		background-size: 64px 37px; mask-image: linear-gradient(to top, #000 10%, transparent 85%); -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 85%); }
+	.bd-cube { width: 100%; display: block; animation: bd-bob 7s ease-in-out infinite; }
+	@keyframes bd-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+	.bd-streaks i { position: absolute; bottom: -40px; width: 2px; border-radius: 2px; background: linear-gradient(to top, transparent, #b48bff, #8ff4ff); animation: bd-streak linear infinite; }
+	@keyframes bd-streak { to { transform: translateY(-115vh); } }
+	@media (max-width: 767px) { .bd-it { width: calc(var(--mw, 1) * 22vw) !important; } .bd-snow i:nth-child(2n) { display: none; } }
+	@media (prefers-reduced-motion: reduce) { .bd-3d, .bd-snow i, .bd-cube, .bd-streaks i { animation: none; } }
+</style>

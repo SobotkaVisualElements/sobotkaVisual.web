@@ -1,0 +1,418 @@
+{
+  "order": 10,
+  "name": "Wzór — landing izometryczny",
+  "seoTitle": "Dział wideo dla firmy w abonamencie — Pakiet PRO | Opole",
+  "seoDesc": "Wideo, rolki, grafika i animacja co miesiąc, w stałym rytmie — bez rekrutacji, sprzętu i szukania ludzi. Pakiet PRO od 7 200 zł netto / mies. Opole i cała Polska.",
+  "service": "Abonamentowa produkcja wideo i social media dla firm",
+  "pdf": "/oferty/SVC_Propozycja_Pakiet_PRO.pdf",
+  "pkg": "pro",
+  "hero": {
+    "eyebrow": "Propozycja współpracy · Pakiet PRO",
+    "title": "Twój dział",
+    "titleBold": "wideo.",
+    "lead": "Pełne zaplecze działu marketingu: wideo, rolki, grafika i animacja w stałym rytmie — bez rekrutacji, sprzętu i szukania ludzi.",
+    "align": "lewo",
+    "thumbs": false,
+    "chipValue": "21%",
+    "chipLabel": "CTR miniatur w 1. godzinie"
+  },
+  "intro": {
+    "eyebrow": "Zanim zaczniemy",
+    "title": "Najdroższy materiał to",
+    "titleLight": "ten, który nie powstał.",
+    "text": "Większość firm nie ma problemu z pomysłami. Ma problem z tym, że pomysły czekają.\n\nAż ktoś znajdzie czas. Aż grafik wróci z urlopu. Aż szef zatwierdzi. W tym czasie konkurencja publikuje — i to ją klienci zapamiętują.\n\nPakiet PRO odwraca tę kolejność. Najpierw jest rytm — co miesiąc, w terminie. Pomysły wreszcie mają gdzie trafić.",
+    "signature": "Krzysztof Sobotka",
+    "signatureRole": "Sobotka Visual Creations · Opole",
+    "align": "lewo"
+  },
+  "become": {
+    "eyebrow": "Kim się stajesz",
+    "title": "Pokaż swój potencjał",
+    "titleLight": "w internecie.",
+    "lead": "Klient nie widzi Twojego zespołu. Widzi to, co publikujesz — i po tym ocenia, z kim ma do czynienia.",
+    "items": [
+      {
+        "t": "Profesjonalny odbiór",
+        "d": "Jeden styl w każdym poście, filmie i rolce. Klient czuje, że za marką stoi porządek, i szybciej jej ufa."
+      },
+      {
+        "t": "Więcej współprac",
+        "d": "Partnerzy, media i kontrahenci chętniej rozmawiają z firmą, która dobrze wygląda i regularnie się pokazuje."
+      },
+      {
+        "t": "Nowe kanały",
+        "d": "YouTube, Instagram, TikTok, LinkedIn, strona — z jednej produkcji obsługujesz wszystkie."
+      },
+      {
+        "t": "Spokojna głowa",
+        "d": "Nie szukasz montażysty, grafika i animatora. Masz jedną osobę kontaktową i jeden plan."
+      }
+    ],
+    "punch": "Konkurencja publikuje, kiedy ma czas. Ty publikujesz co tydzień — i klienci zaczynają na to czekać.",
+    "align": "lewo"
+  },
+  "stats": {
+    "eyebrow": "Liczby, które grają na Ciebie",
+    "title": "Sprzedaż zaczyna się",
+    "titleLight": "od wideo.",
+    "note": "To dane o rynku, nie obietnice wyników. Pokazują, gdzie zapadają decyzje Twoich klientów.",
+    "items": [
+      {
+        "v": 85,
+        "suf": "%",
+        "d": "ludzi mówi, że film przekonał ich do zakupu produktu lub usługi.",
+        "src": "Wyzowl, za: SocialPilot"
+      },
+      {
+        "v": 83,
+        "suf": "%",
+        "d": "marketerów mówi, że wideo bezpośrednio zwiększyło ich sprzedaż.",
+        "src": "Wyzowl, za: SocialPilot"
+      },
+      {
+        "v": 63,
+        "suf": "%",
+        "d": "konsumentów woli krótki film o produkcie niż tekst czy rozmowę handlową.",
+        "src": "Wyzowl, za: SocialPilot"
+      },
+      {
+        "v": 29,
+        "suf": " mln",
+        "d": "użytkowników YouTube w Polsce. Twoi klienci już tam są.",
+        "src": "DataReportal, „Digital 2025: Poland”, za: Radio Kielce"
+      }
+    ]
+  },
+  "proof": {
+    "eyebrow": "Wyniki, nie obietnice",
+    "title": "Nasze liczby",
+    "titleLight": "na tle reszty.",
+    "lead": "Wyniki z realnych realizacji, ze statystyk klientów. Tło porównania pochodzi z publicznych danych — bez naciągania.",
+    "charts": [
+      {
+        "title": "Klikalność miniatur (CTR)",
+        "sub": "Ile osób, którym YouTube pokazał miniaturę, kliknęło w film.",
+        "unit": "%",
+        "max": 24,
+        "source": "YouTube Help „Wyświetlenia i CTR” (zakres 2–10%); YouTube Studio kanału klienta.",
+        "bars": [
+          {
+            "label": "Typowy CTR na YouTube (połowa kanałów)",
+            "value": 10,
+            "from": 2,
+            "to": 10,
+            "note": "zakres podawany przez YouTube"
+          },
+          {
+            "label": "Kanał Przemysława Langiera · 1. godzina",
+            "value": 21,
+            "highlight": true
+          },
+          {
+            "label": "Kanał Przemysława Langiera · 2.–3. godzina",
+            "value": 15,
+            "highlight": true
+          },
+          {
+            "label": "Kanał Przemysława Langiera · później",
+            "value": 9,
+            "display": "ok. 9%"
+          }
+        ]
+      },
+      {
+        "title": "Pół roku w liczbach: START vs PRO",
+        "sub": "Ile materiałów dostajesz w 6 miesięcy (minimalny okres współpracy).",
+        "unit": "",
+        "max": 52,
+        "source": "cennik pakietów SVC 2026",
+        "bars": [
+          {
+            "label": "Materiały wideo · START",
+            "value": 0,
+            "display": "0"
+          },
+          {
+            "label": "Materiały wideo · PRO",
+            "value": 24,
+            "highlight": true
+          },
+          {
+            "label": "Rolki i krótkie formy · START",
+            "value": 36
+          },
+          {
+            "label": "Rolki i krótkie formy · PRO",
+            "value": 48,
+            "highlight": true
+          },
+          {
+            "label": "Nowe elementy animowane · START",
+            "value": 6
+          },
+          {
+            "label": "Nowe elementy animowane · PRO",
+            "value": 18,
+            "highlight": true
+          }
+        ]
+      }
+    ],
+    "deltaLine": true,
+    "align": "lewo"
+  },
+  "inside": {
+    "eyebrow": "Co jest w środku · co miesiąc",
+    "title": "Cały dział",
+    "titleLight": "w jednym pakiecie.",
+    "lead": "Wy decydujecie, co pokazać. Produkcję — od montażu po animację — bierzemy na siebie.",
+    "items": [
+      {
+        "n": "4",
+        "t": "materiały wideo",
+        "d": "Filmy o firmie, produktach i ludziach. Co tydzień masz coś, czym możesz się pochwalić."
+      },
+      {
+        "n": "8",
+        "t": "krótkich form pionowych",
+        "d": "Rolki na Instagram, TikTok i YouTube Shorts — tam, gdzie klienci przewijają."
+      },
+      {
+        "n": "8",
+        "t": "grafik i miniatur",
+        "d": "Posty, okładki, miniatury. Jeden styl, rozpoznawalny bez czytania podpisu."
+      },
+      {
+        "n": "3",
+        "t": "nowe elementy animowane",
+        "d": "Oprawa rośnie co miesiąc: logo w ruchu, plansze, przejścia, infografiki."
+      },
+      {
+        "n": "1",
+        "t": "rozwijany system graficzny",
+        "d": "Szablony i zasady, dzięki którym każdy kolejny materiał powstaje szybciej i wygląda spójnie."
+      },
+      {
+        "n": "1",
+        "t": "harmonogram i raport",
+        "d": "Wiesz, co wychodzi i kiedy. Na koniec miesiąca: co zadziałało i co zmieniamy."
+      }
+    ],
+    "align": "lewo"
+  },
+  "special": {
+    "kind": "rytm",
+    "eyebrow": "Jak pracujemy",
+    "title": "Regularność",
+    "titleLight": "to podstawa.",
+    "lead": "Klienci nie pamiętają jednego świetnego posta sprzed kwartału. Pamiętają firmę, którą widzą regularnie.",
+    "table": [
+      {
+        "label": "Materiał wideo",
+        "w1": "×1",
+        "w2": "×1",
+        "w3": "×1",
+        "w4": "×1"
+      },
+      {
+        "label": "Rolki",
+        "w1": "×2",
+        "w2": "×2",
+        "w3": "×2",
+        "w4": "×2"
+      },
+      {
+        "label": "Grafiki i miniatury",
+        "w1": "×2",
+        "w2": "×2",
+        "w3": "×2",
+        "w4": "×2"
+      },
+      {
+        "label": "Element animowany",
+        "w1": "×1",
+        "w2": "×1",
+        "w3": "×1",
+        "w4": "—"
+      },
+      {
+        "label": "Raport i plan",
+        "w1": "—",
+        "w2": "—",
+        "w3": "—",
+        "w4": "✓"
+      }
+    ],
+    "note": "Rozkład przykładowy. Dokładny harmonogram ustalamy na początku miesiąca pod Wasze wydarzenia i premiery.",
+    "title2": "Od rozmowy",
+    "title2Light": "do stałego rytmu.",
+    "cards2": [
+      {
+        "k": "Krok 1",
+        "t": "Rozmowa i brief",
+        "d": "30 minut: cele, odbiorcy, ton marki i to, co już macie do pokazania."
+      },
+      {
+        "k": "Krok 2",
+        "t": "Plan miesiąca",
+        "d": "Harmonogram publikacji i lista materiałów. Akceptujecie zanim cokolwiek powstanie."
+      },
+      {
+        "k": "Krok 3",
+        "t": "Produkcja",
+        "d": "Montaż, animacja i grafika w jednym stylu. Jedna osoba kontaktowa."
+      },
+      {
+        "k": "Krok 4",
+        "t": "Raport i korekta",
+        "d": "Co zadziałało, co nie i co zmieniamy w kolejnym miesiącu."
+      }
+    ]
+  },
+  "opinie": {
+    "eyebrow": "Opinie",
+    "title": "Nie musisz wierzyć",
+    "titleLight": "nam na słowo."
+  },
+  "projects": {
+    "show": true,
+    "eyebrow": "Realizacje",
+    "title": "Zobacz,",
+    "titleLight": "jak to wygląda w praktyce."
+  },
+  "faq": {
+    "eyebrow": "Pytania, których jeszcze nie zadałeś",
+    "title": "Odpowiadamy,",
+    "titleLight": "zanim zapytasz.",
+    "items": [
+      {
+        "q": "Skąd brać materiał do filmów?",
+        "a": "Z tego, co już macie: nagrania z telefonu, zdjęcia, realizacje, pytania klientów. Resztę uzupełnia animacja i grafika."
+      },
+      {
+        "q": "A jeśli nie mamy pomysłów na treści?",
+        "a": "Macie, tylko jeszcze ich nie widzicie. Każde pytanie klienta to rolka, każda realizacja to film. Pomagamy je wyłapać."
+      },
+      {
+        "q": "A jeśli w danym miesiącu potrzebujemy czegoś innego?",
+        "a": "Dajcie znać wcześniej. Zmiany w ramach pakietu ustalamy przy planowaniu miesiąca."
+      },
+      {
+        "q": "Do kogo należą materiały?",
+        "a": "Gotowe materiały są Wasze po zapłacie. System szablonów działa na licencji i po 12 miesiącach przechodzi na Was w całości."
+      },
+      {
+        "q": "Ile to zajmie naszego czasu?",
+        "a": "Planowanie miesiąca i akceptacje. Nie szukacie ludzi i nie pilnujecie terminów."
+      },
+      {
+        "q": "Co po sześciu miesiącach?",
+        "a": "Patrzymy w raporty i decydujecie: kontynuujemy, zmieniamy pakiet albo kończymy. Bez niespodzianek w umowie."
+      }
+    ],
+    "align": "lewo"
+  },
+  "doubts": {
+    "eyebrow": "Wątpliwości",
+    "title": "Każde „ale” zasługuje",
+    "titleLight": "na uczciwą odpowiedź.",
+    "items": [
+      {
+        "q": "„Taniej zatrudnić kogoś na etat.”",
+        "a": "Etat to jedna osoba z jednym zestawem umiejętności — plus sprzęt, licencje, urlopy i zwolnienia. Tu masz montaż, animację, grafikę i dźwięk w jednej fakturze."
+      },
+      {
+        "q": "„Nie mamy tyle treści.”",
+        "a": "Macie — tylko jeszcze jej nie widzicie. Każdy dzień w firmie i każde pytanie klienta to gotowy temat."
+      },
+      {
+        "q": "„7 200 zł to dużo.”",
+        "a": "Dużo za jeden film. Za miesiąc pracy całego działu — 4 filmy, 8 rolek, 8 grafik i animacje — to inna rozmowa."
+      },
+      {
+        "q": "„AI zrobi to taniej.”",
+        "a": "Może szybciej. Ale klienci coraz lepiej rozpoznają generowane treści i coraz mniej im ufają. U nas każdą klatkę układa człowiek."
+      },
+      {
+        "q": "„Nie wiem, czy to się zwróci.”",
+        "a": "Dlatego co miesiąc dostajesz raport: co działa, co nie i co zmieniamy. Decyzje opierasz na danych."
+      }
+    ],
+    "callText": "Masz pytanie, którego tu nie ma?\nChętnie porozmawiam — zadzwoń albo napisz.",
+    "phone": "668 472 759",
+    "align": "lewo"
+  },
+  "invest": {
+    "eyebrow": "Inwestycja",
+    "title": "Płacisz raz,",
+    "titleLight": "korzystasz cały czas.",
+    "cards": [
+      {
+        "tag": "Start",
+        "name": "START",
+        "price": "2 500",
+        "per": "zł netto / mies.",
+        "note": "Stała obecność, bez wideo.",
+        "items": [
+          "6 krótkich form pionowych",
+          "6 grafik i miniatur",
+          "1 nowy element animowany",
+          "1 runda poprawek",
+          "raport miesięczny"
+        ],
+        "featured": false,
+        "ctaLabel": "Wybieram START",
+        "ctaHref": "/generator?pakiet=start"
+      },
+      {
+        "tag": "Najczęściej wybierany",
+        "name": "PRO",
+        "price": "7 200",
+        "per": "zł netto / mies.",
+        "note": "Pełne zaplecze działu marketingu.",
+        "items": [
+          "4 materiały wideo",
+          "8 krótkich form pionowych",
+          "8 grafik i miniatur",
+          "3 nowe elementy animowane",
+          "rozwijany system graficzny",
+          "harmonogram publikacji i raport"
+        ],
+        "featured": true,
+        "ctaLabel": "Skonfiguruj PRO",
+        "ctaHref": "/generator?pakiet=pro"
+      },
+      {
+        "tag": "Priorytet",
+        "name": "STUDIO",
+        "price": "12 900",
+        "per": "zł netto / mies.",
+        "note": "Najwyższy poziom, priorytet i strategia.",
+        "items": [
+          "6 materiałów wideo",
+          "12 krótkich form pionowych",
+          "16 grafik i miniatur",
+          "5 nowych elementów animowanych",
+          "dzień zdjęciowy, priorytet 24 h"
+        ],
+        "featured": false,
+        "ctaLabel": "Wybieram STUDIO",
+        "ctaHref": "/generator?pakiet=studio"
+      }
+    ],
+    "footnote": "Każdy pakiet: minimum 6 miesięcy współpracy. Materiały Wasze po zapłacie."
+  },
+  "final": {
+    "eyebrow": "Następny krok",
+    "title": "Zamów i zacznijmy",
+    "titleBold": "od zaraz.",
+    "lead": "Pierwszy krok to 30 minut rozmowy. Ułożymy plan pierwszego miesiąca — tak, żebyś wiedział dokładnie, co i kiedy wyjdzie.",
+    "cta": "Skonfiguruj pakiet PRO",
+    "align": "lewo"
+  },
+  "layout": "kinetyczny",
+  "theme": "izometryczny",
+  "marquee": "Wideo / Rolki / Animacja / Grafika / Wyniki",
+  "noindex": true,
+  "draft": false
+}

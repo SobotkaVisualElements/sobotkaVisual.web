@@ -372,5 +372,8 @@
     "lead": "Pierwszy krok to 30 minut rozmowy. Ustalimy format, rytm i wygląd Twojego kanału. Bez zobowiązań — z konkretnym planem na koniec.",
     "cta": "Skonfiguruj pakiet PRO",
     "align": "lewo"
-  }
+  },
+  "layout": "klasyczny",
+  "theme": "jasny",
+  "marquee": ""
 }

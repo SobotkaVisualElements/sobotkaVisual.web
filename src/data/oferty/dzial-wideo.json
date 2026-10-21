@@ -383,5 +383,8 @@
     "lead": "Pierwszy krok to 30 minut rozmowy. Ułożymy plan pierwszego miesiąca — tak, żebyś wiedział dokładnie, co i kiedy wyjdzie.",
     "cta": "Skonfiguruj pakiet PRO",
     "align": "lewo"
-  }
+  },
+  "layout": "klasyczny",
+  "theme": "jasny",
+  "marquee": ""
 }

@@ -1,0 +1,1040 @@
+# Pages CMS (app.pagescms.org) — drugi, wygodniejszy panel do tych samych plików co /admin (Sveltia).
+# Oba panele mogą działać równolegle. Ten plik nie wpływa na wygląd ani działanie strony.
+media:
+  input: public/uploads
+  output: /uploads
+content:
+- name: realizacje
+  label: Realizacje
+  type: collection
+  path: src/content/work
+  format: yaml-frontmatter
+  filename: '{primary}.md'
+  view:
+    primary: title
+    sort: date
+    order: desc
+    fields:
+    - title
+    - date
+    - category
+  fields:
+  - name: title
+    label: Tytuł
+    type: string
+    required: true
+  - name: description
+    label: Krótki opis (Google)
+    type: text
+    required: true
+  - name: category
+    label: Kategoria
+    type: select
+    options:
+      values:
+      - Montaż
+      - Animacja
+      - Identyfikacja
+      - Oprawa transmisyjna
+      - Grafika
+  - name: client
+    label: Klient
+    type: string
+  - name: role
+    label: Rola / zakres
+    type: string
+  - name: year
+    label: Rok
+    type: number
+  - name: date
+    label: Data realizacji
+    type: date
+    options:
+      format: yyyy-MM-dd
+  - name: tech
+    label: Narzędzia
+    type: string
+    list: true
+  - name: cover
+    label: Baner 1920×1200 (kafelek i nagłówek)
+    type: image
+  - name: poster
+    label: Okładka pionowa 1200×1920 (karuzela)
+    type: image
+  - name: youtube
+    label: Film YouTube w nagłówku
+    type: string
+  - name: video
+    label: albo plik MP4 w nagłówku
+    type: file
+  - &id005
+    name: layers
+    label: Warstwy parallaksy (do 3, 1920×1200)
+    type: object
+    fields:
+    - name: image
+      label: Obraz
+      type: image
+    - name: depth
+      label: Głębia 0–100
+      type: number
+    - name: scale
+      label: Skala % (100–160)
+      type: number
+    list:
+      collapsible:
+        collapsed: true
+        summary: Warstwa {index}
+  - name: parallaxStrength
+    label: Siła parallaksy %
+    type: number
+  - name: featured
+    label: Wyróżniona
+    type: boolean
+  - name: order
+    label: Kolejność (przy tej samej dacie)
+    type: number
+  - name: body
+    label: Treść
+    type: rich-text
+    options:
+      format: markdown
+  - &id006
+    name: blocks
+    label: Klocki treści
+    type: block
+    list: true
+    blockKey: type
+    blocks:
+    - name: tekst
+      label: Tekst
+      fields:
+      - name: text
+        label: Tekst
+        type: rich-text
+        options:
+          format: markdown
+    - name: zdjecie
+      label: Zdjęcie
+      fields:
+      - name: image
+        label: Zdjęcie
+        type: image
+      - name: caption
+        label: Podpis
+        type: string
+      - name: alt
+        label: Opis dla Google (alt)
+        type: string
+      - name: width
+        label: Szerokość
+        type: select
+        options:
+          values:
+          - name: pelna
+            label: Pełna
+          - name: waska
+            label: Wąska
+    - name: karuzela
+      label: Karuzela zdjęć
+      fields:
+      - name: images
+        label: Zdjęcia
+        type: object
+        fields:
+        - name: image
+          label: Zdjęcie
+          type: image
+        - name: caption
+          label: Podpis
+          type: string
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{caption}'
+    - name: wideo
+      label: Wideo
+      fields:
+      - name: youtube
+        label: Link YouTube
+        type: string
+      - name: file
+        label: albo plik MP4
+        type: file
+      - name: format
+        label: Format
+        type: select
+        options:
+          values:
+          - '16:9'
+          - '9:16'
+      - name: mode
+        label: Tryb
+        type: select
+        options:
+          values:
+          - name: petla
+            label: Pętla + przycisk dźwięku
+          - name: zwykly
+            label: Zwykły odtwarzacz
+      - name: caption
+        label: Podpis
+        type: string
+    - name: parallaksa
+      label: Kafelek z parallaksą
+      fields:
+      - name: layers
+        label: Warstwy
+        type: object
+        fields:
+        - name: image
+          label: Obraz
+          type: image
+        - name: depth
+          label: Głębia
+          type: number
+        - name: scale
+          label: Skala %
+          type: number
+        list:
+          collapsible:
+            collapsed: true
+            summary: Warstwa {index}
+      - name: strength
+        label: Siła parallaksy %
+        type: number
+      - name: caption
+        label: Podpis
+        type: string
+    - name: wykres_liniowy
+      label: Wykres liniowy
+      fields:
+      - name: value
+        label: Wartość
+        type: number
+      - name: label
+        label: Czego dotyczy
+        type: string
+      - name: points
+        label: Punkty (po przecinku)
+        type: string
+      - name: prefix
+        label: Przed liczbą
+        type: string
+      - name: suffix
+        label: Po liczbie
+        type: string
+      - name: description
+        label: Opis
+        type: text
+    - name: wykres_kolowy
+      label: Wykres kołowy %
+      fields:
+      - name: value
+        label: Wartość 0–100
+        type: number
+      - name: label
+        label: Czego dotyczy
+        type: string
+      - name: suffix
+        label: Po liczbie
+        type: string
+      - name: description
+        label: Opis
+        type: text
+    - name: cytat
+      label: Cytat
+      fields:
+      - name: text
+        label: Treść
+        type: text
+      - name: author
+        label: Autor
+        type: string
+      - name: role
+        label: Rola / firma
+        type: string
+- name: landingi
+  label: Landingi ofert
+  type: collection
+  path: src/data/oferty
+  format: json
+  filename: '{primary}.json'
+  view:
+    primary: name
+    sort: order
+  fields:
+  - name: name
+    label: Nazwa
+    type: string
+    required: true
+  - name: layout
+    label: Wygląd
+    type: select
+    options:
+      values:
+      - name: klasyczny
+        label: Klasyczny
+      - name: kinetyczny
+        label: Kinetyczny (animacje przy przewijaniu)
+  - name: theme
+    label: Motyw (kinetyczny)
+    type: select
+    options:
+      values:
+      - name: jasny
+        label: Jasny
+      - name: ciemny
+        label: Ciemny
+      - name: swiateczny
+        label: Świąteczny
+      - name: izometryczny
+        label: Izometryczny
+  - name: draft
+    label: Szkic (strona nie istnieje)
+    type: boolean
+  - name: noindex
+    label: Ukryj przed Google (tylko z linku)
+    type: boolean
+  - name: order
+    label: Kolejność
+    type: number
+  - name: seoTitle
+    label: Tytuł dla Google
+    type: string
+  - name: seoDesc
+    label: Opis dla Google
+    type: text
+  - name: service
+    label: Nazwa usługi (Google)
+    type: string
+  - name: pdf
+    label: PDF oferty
+    type: file
+  - name: pkg
+    label: Pakiet w generatorze
+    type: select
+    options:
+      values:
+      - start
+      - pro
+      - studio
+      - none
+  - name: marquee
+    label: Napis przesuwający się (kinetyczny)
+    type: string
+    description: Słowa oddzielone ukośnikiem, np. MONTAŻ / ANIMACJA / ROLKI
+  - name: hero
+    label: 1. Pierwszy ekran
+    type: object
+    fields:
+    - name: eyebrow
+      label: Nadtytuł
+      type: string
+    - name: title
+      label: Nagłówek — linia cienka
+      type: string
+    - name: titleBold
+      label: Nagłówek — linia gruba
+      type: string
+    - name: lead
+      label: Zdanie pod nagłówkiem
+      type: text
+    - name: bgImage
+      label: Tło — obraz
+      type: image
+    - name: bgVideo
+      label: Tło — wideo MP4
+      type: file
+    - name: bgOpacity
+      label: Widoczność tła %
+      type: number
+    - name: sideImage
+      label: Obraz obok nagłówka
+      type: image
+    - name: sideAlt
+      label: Opis obrazu
+      type: string
+    - name: chipValue
+      label: Chip — duża wartość (kinetyczny)
+      type: string
+    - name: chipLabel
+      label: Chip — opis
+      type: string
+    - name: thumbs
+      label: Miniatury zamiast karty
+      type: boolean
+    - &id001
+      name: align
+      label: Wyrównanie tekstu
+      type: select
+      options:
+        values:
+        - name: lewo
+          label: Do lewej
+        - name: srodek
+          label: Do środka
+        - name: justuj
+          label: Wyjustowane
+        - name: prawo
+          label: Do prawej
+  - name: intro
+    label: 2. Zanim zaczniemy
+    type: object
+    fields:
+    - &id002
+      name: eyebrow
+      label: Nadtytuł
+      type: string
+    - &id003
+      name: title
+      label: Tytuł — część pogrubiona
+      type: string
+    - &id004
+      name: titleLight
+      label: Tytuł — część jasna
+      type: string
+    - name: text
+      label: Treść (pusta linia = akapit)
+      type: text
+    - name: signature
+      label: Podpis
+      type: string
+    - name: signatureRole
+      label: Podpis — rola
+      type: string
+    - *id001
+  - name: become
+    label: 3. Kim się stajesz
+    type: object
+    fields:
+    - *id002
+    - *id003
+    - *id004
+    - name: lead
+      label: Zdanie pod tytułem
+      type: text
+    - name: items
+      label: Karty
+      type: object
+      fields:
+      - name: t
+        label: Tytuł
+        type: string
+      - name: d
+        label: Opis
+        type: text
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{t}'
+    - name: punch
+      label: Zdanie na końcu
+      type: text
+    - *id001
+  - name: stats
+    label: 4. Liczby rynku
+    type: object
+    fields:
+    - *id002
+    - *id003
+    - *id004
+    - name: note
+      label: Dopisek
+      type: text
+    - name: items
+      label: Liczby
+      type: object
+      fields:
+      - name: v
+        label: Wartość
+        type: number
+      - name: suf
+        label: Po liczbie
+        type: string
+      - name: d
+        label: Opis
+        type: text
+      - name: src
+        label: Źródło
+        type: string
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{v}{suf}'
+  - name: proof
+    label: 5. Wyniki — wykresy
+    type: object
+    fields:
+    - *id002
+    - *id003
+    - *id004
+    - name: lead
+      label: Zdanie pod tytułem
+      type: text
+    - name: charts
+      label: Wykresy
+      type: object
+      fields:
+      - name: title
+        label: Tytuł
+        type: string
+      - name: sub
+        label: Podtytuł
+        type: string
+      - name: unit
+        label: Jednostka
+        type: string
+      - name: max
+        label: Skala max
+        type: number
+      - name: source
+        label: Źródło
+        type: string
+      - name: bars
+        label: Słupki
+        type: object
+        fields:
+        - name: label
+          label: Etykieta
+          type: string
+        - name: value
+          label: Wartość
+          type: number
+        - name: highlight
+          label: Nasz wynik (wyróżniony)
+          type: boolean
+        - name: from
+          label: Zakres od
+          type: number
+        - name: to
+          label: Zakres do
+          type: number
+        - name: display
+          label: Własny napis zamiast liczby
+          type: string
+        - name: note
+          label: Dopisek
+          type: string
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{label}'
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{title}'
+    - name: image
+      label: Obraz do sceny z przybliżeniem
+      type: image
+    - name: deltaLine
+      label: Wykres 150+ rolek Delta HR
+      type: boolean
+    - *id001
+  - name: inside
+    label: 6. Co w środku
+    type: object
+    fields:
+    - *id002
+    - *id003
+    - *id004
+    - name: lead
+      label: Zdanie pod tytułem
+      type: text
+    - name: items
+      label: Elementy
+      type: object
+      fields:
+      - name: n
+        label: Liczba / numer
+        type: string
+      - name: t
+        label: Tytuł
+        type: string
+      - name: d
+        label: Opis
+        type: text
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{n} {t}'
+    - name: cardEyebrow
+      label: Karta klipu — nadtytuł
+      type: string
+    - name: cardTitle
+      label: Karta klipu — tytuł
+      type: string
+    - name: cardTitleLight
+      label: Karta klipu — tytuł jasny
+      type: string
+    - name: cardText
+      label: Karta klipu — opis
+      type: text
+    - name: listEyebrow
+      label: Nadtytuł listy
+      type: string
+    - *id001
+  - name: special
+    label: 7. Sekcja specjalna
+    type: object
+    fields:
+    - name: kind
+      label: Rodzaj
+      type: select
+      options:
+        values:
+        - name: ''
+          label: Brak
+        - name: rytm
+          label: Rytm miesiąca
+        - name: anatomia
+          label: Anatomia klipu
+        - name: algorytm
+          label: Algorytm
+    - *id002
+    - *id003
+    - *id004
+    - name: lead
+      label: Zdanie pod tytułem
+      type: text
+    - name: table
+      label: Tabela tygodni
+      type: object
+      fields:
+      - name: label
+        label: Wiersz
+        type: string
+      - name: w1
+        label: Tydz. 1
+        type: string
+      - name: w2
+        label: Tydz. 2
+        type: string
+      - name: w3
+        label: Tydz. 3
+        type: string
+      - name: w4
+        label: Tydz. 4
+        type: string
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{label}'
+    - name: timeline
+      label: Oś czasu
+      type: object
+      fields:
+      - name: sec
+        label: Sekundy
+        type: number
+      - name: time
+        label: Czas
+        type: string
+      - name: label
+        label: Nazwa
+        type: string
+      - name: desc
+        label: Opis
+        type: text
+      - name: highlight
+        label: Wyróżnij
+        type: boolean
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{time} {label}'
+    - name: steps
+      label: Kroki lejka
+      type: object
+      fields:
+      - name: t
+        label: Krok
+        type: string
+      - name: d
+        label: Opis
+        type: string
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{t}'
+    - name: cards
+      label: Karty
+      type: object
+      fields:
+      - name: k
+        label: Etykieta
+        type: string
+      - name: t
+        label: Tytuł
+        type: string
+      - name: d
+        label: Opis
+        type: text
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{t}'
+    - name: title2
+      label: Drugi tytuł — pogrubiony
+      type: string
+    - name: title2Light
+      label: Drugi tytuł — jasny
+      type: string
+    - name: cards2
+      label: Karty pod drugim tytułem
+      type: object
+      fields:
+      - name: k
+        label: Etykieta
+        type: string
+      - name: t
+        label: Tytuł
+        type: string
+      - name: d
+        label: Opis
+        type: text
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{t}'
+    - name: note
+      label: Dopisek
+      type: text
+    - *id001
+  - name: opinie
+    label: 8. Opinie — nagłówek
+    type: object
+    fields:
+    - *id002
+    - *id003
+    - *id004
+  - name: projects
+    label: 9. Realizacje
+    type: object
+    fields:
+    - name: show
+      label: Pokaż realizacje
+      type: boolean
+    - *id002
+    - *id003
+    - *id004
+  - name: faq
+    label: 10. Pytania
+    type: object
+    fields:
+    - *id002
+    - *id003
+    - *id004
+    - name: items
+      label: Pytania
+      type: object
+      fields:
+      - name: q
+        label: Pytanie
+        type: string
+      - name: a
+        label: Odpowiedź
+        type: text
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{q}'
+    - *id001
+  - name: doubts
+    label: 11. Wątpliwości
+    type: object
+    fields:
+    - *id002
+    - *id003
+    - *id004
+    - name: items
+      label: Wątpliwości
+      type: object
+      fields:
+      - name: q
+        label: Wątpliwość
+        type: string
+      - name: a
+        label: Odpowiedź
+        type: text
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{q}'
+    - name: callText
+      label: Karta „zadzwoń”
+      type: text
+    - name: phone
+      label: Telefon
+      type: string
+    - *id001
+  - name: invest
+    label: 12. Inwestycja
+    type: object
+    fields:
+    - *id002
+    - *id003
+    - *id004
+    - name: cards
+      label: Karty cenowe
+      type: object
+      fields:
+      - name: tag
+        label: Etykieta
+        type: string
+      - name: name
+        label: Nazwa
+        type: string
+      - name: price
+        label: Cena
+        type: string
+      - name: per
+        label: Po cenie
+        type: string
+      - name: note
+        label: Dopisek
+        type: text
+      - name: items
+        label: Co zawiera
+        type: string
+        list: true
+      - name: featured
+        label: Wyróżniona
+        type: boolean
+      - name: ctaLabel
+        label: Przycisk — napis
+        type: string
+      - name: ctaHref
+        label: Przycisk — adres
+        type: string
+      list:
+        collapsible:
+          collapsed: true
+          summary: '{name} — {price}'
+    - name: footnote
+      label: Dopisek pod kartami
+      type: text
+  - name: final
+    label: 13. Następny krok
+    type: object
+    fields:
+    - name: eyebrow
+      label: Nadtytuł
+      type: string
+    - name: title
+      label: Nagłówek — linia cienka
+      type: string
+    - name: titleBold
+      label: Nagłówek — linia gruba
+      type: string
+    - name: lead
+      label: Tekst
+      type: text
+    - name: cta
+      label: Przycisk — napis
+      type: string
+    - *id001
+- name: strona-glowna
+  label: Strona główna
+  type: file
+  path: src/data/home.json
+  format: json
+  fields:
+  - name: hero
+    label: Hero
+    type: object
+    fields:
+    - name: h1prefix
+      label: Nagłówek — pierwsze słowo
+      type: string
+    - name: h1accent
+      label: Nagłówek — słowo w kolorze
+      type: string
+    - name: lead
+      label: Zdanie pod nagłówkiem
+      type: text
+    - name: ctaPrimaryLabel
+      label: Przycisk główny — napis
+      type: string
+    - name: ctaPrimaryHref
+      label: Przycisk główny — adres
+      type: string
+    - name: ctaSecondaryLabel
+      label: Przycisk drugi — napis
+      type: string
+    - name: ctaSecondaryHref
+      label: Przycisk drugi — adres
+      type: string
+    - name: video
+      label: Wideo w tle
+      type: file
+    - name: poster
+      label: Plakat
+      type: image
+    - name: videoOpacity
+      label: Widoczność wideo %
+      type: number
+    - name: clientsLabel
+      label: Napis nad logotypami
+      type: string
+  - name: clients
+    label: Logotypy „Zaufali nam”
+    type: object
+    fields:
+    - name: name
+      label: Nazwa
+      type: string
+    - name: logo
+      label: Logotyp
+      type: image
+    - name: height
+      label: Wysokość px
+      type: number
+    list:
+      collapsible:
+        collapsed: true
+        summary: '{name}'
+  - name: realizacje
+    label: Karuzela „Ostatnie realizacje”
+    type: object
+    fields:
+    - *id002
+    - *id003
+    - *id004
+    - name: lead
+      label: Zdanie pod tytułem
+      type: text
+    - name: limit
+      label: Ile realizacji
+      type: number
+  - name: uslugi
+    label: Sekcja Usługi
+    type: object
+    fields:
+    - name: titleBig
+      label: Duże słowo
+      type: string
+    - name: titleSmall
+      label: Druga linia
+      type: string
+    - name: lead
+      label: Zdanie pod tytułem
+      type: text
+  - name: features
+    label: Kafelki usług
+    type: object
+    fields:
+    - name: icon
+      label: Ikona
+      type: select
+      options:
+        values:
+        - montaz
+        - motion
+        - rolki
+        - grafika
+        - transmisja
+        - dzwiek
+        - kamera
+        - strategia
+    - name: title
+      label: Tytuł
+      type: string
+    - name: body
+      label: Opis
+      type: text
+    - *id005
+    - name: strength
+      label: Siła parallaksy %
+      type: number
+    list:
+      collapsible:
+        collapsed: true
+        summary: '{title}'
+  - name: dlaKogo
+    label: Sekcja Dla kogo
+    type: object
+    fields:
+    - name: eyebrow
+      label: Nadtytuł
+      type: string
+    - name: titleLine1
+      label: Tytuł linia 1
+      type: string
+    - name: titleLine2
+      label: Tytuł linia 2
+      type: string
+  - name: tiles
+    label: Kafelki Dla kogo
+    type: object
+    fields:
+    - name: title
+      label: Tytuł
+      type: string
+    - name: body
+      label: Opis
+      type: text
+    - name: note
+      label: Dodatkowe zdanie
+      type: text
+    - name: image
+      label: Obrazek
+      type: image
+    - *id005
+    - name: strength
+      label: Siła parallaksy %
+      type: number
+    list:
+      collapsible:
+        collapsed: true
+        summary: '{title}'
+  - name: kontakt
+    label: Sekcja Kontakt
+    type: object
+    fields:
+    - name: title
+      label: Tytuł
+      type: string
+    - name: lead
+      label: Zdanie pod tytułem
+      type: text
+  - name: sections
+    label: Kolejność sekcji pod Hero
+    type: string
+    list: true
+    description: 'Dozwolone: realizacje, uslugi, dlaKogo, oferta, opinie, faq, kontakt. Przeciągnij, aby zmienić kolejność.'
+- name: podstrony
+  label: Podstrony
+  type: collection
+  path: src/content/pages
+  format: yaml-frontmatter
+  filename: '{primary}.md'
+  view:
+    primary: title
+  fields:
+  - name: title
+    label: Tytuł (Google)
+    type: string
+    required: true
+  - name: description
+    label: Opis (Google)
+    type: text
+    required: true
+  - name: eyebrow
+    label: Nadtytuł
+    type: string
+  - name: heading
+    label: Nagłówek na stronie
+    type: string
+  - name: draft
+    label: Szkic
+    type: boolean
+  - name: noindex
+    label: Ukryj przed Google
+    type: boolean
+  - name: body
+    label: Treść
+    type: rich-text
+    options:
+      format: markdown
+  - *id006

@@ -387,5 +387,8 @@
     "lead": "Pierwszy krok to 30 minut rozmowy o produkcie i kliencie. Wyjdziesz z niej z pomysłem na klip — nawet jeśli nie zdecydujesz się od razu.",
     "cta": "Skonfiguruj pakiet PRO",
     "align": "lewo"
-  }
+  },
+  "layout": "klasyczny",
+  "theme": "jasny",
+  "marquee": ""
 }

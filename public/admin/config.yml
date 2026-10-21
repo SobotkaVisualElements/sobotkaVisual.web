@@ -272,6 +272,9 @@ collections:
     description: "Strony /oferta/<adres>. Nowy landing: otwórz istniejący → menu „…” → Duplikuj, zmień nazwę i treść. Adres powstaje z nazwy przy pierwszym zapisie. Enter = nowa linia, **tekst** = pogrubienie."
     fields:
       - { name: name, label: "Nazwa (w linkach „Zobacz też”)", widget: string }
+      - { name: layout, label: "Wygląd strony", widget: select, default: klasyczny, options: [{ label: "Klasyczny", value: klasyczny }, { label: "Kinetyczny — animacje przy przewijaniu", value: kinetyczny }] }
+      - { name: theme, label: "Motyw (dla wyglądu kinetycznego)", widget: select, default: jasny, required: false, options: [{ label: "Jasny (wzorzec)", value: jasny }, { label: "Ciemny", value: ciemny }, { label: "Świąteczny (śnieg i kształty 3D w tle)", value: swiateczny }, { label: "Izometryczny (neon, platformy 3D)", value: izometryczny }] }
+      - { name: marquee, label: "Wielki przesuwający się napis (kinetyczny)", widget: string, required: false, hint: "Słowa oddzielone ukośnikiem, np. MONTAŻ / ANIMACJA / ROLKI. Puste = tytuły z sekcji „Co w środku”." }
       - { name: draft, label: "Szkic (strona nie istnieje)", widget: boolean, default: false, required: false }
       - { name: noindex, label: "Ukryj przed Google (tylko z linku)", widget: boolean, default: false, required: false, hint: "Dla ofert prywatnych i sezonowych wysyłanych mailem." }
       - { name: order, label: "Kolejność", widget: number, value_type: int, default: 1 }
@@ -293,6 +296,8 @@ collections:
           - { name: bgOpacity, label: "Widoczność tła (%)", widget: number, value_type: int, default: 20, min: 5, max: 80, required: false }
           - { name: sideImage, label: "Obraz obok nagłówka (zamiast karty z ceną)", widget: image, required: false }
           - { name: sideAlt, label: "Opis obrazu (alt)", widget: string, required: false }
+          - { name: chipValue, label: "Chip przy obrazie — duża wartość (kinetyczny)", widget: string, required: false, hint: "Np. 15.12 albo 21%. Puste = pierwszy wyróżniony wynik z wykresów." }
+          - { name: chipLabel, label: "Chip przy obrazie — opis", widget: string, required: false }
           - { name: thumbs, label: "Pokaż miniatury zamiast karty z ceną", widget: boolean, default: false, required: false }
           - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
       - name: intro
