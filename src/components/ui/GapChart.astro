@@ -1,0 +1,174 @@
+---
+/*
+ * Wykres „przewagi”: dwie linie (typowo vs z nami) i zaznaczony obszar różnicy.
+ * Warstwy jak w parallaksie: z tyłu jedzie rozmyta karuzela miniatur, z przodu szklany panel z wykresem,
+ * a przez środek przechodzi półprzezroczysty napis Montserrat Black Italic.
+ * Wszystko rysuje się przy wejściu w ekran (linie → obszar → liczby).
+ */
+import Carousel3D from './Carousel3D.astro';
+import Stars from './Stars.astro';
+import { tx } from '../../lib/typo';
+
+interface Line { label?: string; value: number; display?: string }
+interface Props {
+	eyebrow?: string; title?: string; sub?: string; unit?: string;
+	base: Line; ours: Line;
+	xStart?: string; xEnd?: string; xMid?: string[];
+	curve?: 'szybki' | 'liniowy';
+	watermark?: string; delta?: string;
+	thumbs?: { image?: string; youtube?: string }[];
+	quote?: { text?: string; name?: string; role?: string };
+	source?: string;
+	tone?: 'dark' | 'light';
+}
+const p = Astro.props;
+const unit = p.unit ?? '';
+const base = { ...p.base, value: Number(p.base?.value) || 0 };
+const ours = { ...p.ours, value: Number(p.ours?.value) || 0 };
+const max = Math.max(base.value, ours.value) * 1.12 || 1;
+const ease = (t: number) => (p.curve === 'liniowy' ? t : 1 - Math.pow(1 - t, 2.4));
+const N = 24;
+const fx = (n: number) => n.toFixed(1);
+// geometria liczona dwa razy: szeroki wykres (komputer) i wyższy (telefon)
+function geo(W: number, H: number, R: number) {
+	const L = 16, T = 24, B = 34;
+	const X = (t: number) => L + t * (W - L - R);
+	const Y = (v: number) => H - B - (v / max) * (H - T - B);
+	const pts = (v: number, wob: number, amp: number) => Array.from({ length: N + 1 }, (_, i) => {
+		const t = i / N;
+		const w = i > 0 && i < N - 2 ? Math.sin(i * 1.7 + wob) * amp * v * (p.curve === 'liniowy' ? 0.4 : 1) : 0;
+		return [X(t), Y(v * ease(t) + w)];
+	});
+	const A = pts(base.value, 0.6, 0.018), Bp = pts(ours.value, 2.1, 0.012);
+	const d = (a: number[][]) => 'M' + a.map(([x, y]) => `${fx(x)} ${fx(y)}`).join(' L');
+	const area = d(Bp) + ' L' + [...A].reverse().map(([x, y]) => `${fx(x)} ${fx(y)}`).join(' L') + ' Z';
+	const grid = [0.25, 0.5, 0.75, 1].map((k) => Y(max * k / 1.12));
+	return { W, H, L, B, R, X, A: d(A), Bp: d(Bp), area, grid, yB: Y(base.value), yO: Y(ours.value), pct: (y: number) => ((y / H) * 100).toFixed(2) };
+}
+const G = [{ g: geo(800, 360, 150), cls: 'gap-svg-d' }, { g: geo(400, 300, 92), cls: 'gap-svg-m' }];
+const dec = (v: number) => (Number.isInteger(v) ? 0 : 1);
+const deltaV = ours.value - base.value;
+const delta = p.delta ?? `+${deltaV.toLocaleString('pl-PL')}${unit === '%' ? ' pkt proc.' : unit ? ' ' + unit : ''}`;
+const thumbs = (p.thumbs ?? []).map((t) => ({ img: t.image, youtube: t.youtube })).filter((t) => t.img || t.youtube);
+const u = 'g' + Math.random().toString(36).slice(2, 7);
+---
+<figure class:list={['gap', `gap--${p.tone ?? 'dark'}`]}>
+	{thumbs.length > 0 && (
+		<div class="gap-bg" data-float="-40" aria-hidden="true">
+			<Carousel3D items={thumbs} orientation="poziom" ratio="16/9" variant="tlo" />
+		</div>
+	)}
+	<div class="gap-panel svc-anim" data-float="16">
+		<div class="gap-head">
+			{p.eyebrow && <p class="gap-eyebrow" set:html={tx(p.eyebrow)} />}
+			{p.title && <h3 set:html={tx(p.title)} />}
+			{p.sub && <p class="gap-sub" set:html={tx(p.sub)} />}
+		</div>
+		<div class="gap-plot">
+			<div class="gap-box">
+			{p.watermark && <span class="gap-wm" aria-hidden="true" set:html={tx(p.watermark)} />}
+			{G.map(({ g, cls }) => (
+				<svg viewBox={`0 0 ${g.W} ${g.H}`} class={cls} role="img" aria-label={`${base.label}: ${base.display ?? base.value + unit}; ${ours.label}: ${ours.display ?? ours.value + unit}`}>
+					<defs>
+						<linearGradient id={`${u}${cls}-ar`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2ee59d" stop-opacity=".42" /><stop offset="1" stop-color="#2ee59d" stop-opacity=".08" /></linearGradient>
+						<clipPath id={`${u}${cls}-clip`}><rect class="gap-reveal" x="0" y="0" width={g.W} height={g.H} /></clipPath>
+					</defs>
+					{g.grid.map((y) => <line class="gap-grid" x1={g.L} x2={g.W - g.R + 14} y1={y} y2={y} />)}
+					<line class="gap-axis" x1={g.L} x2={g.W - g.R + 14} y1={g.H - g.B} y2={g.H - g.B} />
+					<g clip-path={`url(#${u}${cls}-clip)`}><path class="gap-area" d={g.area} fill={`url(#${u}${cls}-ar)`} /></g>
+					<path class="gap-l gap-l-base" pathLength="1" d={g.A} />
+					<path class="gap-l gap-l-ours" pathLength="1" d={g.Bp} />
+					<circle class="gap-dot gap-dot-base" cx={g.X(1)} cy={g.yB} r="6" />
+					<circle class="gap-dot gap-dot-ours" cx={g.X(1)} cy={g.yO} r="8" />
+					<path class="gap-br" pathLength="1" d={`M${fx(g.X(1) + 10)} ${fx(g.yO + 6)} h5 V${fx(g.yB - 6)} h-5`} />
+				</svg>
+			))}
+			<div class="gap-val gap-val-ours" style={`--td:${G[0].g.pct(G[0].g.yO)}%;--tm:${G[1].g.pct(G[1].g.yO)}%`}>
+				<b>{ours.display ?? <><span data-count={ours.value} data-dec={dec(ours.value)}>0</span>{unit}</>}</b>
+				<small set:html={tx(ours.label)} />
+			</div>
+			<div class="gap-val gap-val-base" style={`--td:${G[0].g.pct(G[0].g.yB)}%;--tm:${G[1].g.pct(G[1].g.yB)}%`}>
+				<b>{base.display ?? <><span data-count={base.value} data-dec={dec(base.value)}>0</span>{unit}</>}</b>
+				<small set:html={tx(base.label)} />
+			</div>
+			<span class="gap-delta" style={`--td:${G[0].g.pct((G[0].g.yO + G[0].g.yB) / 2)}%`} set:html={tx(delta)} />
+			</div>
+			<div class="gap-x"><span set:html={tx(p.xStart ?? '')} />{(p.xMid ?? []).map((m) => <span set:html={tx(m)} />)}<span set:html={tx(p.xEnd ?? '')} /></div>
+		</div>
+		<div class="gap-legend">
+			<span><i class="is-ours"></i><span set:html={tx(ours.label)} /></span>
+			<span><i class="is-base"></i><span set:html={tx(base.label)} /></span>
+		</div>
+		{p.source && <figcaption class="gap-src" set:html={tx(p.source)} />}
+	</div>
+	{p.quote?.text && (
+		<blockquote class="gap-quote">
+			<Stars size={14} />
+			<p set:html={tx(`„${p.quote.text}”`)} />
+			<cite><b>{p.quote.name}</b>{p.quote.role && <span> · {p.quote.role}</span>}</cite>
+		</blockquote>
+	)}
+</figure>
+
+<style is:global>
+	.gap { position: relative; margin: 0; isolation: isolate; }
+	.gap-bg { position: absolute; inset: -40px -10vw; z-index: -1; display: flex; align-items: center; opacity: .55; filter: blur(5px) saturate(1.1); pointer-events: none;
+		mask-image: radial-gradient(70% 70% at 50% 50%, #000 40%, transparent 100%); }
+	.gap-bg .c3d { width: 100%; }
+	.gap-panel { position: relative; border-radius: 26px; padding: clamp(20px, 3.4vw, 40px); overflow: hidden;
+		background: linear-gradient(160deg, rgba(20,12,70,.82), rgba(12,8,48,.88)); border: 1px solid rgba(255,255,255,.12);
+		box-shadow: 0 40px 90px -40px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.08); backdrop-filter: blur(14px); color: #fff; }
+	.gap-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #2ee59d; }
+	.gap-head h3 { margin-top: 6px; font-size: clamp(24px, 3.2vw, 34px); line-height: 1.1; font-weight: 800; letter-spacing: -.02em; text-wrap: balance; }
+	.gap-sub { margin-top: 8px; max-width: 560px; font-size: 15px; line-height: 1.55; color: rgba(214,222,255,.78); text-wrap: pretty; }
+	.gap-plot { margin-top: 22px; }
+	.gap-box { position: relative; }
+	.gap-svg-m { display: none !important; }
+	.gap-plot svg { display: block; width: 100%; height: auto; overflow: visible; position: relative; z-index: 1; }
+	.gap-wm { position: absolute; inset: 6% 20% 16% 0; z-index: 0; display: flex; align-items: center; justify-content: center; text-align: center;
+		font-family: Montserrat, sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: .92; letter-spacing: -.02em;
+		font-size: clamp(26px, 6.2vw, 78px); color: rgba(255,255,255,.09); text-wrap: balance; pointer-events: none; user-select: none;
+		transform: translateY(14px); opacity: 0; transition: opacity 1s .9s, transform 1.2s .9s cubic-bezier(.2,.8,.2,1); }
+	.gap-grid { stroke: rgba(255,255,255,.07); stroke-width: 1; stroke-dasharray: 4 6; }
+	.gap-axis { stroke: rgba(255,255,255,.22); stroke-width: 1.5; }
+	.gap-l { fill: none; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.6s cubic-bezier(.65,0,.35,1); }
+	.gap-l-base { stroke: #9aa0bd; stroke-width: 3.5; }
+	.gap-l-ours { stroke: #2ee59d; filter: drop-shadow(0 0 8px rgba(46,229,157,.55)); transition-delay: .25s; }
+	.gap-reveal { transform-box: fill-box; transform-origin: left; transform: scaleX(0); transition: transform 1.6s .35s cubic-bezier(.65,0,.35,1); }
+	.gap-dot { opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(0); transition: opacity .3s 1.6s, transform .5s 1.6s cubic-bezier(.3,1.6,.5,1); }
+	.gap-dot-base { fill: #9aa0bd; }
+	.gap-dot-ours { fill: #2ee59d; stroke: #0c0830; stroke-width: 3; }
+	.gap-br { fill: none; stroke: #2ee59d; stroke-width: 2; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .6s 1.9s; }
+	.gap-val { position: absolute; right: 0; top: var(--td); width: 15.6%; transform: translateY(-50%); opacity: 0; transition: opacity .5s 1.7s; z-index: 2; }
+	.gap-val b { display: block; font-size: clamp(22px, 4vw, 44px); line-height: 1; font-weight: 900; letter-spacing: -.03em; }
+	.gap-val small { display: block; margin-top: 3px; font-size: 11px; line-height: 1.3; color: rgba(214,222,255,.7); }
+	.gap-val-ours b { color: #2ee59d; text-shadow: 0 0 22px rgba(46,229,157,.45); }
+	.gap-val-base b { color: #c3c7da; font-size: clamp(18px, 3vw, 32px); }
+	.gap-delta { position: absolute; top: var(--td); right: 19.5%; transform: translateY(-50%); padding: 5px 11px; border-radius: 999px; background: #2ee59d; color: #04261a;
+		font-size: clamp(11px, 1.4vw, 14px); font-weight: 800; white-space: nowrap; opacity: 0; transition: opacity .4s 2.1s; z-index: 2; }
+	.gap-x { display: flex; justify-content: space-between; margin-top: 6px; padding-right: 19%; font-size: 12px; font-weight: 600; color: rgba(214,222,255,.6); }
+	.gap-legend { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 16px; font-size: 13.5px; font-weight: 600; color: rgba(255,255,255,.85); }
+	.gap-legend > span { display: inline-flex; align-items: center; gap: 8px; }
+	.gap-legend i { width: 22px; height: 4px; border-radius: 4px; background: #9aa0bd; }
+	.gap-legend i.is-ours { background: #2ee59d; box-shadow: 0 0 10px rgba(46,229,157,.7); }
+	.gap-src { margin-top: 12px; font-size: 12px; line-height: 1.5; color: rgba(214,222,255,.5); text-wrap: pretty; }
+	.gap-quote { position: relative; max-width: 640px; margin: 22px auto 0; text-align: center; color: #fff; }
+	.gap-quote p { margin-top: 10px; font-size: clamp(16px, 2vw, 19px); line-height: 1.5; font-style: italic; text-wrap: balance; }
+	.gap-quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 13px; color: rgba(214,222,255,.7); }
+	.gap-panel.is-in .gap-l, .gap-panel.is-in .gap-br { stroke-dashoffset: 0; }
+	.gap-panel.is-in .gap-reveal { transform: none; }
+	.gap-panel.is-in .gap-dot { opacity: 1; transform: none; }
+	.gap-panel.is-in .gap-val, .gap-panel.is-in .gap-delta { opacity: 1; }
+	.gap-panel.is-in .gap-wm { opacity: 1; transform: none; }
+	@media (max-width: 640px) {
+		.gap-svg-d { display: none !important; } .gap-svg-m { display: block !important; }
+		.gap-val { top: var(--tm); width: 18.5%; } .gap-x { padding-right: 23%; }
+		.gap-val small { display: none; }
+		.gap-delta { top: 3%; left: 2%; right: auto; transform: none; }
+		.gap-wm { inset: 4% 24% 14% 0; font-size: clamp(22px, 8.5vw, 40px); }
+	}
+	@media (prefers-reduced-motion: reduce) { .gap * { transition: none !important; } }
+</style>
+<script>
+	import '../../scripts/parallax.ts';
+</script>

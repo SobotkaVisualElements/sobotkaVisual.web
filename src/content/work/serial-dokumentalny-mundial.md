@@ -1,5 +1,5 @@
 ---
-title: 'Serial dokumentalny „Mundial w USA" — 5 odcinków dla kanału Przemysława Langiera'
+title: 'Serial dokumentalny „Mundial w USA” — 5 odcinków dla kanału Przemysława Langiera'
 description: 'Montaż i dedykowana oprawa graficzna podróżniczej serii dokumentalnej: 5 odcinków po 45–60 minut, animowane mapy, adnotacje i spójny system wizualny tylko dla tej produkcji.'
 category: 'Montaż'
 tech: ['Premiere Pro', 'After Effects', 'Illustrator']

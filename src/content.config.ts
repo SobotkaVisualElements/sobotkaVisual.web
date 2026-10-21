@@ -43,6 +43,8 @@ const work = defineCollection({
 			year: z.number(),
 			role: z.string().optional(),
 			client: z.string().optional(),
+			/** Logotyp klienta (PNG/SVG, najlepiej przezroczyste tło) */
+			clientLogo: z.string().optional(),
 			/** 公開サイト・リポジトリ（任意） */
 			url: z.string().url().optional(),
 			repo: z.string().url().optional(),

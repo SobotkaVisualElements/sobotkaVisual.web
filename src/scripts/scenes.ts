@@ -50,6 +50,32 @@ function revealTarget(el: HTMLElement) {
 	return clamp((innerHeight - r.top) / (innerHeight * 0.75));
 }
 
+/*
+ * Dopasowanie: jeśli treść przyklejonej sceny [data-fit] jest wyższa niż ekran (telefon, długi tekst z panelu),
+ * scena dostaje .is-tall — przykleja się dopiero, gdy widać jej dół, i nic nie zostaje ucięte.
+ */
+function fit() {
+	document.querySelectorAll<HTMLElement>('[data-sticky][data-fit]').forEach((st) => {
+		const sc = st.closest<HTMLElement>('[data-scene]');
+		if (!sc) return;
+		st.classList.remove('is-tall'); st.style.top = ''; sc.style.minHeight = '';
+		const inner = st.firstElementChild as HTMLElement | null;
+		if (!inner) return;
+		const head = document.getElementById('site-nav')?.offsetHeight || 0;
+		const need = inner.scrollHeight + head + 48;
+		if (need > innerHeight) {
+			st.classList.add('is-tall');
+			const h = st.offsetHeight;
+			st.style.top = `${Math.min(0, innerHeight - h)}px`;
+			sc.style.minHeight = `${h + innerHeight * 0.6}px`;
+		}
+	});
+}
+fit();
+addEventListener('resize', () => { fit(); kick(); }, { passive: true });
+addEventListener('load', () => { fit(); kick(); });
+if (document.fonts) document.fonts.ready.then(() => { fit(); kick(); });
+
 let raf = 0;
 function frame() {
 	let moving = false;

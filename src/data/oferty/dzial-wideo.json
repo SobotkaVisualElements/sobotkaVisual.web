@@ -88,76 +88,99 @@
     "lead": "Wyniki z realnych realizacji, ze statystyk klientów. Tło porównania pochodzi z publicznych danych — bez naciągania.",
     "charts": [
       {
-        "title": "Klikalność miniatur (CTR)",
-        "sub": "Ile osób, którym YouTube pokazał miniaturę, kliknęło w film.",
-        "unit": "%",
-        "max": 24,
-        "source": "YouTube Help „Wyświetlenia i CTR” (zakres 2–10%); YouTube Studio kanału klienta.",
-        "bars": [
-          {
-            "label": "Typowy CTR na YouTube (połowa kanałów)",
-            "value": 10,
-            "from": 2,
-            "to": 10,
-            "note": "zakres podawany przez YouTube"
-          },
-          {
-            "label": "Kanał Przemysława Langiera · 1. godzina",
-            "value": 21,
-            "highlight": true
-          },
-          {
-            "label": "Kanał Przemysława Langiera · 2.–3. godzina",
-            "value": 15,
-            "highlight": true
-          },
-          {
-            "label": "Kanał Przemysława Langiera · później",
-            "value": 9,
-            "display": "ok. 9%"
-          }
-        ]
-      },
-      {
-        "title": "Pół roku w liczbach: START vs PRO",
-        "sub": "Ile materiałów dostajesz w 6 miesięcy (minimalny okres współpracy).",
+        "title": "Rok pracy: Ty sam vs pakiet PRO",
+        "sub": "Ile materiałów powstaje w 12 miesięcy, gdy marketing robisz sam w wolnych chwilach — a ile, gdy produkcję bierzemy my.",
         "unit": "",
-        "max": 52,
-        "source": "cennik pakietów SVC 2026",
+        "max": 100,
+        "source": "Model: 3 h tygodniowo na treści (górna granica odpowiedzi większości małych firm — Markel Direct 2026, 501 firm) i ok. 1 h montażu na minutę gotowego filmu (University of Florida IFAS, „Video Editing”). Przyjęte czasy: film 2–3 min ok. 6 h z planem i nagraniem, rolka ok. 1,5 h, grafika ok. 0,5 h. Pakiet PRO: 4 filmy, 8 rolek, 8 grafik i 3 elementy animowane miesięcznie.",
         "bars": [
           {
-            "label": "Materiały wideo · START",
-            "value": 0,
-            "display": "0"
+            "label": "Filmy · samodzielnie",
+            "value": 16
           },
           {
-            "label": "Materiały wideo · PRO",
-            "value": 24,
-            "highlight": true
-          },
-          {
-            "label": "Rolki i krótkie formy · START",
-            "value": 36
-          },
-          {
-            "label": "Rolki i krótkie formy · PRO",
+            "label": "Filmy · z nami (PRO)",
             "value": 48,
             "highlight": true
           },
           {
-            "label": "Nowe elementy animowane · START",
-            "value": 6
+            "label": "Rolki · samodzielnie",
+            "value": 31
           },
           {
-            "label": "Nowe elementy animowane · PRO",
-            "value": 18,
+            "label": "Rolki · z nami (PRO)",
+            "value": 96,
+            "highlight": true
+          },
+          {
+            "label": "Grafiki i miniatury · samodzielnie",
+            "value": 31
+          },
+          {
+            "label": "Grafiki i miniatury · z nami (PRO)",
+            "value": 96,
+            "highlight": true
+          },
+          {
+            "label": "Elementy animowane · samodzielnie",
+            "value": 0,
+            "display": "0",
+            "note": "wymagają warsztatu i programów do animacji"
+          },
+          {
+            "label": "Elementy animowane · z nami (PRO)",
+            "value": 36,
             "highlight": true
           }
         ]
       }
     ],
     "deltaLine": true,
-    "align": "lewo"
+    "align": "lewo",
+    "ctr": {
+      "show": true,
+      "eyebrow": "Klikalność miniatur (CTR)",
+      "title": "Pierwsza godzina decyduje o zasięgu.",
+      "sub": "Ilu widzów, którym YouTube pokazał miniaturę, klika w film. Im więcej kliknięć na starcie, tym szerzej algorytm go rozsyła.",
+      "watermark": "Twoja przewaga nad konkurencją",
+      "unit": "%",
+      "xStart": "publikacja",
+      "xEnd": "1 godzina",
+      "base": {
+        "label": "Typowy kanał na YouTube",
+        "value": 10,
+        "display": "do 10%"
+      },
+      "ours": {
+        "label": "Kanał, z którym pracujemy",
+        "value": 21
+      },
+      "delta": "ponad 2× więcej kliknięć",
+      "source": "Typowy kanał: YouTube Help „Wyświetlenia i CTR” — połowa kanałów ma CTR 2–10%. Z nami: YouTube Studio kanału klienta, 1. godzina po publikacji.",
+      "quoteFrom": "Przemysław Langier",
+      "thumbs": [
+        {
+          "image": "/uploads/realizacje/maxresdefault.jpg"
+        },
+        {
+          "image": "/uploads/realizacje/maxresdefault (1).jpg"
+        },
+        {
+          "image": "/uploads/realizacje/maxresdefault (2).jpg"
+        },
+        {
+          "image": "/uploads/realizacje/maxresdefault (3).jpg"
+        }
+      ]
+    },
+    "delta": {
+      "value": 150,
+      "prefix": "do ",
+      "suffix": "+",
+      "label": "rolek rocznie",
+      "points": "0, 13, 26, 39, 52, 65, 78, 91, 104, 117, 130, 143, 156",
+      "description": "Tak pracujemy z Delta HR: 3 rolki tygodniowo, bez przerw. To już realny nakład inwestycyjny i trwały ślad Twojej firmy w internecie. **Twoja promocja się skaluje!**"
+    }
   },
   "inside": {
     "eyebrow": "Co jest w środku · co miesiąc",
@@ -241,7 +264,32 @@
         "w4": "✓"
       }
     ],
-    "note": "Rozkład przykładowy. Dokładny harmonogram ustalamy na początku miesiąca pod Wasze wydarzenia i premiery."
+    "note": "Rozkład przykładowy. Dokładny harmonogram ustalamy na początku miesiąca pod Wasze wydarzenia i premiery.",
+    "scale": {
+      "show": true,
+      "eyebrow": "Skala w ciągu roku",
+      "title": "276 materiałów kontra 78.",
+      "sub": "Ta sama firma, ten sam rok. Różnica to tempo, którego nie da się utrzymać po godzinach.",
+      "watermark": "Skala, której nie zrobisz sam",
+      "unit": "",
+      "xStart": "tydzień 1",
+      "xMid": [
+        "kwartał 1",
+        "półrocze",
+        "kwartał 3"
+      ],
+      "xEnd": "tydzień 52",
+      "base": {
+        "label": "Samodzielnie, 3 h tygodniowo",
+        "value": 78
+      },
+      "ours": {
+        "label": "Pakiet PRO",
+        "value": 276
+      },
+      "delta": "+198 materiałów",
+      "source": "Pakiet PRO: 23 materiały miesięcznie × 12. Samodzielnie: ok. 156 godzin rocznie przy 3 h tygodniowo i tych samych proporcjach (model jak w wykresie wyżej). Rok PRO to ok. 480 godzin produkcji — przy 3 h tygodniowo zajęłoby to około 3 lat."
+    }
   },
   "opinie": {
     "eyebrow": "Opinie",

@@ -4,6 +4,7 @@ import type { Project } from '../lib/projects';
 import Blocks from '../components/blocks/Blocks.astro';
 import LayerTile from '../components/ui/LayerTile.astro';
 import VideoLoop from '../components/ui/VideoLoop.astro';
+import { nbspHtml } from '../lib/typo';
 
 interface Props {
 	project: Project;
@@ -11,6 +12,8 @@ interface Props {
 }
 
 const { project, next } = Astro.props;
+// treść z panelu: krótkie słowa i liczby nie zostają same na końcu linii
+const body = nbspHtml(await Astro.slots.render('default'));
 const { title, description, category, tech, year, role, client, url, repo, cover, coverFocalX, coverFocalY } = project.data;
 
 const facts = [
@@ -36,12 +39,15 @@ const facts = [
 					<span>{category}</span>
 					<span class="text-ink/30" aria-hidden="true">·</span>
 					<span class="text-ink/45">{year}</span>
+					{(project.data as any).clientLogo && (
+						<span class="ml-auto flex h-11 max-w-[180px] items-center rounded-xl border border-ink/10 bg-white px-3 py-2 shadow-sm">
+							<img src={(project.data as any).clientLogo} alt={client ? `Logo: ${client}` : 'Logo klienta'} class="h-full w-auto max-w-full object-contain" />
+						</span>
+					)}
 				</div>
 
-				<h1 class="mt-3 text-[clamp(2rem,5vw,3.1rem)] font-bold leading-[1.06] tracking-[-0.02em] text-ink">
-					{title}
-				</h1>
-				<p class="mt-4 max-w-[640px] text-lg text-ink/70">{description}</p>
+				<h1 class="mt-3 text-[clamp(2rem,5vw,3.1rem)] font-bold leading-[1.06] tracking-[-0.02em] text-balance text-ink" set:html={nbspHtml(title.replace(/&/g, "&amp;").replace(/</g, "&lt;"))} />
+				<p class="mt-4 max-w-[640px] text-lg text-ink/70 text-pretty" set:html={nbspHtml(description.replace(/&/g, "&amp;").replace(/</g, "&lt;"))} />
 				{((project.data as any).youtube || (project.data as any).video) ? (
 					<div class="liquid-card liquid-light mt-8 rounded-[24px] p-3">
 						<div class="overflow-hidden rounded-[16px]">
@@ -111,9 +117,7 @@ const facts = [
 				)
 			}
 
-			<div class="prose max-w-none">
-				<slot />
-			</div>
+			<div class="prose prose-pl max-w-none" set:html={body} />
 			{(project.data as any).blocks?.length > 0 && <Blocks blocks={(project.data as any).blocks} theme="light" />}
 		</div>
 	</article>

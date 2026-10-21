@@ -1,0 +1,127 @@
+---
+/*
+ * Termin oferty: ogromny napis + odliczanie (dni, godziny, minuty, sekundy).
+ * Po terminie cała strona pokazuje ekran „Oferta minęła” — sprawdzane w przeglądarce co sekundę,
+ * więc działa bez ponownego publikowania strony.
+ */
+import IsoIcon from '../iso/IsoIcon.astro';
+import { tx } from '../../lib/typo';
+
+interface Props { d: any }
+const { d } = Astro.props;
+const end = new Date(d?.date || '').getTime();
+const valid = Number.isFinite(end);
+const expiredAtBuild = valid && Date.now() > end;
+const ho = String(d?.expiredHo || 'Ho ho ho').split(/\s+/);
+---
+{valid && (
+	<>
+		<section class:list={['dl', expiredAtBuild && 'is-hidden']} data-deadline={end}>
+			<div class="dl-wrap">
+				{d.eyebrow && <p class="dl-eyebrow" set:html={tx(d.eyebrow)} />}
+				<h2 class="dl-big svc-anim"><span class="dl-l1" set:html={tx(d.title || 'Oferta do')} /><span class="dl-l2" set:html={tx(d.titleBold || '')} /></h2>
+				<div class="dl-count" role="timer" aria-label="Do końca oferty">
+					{[['d', 'dni'], ['h', 'godz.'], ['m', 'min'], ['s', 'sek.']].map(([k, l]) => (
+						<div class="dl-cell"><b data-dl={k}>00</b><small>{l}</small></div>
+					))}
+				</div>
+				{d.lead && <p class="dl-lead" set:html={tx(d.lead)} />}
+			</div>
+		</section>
+
+		<section class:list={['dl-over', !expiredAtBuild && 'is-hidden']} aria-live="polite">
+			<div class="dl-snow" aria-hidden="true">{Array.from({ length: 40 }, (_, i) => <i style={`--x:${(i * 37) % 100};--s:${0.5 + ((i * 7) % 10) / 10};--t:${6 + (i % 7)}s;--dl:${-(i % 9)}s`}></i>)}</div>
+			<div class="dl-over-in">
+				<div class="dl-over-icons" aria-hidden="true">
+					<IsoIcon name="prezent" mode="static" class="dlo-a" />
+					<IsoIcon name="sanie" mode="static" class="dlo-b" />
+					<IsoIcon name="choinka" mode="static" class="dlo-c" />
+				</div>
+				<h1 class="dl-over-t" set:html={tx(d.expiredTitle || 'Oferta minęła.')} />
+				<p class="dl-over-l" set:html={tx(d.expiredLead || 'Do zobaczenia za rok!')} />
+				<p class="dl-ho" aria-label={d.expiredHo || 'Ho ho ho'}>{ho.map((w, i) => <span style={`--i:${i}`}>{w}</span>)}</p>
+				{d.expiredNote && <p class="dl-over-n" set:html={tx(d.expiredNote)} />}
+				<div class="dl-over-cta"><a href="/#oferta" class="dl-btn dl-btn-acc">Zobacz stałą ofertę →</a><a href="/#kontakt" class="dl-btn">Napisz do nas</a></div>
+			</div>
+		</section>
+	</>
+)}
+
+<style is:global>
+	.dl { padding: clamp(4rem, 9vw, 8rem) 0; text-align: center; overflow: hidden; }
+	.dl.is-hidden, .dl-over.is-hidden { display: none; }
+	.dl-wrap { max-width: 1400px; margin: 0 auto; padding: 0 1.25rem; }
+	.dl-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--acc, #ff5a78); }
+	.dl-big { margin-top: .6rem; font-family: Montserrat, sans-serif; font-weight: 900; text-transform: uppercase; line-height: .84; letter-spacing: -.045em; }
+	.dl-big span { display: block; }
+	.dl-l1 { font-size: clamp(44px, 10vw, 150px); font-style: italic; color: var(--ink, #fff); opacity: .9; }
+	.dl-l2 { font-size: clamp(52px, 13.2vw, 220px); text-wrap: balance; background: linear-gradient(90deg, #ffc65c, #ff5a78 55%, #ed244e); -webkit-background-clip: text; background-clip: text; color: transparent;
+		filter: drop-shadow(0 18px 40px rgba(237,36,78,.35)); }
+	.dl-big span { transform: translateY(40px); opacity: 0; transition: transform 1s cubic-bezier(.2,.9,.2,1), opacity .8s; }
+	.dl-big .dl-l2 { transition-delay: .15s; }
+	.dl-big.is-in span { transform: none; opacity: 1; }
+	.dl-count { margin: clamp(1.6rem, 4vw, 3rem) auto 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 1.6vw, 18px); max-width: 760px; }
+	.dl-cell { border-radius: 20px; padding: clamp(12px, 2.4vw, 24px) 6px; background: var(--panel, rgba(22,17,63,.86)); border: 1px solid var(--soft, rgba(255,255,255,.12)); box-shadow: var(--shadow); backdrop-filter: blur(14px); }
+	.dl-cell b { display: block; font-size: clamp(30px, 7vw, 72px); line-height: 1; font-weight: 900; font-variant-numeric: tabular-nums; letter-spacing: -.03em; color: var(--ink, #fff); }
+	.dl-cell small { display: block; margin-top: 6px; font-size: clamp(11px, 1.4vw, 13px); font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--mut, #c3c0dc); }
+	.dl-cell b.tick { animation: dl-tick .4s ease-out; }
+	@keyframes dl-tick { 0% { transform: translateY(-6px); opacity: .4; } 100% { transform: none; opacity: 1; } }
+	.dl-lead { margin: 1.6rem auto 0; max-width: 620px; font-size: clamp(15px, 1.6vw, 18px); line-height: 1.6; color: var(--mut, #c3c0dc); text-wrap: pretty; }
+
+	/* po terminie */
+	html.offer-over .k > :not(.dl-over):not(.bd) { display: none !important; }
+	html.offer-over .dl-over { display: grid !important; }
+	.dl-over { position: relative; z-index: 2; min-height: 100vh; display: grid; place-items: center; text-align: center; overflow: hidden; padding: 6rem 1.25rem;
+		background: radial-gradient(90% 60% at 50% 0%, #2a1060, transparent 60%), #0a0630; color: #fff; }
+	.dl-over-in { position: relative; max-width: 980px; }
+	.dl-over-icons { position: relative; height: clamp(150px, 24vw, 230px); margin-bottom: 1rem; }
+	.dl-over-icons .iso { position: absolute; width: clamp(110px, 18vw, 190px); filter: drop-shadow(0 20px 30px rgba(0,0,0,.5)); }
+	.dlo-a { left: 6%; top: 18%; } .dlo-b { left: 50%; top: 0; transform: translateX(-50%); width: clamp(140px, 22vw, 230px) !important; } .dlo-c { right: 6%; top: 12%; }
+	.dl-over-t { font-family: Montserrat, sans-serif; font-weight: 900; text-transform: uppercase; font-size: clamp(48px, 11vw, 160px); line-height: .88; letter-spacing: -.045em; }
+	.dl-over-l { margin-top: .8rem; font-size: clamp(22px, 3.6vw, 40px); font-weight: 800; color: #ffc65c; }
+	.dl-ho { margin-top: 1rem; display: flex; justify-content: center; gap: .3em; font-family: Montserrat, sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase;
+		font-size: clamp(40px, 9vw, 120px); line-height: 1; color: #ff5a78; text-shadow: 0 10px 40px rgba(237,36,78,.5); }
+	.dl-ho span { display: inline-block; animation: dl-ho 1.4s calc(var(--i) * .18s) cubic-bezier(.3,1.6,.5,1) infinite; }
+	@keyframes dl-ho { 0%,60%,100% { transform: translateY(0) rotate(0); } 25% { transform: translateY(-.22em) rotate(-6deg); } 40% { transform: translateY(0) rotate(3deg); } }
+	.dl-over-n { margin: 1.6rem auto 0; max-width: 560px; font-size: 16px; line-height: 1.6; color: #c3c0dc; text-wrap: pretty; }
+	.dl-over-cta { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+	.dl-btn { display: inline-flex; padding: .95rem 1.5rem; border-radius: 999px; font-weight: 700; border: 1.5px solid rgba(255,255,255,.35); color: #fff; transition: transform .2s, background .2s; }
+	.dl-btn:hover { transform: translateY(-2px); background: rgba(255,255,255,.08); }
+	.dl-btn-acc { background: #ed244e; border-color: #ed244e; box-shadow: 0 14px 34px -12px rgba(237,36,78,.8); }
+	.dl-btn-acc:hover { background: #ff3a62; }
+	.dl-snow { position: absolute; inset: 0; pointer-events: none; }
+	.dl-snow i { position: absolute; top: -10px; left: calc(var(--x) * 1%); width: calc(var(--s) * 8px); height: calc(var(--s) * 8px); border-radius: 50%; background: #fff; opacity: .8;
+		animation: dl-fall var(--t) var(--dl) linear infinite; }
+	@keyframes dl-fall { to { transform: translate(30px, 110vh); } }
+	@media (prefers-reduced-motion: reduce) { .dl-ho span, .dl-snow i { animation: none; } .dl-big span { transform: none; opacity: 1; } }
+</style>
+
+<script>
+	const box = document.querySelector<HTMLElement>('[data-deadline]');
+	if (box) {
+		const end = Number(box.dataset.deadline);
+		const cells: Record<string, HTMLElement | null> = {};
+		['d', 'h', 'm', 's'].forEach((k) => (cells[k] = box.querySelector(`[data-dl="${k}"]`)));
+		const pad = (n: number) => String(n).padStart(2, '0');
+		const over = () => {
+			document.documentElement.classList.add('offer-over');
+			document.querySelector('.dl-over')?.classList.remove('is-hidden');
+			window.scrollTo(0, 0);
+		};
+		const tick = () => {
+			const left = end - Date.now();
+			if (left <= 0) { over(); return false; }
+			const s = Math.floor(left / 1000);
+			const v = { d: Math.floor(s / 86400), h: Math.floor((s % 86400) / 3600), m: Math.floor((s % 3600) / 60), s: s % 60 } as Record<string, number>;
+			for (const k in v) {
+				const el = cells[k]; if (!el) continue;
+				const t = pad(v[k]);
+				if (el.textContent !== t) { el.textContent = t; el.classList.remove('tick'); void el.offsetWidth; el.classList.add('tick'); }
+			}
+			return true;
+		};
+		if (tick()) { const id = setInterval(() => { if (!tick()) clearInterval(id); }, 1000); }
+	} else if (document.querySelector('.dl-over:not(.is-hidden)')) {
+		document.documentElement.classList.add('offer-over');
+	}
+</script>

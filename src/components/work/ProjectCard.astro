@@ -23,7 +23,12 @@ if (!layers.length && d.thumbnail) {
 ---
 
 <article class="liquid-card liquid-light group relative flex flex-col overflow-hidden rounded-[22px] p-3.5" data-category={slugify(category)}>
-	<div class="overflow-hidden rounded-[14px]">
+	<div class="relative overflow-hidden rounded-[14px]">
+		{d.clientLogo && (
+			<span class="absolute top-3 right-3 z-10 flex h-10 max-w-[45%] items-center rounded-xl bg-white/92 px-3 py-1.5 shadow-md backdrop-blur-sm">
+				<img src={d.clientLogo} alt={d.client ? `Logo: ${d.client}` : ''} loading="lazy" class="h-full w-auto max-w-full object-contain" />
+			</span>
+		)}
 		<LayerTile layers={layers} strength={d.parallaxStrength ?? 100} focalX={d.coverFocalX} focalY={d.coverFocalY} alt={title} placeholder="light" />
 	</div>
 

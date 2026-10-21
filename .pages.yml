@@ -40,6 +40,9 @@ content:
   - name: client
     label: Klient
     type: string
+  - name: clientLogo
+    label: Logotyp klienta (PNG/SVG, przezroczyste tło)
+    type: image
   - name: role
     label: Rola / zakres
     type: string
@@ -152,6 +155,46 @@ content:
           collapsible:
             collapsed: true
             summary: '{caption}'
+    - name: karuzela3d
+      label: Karuzela 3D (jak na głównej)
+      fields:
+      - name: orientation
+        label: Format kafelków
+        type: select
+        options:
+          values:
+          - name: poziom
+            label: Poziome banery 16:10 (realizacje filmowe)
+          - name: miniatury
+            label: Miniatury YouTube 16:9
+          - name: pion
+            label: Pionowe okładki 10:16
+      - name: items
+        label: Kafelki
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{title}'
+        fields:
+        - name: image
+          label: Obraz (można pominąć przy linku YouTube)
+          type: image
+        - name: youtube
+          label: Link YouTube (odtwarza się po kliknięciu)
+          type: string
+        - name: title
+          label: Tytuł pod karuzelą
+          type: string
+        - name: link
+          label: albo link do strony (np. /work/...)
+          type: string
+        - name: logo
+          label: Logotyp klienta
+          type: image
+      - name: caption
+        label: Podpis
+        type: string
     - name: wideo
       label: Wideo
       fields:
@@ -324,6 +367,87 @@ content:
     label: Napis przesuwający się (kinetyczny)
     type: string
     description: Słowa oddzielone ukośnikiem, np. MONTAŻ / ANIMACJA / ROLKI
+  - name: ui
+    label: Układ i rozmiary (podgląd — dopisz ?edytuj do adresu strony)
+    type: object
+    fields:
+    - name: hide
+      label: Ukryj sekcje
+      type: select
+      options:
+        multiple: true
+        values:
+        - {value: hero, label: Pierwszy ekran}
+        - {value: marquee, label: Przelatujące karty (kinetyczny)}
+        - {value: mission, label: Tekst zapalany słowami + liczby (kinetyczny)}
+        - {value: steps, label: Kroki „Kim się stajesz”}
+        - {value: bigs, label: Wielkie numery (kinetyczny)}
+        - {value: zoom, label: Zoom z wynikami (kinetyczny)}
+        - {value: charts, label: Wykresy}
+        - {value: opinie, label: Opinie}
+        - {value: cennik, label: Cennik (kinetyczny)}
+        - {value: realizacje, label: Realizacje}
+        - {value: faq, label: Pytania}
+        - {value: final, label: Następny krok}
+        - {value: intro, label: Zanim zaczniemy (klasyczny)}
+        - {value: become, label: Kim się stajesz (klasyczny)}
+        - {value: stats, label: Liczby rynku (klasyczny)}
+        - {value: proof, label: Wyniki (klasyczny)}
+        - {value: inside, label: Co w środku (klasyczny)}
+        - {value: special, label: Sekcja specjalna (klasyczny)}
+        - {value: doubts, label: Wątpliwości (klasyczny)}
+        - {value: invest, label: Inwestycja (klasyczny)}
+    - name: headSize
+      label: Wielkość nagłówków
+      type: select
+      options:
+        values: [{value: S, label: Mniejsze}, {value: M, label: Standard}, {value: L, label: Większe}, {value: XL, label: Ogromne}]
+    - name: wordsSize
+      label: Wielkość tekstu zapalanego słowami
+      type: select
+      options:
+        values: [{value: S, label: Mniejszy}, {value: M, label: Standard}, {value: L, label: Większy}]
+    - name: spacing
+      label: Odstępy między sekcjami
+      type: select
+      options:
+        values: [{value: ciasno, label: Ciasno}, {value: normalnie, label: Normalnie}, {value: przestronnie, label: Przestronnie}]
+    - name: sceneLength
+      label: Długość animowanych scen
+      type: select
+      options:
+        values: [{value: krotko, label: Krótko}, {value: normalnie, label: Normalnie}, {value: dlugo, label: Długo}]
+  - name: deadline
+    label: Termin oferty + odliczanie (kinetyczny)
+    type: object
+    fields:
+    - name: date
+      label: Koniec oferty (np. 2026-12-06T23:59:59+01:00)
+      type: string
+    - name: eyebrow
+      label: Nadtytuł
+      type: string
+    - name: title
+      label: Napis — linia 1
+      type: string
+    - name: titleBold
+      label: Napis — linia 2, ogromna
+      type: string
+    - name: lead
+      label: Zdanie pod licznikiem
+      type: text
+    - name: expiredTitle
+      label: Po terminie — tytuł
+      type: string
+    - name: expiredLead
+      label: Po terminie — drugi wiersz
+      type: string
+    - name: expiredHo
+      label: Po terminie — skaczący napis
+      type: string
+    - name: expiredNote
+      label: Po terminie — dopisek
+      type: text
   - name: hero
     label: 1. Pierwszy ekran
     type: object
@@ -527,9 +651,109 @@ content:
     - name: image
       label: Obraz do sceny z przybliżeniem
       type: image
+    - name: ctr
+      label: Wykres przewagi CTR (karuzela miniatur w tle)
+      type: object
+      fields:
+      - name: show
+        label: Pokaż
+        type: boolean
+      - name: eyebrow
+        label: Nadtytuł
+        type: string
+      - name: title
+        label: Tytuł
+        type: string
+      - name: sub
+        label: Opis pod tytułem
+        type: text
+      - name: watermark
+        label: Wielki półprzezroczysty napis
+        type: string
+      - name: unit
+        label: Jednostka (np. %)
+        type: string
+      - name: xStart
+        label: Oś — początek
+        type: string
+      - name: xEnd
+        label: Oś — koniec
+        type: string
+      - name: base
+        label: Szara linia — typowo
+        type: object
+        fields:
+        - name: label
+          label: Opis
+          type: string
+        - name: value
+          label: Wartość
+          type: number
+        - name: display
+          label: Własny napis
+          type: string
+      - name: ours
+        label: Zielona linia — z nami
+        type: object
+        fields:
+        - name: label
+          label: Opis
+          type: string
+        - name: value
+          label: Wartość
+          type: number
+        - name: display
+          label: Własny napis
+          type: string
+      - name: delta
+        label: Napis na obszarze różnicy
+        type: string
+      - name: source
+        label: Źródło danych
+        type: text
+      - name: quoteFrom
+        label: Cytat pod wykresem — z opinii klienta
+        type: select
+        options:
+          values:
+          - Przemysław Langier
+          - Adam Przebinda
+      - name: thumbs
+        label: Miniatury w tle
+        type: object
+        list: true
+        fields:
+        - name: image
+          label: Miniatura 16:9
+          type: image
+        - name: youtube
+          label: albo link YouTube
+          type: string
     - name: deltaLine
-      label: Wykres 150+ rolek Delta HR
+      label: Pokaż wykres liniowy rolek (Delta HR)
       type: boolean
+    - name: delta
+      label: Wykres liniowy rolek — treść
+      type: object
+      fields:
+      - name: prefix
+        label: Przed liczbą (np. do )
+        type: string
+      - name: value
+        label: Liczba
+        type: number
+      - name: suffix
+        label: Po liczbie (np. +)
+        type: string
+      - name: label
+        label: Opis pod liczbą
+        type: string
+      - name: points
+        label: Punkty wykresu (po przecinku)
+        type: string
+      - name: description
+        label: Tekst pod wykresem
+        type: text
     - *id001
   - name: inside
     label: 6. Co w środku
@@ -597,6 +821,66 @@ content:
     - name: lead
       label: Zdanie pod tytułem
       type: text
+    - name: scale
+      label: Wykres skali rocznej (nad tabelą rytmu)
+      type: object
+      fields:
+      - name: show
+        label: Pokaż
+        type: boolean
+      - name: eyebrow
+        label: Nadtytuł
+        type: string
+      - name: title
+        label: Tytuł
+        type: string
+      - name: sub
+        label: Opis pod tytułem
+        type: text
+      - name: watermark
+        label: Wielki półprzezroczysty napis
+        type: string
+      - name: unit
+        label: Jednostka (np. %)
+        type: string
+      - name: xStart
+        label: Oś — początek
+        type: string
+      - name: xEnd
+        label: Oś — koniec
+        type: string
+      - name: base
+        label: Szara linia — typowo
+        type: object
+        fields:
+        - name: label
+          label: Opis
+          type: string
+        - name: value
+          label: Wartość
+          type: number
+        - name: display
+          label: Własny napis
+          type: string
+      - name: ours
+        label: Zielona linia — z nami
+        type: object
+        fields:
+        - name: label
+          label: Opis
+          type: string
+        - name: value
+          label: Wartość
+          type: number
+        - name: display
+          label: Własny napis
+          type: string
+      - name: delta
+        label: Napis na obszarze różnicy
+        type: string
+      - name: source
+        label: Źródło danych
+        type: text
     - name: table
       label: Tabela tygodni
       type: object
@@ -1003,6 +1287,39 @@ content:
     type: string
     list: true
     description: 'Dozwolone: realizacje, uslugi, dlaKogo, oferta, opinie, faq, kontakt. Przeciągnij, aby zmienić kolejność.'
+- name: manifest
+  label: Manifest (filozofia tworzenia)
+  type: file
+  path: src/data/manifest.json
+  format: json
+  fields:
+  - {name: seoTitle, label: Tytuł dla Google, type: string}
+  - {name: seoDesc, label: Opis dla Google, type: text}
+  - {name: eyebrow, label: Nadtytuł, type: string}
+  - {name: title, label: Nagłówek — linia cienka, type: string}
+  - {name: titleBold, label: Nagłówek — linia gruba, type: string}
+  - {name: lead, label: Wstęp, type: text}
+  - name: items
+    label: Zasady
+    type: object
+    list:
+      collapsible:
+        collapsed: true
+        summary: '{t}'
+    fields:
+    - {name: t, label: Zasada (nagłówek), type: string}
+    - {name: d, label: Wyjaśnienie, type: text}
+    - name: quoteFrom
+      label: Cytat klienta pod zasadą
+      type: select
+      options:
+        values: [Przemysław Langier, Adam Przebinda]
+  - {name: signature, label: Podpis, type: string}
+  - {name: signatureRole, label: Podpis — rola, type: string}
+  - {name: ctaTitle, label: Na końcu — tytuł, type: string}
+  - {name: ctaText, label: Na końcu — zdanie, type: text}
+  - {name: ctaLabel, label: Przycisk — napis, type: string}
+  - {name: ctaHref, label: Przycisk — link, type: string}
 - name: podstrony
   label: Podstrony
   type: collection

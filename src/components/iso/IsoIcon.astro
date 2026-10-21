@@ -5,8 +5,11 @@
  * obiekt wjeżdża z dołu, potem działa pętla (płomień, słupki, skan hologramu, cząsteczki).
  * mode="static": bez wejścia (np. w szybko przelatujących kartach), pętle działają.
  */
-interface Props { name: string; mode?: 'draw' | 'static'; class?: string; style?: string; platform?: boolean }
+interface Props { name: string; mode?: 'draw' | 'static'; class?: string; style?: string; platform?: boolean; pal?: 'neon' | 'site' }
 const { name, mode = 'draw', class: cls = '', style, platform = true } = Astro.props;
+// ikony świąteczne domyślnie w kolorach strony (granat + róż), reszta w neonie
+const XM = ['choinka', 'prezent', 'bombka', 'dzwonek', 'gwiazda', 'sanie', 'czapka', 'kalendarz-xii'];
+const pal = Astro.props.pal ?? (XM.includes(name) ? 'site' : 'neon');
 const u = 'i' + Math.random().toString(36).slice(2, 8);
 const g = (id: string) => `url(#${u}-${id})`;
 
@@ -28,6 +31,12 @@ const mon = box(-36, -22, 9, 72, 6, 60);
 const onScreen = (x: number, z: number) => P(x, -22 + 6, z); // punkt na przedniej ścianie ekranu
 const chart = [[-28, 30], [-14, 42], [-2, 36], [12, 54], [26, 48]].map(([x, z]) => onScreen(x, z + 9));
 const chartD = 'M' + chart.map((p) => p.map((n) => n.toFixed(1)).join(' ')).join(' L');
+// płynący wykres: wzór powtarzany co 24 jednostki, przesuwany o jeden okres (bez szwu)
+const WAVE = [[0, 0], [5, 7], [10, 3], [15, 12], [20, 5], [24, 0]];
+const wavePts: number[][] = [];
+for (let o = -72; o <= 48; o += 24) WAVE.forEach(([x, z], j) => { if (o > -72 && j === 0) return; wavePts.push(onScreen(o + x, 38 + z)); });
+const waveD = 'M' + wavePts.map((p) => p.map((n) => n.toFixed(1)).join(' ')).join(' L');
+const waveFill = waveD + ` L${onScreen(72, 10).map((n) => n.toFixed(1)).join(' ')} L${onScreen(-72, 10).map((n) => n.toFixed(1)).join(' ')} Z`;
 // kamera
 const cam = box(-30, -18, 9, 50, 32, 34);
 const lensC = P(20, -2, 26);
@@ -39,6 +48,36 @@ const cal = box(-34, -14, 9, 66, 8, 58);
 const calFace = (x: number, z: number) => P(x, -6, z);
 // tablet (leży płasko, lekko uniesiony)
 const tab = box(-36, -28, 12, 72, 54, 5);
+// gwiazdka 5-ramienna
+const star = (cx: number, cy: number, R: number, r: number, sx = 1) => 'M' + Array.from({ length: 10 }, (_, i) => {
+	const a = -Math.PI / 2 + (i * Math.PI) / 5, q = i % 2 ? r : R;
+	return `${(cx + Math.cos(a) * q * sx).toFixed(1)} ${(cy + Math.sin(a) * q).toFixed(1)}`;
+}).join(' L') + ' Z';
+// choinka: trzy stożki (dół = połówka elipsy w proporcji izometrycznej)
+const cone = (r: number, yb: number, ya: number) => ({
+	f: `M${c[0] - r} ${yb} A${r} ${(r * 0.58).toFixed(1)} 0 0 0 ${c[0] + r} ${yb} L${c[0]} ${ya} Z`,
+	s: `M${c[0] + 2} ${(yb + r * 0.58).toFixed(1)} A${r} ${(r * 0.58).toFixed(1)} 0 0 0 ${c[0] + r} ${yb} L${c[0]} ${ya} Z`,
+});
+const tiers = [cone(36, c[1] - 16, c[1] - 62), cone(28, c[1] - 44, c[1] - 84), cone(20, c[1] - 68, c[1] - 102)];
+const lights = [[-22, -22], [8, -18], [26, -26], [-14, -50], [14, -48], [-6, -74], [10, -76], [-26, -30], [20, -56]].map(([dx, dy], k) => [c[0] + dx, c[1] + dy, k]);
+const LC = ['#ffc65c', '#ff5a78', '#8ff4ff'];
+// prezent
+const gift = box(-25, -25, 9, 50, 50, 34);
+const lid = box(-28, -28, 43, 56, 56, 9);
+const ribL = box(-4, -25.2, 9, 8, 50.4, 34.2), ribR = box(-25.2, -4, 9, 50.4, 8, 34.2);
+const lidRibL = box(-4, -28.2, 43, 8, 56.4, 9.2), lidRibR = box(-28.2, -4, 43, 56.4, 8, 9.2);
+const bowC = P(0, 0, 52);
+// sanie
+const sl = box(-30, -13, 18, 50, 26, 16);
+const runner = (y: number) => `M${P(-36, y, 10).map(fx1).join(' ')} L${P(22, y, 10).map(fx1).join(' ')} C${P(34, y, 10).map(fx1).join(' ')} ${P(36, y, 22).map(fx1).join(' ')} ${P(28, y, 30).map(fx1).join(' ')}`;
+const fx1 = (n: number) => n.toFixed(1);
+const slGift = box(-22, -9, 34, 20, 18, 16);
+// kalendarz grudniowy: tekst na przedniej ścianie (skos jak ściana izometryczna)
+const calM = (x: number, z: number) => { const q = calFace(x, z); return `matrix(0.866 0.5 0 1 ${q[0].toFixed(1)} ${q[1].toFixed(1)})`; };
+// żarówka: kopuła + szyjka z eliptycznym dołem
+const bulbD = `M${c[0] - 12} ${c[1] - 21} C${c[0] - 12} ${c[1] - 36} ${c[0] - 27} ${c[1] - 44} ${c[0] - 27} ${c[1] - 62} A27 27 0 1 1 ${c[0] + 27} ${c[1] - 62} C${c[0] + 27} ${c[1] - 44} ${c[0] + 12} ${c[1] - 36} ${c[0] + 12} ${c[1] - 21} A12 6.9 0 0 1 ${c[0] - 12} ${c[1] - 21} Z`;
+// tablet: podpis rysowany piórkiem (piórko jedzie po tej samej ścieżce)
+const sigD = `M${P(-24, -22, 17)[0].toFixed(1)} ${P(-24, -22, 17)[1].toFixed(1)} C${P(-2, -26, 17)[0].toFixed(1)} ${P(-2, -26, 17)[1].toFixed(1)} ${P(-26, 0, 17)[0].toFixed(1)} ${P(-26, 0, 17)[1].toFixed(1)} ${P(-4, 2, 17)[0].toFixed(1)} ${P(-4, 2, 17)[1].toFixed(1)} S${P(10, 18, 17)[0].toFixed(1)} ${P(10, 18, 17)[1].toFixed(1)} ${P(24, 12, 17)[0].toFixed(1)} ${P(24, 12, 17)[1].toFixed(1)}`;
 ---
 <svg viewBox="0 0 200 200" class:list={['iso', `iso-${mode}`, mode === 'draw' && 'svc-anim', `iso-n-${name}`, cls]} style={style} aria-hidden="true">
 	<defs>
@@ -53,16 +92,30 @@ const tab = box(-36, -28, 12, 72, 54, 5);
 		<linearGradient id={`${u}-scr`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffd1ee" /><stop offset="1" stop-color="#f39bd6" /></linearGradient>
 		<linearGradient id={`${u}-holo`} x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#d06bff" stop-opacity=".75" /><stop offset="1" stop-color="#d06bff" stop-opacity="0" /></linearGradient>
 		<radialGradient id={`${u}-glow`} cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#3ee6ff" stop-opacity=".55" /><stop offset="1" stop-color="#3ee6ff" stop-opacity="0" /></radialGradient>
+		<linearGradient id={`${u}-spt`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2e2780" /><stop offset="1" stop-color="#1c1660" /></linearGradient>
+		<linearGradient id={`${u}-spl`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1450" /><stop offset="1" stop-color="#110c3a" /></linearGradient>
+		<linearGradient id={`${u}-spr`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#140f42" /><stop offset="1" stop-color="#0b0730" /></linearGradient>
+		<linearGradient id={`${u}-tree`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3fe0a0" /><stop offset="1" stop-color="#0f8a63" /></linearGradient>
+		<linearGradient id={`${u}-red`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff6d8a" /><stop offset="1" stop-color="#d81e48" /></linearGradient>
+		<linearGradient id={`${u}-redD`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c41a40" /><stop offset="1" stop-color="#8a0f2e" /></linearGradient>
+		<linearGradient id={`${u}-gold`} x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0b8" /><stop offset=".5" stop-color="#ffc65c" /><stop offset="1" stop-color="#d98b1c" /></linearGradient>
+		<radialGradient id={`${u}-baub`} cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#ffb3c4" /><stop offset=".45" stop-color="#ff4f74" /><stop offset="1" stop-color="#8a0f2e" /></radialGradient>
+		<radialGradient id={`${u}-glowG`} cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffc65c" stop-opacity=".5" /><stop offset="1" stop-color="#ffc65c" stop-opacity="0" /></radialGradient>
 		<radialGradient id={`${u}-glowM`} cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ff5fd2" stop-opacity=".5" /><stop offset="1" stop-color="#ff5fd2" stop-opacity="0" /></radialGradient>
 	</defs>
 
 	{platform && (
 		<g class="iso-plat">
-			<ellipse cx="100" cy="150" rx="88" ry="40" fill={g(name === 'rakieta' || name === 'zarowka' ? 'glow' : 'glowM')} class="iso-pulse" />
-			<polygon points={plat.left} fill={g('pl')} />
-			<polygon points={plat.right} fill={g('pr')} />
-			<polygon points={plat.top} fill={g('pt')} />
-			<path d={plat.edge} pathLength="1" class="iso-edge" />
+			<ellipse cx="100" cy="150" rx="88" ry="40" fill={g(pal === 'site' ? (name === 'gwiazda' || name === 'dzwonek' ? 'glowG' : 'glowM') : name === 'rakieta' || name === 'zarowka' ? 'glow' : 'glowM')} class="iso-pulse" />
+			<polygon points={plat.left} fill={g(pal === 'site' ? 'spl' : 'pl')} />
+			<polygon points={plat.right} fill={g(pal === 'site' ? 'spr' : 'pr')} />
+			<polygon points={plat.top} fill={g(pal === 'site' ? 'spt' : 'pt')} />
+			<path d={plat.edge} pathLength="1" class:list={['iso-edge', pal === 'site' && 'is-site']} />
+			{pal === 'site' && (
+				<g class="iso-snowcap" aria-hidden="true">
+					{[[-30, 30, 12], [26, -32, 9], [34, 22, 7], [-34, -10, 6]].map(([x, y, r]) => { const q = P(x, y, 9); return <ellipse cx={q[0]} cy={q[1]} rx={r} ry={r * 0.5} fill="#fff" opacity=".9" />; })}
+				</g>
+			)}
 		</g>
 	)}
 
@@ -72,12 +125,19 @@ const tab = box(-36, -28, 12, 72, 54, 5);
 				{[[-26, 4, 13], [24, 2, 12], [-12, 10, 15], [12, 11, 14], [0, 6, 17]].map(([dx, dy, r]) => <circle cx={c[0] + dx} cy={c[1] + dy - 6} r={r} fill={g('cy')} opacity=".85" />)}
 			</g>
 			<g class="iso-rocket">
-				<path class="iso-flame" d={`M${c[0] - 8} ${c[1] - 26} Q${c[0]} ${c[1] + 22} ${c[0] + 8} ${c[1] - 26} Z`} fill={g('fire')} />
-				<path d={`M${c[0] - 13} ${c[1] - 34} L${c[0] - 24} ${c[1] - 20} L${c[0] - 22} ${c[1] - 44} Z`} fill={g('magD')} />
-				<path d={`M${c[0] + 13} ${c[1] - 34} L${c[0] + 24} ${c[1] - 20} L${c[0] + 22} ${c[1] - 44} Z`} fill={g('magR')} />
-				<path d={`M${c[0]} ${c[1] - 118} C${c[0] + 22} ${c[1] - 96} ${c[0] + 16} ${c[1] - 52} ${c[0] + 12} ${c[1] - 28} L${c[0] - 12} ${c[1] - 28} C${c[0] - 16} ${c[1] - 52} ${c[0] - 22} ${c[1] - 96} ${c[0]} ${c[1] - 118} Z`} fill={g('mag')} />
-				<path d={`M${c[0]} ${c[1] - 118} C${c[0] + 22} ${c[1] - 96} ${c[0] + 16} ${c[1] - 52} ${c[0] + 12} ${c[1] - 28} L${c[0]} ${c[1] - 28} Z`} fill="#000" opacity=".18" />
-				<circle cx={c[0]} cy={c[1] - 78} r="8" fill={g('cy')} stroke="#fff" stroke-width="2" />
+				<path class="iso-flame" d={`M${c[0] - 8} ${c[1] - 21} Q${c[0]} ${c[1] + 26} ${c[0] + 8} ${c[1] - 21} Z`} fill={g('fire')} />
+				{/* lotki wygięte zgodnie z perspektywą: dolna krawędź biegnie po elipsie korpusu */}
+				<path d={`M${c[0] - 11} ${c[1] - 64} C${c[0] - 24} ${c[1] - 54} ${c[0] - 30} ${c[1] - 40} ${c[0] - 28} ${c[1] - 20} C${c[0] - 22} ${c[1] - 15} ${c[0] - 14} ${c[1] - 19} ${c[0] - 8} ${c[1] - 27} Z`} fill={g('magD')} />
+				<path d={`M${c[0] + 11} ${c[1] - 64} C${c[0] + 24} ${c[1] - 54} ${c[0] + 30} ${c[1] - 40} ${c[0] + 28} ${c[1] - 20} C${c[0] + 22} ${c[1] - 15} ${c[0] + 14} ${c[1] - 19} ${c[0] + 8} ${c[1] - 27} Z`} fill={g('magR')} />
+				{/* dysza: walec z elipsą na dole */}
+				<path d={`M${c[0] - 8} ${c[1] - 30} L${c[0] - 10} ${c[1] - 22} A10 4 0 0 0 ${c[0] + 10} ${c[1] - 22} L${c[0] + 8} ${c[1] - 30} Z`} fill="#3a2399" />
+				<ellipse cx={c[0]} cy={c[1] - 22} rx="10" ry="4" fill="none" stroke="#ffb21e" stroke-width="2" />
+				{/* korpus z zaokrąglonym (eliptycznym) dnem */}
+				<path d={`M${c[0]} ${c[1] - 118} C${c[0] + 22} ${c[1] - 96} ${c[0] + 16} ${c[1] - 52} ${c[0] + 12} ${c[1] - 31} A12 5 0 0 1 ${c[0] - 12} ${c[1] - 31} C${c[0] - 16} ${c[1] - 52} ${c[0] - 22} ${c[1] - 96} ${c[0]} ${c[1] - 118} Z`} fill={g('mag')} />
+				<path d={`M${c[0]} ${c[1] - 118} C${c[0] + 22} ${c[1] - 96} ${c[0] + 16} ${c[1] - 52} ${c[0] + 12} ${c[1] - 31} A12 5 0 0 1 ${c[0]} ${c[1] - 26} Z`} fill="#000" opacity=".18" />
+				<path d={`M${c[0] - 15} ${c[1] - 70} A15 6 0 0 0 ${c[0] + 15} ${c[1] - 70}`} fill="none" stroke="#ffd1f3" stroke-width="1.6" opacity=".55" />
+				<path d={`M${c[0] - 1} ${c[1] - 52} L${c[0] + 3} ${c[1] - 52} L${c[0] + 4} ${c[1] - 18} Q${c[0] + 1} ${c[1] - 14} ${c[0] - 2} ${c[1] - 18} Z`} fill="#7a24c9" />
+				<circle cx={c[0]} cy={c[1] - 86} r="8" fill={g('cy')} stroke="#fff" stroke-width="2" />
 			</g>
 			<g class="iso-stream">{[-14, -4, 6, 16].map((dx, i) => <line x1={c[0] + dx} y1={c[1] - 130} x2={c[0] + dx} y2={c[1] - 150} style={`--k:${i}`} />)}</g>
 		</>)}
@@ -85,51 +145,70 @@ const tab = box(-36, -28, 12, 72, 54, 5);
 		{name === 'wykres' && (<>
 			{bars.map(({ b, i }) => (
 				<g class="iso-bar" style={`--k:${i}`}>
-					<polygon points={b.left} fill={g('magD')} /><polygon points={b.right} fill={g('magR')} /><polygon points={b.top} fill="#ffb3ea" />
+					<g class="iso-barl" style={`--k:${i}`}><polygon points={b.left} fill={g('magD')} /><polygon points={b.right} fill={g('magR')} /><polygon points={b.top} fill="#ffb3ea" /></g>
 				</g>
 			))}
+			{bars.map(({ i }) => { const t = P(-29 + i * 19, -1, 9 + [22, 38, 54, 74][i] + 10); return (
+				<path class="iso-up" style={`--k:${i}`} d={`M${t[0] - 4} ${t[1] + 3} L${t[0]} ${t[1] - 2} L${t[0] + 4} ${t[1] + 3}`} />
+			); })}
 			<path class="iso-trend" pathLength="1" d={`M${P(-30, 0, 44)[0]} ${P(-30, 0, 44)[1]} L${P(-11, 0, 60)[0]} ${P(-11, 0, 60)[1]} L${P(8, 0, 76)[0]} ${P(8, 0, 76)[1]} L${P(27, 0, 98)[0]} ${P(27, 0, 98)[1]}`} />
 			<path class="iso-arrow" d={`M${P(27, 0, 98)[0] - 7} ${P(27, 0, 98)[1] + 1} L${P(27, 0, 98)[0] + 1} ${P(27, 0, 98)[1] - 4} L${P(27, 0, 98)[0]} ${P(27, 0, 98)[1] + 5}`} />
 		</>)}
 
 		{name === 'monitor' && (<>
 			<polygon points={mon.left} fill={g('scr')} /><polygon points={mon.right} fill="#c96fb8" /><polygon points={mon.top} fill="#ffe3f5" />
-			<path class="iso-chart" pathLength="1" d={chartD} />
+			<clipPath id={`${u}-scr-c`}><polygon points={pts(onScreen(-32, 15), onScreen(32, 15), onScreen(32, 66), onScreen(-32, 66))} /></clipPath>
+			<g clip-path={`url(#${u}-scr-c)`} class="iso-wavebox">
+				<path class="iso-wave" d={waveD} />
+				<path class="iso-wavefill" d={waveFill} />
+			</g>
 			{[0, 1, 2].map((k) => { const a = onScreen(-28 + k * 20, 20), b2 = onScreen(-16 + k * 20, 20); return <line x1={a[0]} y1={a[1]} x2={b2[0]} y2={b2[1]} class="iso-line" style={`--k:${k}`} />; })}
-			<circle cx={chart[3][0]} cy={chart[3][1]} r="3.2" class="iso-dot" />
 		</>)}
 
 		{name === 'kamera' && (<>
-			<polygon points={cam.left} fill={g('magD')} /><polygon points={cam.right} fill={g('magR')} /><polygon points={cam.top} fill={g('mag')} />
-			<ellipse cx={lensC[0] + 6} cy={lensC[1] + 2} rx="15" ry="17" fill="#1a0f52" stroke={g('cy')} stroke-width="3" />
-			<ellipse cx={lensC[0] + 6} cy={lensC[1] + 2} rx="7" ry="8" fill={g('cy')} class="iso-lens" />
-			<circle cx={P(-22, -10, 45)[0]} cy={P(-22, -10, 45)[1]} r="4" fill="#ff4f6d" class="iso-rec" />
+			<g class="iso-cam">
+				<polygon points={cam.left} fill={g('magD')} /><polygon points={cam.right} fill={g('magR')} /><polygon points={cam.top} fill={g('mag')} />
+				<ellipse cx={lensC[0] + 6} cy={lensC[1] + 2} rx="15" ry="17" fill="#1a0f52" stroke={g('cy')} stroke-width="3" />
+				<ellipse cx={lensC[0] + 6} cy={lensC[1] + 2} rx="11.5" ry="13" class="iso-ring" pathLength="1" />
+				<ellipse cx={lensC[0] + 6} cy={lensC[1] + 2} rx="7" ry="8" fill={g('cy')} class="iso-lens" />
+				<circle cx={lensC[0] + 3} cy={lensC[1] - 2} r="2" fill="#fff" opacity=".8" />
+				<circle cx={P(-22, -10, 45)[0]} cy={P(-22, -10, 45)[1]} r="4" fill="#ff4f6d" class="iso-rec" />
+			</g>
 		</>)}
 
 		{name === 'telefon' && (<>
 			<polygon points={ph.left} fill="#1b1150" /><polygon points={ph.right} fill="#2a1873" /><polygon points={ph.top} fill="#3a2399" />
 			<polygon points={pts(phFace(-14, 15), phFace(14, 15), phFace(14, 74), phFace(-14, 74))} fill={g('cy')} opacity=".9" />
 			<path d={`M${phFace(-5, 36)[0]} ${phFace(-5, 36)[1]} L${phFace(-5, 52)[0]} ${phFace(-5, 52)[1]} L${phFace(8, 44)[0]} ${phFace(8, 44)[1]} Z`} fill="#fff" class="iso-play" />
-			<g class="iso-likes">{[0, 1, 2].map((k) => <path style={`--k:${k}`} transform={`translate(${130 + k * 8} ${70 - k * 4}) scale(.55)`} d="M0 4 C0 -2 8 -2 8 4 C8 -2 16 -2 16 4 C16 10 8 14 8 16 C8 14 0 10 0 4 Z" fill="#ff5fd2" />)}</g>
+			<g class="iso-likes">{[0, 1, 2, 3].map((k) => <path style={`--k:${k}`} transform={`translate(${124 + (k % 2) * 9} ${84 - k * 2}) scale(${.5 + (k % 2) * .15})`} d="M0 4 C0 -2 8 -2 8 4 C8 -2 16 -2 16 4 C16 10 8 14 8 16 C8 14 0 10 0 4 Z" fill="#ff5fd2" />)}</g>
 		</>)}
 
 		{name === 'moneta' && (<>
-			<ellipse cx={c[0]} cy={c[1] - 2} rx="30" ry="15" fill="#4a2fc9" /><ellipse cx={c[0]} cy={c[1] - 8} rx="30" ry="15" fill="#6d4dff" />
-			<path d={`M${c[0] - 26} ${c[1] - 10} L${c[0] - 36} ${c[1] - 90} L${c[0] + 36} ${c[1] - 90} L${c[0] + 26} ${c[1] - 10} Z`} fill={g('holo')} class="iso-holo" />
+			{/* podstawa: walec — elipsy w proporcji rzutu izometrycznego (ry ≈ 0,58 rx) */}
+			<path d={`M${c[0] - 30} ${c[1] - 10} L${c[0] - 30} ${c[1] - 2} A30 17.3 0 0 0 ${c[0] + 30} ${c[1] - 2} L${c[0] + 30} ${c[1] - 10} Z`} fill="#3a2399" />
+			<ellipse cx={c[0]} cy={c[1] - 10} rx="30" ry="17.3" fill="#6d4dff" />
+			<ellipse cx={c[0]} cy={c[1] - 10} rx="22" ry="12.7" fill="#8a6bff" stroke="#8ff4ff" stroke-width="1.4" />
+			<path d={`M${c[0] + 22} ${c[1] - 10} L${c[0] + 34} ${c[1] - 92} L${c[0] - 34} ${c[1] - 92} L${c[0] - 22} ${c[1] - 10} A22 12.7 0 0 0 ${c[0] + 22} ${c[1] - 10} Z`} fill={g('holo')} class="iso-holo" />
 			<g class="iso-coin">
 				<ellipse cx={c[0]} cy={c[1] - 62} rx="24" ry="24" fill="none" stroke="#ff9be6" stroke-width="3" />
 				<ellipse cx={c[0]} cy={c[1] - 62} rx="17" ry="17" fill="none" stroke="#ff9be6" stroke-width="1.5" opacity=".7" />
 				<text x={c[0]} y={c[1] - 55} text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="800" font-size="20" fill="#ffd1f3">zł</text>
 			</g>
-			<line class="iso-scan" x1={c[0] - 32} x2={c[0] + 32} y1={c[1] - 20} y2={c[1] - 20} />
+			<ellipse class="iso-scan" cx={c[0]} cy={c[1] - 12} rx="23" ry="13.3" />
 		</>)}
 
 		{name === 'zarowka' && (<>
-			{[0, 1, 2].map((k) => { const b3 = box(-9, -9, 9 + k * 6, 18, 18, 5); return <g><polygon points={b3.left} fill="#3a2399" /><polygon points={b3.right} fill="#2a1873" /><polygon points={b3.top} fill="#6d4dff" /></g>; })}
-			<circle cx={c[0]} cy={c[1] - 54} r="34" fill={g('glow')} class="iso-pulse" />
-			<path d={`M${c[0] - 12} ${c[1] - 26} C${c[0] - 12} ${c[1] - 38} ${c[0] - 26} ${c[1] - 44} ${c[0] - 26} ${c[1] - 60} A26 26 0 1 1 ${c[0] + 26} ${c[1] - 60} C${c[0] + 26} ${c[1] - 44} ${c[0] + 12} ${c[1] - 38} ${c[0] + 12} ${c[1] - 26} Z`} fill={g('cy')} opacity=".92" />
-			<path class="iso-fil" pathLength="1" d={`M${c[0] - 8} ${c[1] - 30} L${c[0] - 10} ${c[1] - 56} L${c[0]} ${c[1] - 44} L${c[0] + 10} ${c[1] - 56} L${c[0] + 8} ${c[1] - 30}`} />
-			<g class="iso-stream">{[-18, 0, 18].map((dx, i) => <line x1={c[0] + dx} y1={c[1] - 96} x2={c[0] + dx} y2={c[1] - 114} style={`--k:${i}`} />)}</g>
+			{/* gwint: trzy pierścienie-walce */}
+			{[0, 1, 2].map((k) => { const y0 = c[1] - 4 - k * 6; return (<g>
+				<path d={`M${c[0] - 10} ${y0 - 5} L${c[0] - 10} ${y0} A10 5.8 0 0 0 ${c[0] + 10} ${y0} L${c[0] + 10} ${y0 - 5} Z`} fill={k % 2 ? '#2a1873' : '#3a2399'} />
+				<ellipse cx={c[0]} cy={y0 - 5} rx="10" ry="5.8" fill="#6d4dff" />
+			</g>); })}
+			<circle cx={c[0]} cy={c[1] - 58} r="36" fill={g('glow')} class="iso-pulse" />
+			{[0, 1].map((k) => <path class="iso-halo" style={`--k:${k}`} d={bulbD} />)}
+			<path d={bulbD} fill={g('cy')} opacity=".92" />
+			<path d={`M${c[0] - 18} ${c[1] - 70} A18 18 0 0 1 ${c[0] - 4} ${c[1] - 82}`} fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".55" />
+			<path class="iso-fil" pathLength="1" d={`M${c[0] - 7} ${c[1] - 26} L${c[0] - 10} ${c[1] - 58} L${c[0]} ${c[1] - 46} L${c[0] + 10} ${c[1] - 58} L${c[0] + 7} ${c[1] - 26}`} />
+			<g class="iso-stream">{[-18, 0, 18].map((dx, i) => <line x1={c[0] + dx} y1={c[1] - 104} x2={c[0] + dx} y2={c[1] - 122} style={`--k:${i}`} />)}</g>
 		</>)}
 
 		{name === 'kalendarz' && (<>
@@ -141,12 +220,103 @@ const tab = box(-36, -28, 12, 72, 54, 5);
 
 		{name === 'tablet' && (<>
 			<polygon points={tab.left} fill="#1b1150" /><polygon points={tab.right} fill="#2a1873" /><polygon points={tab.top} fill={g('scr')} />
-			<path class="iso-chart" pathLength="1" d={`M${P(-26, -16, 17)[0]} ${P(-26, -16, 17)[1]} C${P(-8, -2, 17)[0]} ${P(-8, -2, 17)[1]} ${P(6, -20, 17)[0]} ${P(6, -20, 17)[1]} ${P(24, 12, 17)[0]} ${P(24, 12, 17)[1]}`} />
-			<g class="iso-pen"><path d={`M${P(24, 12, 17)[0]} ${P(24, 12, 17)[1]} l14 -34 l6 3 l-14 34 z`} fill={g('mag')} /><path d={`M${P(24, 12, 17)[0]} ${P(24, 12, 17)[1]} l2 -6 l4 2 z`} fill="#fff" /></g>
+			<path class="iso-sig" pathLength="1" d={sigD} />
+			<g class="iso-pen" style={`offset-path: path('${sigD}')`}>
+				<path d="M0 0 l14 -34 l6 3 l-14 34 z" fill={g('mag')} /><path d="M14 -34 l6 3 l2 -5 l-6 -3 z" fill="#ffd1f3" /><path d="M0 0 l2 -6 l4 2 z" fill="#fff" />
+			</g>
+		</>)}
+
+		{name === 'choinka' && (<>
+			<path d={`M${c[0] - 6} ${c[1] - 14} L${c[0] - 6} ${c[1] - 4} A6 3.5 0 0 0 ${c[0] + 6} ${c[1] - 4} L${c[0] + 6} ${c[1] - 14} Z`} fill="#6b3a1f" />
+			{tiers.map((t) => <g><path d={t.f} fill={g('tree')} /><path d={t.s} fill="#000" opacity=".2" /></g>)}
+			{tiers.map((t, k) => <path d={t.f.replace(/ L.*Z$/, '')} fill="none" stroke="#fff" stroke-width="2.4" opacity=".75" stroke-linecap="round" class="iso-snowline" style={`--k:${k}`} />)}
+			{lights.map(([x, y, k]) => <circle cx={x} cy={y} r="2.8" fill={LC[k % 3]} class="iso-twinkle" style={`--k:${k}`} />)}
+			<circle cx={c[0]} cy={c[1] - 108} r="15" fill={g('glowG')} class="iso-pulse" />
+			<path d={star(c[0], c[1] - 108, 11, 4.6)} fill={g('gold')} class="iso-topstar" />
+		</>)}
+
+		{name === 'prezent' && (<>
+			<polygon points={gift.left} fill={g('red')} /><polygon points={gift.right} fill={g('redD')} />
+			<polygon points={ribL.left} fill={g('gold')} /><polygon points={ribR.right} fill="#d98b1c" />
+			<g class="iso-lid">
+				<polygon points={lid.left} fill={g('red')} /><polygon points={lid.right} fill={g('redD')} /><polygon points={lid.top} fill="#ff7d96" />
+				<polygon points={lidRibL.left} fill={g('gold')} /><polygon points={lidRibR.right} fill="#d98b1c" />
+				<polygon points={lidRibL.top} fill="#ffe08a" /><polygon points={lidRibR.top} fill="#ffe08a" />
+				<path d={`M${bowC[0]} ${bowC[1]} C${bowC[0] - 22} ${bowC[1] - 20} ${bowC[0] - 26} ${bowC[1] + 2} ${bowC[0]} ${bowC[1]} C${bowC[0] + 26} ${bowC[1] + 2} ${bowC[0] + 22} ${bowC[1] - 20} ${bowC[0]} ${bowC[1]} Z`} fill={g('gold')} stroke="#d98b1c" stroke-width="1.2" />
+				<ellipse cx={bowC[0]} cy={bowC[1]} rx="4" ry="3" fill="#d98b1c" />
+			</g>
+			<g class="iso-sparks">{[[-30, -86], [0, -100], [30, -84], [-16, -96], [18, -96]].map(([dx, dy], k) => <path d={star(c[0] + dx, c[1] + dy, 5, 2)} fill={k % 2 ? '#ffc65c' : '#fff'} style={`--k:${k}`} />)}</g>
+		</>)}
+
+		{name === 'bombka' && (<>
+			<g class="iso-rock">
+				<circle cx={c[0]} cy={c[1] - 36} r="31" fill={g('baub')} />
+				<path d={`M${c[0] - 31} ${c[1] - 38} A31 10 0 0 0 ${c[0] + 31} ${c[1] - 38}`} fill="none" stroke={g('gold')} stroke-width="4" />
+				<path d={`M${c[0] - 27} ${c[1] - 52} A27 8.5 0 0 0 ${c[0] + 27} ${c[1] - 52}`} fill="none" stroke="#fff" stroke-width="1.6" stroke-dasharray="2 4" opacity=".8" />
+				<ellipse cx={c[0] - 11} cy={c[1] - 49} rx="7" ry="10" fill="#fff" opacity=".35" transform={`rotate(-25 ${c[0] - 11} ${c[1] - 49})`} />
+				<path d={`M${c[0] - 8} ${c[1] - 70} L${c[0] - 8} ${c[1] - 63} A8 3.4 0 0 0 ${c[0] + 8} ${c[1] - 63} L${c[0] + 8} ${c[1] - 70} Z`} fill={g('gold')} />
+				<ellipse cx={c[0]} cy={c[1] - 70} rx="8" ry="3.4" fill="#fff0b8" />
+				<path d={`M${c[0]} ${c[1] - 72} C${c[0] - 8} ${c[1] - 86} ${c[0] + 10} ${c[1] - 90} ${c[0] + 4} ${c[1] - 78}`} fill="none" stroke="#ffc65c" stroke-width="2" />
+			</g>
+		</>)}
+
+		{name === 'dzwonek' && (<>
+			<g class="iso-waves">{[0, 1].map((k) => <><path style={`--k:${k}`} d={`M${c[0] - 42 - k * 9} ${c[1] - 70} q-7 16 0 32`} /><path style={`--k:${k}`} d={`M${c[0] + 42 + k * 9} ${c[1] - 70} q7 16 0 32`} /></>)}</g>
+			<g class="iso-bell">
+				<path d={`M${c[0] - 30} ${c[1] - 36} C${c[0] - 24} ${c[1] - 48} ${c[0] - 22} ${c[1] - 74} ${c[0] - 16} ${c[1] - 86} C${c[0] - 8} ${c[1] - 100} ${c[0] + 8} ${c[1] - 100} ${c[0] + 16} ${c[1] - 86} C${c[0] + 22} ${c[1] - 74} ${c[0] + 24} ${c[1] - 48} ${c[0] + 30} ${c[1] - 36} A30 10 0 0 1 ${c[0] - 30} ${c[1] - 36} Z`} fill={g('gold')} />
+				<path d={`M${c[0] + 4} ${c[1] - 98} C${c[0] + 12} ${c[1] - 96} ${c[0] + 22} ${c[1] - 70} ${c[0] + 30} ${c[1] - 36} A30 10 0 0 1 ${c[0] + 6} ${c[1] - 26.5} Z`} fill="#000" opacity=".14" />
+				<ellipse cx={c[0]} cy={c[1] - 36} rx="30" ry="10" fill="none" stroke="#fff0b8" stroke-width="2.4" />
+				<g class="iso-clapper"><line x1={c[0]} y1={c[1] - 50} x2={c[0]} y2={c[1] - 30} stroke="#a7620f" stroke-width="3" /><circle cx={c[0]} cy={c[1] - 27} r="5.5" fill="#a7620f" /></g>
+				<path d={`M${c[0]} ${c[1] - 98} C${c[0] - 22} ${c[1] - 116} ${c[0] - 26} ${c[1] - 96} ${c[0]} ${c[1] - 98} C${c[0] + 26} ${c[1] - 96} ${c[0] + 22} ${c[1] - 116} ${c[0]} ${c[1] - 98} Z`} fill={g('red')} />
+				<path d={`M${c[0] - 2} ${c[1] - 98} l-10 22 M${c[0] + 2} ${c[1] - 98} l10 22`} stroke="#d81e48" stroke-width="4" stroke-linecap="round" />
+			</g>
+		</>)}
+
+		{name === 'gwiazda' && (<>
+			<path d={`M${c[0] - 14} ${c[1] - 10} L${c[0] - 14} ${c[1] - 4} A14 8 0 0 0 ${c[0] + 14} ${c[1] - 4} L${c[0] + 14} ${c[1] - 10} Z`} fill="#1a1450" />
+			<ellipse cx={c[0]} cy={c[1] - 10} rx="14" ry="8" fill="#2e2780" stroke="#ff5a78" stroke-width="1.2" />
+			<line x1={c[0]} y1={c[1] - 10} x2={c[0]} y2={c[1] - 34} stroke="#ff5a78" stroke-width="2.4" />
+			<circle cx={c[0]} cy={c[1] - 60} r="44" fill={g('glowG')} class="iso-pulse" />
+			<g class="iso-spinstar">
+				<path d={star(c[0], c[1] - 60, 38, 15)} fill={g('gold')} />
+				<path d={'M' + c[0] + ' ' + (c[1] - 60) + ' ' + star(c[0], c[1] - 60, 38, 15).slice(1).split(' L').filter((_, i) => i % 2 === 0).map((q) => 'L' + q + ' L' + c[0] + ' ' + (c[1] - 60)).join(' ')} fill="none" stroke="#d98b1c" stroke-width="1.2" opacity=".7" />
+				<path d={`M${c[0]} ${c[1] - 98} L${c[0] + 9} ${c[1] - 64} L${c[0]} ${c[1] - 60} Z`} fill="#fff" opacity=".35" />
+			</g>
+			<g class="iso-sparks">{[[-44, -96], [42, -88], [-36, -30], [40, -36]].map(([dx, dy], k) => <path d={star(c[0] + dx, c[1] + dy, 5, 2)} fill="#fff" style={`--k:${k}`} />)}</g>
+		</>)}
+
+		{name === 'sanie' && (<>
+			<g class="iso-trail">{[0, 1, 2].map((k) => { const q = P(-46 - k * 10, 0, 12); return <circle cx={q[0]} cy={q[1]} r={6 - k * 1.4} fill="#fff" style={`--k:${k}`} />; })}</g>
+			<g class="iso-sleigh">
+				<path d={runner(-13)} fill="none" stroke={g('gold')} stroke-width="3" stroke-linecap="round" />
+				<polygon points={sl.left} fill={g('red')} /><polygon points={sl.right} fill={g('redD')} /><polygon points={sl.top} fill="#ff7d96" />
+				<path d={`M${P(20, 13, 18).map(fx1).join(' ')} C${P(34, 13, 22).map(fx1).join(' ')} ${P(34, 13, 40).map(fx1).join(' ')} ${P(24, 13, 42).map(fx1).join(' ')} L${P(20, 13, 34).map(fx1).join(' ')} Z`} fill={g('red')} />
+				<polygon points={slGift.left} fill={g('tree')} /><polygon points={slGift.right} fill="#0f8a63" /><polygon points={slGift.top} fill="#7af0c0" />
+				<path d={`M${P(-30, 13, 26).map(fx1).join(' ')} L${P(20, 13, 26).map(fx1).join(' ')}`} stroke={g('gold')} stroke-width="2.4" />
+				<path d={runner(13)} fill="none" stroke={g('gold')} stroke-width="3.4" stroke-linecap="round" />
+			</g>
+		</>)}
+
+		{name === 'czapka' && (<>
+			<ellipse cx={c[0]} cy={c[1] - 34} rx="34" ry="14" fill="#f1eefc" />
+			<path d={`M${c[0] - 28} ${c[1] - 34} C${c[0] - 24} ${c[1] - 66} ${c[0] - 4} ${c[1] - 98} ${c[0] + 22} ${c[1] - 96} C${c[0] + 36} ${c[1] - 94} ${c[0] + 38} ${c[1] - 80} ${c[0] + 34} ${c[1] - 70} C${c[0] + 28} ${c[1] - 82} ${c[0] + 18} ${c[1] - 80} ${c[0] + 12} ${c[1] - 70} C${c[0] + 18} ${c[1] - 58} ${c[0] + 25} ${c[1] - 46} ${c[0] + 28} ${c[1] - 34} A28 11 0 0 1 ${c[0] - 28} ${c[1] - 34} Z`} fill={g('red')} />
+			<path d={`M${c[0] + 6} ${c[1] - 62} C${c[0] + 18} ${c[1] - 52} ${c[0] + 25} ${c[1] - 44} ${c[0] + 28} ${c[1] - 34} A28 11 0 0 1 ${c[0] + 8} ${c[1] - 23.6} Z`} fill="#000" opacity=".16" />
+			<path d={`M${c[0] - 34} ${c[1] - 34} A34 14 0 0 0 ${c[0] + 34} ${c[1] - 34} L${c[0] + 34} ${c[1] - 26} A34 14 0 0 1 ${c[0] - 34} ${c[1] - 26} Z`} fill="#fff" />
+			<path d={`M${c[0] - 34} ${c[1] - 34} A34 14 0 0 0 ${c[0] + 34} ${c[1] - 34}`} fill="none" stroke="#e2dcf7" stroke-width="1.2" />
+			<g class="iso-pom"><circle cx={c[0] + 36} cy={c[1] - 68} r="10" fill="#fff" /><circle cx={c[0] + 33} cy={c[1] - 71} r="4" fill="#fff" opacity=".9" /></g>
+		</>)}
+
+		{name === 'kalendarz-xii' && (<>
+			<polygon points={cal.left} fill="#f4f0ff" /><polygon points={cal.right} fill="#bfb3f2" /><polygon points={cal.top} fill="#fff" />
+			<polygon points={pts(calFace(-34, 54), calFace(32, 54), calFace(32, 67), calFace(-34, 67))} fill={g('red')} />
+			<text transform={calM(-30, 57)} font-family="Montserrat, sans-serif" font-weight="800" font-size="9" fill="#fff" letter-spacing="1">GRUDZIEŃ</text>
+			<text transform={calM(-24, 18)} font-family="Montserrat, sans-serif" font-weight="900" font-size="34" fill="#1c1660">6</text>
+			<path class="iso-check" pathLength="1" d={`M${calFace(2, 34)[0]} ${calFace(2, 34)[1]} L${calFace(10, 24)[0]} ${calFace(10, 24)[1]} L${calFace(26, 44)[0]} ${calFace(26, 44)[1]}`} />
+			<g class="iso-sparks">{[[-40, -96], [40, -100]].map(([dx, dy], k) => <path d={star(c[0] + dx, c[1] + dy, 5, 2)} fill="#ffc65c" style={`--k:${k}`} />)}</g>
 		</>)}
 	</g>
 
-	<g class="iso-parts">{[[38, 60], [160, 52], [150, 96], [52, 100]].map(([x, y], k) => <circle cx={x} cy={y} r="1.8" style={`--k:${k}`} />)}</g>
+	<g class:list={['iso-parts', pal === 'site' && 'is-snow']}>{[[38, 60], [160, 52], [150, 96], [52, 100]].map(([x, y], k) => <circle cx={x} cy={y} r="1.8" style={`--k:${k}`} />)}</g>
 </svg>
 
 <style is:global>
@@ -166,7 +336,12 @@ const tab = box(-36, -28, 12, 72, 54, 5);
 	.iso-draw.is-in .iso-obj { opacity: 1; transform: none; }
 
 	/* pętle */
-	.iso-rocket { animation: iso-hover 2.6s ease-in-out infinite; }
+	.iso-rocket { animation: iso-launch 2.8s cubic-bezier(.45,0,.55,1) infinite; }
+	@keyframes iso-launch { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+	.iso-n-rakieta .iso-flame { animation: iso-flame .18s ease-in-out infinite alternate, iso-thrust 2.8s cubic-bezier(.45,0,.55,1) infinite; }
+	@keyframes iso-thrust { 0%,100% { opacity: .75; } 50% { opacity: 1; } }
+	.iso-n-rakieta .iso-smoke { transform-box: fill-box; transform-origin: center bottom; animation: iso-smk 2.8s cubic-bezier(.45,0,.55,1) infinite; }
+	@keyframes iso-smk { 0%,100% { transform: scale(1.08); } 50% { transform: scale(.9); opacity: .8; } }
 	@keyframes iso-hover { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-6px); } }
 	.iso-flame { transform-box: fill-box; transform-origin: top; animation: iso-flame .18s ease-in-out infinite alternate; }
 	@keyframes iso-flame { to { transform: scaleY(1.18) scaleX(.9); } }
@@ -178,6 +353,23 @@ const tab = box(-36, -28, 12, 72, 54, 5);
 	.iso-bar { transform-box: fill-box; transform-origin: bottom; }
 	.iso-draw .iso-bar { transform: scaleY(0); transition: transform .8s calc(.6s + var(--k) * .12s) cubic-bezier(.3,1.4,.5,1); }
 	.iso-draw.is-in .iso-bar { transform: none; }
+	.iso-barl { transform-box: fill-box; transform-origin: bottom; animation: iso-grow 3.2s calc(2s + var(--k) * .25s) ease-in-out infinite; }
+	@keyframes iso-grow { 0%,100% { transform: scaleY(1); } 45% { transform: scaleY(.78); } 70% { transform: scaleY(1.06); } }
+	.iso-up { fill: none; stroke: #8ff4ff; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; opacity: 0; animation: iso-upa 3.2s calc(2s + var(--k) * .25s) ease-out infinite; }
+	@keyframes iso-upa { 0%,55% { opacity: 0; transform: translateY(6px); } 72% { opacity: 1; } 100% { opacity: 0; transform: translateY(-16px); } }
+	.iso-wave { fill: none; stroke: #7a24c9; stroke-width: 2.4; stroke-linejoin: round; stroke-linecap: round; animation: iso-flow 2.4s linear infinite; }
+	.iso-wavefill { fill: #b03cff; opacity: .14; animation: iso-flow 2.4s linear infinite; }
+	@keyframes iso-flow { to { transform: translate(20.78px, 12px); } }
+	.iso-cam { transform-box: fill-box; transform-origin: 80% 100%; animation: iso-tilt 4.2s ease-in-out infinite; }
+	@keyframes iso-tilt { 0%,100% { transform: rotate(0deg); } 30% { transform: rotate(-4deg) translateY(-3px); } 60% { transform: rotate(1deg); } }
+	.iso-ring { fill: none; stroke: #8ff4ff; stroke-width: 2; stroke-dasharray: .06 .045; animation: iso-dash 2.4s linear infinite; }
+	@keyframes iso-dash { to { stroke-dashoffset: -1; } }
+	.iso-halo { fill: none; stroke: #8ff4ff; stroke-width: 1.6; transform-box: fill-box; transform-origin: 50% 60%; opacity: 0; animation: iso-halo 2.6s calc(var(--k) * 1.3s) ease-out infinite; }
+	@keyframes iso-halo { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(1.45); opacity: 0; } }
+	.iso-sig { fill: none; stroke: #7a24c9; stroke-width: 2.4; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; animation: iso-sign 4s ease-in-out infinite; }
+	@keyframes iso-sign { 0% { stroke-dashoffset: 1; opacity: 1; } 60%,85% { stroke-dashoffset: 0; opacity: 1; } 100% { stroke-dashoffset: 0; opacity: 0; } }
+	.iso-pen { offset-rotate: 0deg; offset-anchor: 0 0; animation: iso-penm 4s ease-in-out infinite; }
+	@keyframes iso-penm { 0% { offset-distance: 0%; opacity: 1; } 60% { offset-distance: 100%; } 85% { offset-distance: 100%; opacity: 1; } 95% { opacity: 0; } 100% { offset-distance: 0%; opacity: 0; } }
 	.iso-trend, .iso-chart, .iso-check, .iso-fil { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
 	.iso-trend { stroke: #8ff4ff; stroke-width: 2.6; }
 	.iso-chart { stroke: #7a24c9; stroke-width: 2.4; }
@@ -192,15 +384,43 @@ const tab = box(-36, -28, 12, 72, 54, 5);
 	@keyframes iso-blink { to { opacity: .2; } }
 	.iso-lens { animation: iso-pulse 2.2s ease-in-out infinite; }
 	.iso-play { transform-box: fill-box; transform-origin: center; animation: iso-pulse 1.8s ease-in-out infinite; }
-	.iso-likes path { transform-box: fill-box; animation: iso-like 2.6s calc(var(--k) * .7s) ease-out infinite; }
-	@keyframes iso-like { 0% { translate: 0 10px; opacity: 0; } 25% { opacity: 1; } 100% { translate: 6px -26px; opacity: 0; } }
+	.iso-likes path { transform-box: fill-box; animation: iso-like 3.2s calc(var(--k) * .8s) cubic-bezier(.2,.6,.4,1) infinite; }
+	@keyframes iso-like { 0% { translate: 0 14px; scale: .6; opacity: 0; } 20% { opacity: 1; scale: 1; } 60% { translate: 12px -22px; } 100% { translate: 30px -52px; scale: 1.15; opacity: 0; } }
 	.iso-holo { animation: iso-holo 2.4s ease-in-out infinite; }
 	@keyframes iso-holo { 0%,100% { opacity: .65; } 50% { opacity: 1; } }
 	.iso-coin { transform-box: fill-box; transform-origin: center; animation: iso-spin 4s ease-in-out infinite; }
 	@keyframes iso-spin { 0%,100% { transform: scaleX(1); } 50% { transform: scaleX(.35); } }
-	.iso-scan { stroke: #8ff4ff; stroke-width: 1.6; animation: iso-scan 2.4s ease-in-out infinite; }
-	@keyframes iso-scan { 0%,100% { transform: translateY(0); opacity: .2; } 50% { transform: translateY(-62px); opacity: 1; } }
-	.iso-pen { animation: iso-hover 2.2s ease-in-out infinite; }
+	.iso-scan { fill: none; transform-box: fill-box; transform-origin: center; stroke: #8ff4ff; stroke-width: 1.6; animation: iso-scan 2.4s ease-in-out infinite; }
+	@keyframes iso-scan { 0%,100% { transform: translateY(0) scale(1); opacity: .2; } 50% { transform: translateY(-62px) scale(1.4, 1.2); opacity: 1; } }
+	
+	/* świąteczne */
+	.iso-edge.is-site { stroke: #ff5a78; }
+	.iso-parts.is-snow circle { fill: #fff; animation-name: iso-snow; }
+	@keyframes iso-snow { 0% { transform: translateY(-46px); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(10px); opacity: 0; } }
+	.iso-twinkle { animation: iso-twk 1.6s calc(var(--k) * .23s) ease-in-out infinite; }
+	@keyframes iso-twk { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+	.iso-topstar { transform-box: fill-box; transform-origin: center; animation: iso-tstar 3s ease-in-out infinite; }
+	@keyframes iso-tstar { 0%,100% { transform: scale(1) rotate(0); } 50% { transform: scale(1.18) rotate(18deg); } }
+	.iso-snowline { stroke-dasharray: 3 5; }
+	.iso-lid { transform-box: fill-box; transform-origin: 50% 100%; animation: iso-lid 3.4s ease-in-out infinite; }
+	@keyframes iso-lid { 0%,55%,100% { transform: none; } 66% { transform: translateY(-16px) rotate(-6deg); } 74% { transform: translateY(-12px) rotate(4deg); } 84% { transform: none; } }
+	.iso-sparks path { transform-box: fill-box; transform-origin: center; opacity: 0; animation: iso-spark 3.4s calc(var(--k) * .12s) ease-out infinite; }
+	@keyframes iso-spark { 0%,58% { opacity: 0; transform: scale(.2) translateY(10px); } 70% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0; transform: scale(.6) translateY(-14px); } }
+	.iso-n-gwiazda .iso-sparks path, .iso-n-kalendarz-xii .iso-sparks path { animation-duration: 2.4s; animation-delay: calc(var(--k) * .6s); }
+	.iso-rock { transform-box: fill-box; transform-origin: 50% 100%; animation: iso-rock 3s ease-in-out infinite; }
+	@keyframes iso-rock { 0%,100% { transform: rotate(-7deg); } 50% { transform: rotate(7deg); } }
+	.iso-bell { transform-box: view-box; transform-origin: 100px 14px; animation: iso-ring 1.8s ease-in-out infinite; }
+	@keyframes iso-ring { 0%,100% { transform: rotate(-9deg); } 50% { transform: rotate(9deg); } }
+	.iso-clapper { transform-box: view-box; transform-origin: 100px 69px; animation: iso-ring 1.8s -.25s ease-in-out infinite reverse; }
+	.iso-waves path { fill: none; stroke: #ffc65c; stroke-width: 2.4; stroke-linecap: round; opacity: 0; animation: iso-wave2 1.8s calc(var(--k) * .3s) ease-out infinite; }
+	@keyframes iso-wave2 { 0% { opacity: 0; } 30% { opacity: .9; } 100% { opacity: 0; } }
+	.iso-spinstar { transform-box: fill-box; transform-origin: center; animation: iso-spin 4.4s ease-in-out infinite, iso-hover 2.2s ease-in-out infinite; }
+	.iso-sleigh { animation: iso-slide 3.6s ease-in-out infinite; }
+	@keyframes iso-slide { 0%,100% { transform: translate(-7px, -4px); } 50% { transform: translate(7px, 4px); } }
+	.iso-trail circle { animation: iso-puff2 3.6s calc(var(--k) * .2s) ease-out infinite; transform-box: fill-box; transform-origin: center; }
+	@keyframes iso-puff2 { 0%,100% { opacity: 0; transform: scale(.4); } 50% { opacity: .9; transform: scale(1.2); } }
+	.iso-pom { transform-box: fill-box; transform-origin: 20% 20%; animation: iso-pom 2.4s ease-in-out infinite; }
+	@keyframes iso-pom { 0%,100% { transform: translate(0, 0); } 30% { transform: translate(-3px, 6px); } 60% { transform: translate(2px, -2px); } }
 
 	@media (prefers-reduced-motion: reduce) {
 		.iso *, .iso-draw .iso-obj, .iso-draw .iso-plat polygon, .iso-draw .iso-bar { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }

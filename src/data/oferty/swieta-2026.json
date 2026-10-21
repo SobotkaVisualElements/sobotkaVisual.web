@@ -6,16 +6,16 @@
   "noindex": true,
   "order": 4,
   "seoTitle": "Świąteczne wideo dla firm: życzenia, rolki, podsumowanie roku | Opole",
-  "seoDesc": "Animowane życzenia z logo, 6 świątecznych rolek i podsumowanie roku w jednym pakiecie. Zamówienia do 30 listopada, premiera do 15 grudnia. Od 1 490 zł netto.",
+  "seoDesc": "Animowane życzenia z logo, 6 świątecznych rolek i podsumowanie roku w jednym pakiecie. Oferta do 6 grudnia, premiera przed świętami. Od 1 490 zł netto.",
   "service": "Świąteczne wideo dla firm",
   "pdf": "",
   "pkg": "pro",
   "marquee": "Świąteczne życzenia / Rolki / Podsumowanie roku / Kartka wideo",
   "hero": {
-    "eyebrow": "Oferta świąteczna · zamówienia do 30 listopada",
+    "eyebrow": "Oferta świąteczna · tylko do 6 grudnia",
     "title": "Święta, które",
     "titleBold": "klienci zapamiętają.",
-    "lead": "Animowane życzenia z Twoim logo, seria świątecznych rolek i podsumowanie roku w 60 sekund. Ty akceptujesz — my produkujemy. Gotowe do 15 grudnia.",
+    "lead": "Animowane życzenia z Twoim logo, seria świątecznych rolek i podsumowanie roku w 60 sekund. Ty akceptujesz — my produkujemy. Premiera przed świętami.",
     "bgImage": "",
     "bgVideo": "",
     "bgOpacity": 20,
@@ -23,8 +23,8 @@
     "sideAlt": "",
     "thumbs": false,
     "align": "lewo",
-    "chipValue": "15.12",
-    "chipLabel": "premiera przed świętami"
+    "chipValue": "6.12",
+    "chipLabel": "ostatni dzień zamówień"
   },
   "intro": {
     "eyebrow": "Zanim zaczniemy",
@@ -96,37 +96,6 @@
     "lead": "Wyniki z realnych realizacji i zakres pakietów. Tło porównania z publicznych danych — bez naciągania.",
     "charts": [
       {
-        "title": "Klikalność miniatur (CTR)",
-        "sub": "Ile osób, którym YouTube pokazał miniaturę, kliknęło w film.",
-        "unit": "%",
-        "max": 24,
-        "source": "YouTube Help „Wyświetlenia i CTR” (zakres 2–10%); YouTube Studio kanału klienta.",
-        "bars": [
-          {
-            "label": "Typowy CTR na YouTube (połowa kanałów)",
-            "value": 10,
-            "from": 2,
-            "to": 10,
-            "note": "zakres podawany przez YouTube"
-          },
-          {
-            "label": "Kanał Przemysława Langiera · 1. godzina",
-            "value": 21,
-            "highlight": true
-          },
-          {
-            "label": "Kanał Przemysława Langiera · 2.–3. godzina",
-            "value": 15,
-            "highlight": true
-          },
-          {
-            "label": "Kanał Przemysława Langiera · później",
-            "value": 9,
-            "display": "ok. 9%"
-          }
-        ]
-      },
-      {
         "title": "Ile materiałów z jednej produkcji",
         "sub": "Ile razy klient zobaczy Twoją markę w grudniu i później.",
         "unit": "",
@@ -153,7 +122,43 @@
       }
     ],
     "deltaLine": false,
-    "align": "lewo"
+    "align": "lewo",
+    "ctr": {
+      "show": true,
+      "eyebrow": "Klikalność miniatur (CTR)",
+      "title": "Pierwsza godzina decyduje o zasięgu.",
+      "sub": "Ilu widzów, którym YouTube pokazał miniaturę, klika w film. Im więcej kliknięć na starcie, tym szerzej algorytm go rozsyła.",
+      "watermark": "Twoja przewaga nad konkurencją",
+      "unit": "%",
+      "xStart": "publikacja",
+      "xEnd": "1 godzina",
+      "base": {
+        "label": "Typowy kanał na YouTube",
+        "value": 10,
+        "display": "do 10%"
+      },
+      "ours": {
+        "label": "Kanał, z którym pracujemy",
+        "value": 21
+      },
+      "delta": "ponad 2× więcej kliknięć",
+      "source": "Typowy kanał: YouTube Help „Wyświetlenia i CTR” — połowa kanałów ma CTR 2–10%. Z nami: YouTube Studio kanału klienta, 1. godzina po publikacji.",
+      "quoteFrom": "Przemysław Langier",
+      "thumbs": [
+        {
+          "image": "/uploads/realizacje/maxresdefault.jpg"
+        },
+        {
+          "image": "/uploads/realizacje/maxresdefault (1).jpg"
+        },
+        {
+          "image": "/uploads/realizacje/maxresdefault (2).jpg"
+        },
+        {
+          "image": "/uploads/realizacje/maxresdefault (3).jpg"
+        }
+      ]
+    }
   },
   "inside": {
     "eyebrow": "Co dostajesz",
@@ -195,13 +200,13 @@
     "cards2": [
       {
         "k": "Termin",
-        "t": "Zamówienia do 30 listopada",
-        "d": "Produkcja trwa 2–3 tygodnie. Zamówienie w grudniu to premiera po świętach."
+        "t": "Zamówienia do 6 grudnia",
+        "d": "Produkcja trwa 2–3 tygodnie. Zamówienie z listopada to premiera do 15 grudnia, z początku grudnia — tuż przed Wigilią."
       },
       {
         "k": "Miejsca",
         "t": "6 firm w tym sezonie",
-        "d": "Tyle produkcji zrobimy porządnie przed 15 grudnia. Potem zamykamy zapisy."
+        "d": "Tyle produkcji zrobimy porządnie przed świętami. Potem zamykamy zapisy."
       },
       {
         "k": "Bonus",
@@ -241,7 +246,7 @@
         "a": "Tak. Dodatkowa wersja językowa to +15% do ceny pakietu."
       },
       {
-        "q": "Co, jeśli zamówimy po 30 listopada?",
+        "q": "Co, jeśli zamówimy po 6 grudnia?",
         "a": "Napisz — jeśli zostanie wolne miejsce, zrobimy. Ale nie obiecamy premiery przed świętami."
       },
       {
@@ -313,7 +318,7 @@
         "ctaHref": "/generator?pakiet=pro"
       }
     ],
-    "footnote": "Zamówienia do 30 listopada 2026, premiera do 15 grudnia 2026."
+    "footnote": "Oferta do 6 grudnia 2026. Zamówienia do 30 listopada — premiera do 15 grudnia, do 6 grudnia — przed Wigilią."
   },
   "final": {
     "eyebrow": "Następny krok",
@@ -322,5 +327,16 @@
     "lead": "15 minut rozmowy wystarczy, żeby ustalić życzenia, rolki i datę premiery. W tym sezonie robimy 6 produkcji.",
     "cta": "Rezerwuję termin",
     "align": "lewo"
+  },
+  "deadline": {
+    "date": "2026-12-06T23:59:59+01:00",
+    "eyebrow": "Liczy się każdy dzień",
+    "title": "Oferta do",
+    "titleBold": "6 grudnia",
+    "lead": "Produkcja trwa 2–3 tygodnie. Zamówienia do 30 listopada mają premierę do 15 grudnia, zamówienia do 6 grudnia — przed Wigilią.",
+    "expiredTitle": "Oferta minęła.",
+    "expiredLead": "Do zobaczenia za rok!",
+    "expiredHo": "Ho ho ho",
+    "expiredNote": "Świąteczne terminy są już zajęte. Stała oferta działa cały rok — zajrzyj albo napisz, zaplanujemy coś na nowy rok."
   }
 }

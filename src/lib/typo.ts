@@ -27,3 +27,16 @@ export function tx(s: string | undefined | null): string {
 /** Klasa wyrównania z pola „Wyrównanie” w panelu. */
 export const alignCls = (a?: string) =>
 	a === 'srodek' ? 'text-center mx-auto' : a === 'justuj' ? 'svc-justify' : a === 'prawo' ? 'text-right ml-auto' : '';
+
+/** Gotowy HTML (np. treść realizacji z Markdown) → ta sama polska typografia, tylko w tekście (poza tagami, kodem i tabelami liczb). */
+export function nbspHtml(html: string): string {
+	let skip = 0;
+	return html.split(/(<[^>]+>)/g).map((part) => {
+		if (part.startsWith('<')) {
+			if (/^<(pre|code|script|style)\b/i.test(part)) skip++;
+			else if (/^<\/(pre|code|script|style)>/i.test(part)) skip = Math.max(0, skip - 1);
+			return part;
+		}
+		return skip ? part : nbsp(part);
+	}).join('');
+}

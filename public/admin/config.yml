@@ -28,6 +28,7 @@ collections:
       - { name: description, label: "Krótki opis", widget: text }
       - { name: category, label: "Kategoria", widget: select, options: ["Montaż", "Animacja", "Identyfikacja", "Oprawa transmisyjna", "Grafika"] }
       - { name: client, label: "Klient", widget: string, required: false }
+      - { name: clientLogo, label: "Logotyp klienta", widget: image, required: false, hint: "PNG lub SVG z przezroczystym tłem. Pokazuje się w nagłówku realizacji, na kafelku i w karuzeli." }
       - { name: role, label: "Rola / zakres", widget: string, required: false }
       - { name: year, label: "Rok", widget: number, value_type: int, default: 2026 }
       - { name: date, label: "Data realizacji", widget: datetime, time_format: false, date_format: "DD.MM.YYYY", format: "YYYY-MM-DD", required: false, hint: "Najnowsze realizacje pokazują się na górze listy i w karuzeli na głównej." }
@@ -85,6 +86,24 @@ collections:
                 fields:
                   - { name: image, label: "Zdjęcie", widget: image }
                   - { name: caption, label: "Podpis", widget: string, required: false }
+          - name: karuzela3d
+            label: "Karuzela 3D (jak na głównej)"
+            widget: object
+            summary: "{{fields.caption}}"
+            fields:
+              - { name: orientation, label: "Format kafelków", widget: select, default: poziom, options: [{ label: "Poziome banery 16:10 (realizacje filmowe)", value: poziom }, { label: "Miniatury YouTube 16:9", value: miniatury }, { label: "Pionowe okładki 10:16", value: pion }] }
+              - name: items
+                label: "Kafelki"
+                label_singular: Kafelek
+                widget: list
+                summary: "{{fields.title}}"
+                fields:
+                  - { name: image, label: "Obraz", widget: image, required: false, hint: "Możesz pominąć, jeśli wkleisz link YouTube — miniatura pobierze się sama." }
+                  - { name: youtube, label: "Link YouTube (odtwarza się po kliknięciu)", widget: string, required: false }
+                  - { name: title, label: "Tytuł pod karuzelą", widget: string, required: false }
+                  - { name: link, label: "albo link do strony (np. /work/...)", widget: string, required: false }
+                  - { name: logo, label: "Logotyp klienta", widget: image, required: false }
+              - { name: caption, label: "Podpis", widget: string, required: false }
           - name: wideo
             label: "Wideo"
             widget: object
@@ -257,6 +276,36 @@ collections:
             widget: list
             field: { name: section, label: "Sekcja", widget: select, options: [{ label: "Ostatnie realizacje — karuzela", value: realizacje }, { label: "Usługi — Wszystko, czego potrzebują Twoje media", value: uslugi }, { label: "Dla kogo", value: dlaKogo }, { label: "Oferta — pakiety", value: oferta }, { label: "Opinie", value: opinie }, { label: "FAQ — pytania", value: faq }, { label: "Kontakt — końcowe wezwanie", value: kontakt }] }
 
+  - name: manifest
+    label: "Manifest (filozofia tworzenia)"
+    files:
+      - name: manifest
+        label: "Manifest — /manifest"
+        file: "src/data/manifest.json"
+        description: "Strona /manifest: Twoje zasady pracy. Dobra pod Google — opisuje, jak i dlaczego tak pracujesz."
+        fields:
+          - { name: seoTitle, label: "Tytuł dla Google", widget: string }
+          - { name: seoDesc, label: "Opis dla Google", widget: text }
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Nagłówek — linia cienka", widget: string }
+          - { name: titleBold, label: "Nagłówek — linia gruba", widget: string }
+          - { name: lead, label: "Wstęp", widget: text }
+          - name: items
+            label: "Zasady"
+            label_singular: Zasada
+            widget: list
+            summary: "{{fields.t}}"
+            fields:
+              - { name: t, label: "Zasada (nagłówek)", widget: string }
+              - { name: d, label: "Wyjaśnienie", widget: text }
+              - { name: quoteFrom, label: "Cytat klienta pod zasadą", widget: select, required: false, options: ["", "Przemysław Langier", "Adam Przebinda"] }
+          - { name: signature, label: "Podpis", widget: string }
+          - { name: signatureRole, label: "Podpis — rola", widget: string, required: false }
+          - { name: ctaTitle, label: "Na końcu — tytuł", widget: string, required: false }
+          - { name: ctaText, label: "Na końcu — zdanie", widget: text, required: false }
+          - { name: ctaLabel, label: "Przycisk — napis", widget: string, required: false }
+          - { name: ctaHref, label: "Przycisk — link", widget: string, required: false }
+
   - name: landingi
     label: "Landingi ofert"
     label_singular: "Landing"
@@ -283,6 +332,34 @@ collections:
       - { name: service, label: "Nazwa usługi (dane dla Google)", widget: string }
       - { name: pdf, label: "Plik PDF oferty", widget: file, required: false }
       - { name: pkg, label: "Pakiet w generatorze", widget: select, default: pro, options: [start, pro, studio, none] }
+      - name: ui
+        label: "Układ i rozmiary (podgląd: dopisz ?edytuj do adresu strony)"
+        widget: object
+        required: false
+        collapsed: true
+        hint: "Bez kodu: ukryj sekcje, zmień wielkość napisów, odstępy i długość animowanych scen. Otwórz stronę z ?edytuj na końcu adresu — każda sekcja pokaże swoją nazwę z panelu."
+        fields:
+          - { name: hide, label: "Ukryj sekcje", widget: select, multiple: true, required: false, options: [{ label: "Pierwszy ekran", value: hero }, { label: "Przelatujące karty (kinetyczny)", value: marquee }, { label: "Tekst zapalany słowami + liczby (kinetyczny)", value: mission }, { label: "Kroki „Kim się stajesz”", value: steps }, { label: "Wielkie numery (kinetyczny)", value: bigs }, { label: "Zoom z wynikami (kinetyczny)", value: zoom }, { label: "Wykresy", value: charts }, { label: "Opinie", value: opinie }, { label: "Cennik (kinetyczny)", value: cennik }, { label: "Realizacje", value: realizacje }, { label: "Pytania", value: faq }, { label: "Następny krok", value: final }, { label: "Zanim zaczniemy (klasyczny)", value: intro }, { label: "Kim się stajesz (klasyczny)", value: become }, { label: "Liczby rynku (klasyczny)", value: stats }, { label: "Wyniki (klasyczny)", value: proof }, { label: "Co w środku (klasyczny)", value: inside }, { label: "Sekcja specjalna (klasyczny)", value: special }, { label: "Wątpliwości (klasyczny)", value: doubts }, { label: "Inwestycja (klasyczny)", value: invest }] }
+          - { name: headSize, label: "Wielkość nagłówków", widget: select, default: M, required: false, options: [{ label: "Mniejsze", value: S }, { label: "Standard", value: M }, { label: "Większe", value: L }, { label: "Ogromne", value: XL }] }
+          - { name: wordsSize, label: "Wielkość tekstu zapalanego słowami", widget: select, default: M, required: false, options: [{ label: "Mniejszy", value: S }, { label: "Standard", value: M }, { label: "Większy", value: L }] }
+          - { name: spacing, label: "Odstępy między sekcjami", widget: select, default: normalnie, required: false, options: [{ label: "Ciasno", value: ciasno }, { label: "Normalnie", value: normalnie }, { label: "Przestronnie", value: przestronnie }] }
+          - { name: sceneLength, label: "Długość animowanych scen (ile trzeba przewinąć)", widget: select, default: normalnie, required: false, options: [{ label: "Krótko", value: krotko }, { label: "Normalnie", value: normalnie }, { label: "Długo", value: dlugo }] }
+      - name: deadline
+        label: "Termin oferty + odliczanie (kinetyczny)"
+        widget: object
+        required: false
+        collapsed: true
+        hint: "Wpisz datę, a pod pierwszym ekranem pojawi się ogromny napis i licznik. Po terminie cała strona sama pokaże ekran „Oferta minęła”."
+        fields:
+          - { name: date, label: "Koniec oferty (data i godzina)", widget: datetime, required: false, format: "YYYY-MM-DDTHH:mm:ssZ", date_format: "DD.MM.YYYY", time_format: "HH:mm" }
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Napis — linia 1 (np. Oferta do)", widget: string, required: false }
+          - { name: titleBold, label: "Napis — linia 2, ogromna (np. 6 grudnia)", widget: string, required: false }
+          - { name: lead, label: "Zdanie pod licznikiem", widget: text, required: false }
+          - { name: expiredTitle, label: "Po terminie — tytuł", widget: string, required: false, default: "Oferta minęła." }
+          - { name: expiredLead, label: "Po terminie — drugi wiersz", widget: string, required: false, default: "Do zobaczenia za rok!" }
+          - { name: expiredHo, label: "Po terminie — skaczący napis", widget: string, required: false, default: "Ho ho ho" }
+          - { name: expiredNote, label: "Po terminie — dopisek", widget: text, required: false }
       - name: hero
         label: "1. Pierwszy ekran"
         widget: object
@@ -379,7 +456,58 @@ collections:
                   - { name: to, label: "Zakres do (opcjonalnie)", widget: number, value_type: float, required: false }
                   - { name: display, label: "Własny napis zamiast liczby", widget: string, required: false }
                   - { name: note, label: "Dopisek pod słupkiem", widget: string, required: false }
-          - { name: deltaLine, label: "Pokaż wykres 150+ rolek Delta HR", widget: boolean, default: false, required: false }
+          - name: ctr
+            label: "Wykres przewagi CTR (karuzela miniatur w tle)"
+            widget: object
+            required: false
+            collapsed: true
+            fields:
+              - { name: show, label: "Pokaż", widget: boolean, default: true, required: false }
+              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+              - { name: title, label: "Tytuł", widget: string, required: false }
+              - { name: sub, label: "Opis pod tytułem", widget: text, required: false }
+              - { name: watermark, label: "Wielki półprzezroczysty napis (Montserrat Black Italic)", widget: string, required: false }
+              - { name: unit, label: "Jednostka (np. %)", widget: string, required: false }
+              - { name: xStart, label: "Oś — początek", widget: string, required: false }
+              - { name: xEnd, label: "Oś — koniec", widget: string, required: false }
+              - name: base
+                label: "Szara linia — typowo"
+                widget: object
+                fields:
+                  - { name: label, label: "Opis", widget: string, required: false }
+                  - { name: value, label: "Wartość", widget: number, value_type: float }
+                  - { name: display, label: "Własny napis (np. do 10%)", widget: string, required: false }
+              - name: ours
+                label: "Zielona linia — z nami"
+                widget: object
+                fields:
+                  - { name: label, label: "Opis", widget: string, required: false }
+                  - { name: value, label: "Wartość", widget: number, value_type: float }
+                  - { name: display, label: "Własny napis", widget: string, required: false }
+              - { name: delta, label: "Napis na zielonym obszarze różnicy", widget: string, required: false }
+              - { name: source, label: "Źródło danych", widget: text, required: false }
+              - { name: quoteFrom, label: "Cytat pod wykresem — z opinii klienta", widget: select, required: false, options: ["Przemysław Langier", "Adam Przebinda"] }
+              - name: thumbs
+                label: "Miniatury w tle"
+                label_singular: Miniatura
+                widget: list
+                required: false
+                fields:
+                  - { name: image, label: "Miniatura 16:9", widget: image, required: false }
+                  - { name: youtube, label: "albo link YouTube (miniatura pobierze się sama)", widget: string, required: false }
+          - { name: deltaLine, label: "Pokaż wykres liniowy rolek (Delta HR)", widget: boolean, default: false, required: false }
+          - name: delta
+            label: "Wykres liniowy rolek — treść"
+            widget: object
+            required: false
+            collapsed: true
+            fields:
+              - { name: prefix, label: "Przed liczbą (np. do )", widget: string, required: false }
+              - { name: value, label: "Liczba", widget: number, value_type: float, required: false }
+              - { name: suffix, label: "Po liczbie (np. +)", widget: string, required: false }
+              - { name: label, label: "Opis pod liczbą", widget: string, required: false }
+              - { name: points, label: "Punkty wykresu (po przecinku)", widget: string, required: false }
+              - { name: description, label: "Tekst pod wykresem", widget: text, required: false }
           - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
       - name: inside
         label: "6. Co w środku"
@@ -413,6 +541,36 @@ collections:
           - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
           - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
           - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
+          - name: scale
+            label: "Wykres skali rocznej (nad tabelą rytmu)"
+            widget: object
+            required: false
+            collapsed: true
+            fields:
+              - { name: show, label: "Pokaż", widget: boolean, default: true, required: false }
+              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+              - { name: title, label: "Tytuł", widget: string, required: false }
+              - { name: sub, label: "Opis pod tytułem", widget: text, required: false }
+              - { name: watermark, label: "Wielki półprzezroczysty napis (Montserrat Black Italic)", widget: string, required: false }
+              - { name: unit, label: "Jednostka (np. %)", widget: string, required: false }
+              - { name: xStart, label: "Oś — początek", widget: string, required: false }
+              - { name: xEnd, label: "Oś — koniec", widget: string, required: false }
+              - name: base
+                label: "Szara linia — typowo"
+                widget: object
+                fields:
+                  - { name: label, label: "Opis", widget: string, required: false }
+                  - { name: value, label: "Wartość", widget: number, value_type: float }
+                  - { name: display, label: "Własny napis (np. do 10%)", widget: string, required: false }
+              - name: ours
+                label: "Zielona linia — z nami"
+                widget: object
+                fields:
+                  - { name: label, label: "Opis", widget: string, required: false }
+                  - { name: value, label: "Wartość", widget: number, value_type: float }
+                  - { name: display, label: "Własny napis", widget: string, required: false }
+              - { name: delta, label: "Napis na zielonym obszarze różnicy", widget: string, required: false }
+              - { name: source, label: "Źródło danych", widget: text, required: false }
           - name: table
             label: "Tabela tygodni (rytm)"
             widget: list

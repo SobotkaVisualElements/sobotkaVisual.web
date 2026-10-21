@@ -7,12 +7,13 @@
 import { getPublishedProjects } from '../../lib/projects';
 import home from '../../data/home.json';
 import { tx } from '../../lib/typo';
+import Carousel3D from '../ui/Carousel3D.astro';
 
 const t = { eyebrow: 'Ostatnie realizacje', title: 'Zobacz, co ostatnio', titleLight: 'stworzyliśmy.', lead: 'Montaż, animacje i oprawa — najnowsze projekty dla marek, twórców i wydawnictw.', limit: 9, ...((home as any).realizacje ?? {}) };
 const items = (await getPublishedProjects()).slice(0, Number(t.limit) || 9).map((p) => {
 	const d: any = p.data;
 	const img = d.poster || d.cover || d.layers?.find((l: any) => l?.image)?.image || '';
-	return { href: `/work/${p.id}`, title: d.title, category: d.category, img, vertical: !!d.poster, fx: d.coverFocalX ?? 50 };
+	return { href: `/work/${p.id}`, title: d.title, category: d.category, img, logo: d.clientLogo };
 });
 ---
 {items.length > 0 && (
@@ -28,128 +29,9 @@ const items = (await getPublishedProjects()).slice(0, Number(t.limit) || 9).map(
 			</a>
 		</div>
 
-		<div class="rw relative z-2 mt-10 select-none" data-rw tabindex="0" aria-roledescription="karuzela" aria-label="Ostatnie realizacje">
-			<div class="rw-stage">
-				{items.map((it, i) => (
-					<a href={it.href} class="rw-card" data-i={i} draggable="false" aria-label={it.title}>
-						{it.img
-							? <img src={it.img} alt="" loading={i < 4 ? 'eager' : 'lazy'} decoding="async" draggable="false" style={it.vertical ? '' : `object-position:${it.fx}% 50%`} />
-							: <span class="rw-ph"></span>}
-						<span class="rw-shade"></span>
-					</a>
-				))}
-			</div>
-			<div class="mx-auto mt-6 flex max-w-[640px] items-center justify-between gap-4 px-6">
-				<button type="button" class="rw-btn" data-dir="-1" aria-label="Poprzednia realizacja">←</button>
-				<div class="min-w-0 flex-1 text-center" aria-live="polite">
-					<div class="rw-cat text-[12px] font-bold tracking-[0.12em] text-orange-glow uppercase"></div>
-					<a class="rw-title mt-1 block truncate text-[18px] font-bold text-cloud hover:text-orange-glow" href="#"></a>
-				</div>
-				<button type="button" class="rw-btn" data-dir="1" aria-label="Następna realizacja">→</button>
-			</div>
-			<div class="rw-dots mt-4 mb-20 flex justify-center gap-2"></div>
-			<script type="application/json" class="rw-data" set:html={JSON.stringify(items.map(({ href, title, category }) => ({ href, title, category })))} />
+		<div class="relative z-2 mt-10 mb-20">
+			<Carousel3D items={items} orientation="pion" label="Ostatnie realizacje" />
 		</div>
 	</section>
 )}
 
-<style is:global>
-	.rw { --w: clamp(150px, 19vw, 250px); outline: none; }
-	.rw-stage { position: relative; height: calc(var(--w) * 1.6 + 70px); perspective: 1300px; perspective-origin: 50% 45%; touch-action: pan-y; cursor: grab; }
-	.rw-stage.is-drag { cursor: grabbing; }
-	.rw-card { position: absolute; left: 50%; top: 35px; width: var(--w); aspect-ratio: 10 / 16; margin-left: calc(var(--w) / -2); border-radius: 20px; overflow: hidden;
-		background: #1b0545; box-shadow: 0 30px 60px -25px rgba(0,0,0,.8); transform-style: preserve-3d; will-change: transform;
-		transition: transform .7s cubic-bezier(.2,.75,.25,1), opacity .5s, filter .5s; }
-	.rw-card img, .rw-ph { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-	.rw-ph { background: linear-gradient(160deg, #0a0630, #1b0545 55%, rgba(237,36,78,.5)); }
-	.rw-shade { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 55%, rgba(10,6,48,.55)); transition: opacity .5s; }
-	.rw-card.is-active { box-shadow: 0 0 0 2px rgba(255,90,120,.75), 0 40px 80px -25px rgba(237,36,78,.55); }
-	.rw-card.is-active .rw-shade { opacity: 0; }
-	.rw-btn { width: 46px; height: 46px; flex-shrink: 0; border-radius: 999px; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.05); color: #fff; font-weight: 700; transition: background .2s, border-color .2s, transform .2s; }
-	.rw-btn:hover { background: var(--color-orange); border-color: transparent; transform: translateY(-1px); }
-	.rw-dots button { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.25); transition: width .3s, background .3s; }
-	.rw-dots button.on { width: 26px; background: var(--color-orange); }
-	@media (max-width: 640px) { .rw { --w: 52vw; } }
-	@media (prefers-reduced-motion: reduce) { .rw-card { transition: none; } }
-</style>
-
-<script>
-	document.querySelectorAll<HTMLElement>('[data-rw]').forEach((root) => {
-		const stage = root.querySelector<HTMLElement>('.rw-stage')!;
-		const cards = Array.from(root.querySelectorAll<HTMLAnchorElement>('.rw-card'));
-		const data = JSON.parse(root.querySelector('.rw-data')!.textContent || '[]');
-		const cat = root.querySelector<HTMLElement>('.rw-cat')!;
-		const ttl = root.querySelector<HTMLAnchorElement>('.rw-title')!;
-		const dots = root.querySelector<HTMLElement>('.rw-dots')!;
-		const n = cards.length;
-		let active = 0;
-		let drag = 0;
-
-		cards.forEach((_, i) => {
-			const b = document.createElement('button');
-			b.type = 'button'; b.setAttribute('aria-label', `Realizacja ${i + 1}`);
-			b.addEventListener('click', () => go(i));
-			dots.appendChild(b);
-		});
-
-		const layout = () => {
-			const w = cards[0].offsetWidth;
-			cards.forEach((c, i) => {
-				let d = i - active - drag;
-				// zawijanie, żeby karuzela była „nieskończona”
-				if (n > 4) { if (d > n / 2) d -= n; if (d < -n / 2) d += n; }
-				const a = Math.abs(d);
-				const x = d * w * 0.98 + Math.sign(d) * Math.min(a, 3) * w * 0.06;
-				const z = Math.min(a, 3.2) * 70;               // boki bliżej widza = większe (wklęsły łuk)
-				const ry = -Math.max(-3.2, Math.min(3.2, d)) * 15;
-				c.style.transform = `translate3d(${x}px, ${a * 6}px, ${z}px) rotateY(${ry}deg)`;
-				c.style.opacity = a > 3.6 ? '0' : '1';
-				c.style.zIndex = String(100 - Math.round(a * 10));
-				c.style.pointerEvents = a > 3.6 ? 'none' : 'auto';
-				c.classList.toggle('is-active', Math.round(d) === 0);
-			});
-			const it = data[active] || {};
-			cat.textContent = it.category || '';
-			ttl.textContent = it.title || '';
-			ttl.href = it.href || '#';
-			Array.from(dots.children).forEach((b, i) => b.classList.toggle('on', i === active));
-		};
-		const go = (i: number) => { active = (i + n) % n; drag = 0; layout(); };
-
-		root.querySelectorAll<HTMLButtonElement>('.rw-btn').forEach((b) => b.addEventListener('click', () => { go(active + Number(b.dataset.dir)); restart(); }));
-		root.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft') go(active - 1); if (e.key === 'ArrowRight') go(active + 1); });
-
-		// klik w boczną kartę = przewiń do niej; w środkową = otwórz realizację
-		cards.forEach((c, i) => c.addEventListener('click', (e) => {
-			if (moved) { e.preventDefault(); return; }
-			if (i !== active) { e.preventDefault(); go(i); restart(); }
-		}));
-
-		// przeciąganie / swipe
-		let x0 = 0, down = false, moved = false;
-		stage.addEventListener('pointerdown', (e) => { down = true; moved = false; x0 = e.clientX; stage.classList.add('is-drag'); cards.forEach((c) => (c.style.transition = 'none')); });
-		window.addEventListener('pointermove', (e) => {
-			if (!down) return;
-			const dx = e.clientX - x0;
-			if (Math.abs(dx) > 6) moved = true;
-			drag = -dx / (cards[0].offsetWidth * 1.05);
-			layout();
-		});
-		window.addEventListener('pointerup', () => {
-			if (!down) return;
-			down = false; stage.classList.remove('is-drag'); cards.forEach((c) => (c.style.transition = ''));
-			const step = Math.round(drag);
-			go(active + step); restart();
-			setTimeout(() => (moved = false), 0);
-		});
-
-		// autoprzewijanie co 4,5 s, pauza gdy kursor nad karuzelą lub karuzela poza ekranem
-		let timer: number | undefined, visible = false, hover = false;
-		const restart = () => { clearInterval(timer); if (visible && !hover && !matchMedia('(prefers-reduced-motion: reduce)').matches) timer = window.setInterval(() => go(active + 1), 4500); };
-		root.addEventListener('pointerenter', () => { hover = true; restart(); });
-		root.addEventListener('pointerleave', () => { hover = false; restart(); });
-		new IntersectionObserver(([en]) => { visible = en.isIntersecting; restart(); }, { threshold: 0.3 }).observe(root);
-		window.addEventListener('resize', layout, { passive: true });
-		layout();
-	});
-</script>

@@ -1,0 +1,131 @@
+---
+/*
+ * Manifest — filozofia tworzenia (treść: panel → Strona główna i podstrony → Manifest).
+ * Każda zasada wjeżdża przy przewijaniu; przy wybranych zasadach cytat z prawdziwej opinii klienta.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Stars from '../components/ui/Stars.astro';
+import m from '../data/manifest.json';
+import { opinie } from '../data/opinie';
+import { tx } from '../lib/typo';
+
+const d: any = m;
+const items: any[] = d.items ?? [];
+const quote = (name?: string) => opinie.find((q) => q.name === name);
+const site = 'https://sobotkavisual.pl';
+const ld = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{ '@type': 'AboutPage', '@id': `${site}/manifest#strona`, url: `${site}/manifest`, name: d.seoTitle, description: d.seoDesc, inLanguage: 'pl-PL',
+			about: { '@id': `${site}/#firma` }, author: { '@type': 'Person', name: d.signature, jobTitle: 'Założyciel', worksFor: { '@id': `${site}/#firma` } },
+			mainEntity: { '@type': 'ItemList', name: 'Zasady pracy', itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it.t, description: it.d })) } },
+		{ '@type': 'BreadcrumbList', itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Strona główna', item: `${site}/` },
+			{ '@type': 'ListItem', position: 2, name: 'Manifest', item: `${site}/manifest` },
+		] },
+	],
+};
+---
+<BaseLayout title={d.seoTitle} description={d.seoDesc}>
+	<div class="mf">
+		<section class="mf-hero">
+			<span class="mf-wm" aria-hidden="true">Manifest</span>
+			<div class="mf-wrap">
+				<p class="mf-eyebrow" set:html={tx(d.eyebrow)} />
+				<h1 class="mf-h1"><span set:html={tx(d.title)} /> <b set:html={tx(d.titleBold)} /></h1>
+				<p class="mf-lead" set:html={tx(d.lead)} />
+				<ol class="mf-toc" aria-label="Spis zasad">
+					{items.map((it, i) => <li><a href={`#zasada-${i + 1}`}><span>{String(i + 1).padStart(2, '0')}</span><span set:html={tx(it.t)} /></a></li>)}
+				</ol>
+			</div>
+		</section>
+
+		<section class="mf-list">
+			<div class="mf-wrap">
+				{items.map((it, i) => {
+					const q = quote(it.quoteFrom);
+					return (
+						<article id={`zasada-${i + 1}`} class="mf-item svc-anim">
+							<span class="mf-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+							<div class="mf-body">
+								<h2 set:html={tx(it.t)} />
+								<p set:html={tx(it.d)} />
+								{q && (
+									<blockquote class="mf-q">
+										<Stars size={13} />
+										<p set:html={tx(`„${q.short}”`)} />
+										<cite><b>{q.name}</b> · {q.role}</cite>
+									</blockquote>
+								)}
+							</div>
+						</article>
+					);
+				})}
+				<div class="mf-sign svc-anim">
+					<span class="mf-sign-name">{d.signature}</span>
+					<span class="mf-sign-role" set:html={tx(d.signatureRole)} />
+				</div>
+			</div>
+		</section>
+
+		<section class="mf-cta">
+			<div class="mf-wrap">
+				<h2 set:html={tx(d.ctaTitle)} />
+				<p set:html={tx(d.ctaText)} />
+				<div class="mf-cta-btns">
+					<a href={d.ctaHref || '/generator'} class="mf-btn mf-btn-acc">{d.ctaLabel || 'Policz swój pakiet'} →</a>
+					<a href="/work" class="mf-btn">Zobacz realizacje</a>
+				</div>
+			</div>
+		</section>
+	</div>
+	<script type="application/ld+json" set:html={JSON.stringify(ld)} />
+</BaseLayout>
+
+<style is:global>
+	.mf { background: radial-gradient(110% 60% at 85% 0%, #2a1060 0%, transparent 55%), var(--color-navy-deep); color: var(--color-cloud); overflow-x: clip; }
+	.mf-wrap { position: relative; max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+	.mf-hero { position: relative; padding: clamp(5rem, 10vw, 8rem) 0 4rem; }
+	.mf-wm { position: absolute; left: 50%; top: 2.5rem; transform: translateX(-50%); font-family: var(--font-display); font-weight: 900; font-style: italic; text-transform: uppercase;
+		font-size: clamp(80px, 19vw, 300px); line-height: .8; letter-spacing: -.05em; color: rgba(255,255,255,.04); white-space: nowrap; pointer-events: none; user-select: none; }
+	.mf-eyebrow { display: flex; align-items: center; gap: .7rem; font-size: 13px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--color-orange-glow); }
+	.mf-eyebrow::before { content: ''; width: 26px; height: 2px; background: currentColor; }
+	.mf-h1 { margin-top: 1.2rem; font-family: var(--font-display); font-size: clamp(42px, 7vw, 92px); line-height: .98; letter-spacing: -.04em; font-weight: 300; text-wrap: balance; }
+	.mf-h1 b { font-weight: 900; display: block; }
+	.mf-lead { margin-top: 1.6rem; max-width: 640px; font-size: clamp(17px, 1.7vw, 20px); line-height: 1.6; color: var(--color-sky-mist); text-wrap: pretty; }
+	.mf-toc { margin-top: 3rem; display: grid; gap: 0 2rem; counter-reset: none; }
+	@media (min-width: 768px) { .mf-toc { grid-template-columns: 1fr 1fr; } }
+	.mf-toc a { display: flex; gap: 1rem; padding: .85rem 0; border-top: 1px solid rgba(255,255,255,.1); font-weight: 600; font-size: 15.5px; line-height: 1.35; color: rgba(255,255,255,.85); transition: color .2s, padding .2s; }
+	.mf-toc a span:first-child { font-weight: 800; color: var(--color-orange-glow); font-variant-numeric: tabular-nums; }
+	.mf-toc a:hover { color: #fff; padding-left: .4rem; }
+	.mf-list { padding: 2rem 0 5rem; }
+	.mf-item { display: grid; grid-template-columns: auto 1fr; gap: clamp(1rem, 4vw, 3.5rem); padding: clamp(2.2rem, 5vw, 4rem) 0; border-top: 1px solid rgba(255,255,255,.1); scroll-margin-top: 90px; }
+	.mf-n { font-family: var(--font-display); font-weight: 900; font-size: clamp(56px, 10vw, 140px); line-height: .8; letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 1.5px rgba(255,90,120,.7);
+		min-width: 1.3em; transition: color .8s .2s; }
+	.mf-item.is-in .mf-n { color: rgba(237,36,78,.16); }
+	.mf-body h2 { font-family: var(--font-display); font-size: clamp(26px, 3.6vw, 44px); line-height: 1.08; letter-spacing: -.03em; font-weight: 800; text-wrap: balance; }
+	.mf-body > p { margin-top: 1rem; max-width: 640px; font-size: clamp(16px, 1.5vw, 18.5px); line-height: 1.7; color: var(--color-sky-mist); text-wrap: pretty; hyphens: auto; }
+	.mf-body h2, .mf-body > p, .mf-q { opacity: 0; transform: translateY(26px); transition: opacity .7s, transform .9s cubic-bezier(.2,.8,.2,1); }
+	.mf-body > p { transition-delay: .12s; } .mf-q { transition-delay: .24s; }
+	.mf-item.is-in .mf-body h2, .mf-item.is-in .mf-body > p, .mf-item.is-in .mf-q { opacity: 1; transform: none; }
+	.mf-q { margin-top: 1.6rem; max-width: 560px; padding: 1.2rem 1.4rem; border-radius: 18px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); }
+	.mf-q p { margin-top: .5rem; font-style: italic; font-size: 16px; line-height: 1.55; color: #fff; }
+	.mf-q cite { display: block; margin-top: .5rem; font-style: normal; font-size: 13px; color: var(--color-sky-mist); }
+	.mf-sign { padding-top: 3rem; border-top: 1px solid rgba(255,255,255,.1); text-align: right; opacity: 0; transform: translateY(20px); transition: opacity .8s, transform .8s; }
+	.mf-sign.is-in { opacity: 1; transform: none; }
+	.mf-sign-name { display: block; font-family: var(--font-display); font-weight: 900; font-style: italic; font-size: clamp(30px, 4vw, 48px); letter-spacing: -.03em; }
+	.mf-sign-role { display: block; margin-top: .3rem; font-size: 14px; color: var(--color-sky-mist); }
+	.mf-cta { padding: 5rem 0 7rem; text-align: center; border-top: 1px solid rgba(255,255,255,.06); }
+	.mf-cta h2 { font-family: var(--font-display); font-weight: 900; font-size: clamp(32px, 5vw, 60px); line-height: 1.02; letter-spacing: -.035em; text-wrap: balance; }
+	.mf-cta p { margin: 1rem auto 0; max-width: 520px; font-size: 18px; color: var(--color-sky-mist); text-wrap: pretty; }
+	.mf-cta-btns { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+	.mf-btn { display: inline-flex; padding: 1rem 1.6rem; border-radius: 999px; font-weight: 700; border: 1.5px solid rgba(255,255,255,.35); transition: transform .2s, background .2s; }
+	.mf-btn:hover { transform: translateY(-2px); background: rgba(255,255,255,.08); }
+	.mf-btn-acc { background: var(--color-orange); border-color: var(--color-orange); box-shadow: 0 14px 34px -12px rgba(237,36,78,.8); }
+	.mf-btn-acc:hover { background: var(--color-orange-bright); }
+	@media (max-width: 640px) { .mf-item { grid-template-columns: 1fr; gap: .6rem; } .mf-n { font-size: 64px; } }
+	@media (prefers-reduced-motion: reduce) { .mf-body h2, .mf-body > p, .mf-q, .mf-sign { opacity: 1; transform: none; transition: none; } }
+</style>
+<script>
+	import '../scripts/parallax.ts';
+</script>

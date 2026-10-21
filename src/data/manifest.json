@@ -1,0 +1,26 @@
+{
+  "seoTitle": "Manifest — jak tworzymy wideo dla firm | Sobotka Visual, Opole",
+  "seoDesc": "Dziesięć zasad, według których powstaje każdy film, rolka i animacja Sobotka Visual: regularność, wynik biznesowy, rytm montażu i liczby bez naciągania.",
+  "eyebrow": "Manifest",
+  "title": "Wideo, które pracuje",
+  "titleBold": "na Twój wynik.",
+  "lead": "Dziesięć zasad, według których powstaje każdy film, rolka i animacja. Spisane po to, żebyś przed rozmową wiedział, z kim pracujesz — i czego możesz od nas wymagać.",
+  "items": [
+    { "t": "Regularność wygrywa z jednorazowym hitem.", "d": "Klienci nie pamiętają jednego świetnego filmu sprzed kwartału. Pamiętają firmę, którą widzą co tydzień. Dlatego pracujemy w rytmie, a nie zrywami." },
+    { "t": "Wideo ma pracować na wynik, nie tylko ładnie wyglądać.", "d": "Zanim otworzymy program do montażu, pytamy o cel: rekrutacja, sprzedaż, zasięg, rozpoznawalność. Efekt wizualny jest środkiem, nie celem.", "quoteFrom": "Adam Przebinda" },
+    { "t": "Pierwsze sekundy decydują o wszystkim.", "d": "Miniatura, pierwszy kadr, pierwsze zdanie. Tam zapada decyzja, czy ktoś zostanie. Tam wkładamy najwięcej pracy." },
+    { "t": "Tempo montażu to język.", "d": "Cięcie, pauza, muzyka i napis układają się w rytm, który widz czuje, zanim go zrozumie. To rzemiosło, którego nie widać — ale które działa.", "quoteFrom": "Przemysław Langier" },
+    { "t": "Liczby bez naciągania.", "d": "Pokazujemy wyniki z prawdziwych realizacji i porównujemy je z publicznymi danymi. Jeśli czegoś nie wiemy, nie udajemy, że wiemy." },
+    { "t": "System zamiast jednorazówek.", "d": "Każdy materiał dokłada coś do wspólnej oprawy: kolory, typografię, animowane logo, szablony. Z miesiąca na miesiąc produkcja idzie szybciej, a marka staje się bardziej rozpoznawalna." },
+    { "t": "Skala się opłaca.", "d": "150 rolek w roku to nie 150 osobnych zleceń, tylko jeden dobrze ustawiony proces. Im większa skala, tym niższy koszt jednego materiału i tym wyraźniejszy ślad firmy w internecie." },
+    { "t": "Twój czas jest najcenniejszy.", "d": "Krótki brief, jedna akceptacja, resztę bierzemy na siebie. Nie dokładamy Ci pracy — zdejmujemy ją z Twoich barków." },
+    { "t": "Termin to obietnica.", "d": "Materiał, który miał wyjść w poniedziałek, wychodzi w poniedziałek. Bez tego regularność nie istnieje." },
+    { "t": "Uprzejmie, konkretnie, po ludzku.", "d": "Mówimy prostym językiem, bez żargonu. Szanujemy Twoje decyzje, a gdy coś nie działa, mówimy o tym pierwsi — razem z propozycją, co zmienić." }
+  ],
+  "signature": "Krzysztof Sobotka",
+  "signatureRole": "założyciel Sobotka Visual Creations · Nysa, Opole",
+  "ctaTitle": "Brzmi jak Twój sposób pracy?",
+  "ctaText": "Porozmawiajmy 15 minut o tym, co chcesz osiągnąć. Bez zobowiązań.",
+  "ctaLabel": "Policz swój pakiet",
+  "ctaHref": "/generator"
+}

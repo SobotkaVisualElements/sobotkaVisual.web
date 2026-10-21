@@ -29,9 +29,7 @@ const { Content } = await render(page);
 	<section class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
 		<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
 		<div class="relative z-2 mx-auto max-w-[860px] px-6 py-16 sm:px-8">
-			<article class="prose-svc">
-				<Content />
-			</article>
+			<article class="prose-svc"><Content /></article>
 			{page.data.blocks?.length ? <Blocks blocks={page.data.blocks} theme="dark" /> : null}
 			<a href="/generator" class="liquid-card mt-12 flex flex-col items-center gap-4 rounded-[24px] border-2 border-orange bg-linear-100 from-orange-deep via-orange to-orange-bright px-7 py-8 text-center shadow-[0_18px_50px_-12px_rgba(237,36,78,.65)] sm:flex-row sm:justify-between sm:text-left">
 				<span>
@@ -56,7 +54,8 @@ const { Content } = await render(page);
 	.prose-svc { color: var(--color-sky-mist); font-size: 17px; line-height: 1.7; }
 	.prose-svc h2 { color: var(--color-cloud); font-size: 28px; font-weight: 700; margin: 2rem 0 .75rem; }
 	.prose-svc h3 { color: var(--color-cloud); font-size: 21px; font-weight: 700; margin: 1.5rem 0 .5rem; }
-	.prose-svc p { margin-bottom: 1rem; }
+	.prose-svc p { margin-bottom: 1rem; hyphens: auto; -webkit-hyphens: auto; text-wrap: pretty; }
+	@media (min-width: 560px) { .prose-svc p { text-align: justify; text-align-last: left; } }
 	.prose-svc ul, .prose-svc ol { margin: 0 0 1rem 1.25rem; list-style: disc; }
 	.prose-svc li { margin-bottom: .4rem; }
 	.prose-svc a { color: var(--color-orange); text-decoration: underline; }

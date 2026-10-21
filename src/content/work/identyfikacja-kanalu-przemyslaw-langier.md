@@ -47,7 +47,7 @@ blocks:
 
 ## Wyzwanie
 
-Na YouTube o obejrzeniu filmu decyduje miniatura. Nawet najlepszy materiał przegrywa, jeśli w zalewie innych propozycji nikt go nie zauważy. Celem było więc nie tylko „ładnie", ale **mierzalnie lepiej** — wyższa klikalność, rozpoznawalność kanału i spójność każdego elementu.
+Na YouTube o obejrzeniu filmu decyduje miniatura. Nawet najlepszy materiał przegrywa, jeśli w zalewie innych propozycji nikt go nie zauważy. Celem było więc nie tylko „ładnie”, ale **mierzalnie lepiej** — wyższa klikalność, rozpoznawalność kanału i spójność każdego elementu.
 
 ## Rozwiązanie
 

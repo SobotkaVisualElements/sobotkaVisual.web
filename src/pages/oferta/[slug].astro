@@ -5,11 +5,12 @@
  * Każdy tekst przechodzi przez tx(): polskie twarde spacje, Enter = nowa linia, **pogrubienie**.
  */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ProjectCard from '../../components/work/ProjectCard.astro';
+import Carousel3D from '../../components/ui/Carousel3D.astro';
+import GapChart from '../../components/ui/GapChart.astro';
+import { opinie } from '../../data/opinie';
 import CompareBars from '../../components/ui/CompareBars.astro';
 import Stars from '../../components/ui/Stars.astro';
 import Blocks from '../../components/blocks/Blocks.astro';
-import { opinie } from '../../data/opinie';
 import { getPublishedProjects } from '../../lib/projects';
 import { tx, alignCls } from '../../lib/typo';
 import home from '../../data/home.json';
@@ -35,7 +36,10 @@ const utm = `utm_source=oferta&utm_campaign=${slug}`;
 const gen = `/generator?pakiet=${o.pkg || 'pro'}&${utm}`;
 const withUtm = (h: string = '/generator') => `${h || '/generator'}${(h || '').includes('?') ? '&' : '?'}${utm}`;
 const clients = ((home as any).clients ?? []).filter((c: any) => c.logo);
-const projects = o.projects?.show === false ? [] : (await getPublishedProjects()).filter((p) => p.data.featured).slice(0, 3);
+const projects = o.projects?.show === false ? [] : (await getPublishedProjects()).slice(0, Number(o.projects?.limit) || 9);
+// realizacje w karuzeli 3D (poziome banery 16:10)
+const workItems = projects.map((p: any) => ({ href: `/work/${p.id}`, title: p.data.title, category: p.data.category, logo: p.data.clientLogo,
+	img: p.data.cover || p.data.layers?.find((l: any) => l?.image)?.image || p.data.poster || '' }));
 const thumbs = ['/uploads/realizacje/maxresdefault (1).jpg', '/uploads/realizacje/maxresdefault (3).jpg', '/uploads/realizacje/maxresdefault.jpg'];
 const others = all.filter((x) => x.slug !== slug && !x.draft && !x.noindex);
 const cards: any[] = o.invest?.cards ?? [];
@@ -47,12 +51,20 @@ const toBars = (bars: any[] = []) => bars.map((b) => ({
 }));
 const sp: any = o.special ?? {};
 const kinetic = o.layout === 'kinetyczny';
+const hideSet = new Set<string>(o.ui?.hide ?? []);
+const off = (k: string) => hideSet.has(k) || undefined;
+const padK: Record<string, number> = { ciasno: 0.65, normalnie: 1, przestronnie: 1.35 };
 
+const dl: any = o.proof?.delta ?? {};
 const deltaBlocks = [{
-	type: 'wykres_liniowy', value: 150, prefix: '', suffix: '+', label: 'rolek rekrutacyjnych dla Delta HR w 12 miesięcy',
-	points: '0, 13, 26, 39, 52, 65, 78, 91, 104, 117, 130, 143, 156',
-	description: '3 rolki tygodniowo, bez przerw — od października 2025 do października 2026. Pojedyncze rolki regularnie przekraczały 60 tys. wyświetleń na Facebooku.',
+	type: 'wykres_liniowy', value: dl.value ?? 150, prefix: dl.prefix ?? 'do ', suffix: dl.suffix ?? '+', label: dl.label ?? 'rolek rocznie',
+	points: dl.points ?? '0, 13, 26, 39, 52, 65, 78, 91, 104, 117, 130, 143, 156',
+	description: dl.description ?? 'Tak pracujemy z Delta HR: 3 rolki tygodniowo, bez przerw. To już realny nakład inwestycyjny i trwały ślad Twojej firmy w internecie. **Twoja promocja się skaluje!**',
 }];
+// wykres przewagi CTR i wykres skali — cytat z opinii klienta wybieramy po nazwisku
+const quoteOf = (name?: string) => { const q = opinie.find((x) => x.name === name); return q ? { text: q.quote, name: q.name, role: q.role } : undefined; };
+const ctr: any = o.proof?.ctr?.show === false ? null : o.proof?.ctr;
+const scale: any = sp.scale?.show === false ? null : sp.scale;
 
 const ld = {
 	'@context': 'https://schema.org',
@@ -77,11 +89,11 @@ const ld = {
 ---
 <BaseLayout title={o.seoTitle} description={o.seoDesc} noindex={!!o.noindex}>
 	{kinetic ? (
-		<KineticLanding o={o} slug={slug!} gen={gen} others={others} projects={projects} withUtm={withUtm} />
+		<KineticLanding workItems={workItems} ctr={ctr} ctrQuote={quoteOf(ctr?.quoteFrom)} scale={scale} deltaBlocks={o.proof?.deltaLine ? deltaBlocks : []} o={o} slug={slug!} gen={gen} others={others} projects={projects} withUtm={withUtm} />
 	) : (
-	<div class="of">
+	<div class="of" style={`--ks-pad:${padK[o.ui?.spacing] ?? 1}`}>
 		<!-- HERO -->
-		<section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
+		<section data-cms="1. Pierwszy ekran" hidden={off("hero")} class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
 			{o.hero?.bgImage ? (
 				<img src={o.hero.bgImage} alt="" class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover" style={`opacity:${(o.hero.bgOpacity ?? 30) / 100}`} />
 			) : !o.hero?.thumbs && (
@@ -155,7 +167,7 @@ const ld = {
 		</section>
 
 		<!-- ZANIM ZACZNIEMY -->
-		<section class="of-sec">
+		<section data-cms="2. Zanim zaczniemy" hidden={off("intro")} class="of-sec">
 			<div class:list={['of-wrap grid gap-10 md:grid-cols-[1fr_1.1fr] md:items-end', alignCls(o.intro.align)]}>
 				<div>
 					<p class="of-eyebrow" set:html={tx(o.intro.eyebrow)} />
@@ -169,7 +181,7 @@ const ld = {
 		</section>
 
 		<!-- KIM SIĘ STAJESZ -->
-		<section class="of-sec">
+		<section data-cms="3. Kim się stajesz" hidden={off("become")} class="of-sec">
 			<div class:list={['of-wrap', alignCls(o.become.align)]}>
 				<p class="of-eyebrow" set:html={tx(o.become.eyebrow)} />
 				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.become.title)} /> <span class="of-light" set:html={tx(o.become.titleLight)} /></h2>
@@ -189,7 +201,7 @@ const ld = {
 
 		<!-- LICZBY RYNKU -->
 		{o.stats?.items?.length > 0 && (
-			<section class="of-sec">
+			<section data-cms="4. Liczby rynku" hidden={off("stats")} class="of-sec">
 				<div class="of-wrap">
 					<div class="flex flex-wrap items-end justify-between gap-6">
 						<div>
@@ -215,13 +227,14 @@ const ld = {
 
 		<!-- WYNIKI -->
 		{o.proof?.charts?.length > 0 && (
-			<section class="of-sec relative overflow-hidden">
+			<section data-cms="5. Wyniki — wykresy" hidden={off("proof")} class="of-sec relative overflow-hidden">
 				<span class="pointer-events-none absolute top-1/3 -left-40 size-[560px] bg-radial from-orange/20 to-transparent to-65%"></span>
 				<div class:list={['of-wrap relative', alignCls(o.proof.align)]}>
 					<p class="of-eyebrow" set:html={tx(o.proof.eyebrow)} />
 					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.proof.title)} /> <span class="of-light" set:html={tx(o.proof.titleLight)} /></h2>
 					<p class="of-text mt-4 max-w-[640px] text-[16px] text-sky-mist" set:html={tx(o.proof.lead)} />
-					<div class="mt-10 grid gap-6 text-left lg:grid-cols-2">
+					{ctr && <div class="mt-10 text-left"><GapChart {...ctr} quote={quoteOf(ctr.quoteFrom)} /></div>}
+					<div class:list={['mt-10 grid gap-6 text-left', o.proof.charts.length > 1 && 'lg:grid-cols-2']}>
 						{o.proof.charts.map((c: any) => (
 							<CompareBars title={c.title} sub={c.sub} unit={c.unit ?? ''} bars={toBars(c.bars)} max={c.max ? Number(c.max) : undefined} source={c.source} />
 						))}
@@ -232,7 +245,7 @@ const ld = {
 		)}
 
 		<!-- CO W ŚRODKU -->
-		<section class="of-sec">
+		<section data-cms="6. Co w środku" hidden={off("inside")} class="of-sec">
 			<div class:list={['of-wrap', alignCls(o.inside.align)]}>
 				<p class="of-eyebrow" set:html={tx(o.inside.eyebrow)} />
 				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.inside.title)} /> <span class="of-light" set:html={tx(o.inside.titleLight)} /></h2>
@@ -272,21 +285,22 @@ const ld = {
 
 		<!-- SEKCJA SPECJALNA -->
 		{sp.kind && (
-			<section class="of-sec">
+			<section data-cms="7. Sekcja specjalna" hidden={off("special")} class="of-sec">
 				<div class:list={['of-wrap', alignCls(sp.align)]}>
 					<p class="of-eyebrow" set:html={tx(sp.eyebrow)} />
 					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(sp.title)} /> <span class="of-light" set:html={tx(sp.titleLight)} /></h2>
 					{sp.lead && <p class="of-text mt-4 max-w-[640px] text-[17px] text-sky-mist" set:html={tx(sp.lead)} />}
 
+					{sp.kind === 'rytm' && scale && <div class="mt-10 text-left"><GapChart {...scale} curve="liniowy" /></div>}
 					{sp.kind === 'rytm' && sp.table?.length > 0 && (
-						<div class="glass svc-anim of-rytm mt-10 overflow-x-auto rounded-[22px] p-2 sm:p-4">
-							<table class="w-full min-w-[560px] text-left text-[15px]">
-								<thead><tr class="text-[12px] tracking-[0.12em] text-sky-mist uppercase"><th class="p-4 font-bold">Tydzień</th>{['01', '02', '03', '04'].map((w) => <th class="p-4 text-center font-display text-[20px] font-light text-cloud">{w}</th>)}</tr></thead>
+						<div class="glass svc-anim of-rytm mt-10 overflow-x-auto rounded-[22px] p-1.5 sm:p-4">
+							<table class="w-full text-left text-[13px] sm:min-w-[560px] sm:text-[15px]">
+								<thead><tr class="text-[12px] tracking-[0.12em] text-sky-mist uppercase"><th class="p-2 font-bold sm:p-4">Tydzień</th>{['01', '02', '03', '04'].map((w) => <th class="p-1.5 text-center font-display text-[16px] font-light text-cloud sm:p-4 sm:text-[20px]">{w}</th>)}</tr></thead>
 								<tbody>
 									{sp.table.map((r: any, ri: number) => (
 										<tr class="border-t border-white/8">
-											<td class="p-4 font-semibold text-cloud">{r.label}</td>
-											{[r.w1, r.w2, r.w3, r.w4].map((c: string, ci: number) => <td class="p-4 text-center"><span class:list={['of-pill', (!c || c === '—') && 'is-empty']} style={`--d:${(ri * 4 + ci) * 0.05}s`}>{c || '—'}</span></td>)}
+											<td class="p-2 font-semibold text-cloud sm:p-4">{r.label}</td>
+											{[r.w1, r.w2, r.w3, r.w4].map((c: string, ci: number) => <td class="p-1 text-center sm:p-4"><span class:list={['of-pill', (!c || c === '—') && 'is-empty']} style={`--d:${(ri * 4 + ci) * 0.05}s`}>{c || '—'}</span></td>)}
 										</tr>
 									))}
 								</tbody>
@@ -298,12 +312,12 @@ const ld = {
 						<div class="svc-anim of-anat mt-12 text-left">
 							<div class="flex h-14 gap-1.5">
 								{sp.timeline.map((s: any, i: number) => (
-									<div class="of-seg" style={`--g:${Number(s.sec) || 1};--d:${i * 0.18}s`} data-hl={s.highlight ? '1' : undefined}><span>{s.label}</span></div>
+									<div class="of-seg" style={`--g:${Number(s.sec) || 1};--d:${i * 0.18}s`} data-hl={s.highlight ? '1' : undefined}><span>{s.label}</span><b>{i + 1}</b></div>
 								))}
 							</div>
 							<div class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-								{sp.timeline.map((s: any) => (
-									<div><span class="text-[12px] font-bold text-orange-glow tabular-nums">{s.time}</span><h3 class="mt-1 text-[17px] font-bold text-cloud" set:html={tx(s.label)} /><p class="mt-1.5 text-[14px] leading-relaxed text-sky-mist" set:html={tx(s.desc)} /></div>
+								{sp.timeline.map((s: any, i: number) => (
+									<div><span class="text-[12px] font-bold text-orange-glow tabular-nums"><span class="of-seg-no">{i + 1} · </span>{s.time}</span><h3 class="mt-1 text-[17px] font-bold text-cloud" set:html={tx(s.label)} /><p class="mt-1.5 text-[14px] leading-relaxed text-sky-mist" set:html={tx(s.desc)} /></div>
 								))}
 							</div>
 						</div>
@@ -345,7 +359,7 @@ const ld = {
 		)}
 
 		<!-- OPINIE -->
-		<section class="of-sec">
+		<section data-cms="8. Opinie" hidden={off("opinie")} class="of-sec">
 			<div class="of-wrap">
 				<div class="flex flex-wrap items-end justify-between gap-6">
 					<div>
@@ -371,20 +385,18 @@ const ld = {
 
 		<!-- REALIZACJE -->
 		{projects.length > 0 && (
-			<section class="of-sec">
+			<section data-cms="9. Realizacje" hidden={off("realizacje")} class="of-sec">
 				<div class="of-wrap">
 					<p class="of-eyebrow" set:html={tx(o.projects?.eyebrow ?? 'Realizacje')} />
 					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.projects?.title)} /> <span class="of-light" set:html={tx(o.projects?.titleLight)} /></h2>
-					<div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-						{projects.map((p, i) => <ProjectCard project={p} index={i} />)}
-					</div>
 				</div>
+				<div class="mt-10"><Carousel3D items={workItems} orientation="poziom" tone="dark" label="Realizacje" /></div>
 			</section>
 		)}
 
 		<!-- PYTANIA -->
 		{o.faq?.items?.length > 0 && (
-			<section class="of-sec">
+			<section data-cms="10. Pytania" hidden={off("faq")} class="of-sec">
 				<div class:list={['of-wrap', alignCls(o.faq.align)]}>
 					<p class="of-eyebrow" set:html={tx(o.faq.eyebrow)} />
 					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.faq.title)} /> <span class="of-light" set:html={tx(o.faq.titleLight)} /></h2>
@@ -399,7 +411,7 @@ const ld = {
 
 		<!-- WĄTPLIWOŚCI -->
 		{o.doubts?.items?.length > 0 && (
-			<section class="of-sec">
+			<section data-cms="11. Wątpliwości" hidden={off("doubts")} class="of-sec">
 				<div class:list={['of-wrap', alignCls(o.doubts.align)]}>
 					<p class="of-eyebrow" set:html={tx(o.doubts.eyebrow)} />
 					<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.doubts.title)} /> <span class="of-light" set:html={tx(o.doubts.titleLight)} /></h2>
@@ -419,7 +431,7 @@ const ld = {
 		)}
 
 		<!-- INWESTYCJA -->
-		<section id="inwestycja" class="of-sec scroll-mt-20">
+		<section data-cms="12. Inwestycja (ceny)" hidden={off("invest")} id="inwestycja" class="of-sec scroll-mt-20">
 			<div class="of-wrap">
 				<p class="of-eyebrow" set:html={tx(o.invest.eyebrow)} />
 				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.invest.title)} /> <span class="of-light" set:html={tx(o.invest.titleLight)} /></h2>
@@ -447,7 +459,7 @@ const ld = {
 		</section>
 
 		<!-- NASTĘPNY KROK -->
-		<section class="relative overflow-hidden border-t border-white/6 bg-linear-160 from-navy to-navy-deep text-cloud">
+		<section data-cms="13. Następny krok" hidden={off("final")} class="relative overflow-hidden border-t border-white/6 bg-linear-160 from-navy to-navy-deep text-cloud">
 			<span class="pointer-events-none absolute inset-0 bg-grid opacity-35"></span>
 			<span data-speed="0.03" class="pointer-events-none absolute top-10 right-[10%] text-[34px] text-orange">✦</span>
 			<div class:list={['of-wrap relative z-2 py-24', alignCls(o.final.align)]}>
@@ -484,10 +496,10 @@ const ld = {
 
 <style is:global>
 	.of { background: radial-gradient(120% 60% at 10% 0%, #2a1060 0%, transparent 50%), linear-gradient(180deg, var(--color-navy-deep), #0d0838 50%, var(--color-navy-deep)); color: var(--color-cloud); }
-	.of-sec { position: relative; border-top: 1px solid rgba(255,255,255,.06); padding: 6.5rem 0; }
+	.of-sec { position: relative; border-top: 1px solid rgba(255,255,255,.06); padding: calc(6.5rem * var(--ks-pad, 1)) 0; }
 	.of-wrap { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
 	@media (min-width: 640px) { .of-wrap { padding: 0 2rem; } }
-	@media (max-width: 767px) { .of-sec { padding: 4.5rem 0; } .of { padding-bottom: 64px; } }
+	@media (max-width: 767px) { .of-sec { padding: calc(4.5rem * var(--ks-pad, 1)) 0; } .of { padding-bottom: 64px; } }
 	.of-h { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.035em; color: var(--color-cloud); }
 	h1.of-h { font-weight: 300; }
 	.of-light { font-weight: 300 !important; color: rgba(208,201,195,.55); }
@@ -501,6 +513,7 @@ const ld = {
 	.of-stars-big svg { filter: drop-shadow(0 0 10px rgba(255,90,120,.8)); }
 
 	.of-pill { display: inline-block; min-width: 44px; padding: .3rem .7rem; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); font-weight: 700; font-size: 13px; color: var(--color-cloud); opacity: 0; transform: scale(.6); transition: opacity .4s var(--d), transform .5s cubic-bezier(.3,1.6,.5,1) var(--d); }
+	@media (max-width: 640px) { .of-pill { min-width: 34px; padding: .25rem .4rem; font-size: 12px; } }
 	.of-pill.is-empty { border-color: transparent; color: rgba(208,201,195,.35); }
 	.of-rytm.is-in .of-pill { opacity: 1; transform: none; }
 
@@ -509,6 +522,8 @@ const ld = {
 	.of-seg[data-hl]::before { background: linear-gradient(90deg, var(--color-orange-deep), var(--color-orange-bright)); box-shadow: 0 0 24px rgba(237,36,78,.6); }
 	.of-seg span { position: relative; font-size: 12px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 	.of-anat.is-in .of-seg::before { transform: scaleX(1); }
+	.of-seg b, .of-seg-no { display: none; }
+	@media (max-width: 640px) { .of-seg span { display: none; } .of-seg { justify-content: center; padding: 0; } .of-seg b { display: block; position: relative; font-size: 13px; } .of-seg-no { display: inline; } }
 
 	.of-step { position: relative; opacity: 0; transform: translateY(16px); transition: opacity .6s var(--d), transform .6s var(--d); }
 	.of-funnel.is-in .of-step { opacity: 1; transform: none; }
@@ -522,3 +537,33 @@ const ld = {
 <script>
 	import '../../scripts/parallax.ts';
 </script>
+
+<!-- Tryb podglądu dla redakcji: dopisz ?edytuj do adresu strony, żeby zobaczyć nazwy sekcji z panelu -->
+<style is:global>
+	html.cms-edit [data-cms] { outline: 2px dashed rgba(255,198,92,.75); outline-offset: -6px; }
+	.cms-tag { position: absolute; z-index: 60; left: 12px; top: 12px; display: inline-flex; gap: 6px; align-items: center; padding: 6px 10px; border-radius: 8px;
+		background: #ffc65c; color: #1a1040; font: 700 12px/1.2 Montserrat, sans-serif; box-shadow: 0 6px 20px -6px rgba(0,0,0,.5); }
+	.cms-tag:hover { background: #fff; }
+	.cms-bar { position: fixed; z-index: 120; left: 50%; bottom: 16px; transform: translateX(-50%); display: flex; gap: 10px; align-items: center; padding: 10px 14px; border-radius: 14px;
+		background: #1a1040; color: #fff; font: 600 13px/1.3 Montserrat, sans-serif; box-shadow: 0 20px 50px -10px rgba(0,0,0,.6); border: 1px solid rgba(255,198,92,.6); }
+	.cms-bar a { color: #ffc65c; text-decoration: underline; }
+</style>
+<script define:vars={{ slug }}>
+	if (new URLSearchParams(location.search).has('edytuj')) {
+		document.documentElement.classList.add('cms-edit');
+		const url = `/admin/#/collections/landingi/entries/${slug}`;
+		document.querySelectorAll('[data-cms]').forEach((el) => {
+			if (getComputedStyle(el).position === 'static') el.style.position = 'relative';
+			const host = el.querySelector('[data-sticky]') || el;
+			const a = document.createElement('a');
+			a.className = 'cms-tag'; a.href = url; a.target = '_blank';
+			a.textContent = '✎ ' + el.dataset.cms;
+			host.appendChild(a);
+		});
+		const bar = document.createElement('div');
+		bar.className = 'cms-bar';
+		bar.innerHTML = `Tryb redakcji · żółte etykiety = nazwy sekcji w panelu · <a href="${url}" target="_blank">otwórz ten landing w panelu</a>`;
+		document.body.appendChild(bar);
+	}
+</script>
+

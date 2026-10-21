@@ -1,0 +1,270 @@
+---
+/*
+ * Karuzela 3D (wklęsły łuk) — wspólna dla strony głównej, realizacji i landingów.
+ *  orientation="pion"  → okładki 1200×1920 (10:16)
+ *  orientation="poziom" → banery 1920×1200 (16:10) albo miniatury YouTube (16:9, ratio="16/9")
+ *  variant="tlo"       → bez przycisków, sama płynnie jedzie (np. tło za wykresem)
+ *
+ * Pętla jest naprawdę nieskończona: karty są powielane, a „zawinięcie” na początek kolejki
+ * dzieje się daleko za krawędzią ekranu, gdy karta jest już całkiem przezroczysta — nic nie miga.
+ */
+import { tx } from '../../lib/typo';
+
+export interface CarouselItem { img?: string; title?: string; category?: string; href?: string; youtube?: string; logo?: string; alt?: string }
+interface Props {
+	items: CarouselItem[];
+	orientation?: 'pion' | 'poziom';
+	ratio?: string;
+	variant?: 'pelna' | 'tlo';
+	label?: string;
+	tone?: 'dark' | 'light';
+	class?: string;
+	autoplay?: boolean;
+}
+const { items: raw = [], orientation = 'pion', ratio, variant = 'pelna', label = 'Karuzela', tone = 'dark', class: cls = '', autoplay = true } = Astro.props;
+
+const ytId = (u = '') => (u.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/) || [])[1] || '';
+const items = raw
+	.map((it) => {
+		const id = ytId(it.youtube);
+		return { ...it, yt: id, img: it.img || (id ? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg` : '') };
+	})
+	.filter((it) => it.img || it.title);
+const n = items.length;
+// tyle kopii, żeby zawsze było ≥ 14 kart (zawinięcie poza ekranem)
+const reps = n ? Math.max(1, Math.ceil(14 / n)) : 0;
+const cards = Array.from({ length: n * reps }, (_, k) => ({ ...items[k % n], real: k % n, clone: k >= n }));
+const ar = ratio || (orientation === 'pion' ? '10/16' : '16/10');
+const u = 'c3d' + Math.random().toString(36).slice(2, 7);
+---
+{n > 0 && (
+	<div
+		class:list={['c3d', `c3d--${orientation}`, `c3d--${variant}`, `c3d--${tone}`, cls]}
+		data-c3d={u}
+		data-n={n}
+		data-auto={autoplay ? '1' : '0'}
+		tabindex={variant === 'tlo' ? undefined : '0'}
+		aria-roledescription={variant === 'tlo' ? undefined : 'karuzela'}
+		aria-label={variant === 'tlo' ? undefined : label}
+		aria-hidden={variant === 'tlo' ? 'true' : undefined}
+		style={`--ar:${ar}`}
+	>
+		<div class="c3d-stage">
+			{cards.map((it, k) => {
+				const Tag = it.href ? 'a' : 'button';
+				return (
+					<Tag
+						class="c3d-card"
+						href={it.href}
+						type={it.href ? undefined : 'button'}
+						data-real={it.real}
+						data-yt={it.yt || undefined}
+						draggable="false"
+						tabindex={it.clone || variant === 'tlo' ? '-1' : undefined}
+						aria-hidden={it.clone ? 'true' : undefined}
+						aria-label={it.title || it.alt || undefined}
+					>
+						{it.img ? <img src={it.img} alt="" loading={k < 6 ? 'eager' : 'lazy'} decoding="async" draggable="false" /> : <span class="c3d-ph"><small>{it.category}</small><b set:html={tx(it.title)} /></span>}
+						<span class="c3d-shade"></span>
+						{it.yt && variant !== 'tlo' && <span class="c3d-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg></span>}
+						{it.logo && variant !== 'tlo' && <span class="c3d-logo"><img src={it.logo} alt="" loading="lazy" /></span>}
+					</Tag>
+				);
+			})}
+		</div>
+		{variant !== 'tlo' && (
+			<>
+				<div class="c3d-bar">
+					<button type="button" class="c3d-btn" data-dir="-1" aria-label="Poprzednia">←</button>
+					<div class="c3d-info" aria-live="polite">
+						<div class="c3d-cat"></div>
+						<a class="c3d-title" href="#"></a>
+					</div>
+					<button type="button" class="c3d-btn" data-dir="1" aria-label="Następna">→</button>
+				</div>
+				<div class="c3d-dots"></div>
+				<script type="application/json" class="c3d-data" set:html={JSON.stringify(items.map(({ href, title, category, yt }) => ({ href, title: title ? tx(title).replace(/<[^>]+>/g, '') : '', category, yt })))} />
+			</>
+		)}
+	</div>
+)}
+
+<style is:global>
+	.c3d { --w: clamp(150px, 19vw, 250px); outline: none; position: relative; user-select: none; }
+	.c3d--poziom { --w: clamp(250px, 32vw, 480px); }
+	.c3d-stage { position: relative; height: calc(var(--w) / (var(--ar)) + 80px); perspective: 1300px; perspective-origin: 50% 45%; touch-action: pan-y; cursor: grab; }
+	.c3d--poziom .c3d-stage { perspective: 1700px; }
+	.c3d--tlo .c3d-stage { cursor: default; touch-action: auto; pointer-events: none; }
+	.c3d-stage.is-drag { cursor: grabbing; }
+	.c3d-card { position: absolute; left: 50%; top: 35px; width: var(--w); aspect-ratio: var(--ar); margin-left: calc(var(--w) / -2); border-radius: 20px; overflow: hidden; padding: 0; border: 0;
+		background: #1b0545; box-shadow: 0 30px 60px -25px rgba(0,0,0,.8); transform-style: preserve-3d; will-change: transform, opacity; transition: box-shadow .4s; cursor: inherit; }
+	.c3d--poziom .c3d-card { border-radius: 16px; }
+	.c3d-card img, .c3d-ph { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+	.c3d-ph { background: radial-gradient(120% 90% at 85% 100%, rgba(237,36,78,.55), transparent 60%), linear-gradient(160deg, #120a4a, #1b0545 60%, #2a0c5c);
+		display: flex !important; flex-direction: column; justify-content: flex-end; gap: 6px; padding: 8% 8%; text-align: left; color: #fff; }
+	.c3d-ph small { font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #ff8aa0; }
+	.c3d-ph b { font-size: clamp(15px, calc(var(--w) * .07), 26px); line-height: 1.15; font-weight: 800; text-wrap: balance; }
+	.c3d--pion .c3d-ph b { font-size: clamp(14px, calc(var(--w) * .09), 22px); }
+	.c3d-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,6,48,.15), rgba(10,6,48,.6)); opacity: var(--sh, 1); pointer-events: none; }
+	.c3d-card.is-active { box-shadow: 0 0 0 2px rgba(255,90,120,.75), 0 40px 80px -25px rgba(237,36,78,.55); }
+	.c3d-play { position: absolute; left: 50%; top: 50%; width: 58px; height: 58px; margin: -29px 0 0 -29px; border-radius: 999px; display: grid; place-items: center; color: #fff;
+		background: rgba(237,36,78,.92); box-shadow: 0 10px 30px -8px rgba(237,36,78,.8); opacity: 0; transform: scale(.8); transition: opacity .3s, transform .3s; }
+	.c3d-play svg { width: 26px; height: 26px; margin-left: 3px; }
+	.c3d-card.is-active .c3d-play { opacity: 1; transform: none; }
+	.c3d-logo { position: absolute; left: 12px; bottom: 12px; height: 34px; max-width: 46%; padding: 6px 10px; border-radius: 10px; background: rgba(255,255,255,.92); display: flex; align-items: center;
+		box-shadow: 0 6px 20px -8px rgba(0,0,0,.5); opacity: 0; transition: opacity .3s; }
+	.c3d-logo img { height: 100%; width: auto; max-width: 100%; object-fit: contain; }
+	.c3d-card.is-active .c3d-logo { opacity: 1; }
+	.c3d-bar { margin: 24px auto 0; display: flex; max-width: 640px; align-items: center; justify-content: space-between; gap: 16px; padding: 0 24px; }
+	.c3d-info { min-width: 0; flex: 1; text-align: center; }
+	.c3d-cat { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--color-orange-glow, #ff8a5c); min-height: 1em; }
+	.c3d-title { margin-top: 4px; display: block; font-size: 18px; font-weight: 700; line-height: 1.3; text-wrap: balance; color: inherit; }
+	.c3d-title:hover { color: var(--color-orange-glow, #ff8a5c); }
+	.c3d-btn { width: 46px; height: 46px; flex-shrink: 0; border-radius: 999px; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.05); color: inherit; font-weight: 700; transition: background .2s, border-color .2s, transform .2s; }
+	.c3d-btn:hover { background: var(--color-orange); border-color: transparent; color: #fff; transform: translateY(-1px); }
+	.c3d-dots { margin-top: 16px; display: flex; justify-content: center; gap: 8px; }
+	.c3d-dots button { width: 8px; height: 8px; border-radius: 999px; background: rgba(255,255,255,.25); transition: width .3s, background .3s; }
+	.c3d-dots button.on { width: 26px; background: var(--color-orange); }
+	.c3d--light { color: var(--color-ink, #0a0630); }
+	.c3d--light .c3d-btn { border-color: rgba(10,6,48,.18); background: #fff; }
+	.c3d--light .c3d-dots button { background: rgba(10,6,48,.2); }
+	.c3d--light .c3d-card { box-shadow: 0 30px 50px -28px rgba(10,6,48,.45); }
+	.c3d--dark { color: #fff; }
+	@media (max-width: 640px) { .c3d { --w: 52vw; } .c3d--poziom { --w: 74vw; } }
+
+	.c3d-modal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 20px; background: rgba(6,4,30,.88); backdrop-filter: blur(8px); }
+	.c3d-modal > div { position: relative; width: min(1100px, 100%); aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; box-shadow: 0 40px 100px -30px #000; }
+	.c3d-modal iframe { width: 100%; height: 100%; border: 0; display: block; }
+	.c3d-modal button { position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 999px; background: #fff; color: #0a0630; font-weight: 800; font-size: 18px; }
+</style>
+
+<script>
+	const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	document.querySelectorAll<HTMLElement>('[data-c3d]').forEach((root) => {
+		if (root.dataset.ready) return;
+		root.dataset.ready = '1';
+		const bg = root.classList.contains('c3d--tlo');
+		const vertical = root.classList.contains('c3d--pion');
+		const stage = root.querySelector<HTMLElement>('.c3d-stage')!;
+		const cards = Array.from(stage.querySelectorAll<HTMLElement>('.c3d-card'));
+		const N = cards.length;
+		const n = Number(root.dataset.n) || N;
+		const data = bg ? [] : JSON.parse(root.querySelector('.c3d-data')?.textContent || '[]');
+		const cat = root.querySelector<HTMLElement>('.c3d-cat');
+		const ttl = root.querySelector<HTMLAnchorElement>('.c3d-title');
+		const dots = root.querySelector<HTMLElement>('.c3d-dots');
+		let pos = 0, target = 0, drag = 0, shown = -1;
+		const mod = (a: number, m: number) => ((a % m) + m) % m;
+
+		if (dots) for (let j = 0; j < n; j++) {
+			const b = document.createElement('button');
+			b.type = 'button'; b.setAttribute('aria-label', `Pozycja ${j + 1}`);
+			b.addEventListener('click', () => toReal(j));
+			dots.appendChild(b);
+		}
+
+		const offset = (k: number, p: number) => { let d = mod(k - p, N); if (d >= N / 2) d -= N; return d; };
+		const toReal = (j: number) => {
+			let best = 0, bd = Infinity;
+			cards.forEach((c, k) => { if (Number(c.dataset.real) !== j) return; const d = offset(k, target); if (Math.abs(d) < Math.abs(bd)) { bd = d; best = k; } });
+			target = Math.round(target + bd); kick(); restart();
+		};
+
+		const render = () => {
+			const w = cards[0].offsetWidth || 200;
+			const spread = vertical ? 0.98 : 1.03;
+			const vis = Math.min((N / 2) - 1.2, (root.clientWidth / 2) / (w * spread) + 0.6);
+			const p = pos + drag;
+			cards.forEach((c, k) => {
+				const d = offset(k, p);
+				const a = Math.abs(d);
+				const x = d * w * spread + Math.sign(d) * Math.min(a, 3) * w * 0.06;
+				const z = Math.min(a, 3.2) * (vertical ? 70 : 40);
+				const ry = -Math.max(-3.2, Math.min(3.2, d)) * (vertical ? 15 : 11);
+				const op = Math.max(0, Math.min(1, (vis + 0.7 - a) / 0.7));
+				c.style.transform = `translate3d(${x.toFixed(1)}px, ${(a * (vertical ? 6 : 4)).toFixed(1)}px, ${z.toFixed(1)}px) rotateY(${ry.toFixed(2)}deg)`;
+				c.style.opacity = op.toFixed(3);
+				c.style.visibility = op <= 0.001 ? 'hidden' : 'visible';
+				c.style.zIndex = String(1000 - Math.round(a * 10));
+				c.style.setProperty('--sh', Math.min(1, a).toFixed(2));
+				c.classList.toggle('is-active', a < 0.5);
+			});
+			if (bg) return;
+			const real = Number(cards[mod(Math.round(p), N)].dataset.real);
+			if (real !== shown) {
+				shown = real;
+				const it = data[real] || {};
+				if (cat) cat.textContent = it.category || '';
+				if (ttl) { ttl.textContent = it.title || ''; ttl.href = it.href || (it.yt ? `https://youtu.be/${it.yt}` : '#'); ttl.target = it.href ? '' : '_blank'; }
+				if (dots) Array.from(dots.children).forEach((b, j) => b.classList.toggle('on', j === real));
+			}
+		};
+
+		// płynny ruch: pozycja goni cel (bez przejść CSS, więc nic nie „przeskakuje” przez scenę)
+		let raf = 0, last = 0;
+		const speed = bg ? 0.12 : 0; // karty na sekundę w trybie tła
+		const tick = (t: number) => {
+			const dt = Math.min(0.05, (t - (last || t)) / 1000); last = t;
+			if (bg) { target += speed * dt; pos = target; }
+			else pos += (target - pos) * (reduce ? 1 : Math.min(1, dt * 7));
+			render();
+			if (bg ? running : Math.abs(target - pos) > 0.0005) raf = requestAnimationFrame(tick);
+			else { pos = target; render(); raf = 0; }
+		};
+		const kick = () => { if (!raf) { last = 0; raf = requestAnimationFrame(tick); } };
+		let running = false;
+
+		if (!bg) {
+			root.querySelectorAll<HTMLButtonElement>('.c3d-btn').forEach((b) => b.addEventListener('click', () => { target = Math.round(target) + Number(b.dataset.dir); kick(); restart(); }));
+			root.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { target = Math.round(target) + (e.key === 'ArrowLeft' ? -1 : 1); kick(); restart(); } });
+			cards.forEach((c, k) => c.addEventListener('click', (e) => {
+				if (moved) { e.preventDefault(); return; }
+				const d = Math.round(offset(k, pos));
+				if (d !== 0) { e.preventDefault(); target = Math.round(pos) + d; kick(); restart(); return; }
+				const yt = c.dataset.yt;
+				if (yt && !c.getAttribute('href')) { e.preventDefault(); openYt(yt); }
+			}));
+
+			let x0 = 0, down = false, moved = false;
+			stage.addEventListener('pointerdown', (e) => { down = true; moved = false; x0 = e.clientX; stage.classList.add('is-drag'); });
+			window.addEventListener('pointermove', (e) => {
+				if (!down) return;
+				const dx = e.clientX - x0;
+				if (Math.abs(dx) > 6) moved = true;
+				drag = -dx / (cards[0].offsetWidth * 1.0);
+				render();
+			});
+			window.addEventListener('pointerup', () => {
+				if (!down) return;
+				down = false; stage.classList.remove('is-drag');
+				pos = pos + drag; target = Math.round(pos); drag = 0; kick(); restart();
+				setTimeout(() => (moved = false), 0);
+			});
+		}
+
+		let timer: number | undefined, visible = false, hover = false;
+		const auto = root.dataset.auto === '1' && !reduce;
+		const restart = () => {
+			clearInterval(timer);
+			if (bg) { const r = visible && !reduce; if (r && !running) { running = true; kick(); } else if (!r) running = false; return; }
+			if (auto && visible && !hover) timer = window.setInterval(() => { target = Math.round(target) + 1; kick(); }, 4500);
+		};
+		root.addEventListener('pointerenter', () => { hover = true; restart(); });
+		root.addEventListener('pointerleave', () => { hover = false; restart(); });
+		new IntersectionObserver(([en]) => { visible = en.isIntersecting; restart(); }, { threshold: 0.15 }).observe(root);
+		window.addEventListener('resize', render, { passive: true });
+		render();
+	});
+
+	function openYt(id: string) {
+		const m = document.createElement('div');
+		m.className = 'c3d-modal';
+		m.innerHTML = `<div><iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Wideo"></iframe><button type="button" aria-label="Zamknij">✕</button></div>`;
+		const close = () => { m.remove(); document.removeEventListener('keydown', esc); };
+		const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
+		m.addEventListener('click', (e) => { if (e.target === m || (e.target as HTMLElement).closest('button')) close(); });
+		document.addEventListener('keydown', esc);
+		document.body.appendChild(m);
+		m.querySelector('button')?.focus();
+	}
+</script>

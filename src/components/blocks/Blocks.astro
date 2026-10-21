@@ -6,6 +6,7 @@
  */
 import LayerTile from '../ui/LayerTile.astro';
 import VideoLoop from '../ui/VideoLoop.astro';
+import Carousel3D from '../ui/Carousel3D.astro';
 import { md } from '../../lib/md';
 
 interface Props { blocks?: any[]; theme?: 'light' | 'dark' }
@@ -81,6 +82,17 @@ function linePath(b: any) {
 								<button type="button" data-dir="1" aria-label="Następne">→</button>
 							</div>
 						)}
+					</figure>
+				);
+			}
+
+			case 'karuzela3d': {
+				const its = (b.items ?? []).map((x: any) => ({ img: x.image, youtube: x.youtube, title: x.title, href: x.link, logo: x.logo })).filter((x: any) => x.img || x.youtube);
+				const o = b.orientation === 'pion' ? 'pion' : 'poziom';
+				return its.length > 0 && (
+					<figure class="svc-b svc-wide">
+						<Carousel3D items={its} orientation={o} ratio={b.orientation === 'miniatury' ? '16/9' : undefined} tone={theme} label={b.caption || 'Karuzela'} />
+						{b.caption && <figcaption>{b.caption}</figcaption>}
 					</figure>
 				);
 			}
@@ -180,8 +192,11 @@ function linePath(b: any) {
 	.svc-b figcaption, .svc-slide-cap { margin-top: .6rem; font-size: 14px; color: var(--muted); text-align: center; }
 	.svc-media { display: block; width: 100%; border-radius: 16px; border: 1px solid var(--line); object-fit: cover; }
 	.svc-narrow { max-width: 560px; margin-inline: auto; width: 100%; }
+	.svc-wide { width: 100vw; margin-inline: calc(50% - 50vw); overflow: clip; padding-block: 8px; }
 	.svc-vertical { max-width: 340px; margin-inline: auto; width: 100%; }
 	.svc-text { font-size: 17px; line-height: 1.7; color: var(--muted); }
+	.svc-text p, .svc-text li { hyphens: auto; -webkit-hyphens: auto; text-wrap: pretty; }
+	@media (min-width: 560px) { .svc-text p, .svc-text li { text-align: justify; text-align-last: left; } }
 	.svc-text h2 { color: var(--fg); font-size: 28px; font-weight: 700; margin: 0 0 .75rem; letter-spacing: -.02em; }
 	.svc-text h3 { color: var(--fg); font-size: 21px; font-weight: 700; margin: 1.25rem 0 .5rem; }
 	.svc-text p { margin-bottom: 1rem; } .svc-text p:last-child { margin-bottom: 0; }

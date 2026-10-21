@@ -88,37 +88,6 @@
     "lead": "Wyniki z realnych realizacji, ze statystyk klientów. Tło porównania pochodzi z publicznych danych — bez naciągania.",
     "charts": [
       {
-        "title": "Klikalność miniatur (CTR)",
-        "sub": "Ile osób, którym YouTube pokazał miniaturę, kliknęło w film.",
-        "unit": "%",
-        "max": 24,
-        "source": "YouTube Help „Wyświetlenia i CTR” (zakres 2–10%); YouTube Studio kanału klienta.",
-        "bars": [
-          {
-            "label": "Typowy CTR na YouTube (połowa kanałów)",
-            "value": 10,
-            "from": 2,
-            "to": 10,
-            "note": "zakres podawany przez YouTube"
-          },
-          {
-            "label": "Kanał Przemysława Langiera · 1. godzina",
-            "value": 21,
-            "highlight": true
-          },
-          {
-            "label": "Kanał Przemysława Langiera · 2.–3. godzina",
-            "value": 15,
-            "highlight": true
-          },
-          {
-            "label": "Kanał Przemysława Langiera · później",
-            "value": 9,
-            "display": "ok. 9%"
-          }
-        ]
-      },
-      {
         "title": "Ile razy klient zobaczy Twoją markę",
         "sub": "Liczba gotowych materiałów z jednej produkcji.",
         "unit": "",
@@ -144,7 +113,43 @@
       }
     ],
     "deltaLine": false,
-    "align": "lewo"
+    "align": "lewo",
+    "ctr": {
+      "show": true,
+      "eyebrow": "Klikalność miniatur (CTR)",
+      "title": "Pierwsza godzina decyduje o zasięgu.",
+      "sub": "Ilu widzów, którym YouTube pokazał miniaturę, klika w film. Im więcej kliknięć na starcie, tym szerzej algorytm go rozsyła.",
+      "watermark": "Twoja przewaga nad konkurencją",
+      "unit": "%",
+      "xStart": "publikacja",
+      "xEnd": "1 godzina",
+      "base": {
+        "label": "Typowy kanał na YouTube",
+        "value": 10,
+        "display": "do 10%"
+      },
+      "ours": {
+        "label": "Kanał, z którym pracujemy",
+        "value": 21
+      },
+      "delta": "ponad 2× więcej kliknięć",
+      "source": "Typowy kanał: YouTube Help „Wyświetlenia i CTR” — połowa kanałów ma CTR 2–10%. Z nami: YouTube Studio kanału klienta, 1. godzina po publikacji.",
+      "quoteFrom": "Przemysław Langier",
+      "thumbs": [
+        {
+          "image": "/uploads/realizacje/maxresdefault.jpg"
+        },
+        {
+          "image": "/uploads/realizacje/maxresdefault (1).jpg"
+        },
+        {
+          "image": "/uploads/realizacje/maxresdefault (2).jpg"
+        },
+        {
+          "image": "/uploads/realizacje/maxresdefault (3).jpg"
+        }
+      ]
+    }
   },
   "inside": {
     "eyebrow": "Jeden klip, wiele miejsc",

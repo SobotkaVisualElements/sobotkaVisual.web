@@ -210,6 +210,47 @@
     box-shadow: var(--shadow-pop-sm);
   }
 
+  /* polska typografia: justowanie z dzieleniem wyrazów, bez wdów i sierot */
+  /* wąska kolumna (telefon): do lewej — justowanie bez miejsca na dzielenie robi „rzeki” */
+  .prose p, .prose li {
+    text-align: left;
+    hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphenate-limit-chars: 7 3 3;
+    text-wrap: pretty;
+    orphans: 2;
+    widows: 2;
+  }
+  @media (min-width: 560px) { .prose p, .prose li { text-align: justify; text-align-last: left; } }
+  .prose > p, .prose > ul, .prose > ol { max-width: 70ch; }
+  .prose h2, .prose h3 { text-wrap: balance; hyphens: manual; }
+  .prose table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1.4em;
+    font-size: .95em;
+    border: 1px solid rgba(10,6,48,.1);
+    border-radius: 16px;
+    overflow: hidden;
+    background: rgba(255,255,255,.7);
+  }
+  .prose thead th {
+    padding: .8em 1em;
+    text-align: left;
+    font-size: .72em;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(10,6,48,.55);
+    background: rgba(10,6,48,.04);
+  }
+  .prose td { padding: .85em 1em; border-top: 1px solid rgba(10,6,48,.08); vertical-align: top; line-height: 1.5; }
+  .prose td:first-child { font-weight: 600; white-space: nowrap; width: 1%; padding-right: 1.6em; }
+  .prose td strong { color: var(--color-orange-deep); font-size: 1.15em; font-variant-numeric: tabular-nums; }
+  .prose th:last-child, .prose td:last-child { text-align: left; }
+  @media (max-width: 480px) { .prose td:first-child { white-space: normal; } .prose td, .prose thead th { padding: .7em .75em; } }
+
   .prose hr {
     border: 0;
     border-top: 2px dashed var(--color-line);
