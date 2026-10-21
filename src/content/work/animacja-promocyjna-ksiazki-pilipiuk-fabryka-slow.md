@@ -1,6 +1,8 @@
 ---
 title: Animacja promocyjna książki — Pilipiuk, Fabryka Słów
-description: 'Animacja promocyjna książki „Łajdactwa zebrane” Andrzeja Pilipiuka dla wydawnictwa Fabryka Słów: motion design, animowana typografia i montaż pod social media.'
+description: "Animacja promocyjna książki „Łajdactwa zebrane” Andrzeja Pilipiuka
+  dla wydawnictwa Fabryka Słów: motion design, animowana typografia i montaż pod
+  social media."
 category: Animacja
 client: Fabryka Słów
 role: Animacja, motion design, montaż, sound design
@@ -11,7 +13,6 @@ tech:
   - Adobe Illustrator
   - Adobe After Effect
   - Adobe Premiere Pro
-cover: ''
 layers:
   - image: /uploads/realizacje/APJW_Tło.png
     depth: 10
@@ -27,10 +28,7 @@ featured: true
 order: 10
 blocks:
   - type: wideo
-    caption: ''
-    youtube: ''
     file: /uploads/realizacje/Andrzej Pilipiuk Jw _Web.mp4
-    format: '9:16'
+    format: 9:16
 ---
-
-XYZ
+XYZŹ
