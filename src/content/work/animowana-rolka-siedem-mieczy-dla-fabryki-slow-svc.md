@@ -15,12 +15,18 @@ tech:
 cover: ''
 poster: ''
 youtube: ''
-video: /uploads/realizacje/AnthonyRyan_SiedemMieczy_RolkaAnimowana_WEB.mp4
+video: ''
 layers: []
 parallaxStrength: 100
 featured: false
 order: 10
-blocks: []
+blocks:
+  - type: wideo
+    caption: ''
+    youtube: ''
+    file: /uploads/realizacje/AnthonyRyan_SiedemMieczy_RolkaAnimowana_WEB.mp4
+    format: '9:16'
+    mode: petla
 ---
 
 ## „Siedem Mieczy"
