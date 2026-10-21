@@ -23,7 +23,7 @@ layers:
   - image: /uploads/APJW_Przód.png
     depth: 70
     scale: 100
-parallaxStrength: 100
+parallaxStrength: 30
 featured: true
 order: 10
 blocks:
