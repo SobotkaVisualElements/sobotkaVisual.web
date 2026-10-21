@@ -95,11 +95,19 @@
     }
   ],
   "sections": [
+    "realizacje",
     "uslugi",
     "dlaKogo",
     "oferta",
     "opinie",
     "faq",
     "kontakt"
-  ]
+  ],
+  "realizacje": {
+    "eyebrow": "Ostatnie realizacje",
+    "title": "Zobacz, co ostatnio",
+    "titleLight": "stworzyliśmy.",
+    "lead": "Montaż, animacje i oprawa — najnowsze projekty dla marek, twórców i wydawnictw.",
+    "limit": 9
+  }
 }

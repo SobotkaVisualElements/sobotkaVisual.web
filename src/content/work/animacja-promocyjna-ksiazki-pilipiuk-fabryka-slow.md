@@ -5,6 +5,7 @@ category: Animacja
 client: Fabryka Słów
 role: Animacja, motion design, montaż, sound design
 year: 2026
+date: 2026-10-19
 tech:
   - Adobe Photoshop
   - Adobe Illustrator

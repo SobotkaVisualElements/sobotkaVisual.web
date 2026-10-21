@@ -5,13 +5,15 @@ export type Project = CollectionEntry<'work'>;
 
 /**
  * 公開プロジェクトを表示順で返す。
- * order 昇順 → 同値なら year 降順。draft は本番ビルドでのみ除外。
+ * Od najnowszych (data → rok), przy remisie wg pola „Kolejność”. Szkice ukryte w buildzie.
  */
 export async function getPublishedProjects(): Promise<Project[]> {
 	const projects = await getCollection('work', ({ data }) =>
 		import.meta.env.PROD ? !data.draft : true,
 	);
-	return projects.sort((a, b) => a.data.order - b.data.order || b.data.year - a.data.year);
+	// Najnowsze na górze: data realizacji (a gdy jej brak — rok), potem pole „Kolejność”
+	const t = (p: Project) => (p.data.date ? new Date(p.data.date).getTime() : new Date(p.data.year, 0, 1).getTime());
+	return projects.sort((a, b) => t(b) - t(a) || a.data.order - b.data.order);
 }
 
 export interface CategoryInfo {

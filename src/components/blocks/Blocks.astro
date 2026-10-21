@@ -5,6 +5,7 @@
  * theme="light" dla case studies (jasne tło), "dark" dla podstron (ciemne tło).
  */
 import LayerTile from '../ui/LayerTile.astro';
+import VideoLoop from '../ui/VideoLoop.astro';
 import { md } from '../../lib/md';
 
 interface Props { blocks?: any[]; theme?: 'light' | 'dark' }
@@ -89,13 +90,17 @@ function linePath(b: any) {
 				const vert = b.format === '9:16';
 				return (id || b.file) && (
 					<figure class:list={['svc-b', vert && 'svc-vertical']}>
-						{id ? (
-							<button type="button" class:list={['svc-yt svc-media', vert ? 'aspect-[9/16]' : 'aspect-video']} data-yt={id} aria-label={`Odtwórz: ${b.caption || 'wideo'}`}>
-								<img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="lazy" />
-								<span class="svc-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg></span>
-							</button>
+						{b.mode === 'zwykly' ? (
+							id ? (
+								<button type="button" class:list={['svc-yt svc-media', vert ? 'aspect-[9/16]' : 'aspect-video']} data-yt={id} aria-label={`Odtwórz: ${b.caption || 'wideo'}`}>
+									<img src={`https://i.ytimg.com/vi/${id}/hqdefault.jpg`} alt="" loading="lazy" />
+									<span class="svc-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg></span>
+								</button>
+							) : (
+								<video src={b.file} controls controlslist="nodownload" preload="metadata" playsinline class:list={['svc-media', vert ? 'aspect-[9/16]' : 'aspect-video']} />
+							)
 						) : (
-							<video src={b.file} controls preload="metadata" playsinline class:list={['svc-media', vert ? 'aspect-[9/16]' : 'aspect-video']} />
+							<VideoLoop youtube={b.youtube} file={b.file} ratio={vert ? '9:16' : '16:9'} title={b.caption || 'Wideo'} class="svc-media rounded-[16px]" />
 						)}
 						{b.caption && <figcaption>{b.caption}</figcaption>}
 					</figure>

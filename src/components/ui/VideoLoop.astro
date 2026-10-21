@@ -1,0 +1,95 @@
+---
+/*
+ * Odtwarzacz w pętli: YouTube albo własny MP4.
+ *  - autostart bez dźwięku, zapętlony, bez kontrolek i bez menu „Pobierz”
+ *  - jedyna interakcja: nasz przycisk dźwięku (animowana ikona SVG)
+ * Uwaga: żadna strona nie zablokuje pobrania w 100% — ale zwykły użytkownik nie ma tu przycisku ani menu.
+ */
+interface Props { youtube?: string; file?: string; poster?: string; ratio?: '16:9' | '9:16' | '16:10'; title?: string; class?: string; eager?: boolean }
+const { youtube = '', file = '', poster, ratio = '16:9', title = 'Wideo', class: cls = '', eager = false } = Astro.props;
+const m = youtube.match(/(?:youtu\.be\/|v=|shorts\/|embed\/|live\/)([\w-]{11})/);
+const id = m ? m[1] : '';
+const ar = ratio === '9:16' ? 'aspect-[9/16]' : ratio === '16:10' ? 'aspect-[16/10]' : 'aspect-video';
+const src = id
+	? `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&playsinline=1&rel=0&enablejsapi=1`
+	: '';
+---
+{(id || file) && (
+	<div class:list={['svc-vl relative overflow-hidden bg-black', ar, cls]} data-vl={id ? 'yt' : 'file'}>
+		{id ? (
+			<iframe src={src} title={title} allow="autoplay; encrypted-media; picture-in-picture" loading={eager ? 'eager' : 'lazy'}
+				class="svc-vl-yt pointer-events-none absolute top-1/2 left-1/2 h-[calc(100%+120px)] w-[calc(100%+2px)] -translate-x-1/2 -translate-y-1/2 border-0"
+				tabindex="-1" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+		) : (
+			<video src={file} poster={poster} autoplay muted loop playsinline preload={eager ? 'auto' : 'metadata'}
+				disablepictureinpicture disableremoteplayback controlslist="nodownload noplaybackrate noremoteplayback nofullscreen"
+				class="pointer-events-none absolute inset-0 h-full w-full object-cover" aria-label={title}></video>
+		)}
+		<!-- warstwa blokująca kliknięcia w odtwarzacz i menu prawego przycisku -->
+		<span class="absolute inset-0 z-[1]" aria-hidden="true"></span>
+		<button type="button" class="svc-mute" aria-label="Włącz dźwięk" aria-pressed="false">
+			<svg viewBox="0 0 32 32" aria-hidden="true">
+				<path class="spk" d="M5 12.5h4.2L15 7.5v17l-5.8-5H5z" />
+				<g class="waves"><path class="w1" d="M19 12.3a5 5 0 0 1 0 7.4" /><path class="w2" d="M22.2 9.2a9.4 9.4 0 0 1 0 13.6" /></g>
+				<g class="cross"><path d="M19.5 12.5l7 7" /><path d="M26.5 12.5l-7 7" /></g>
+			</svg>
+			<span class="svc-mute-label">Dźwięk</span>
+		</button>
+	</div>
+)}
+
+<style is:global>
+	.svc-vl { border-radius: inherit; isolation: isolate; }
+	.svc-vl video::-internal-media-controls-download-button { display: none; }
+	.svc-mute { position: absolute; z-index: 2; right: 14px; bottom: 14px; display: inline-flex; align-items: center; gap: .5rem; height: 44px; padding: 0 14px 0 10px; border-radius: 999px;
+		background: rgba(10,6,48,.55); border: 1px solid rgba(255,255,255,.22); color: #fff; font: 700 13px/1 var(--font-display); letter-spacing: .02em;
+		backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); cursor: pointer; transition: background .25s, border-color .25s, transform .2s, padding .3s; }
+	.svc-mute:hover { background: rgba(237,36,78,.85); border-color: transparent; transform: translateY(-1px); }
+	.svc-mute svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+	.svc-mute .spk { fill: currentColor; stroke-width: 1.4; }
+	.svc-mute .waves path { stroke-dasharray: 14; stroke-dashoffset: 14; transition: stroke-dashoffset .35s ease; }
+	.svc-mute .cross path { stroke-dasharray: 10; stroke-dashoffset: 0; transition: stroke-dashoffset .3s ease; }
+	/* wyciszony: krzyżyk + delikatny „oddech” zachęcający do kliknięcia */
+	.svc-mute[aria-pressed='false'] { animation: svc-mute-breath 2.4s ease-in-out infinite; }
+	@keyframes svc-mute-breath { 0%,100% { box-shadow: 0 0 0 0 rgba(237,36,78,.0); } 50% { box-shadow: 0 0 0 6px rgba(237,36,78,.28); } }
+	/* dźwięk włączony: fale rysują się i pulsują, krzyżyk znika */
+	.svc-mute[aria-pressed='true'] .cross path { stroke-dashoffset: 10; }
+	.svc-mute[aria-pressed='true'] .waves path { stroke-dashoffset: 0; }
+	.svc-mute[aria-pressed='true'] .w1 { animation: svc-wave 1.2s .35s ease-in-out infinite; }
+	.svc-mute[aria-pressed='true'] .w2 { animation: svc-wave 1.2s .55s ease-in-out infinite; }
+	@keyframes svc-wave { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+	.svc-mute[aria-pressed='true'] .svc-mute-label { display: none; }
+	.svc-mute[aria-pressed='true'] { padding: 0 9px; }
+	@media (max-width: 640px) { .svc-mute-label { display: none; } .svc-mute { padding: 0 9px; } }
+	@media (prefers-reduced-motion: reduce) { .svc-mute, .svc-mute * { animation: none !important; } }
+</style>
+
+<script>
+	const yt = (f: HTMLIFrameElement, func: string, args: unknown[] = []) =>
+		f.contentWindow?.postMessage(JSON.stringify({ event: 'command', func, args }), '*');
+
+	document.querySelectorAll<HTMLElement>('.svc-vl').forEach((box) => {
+		if ((box as any)._vl) return;
+		(box as any)._vl = true;
+		box.addEventListener('contextmenu', (e) => e.preventDefault());
+		const btn = box.querySelector<HTMLButtonElement>('.svc-mute')!;
+		const video = box.querySelector<HTMLVideoElement>('video');
+		const frame = box.querySelector<HTMLIFrameElement>('iframe');
+		let on = false;
+		btn.addEventListener('click', () => {
+			// wycisz pozostałe filmy na stronie, zanim ten zagra z dźwiękiem
+			if (!on) document.querySelectorAll<HTMLButtonElement>('.svc-mute[aria-pressed="true"]').forEach((b) => b !== btn && b.click());
+			on = !on;
+			btn.setAttribute('aria-pressed', String(on));
+			btn.setAttribute('aria-label', on ? 'Wycisz' : 'Włącz dźwięk');
+			if (video) { video.muted = !on; if (on) { video.volume = 1; video.play().catch(() => {}); } }
+			if (frame) { yt(frame, on ? 'unMute' : 'mute'); if (on) { yt(frame, 'setVolume', [100]); yt(frame, 'playVideo'); } }
+		});
+		// tylko jeden film gra z dźwiękiem naraz, a poza ekranem pauza (oszczędza baterię)
+		const io = new IntersectionObserver(([en]) => {
+			if (video) en.isIntersecting ? video.play().catch(() => {}) : video.pause();
+			if (frame) yt(frame, en.isIntersecting ? 'playVideo' : 'pauseVideo');
+		}, { threshold: 0.15 });
+		io.observe(box);
+	});
+</script>

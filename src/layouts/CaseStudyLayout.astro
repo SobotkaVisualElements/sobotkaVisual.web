@@ -3,6 +3,7 @@ import BaseLayout from './BaseLayout.astro';
 import type { Project } from '../lib/projects';
 import Blocks from '../components/blocks/Blocks.astro';
 import LayerTile from '../components/ui/LayerTile.astro';
+import VideoLoop from '../components/ui/VideoLoop.astro';
 
 interface Props {
 	project: Project;
@@ -41,7 +42,13 @@ const facts = [
 					{title}
 				</h1>
 				<p class="mt-4 max-w-[640px] text-lg text-ink/70">{description}</p>
-				{((project.data as any).layers?.some((l: any) => l?.image) || cover) && (
+				{((project.data as any).youtube || (project.data as any).video) ? (
+					<div class="liquid-card liquid-light mt-8 rounded-[24px] p-3">
+						<div class="overflow-hidden rounded-[16px]">
+							<VideoLoop youtube={(project.data as any).youtube} file={(project.data as any).video} poster={cover} title={title} eager />
+						</div>
+					</div>
+				) : ((project.data as any).layers?.some((l: any) => l?.image) || cover) && (
 					<div class="liquid-card liquid-light mt-8 rounded-[24px] p-3">
 						<div class="overflow-hidden rounded-[16px]">
 							<LayerTile layers={(project.data as any).layers} image={cover} strength={(project.data as any).parallaxStrength ?? 100} focalX={coverFocalX} focalY={coverFocalY} alt={title} placeholder="light" eager />

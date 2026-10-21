@@ -5,6 +5,11 @@ backend:
   base_url: https://sobotkavisual.pl
   auth_endpoint: oauth
 
+slug:
+  encoding: "ascii"
+  clean_accents: true
+  sanitize_replacement: "-"
+
 media_folder: "public/uploads"
 public_folder: "/uploads"
 locale: pl
@@ -25,8 +30,12 @@ collections:
       - { name: client, label: "Klient", widget: string, required: false }
       - { name: role, label: "Rola / zakres", widget: string, required: false }
       - { name: year, label: "Rok", widget: number, value_type: int, default: 2026 }
+      - { name: date, label: "Data realizacji", widget: datetime, time_format: false, date_format: "DD.MM.YYYY", format: "YYYY-MM-DD", required: false, hint: "Najnowsze realizacje pokazują się na górze listy i w karuzeli na głównej." }
       - { name: tech, label: "Narzędzia", widget: list, required: false }
-      - { name: cover, label: "Zdjęcie główne (1920×1200)", widget: image, required: false, hint: "Używane, gdy nie dodasz warstw parallaksy." }
+      - { name: cover, label: "Baner 1920×1200 (kafelek i nagłówek)", widget: image, required: false, hint: "Poziomy baner 16:10. Używany na kafelkach i w nagłówku realizacji, gdy nie ma filmu ani warstw." }
+      - { name: poster, label: "Okładka pionowa 1200×1920 (karuzela na głównej)", widget: image, required: false, hint: "Pion 10:16. Bez niej karuzela przytnie baner." }
+      - { name: youtube, label: "Film YouTube w nagłówku (zamiast baneru)", widget: string, required: false, hint: "Link do Twojego filmu. Gra w pętli, bez dźwięku, z przyciskiem włączania dźwięku." }
+      - { name: video, label: "albo własny plik MP4 w nagłówku", widget: file, required: false, hint: "Do ok. 20 MB. Pętla bez kontrolek, z przyciskiem dźwięku." }
       - name: layers
         label: "Warstwy parallaksy (do 3)"
         label_singular: Warstwa
@@ -41,7 +50,7 @@ collections:
           - { name: scale, label: "Skala (%)", widget: number, value_type: int, default: 112, min: 100, max: 160, hint: "Zapas na ruch, żeby nie było widać krawędzi. Im większa głębia, tym większa skala." }
       - { name: parallaxStrength, label: "Siła parallaksy całego kafelka (%)", widget: number, value_type: int, default: 100, min: 0, max: 200, required: false, hint: "0 = brak ruchu, 100 = standard, 200 = mocno" }
       - { name: featured, label: "Wyróżniona", widget: boolean, default: false }
-      - { name: order, label: "Kolejność", widget: number, value_type: int, default: 10 }
+      - { name: order, label: "Kolejność (gdy ta sama data)", widget: number, value_type: int, default: 10, hint: "Liczy się tylko przy realizacjach z tą samą datą: mniejsza liczba = wyżej." }
       - { name: body, label: "Treść", widget: markdown }
       - name: blocks
         label: "Klocki treści (+)"
@@ -84,6 +93,7 @@ collections:
               - { name: youtube, label: "Link YouTube", widget: string, required: false, hint: "Zwykły link do filmu lub shorta. Ładuje się dopiero po kliknięciu — strona zostaje szybka." }
               - { name: file, label: "albo plik MP4", widget: file, required: false }
               - { name: format, label: "Format", widget: select, default: "16:9", options: ["16:9", "9:16"] }
+              - { name: mode, label: "Tryb", widget: select, default: petla, options: [{ label: "Pętla bez kontrolek + przycisk dźwięku", value: petla }, { label: "Zwykły odtwarzacz (dla długich filmów)", value: zwykly }] }
               - { name: caption, label: "Podpis", widget: string, required: false }
           - name: parallaksa
             label: "Kafelek z parallaksą"
@@ -232,291 +242,305 @@ collections:
         file: "src/data/home.json"
         description: "Hero zawsze jest na górze. Przeciągnij sekcje, aby zmienić kolejność. Usunięta sekcja znika ze strony (możesz ją dodać z powrotem)."
         fields:
+          - name: realizacje
+            label: "Karuzela „Ostatnie realizacje”"
+            widget: object
+            fields:
+              - { name: eyebrow, label: "Nadtytuł", widget: string }
+              - { name: title, label: "Tytuł — część pogrubiona", widget: string }
+              - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
+              - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
+              - { name: limit, label: "Ile realizacji pokazać", widget: number, value_type: int, default: 9, min: 3, max: 20 }
           - name: sections
             label: "Sekcje pod Hero"
             label_singular: Sekcja
             widget: list
-            field: { name: section, label: "Sekcja", widget: select, options: [{ label: "Usługi — Wszystko, czego potrzebują Twoje media", value: uslugi }, { label: "Dla kogo", value: dlaKogo }, { label: "Oferta — pakiety", value: oferta }, { label: "Opinie", value: opinie }, { label: "FAQ — pytania", value: faq }, { label: "Kontakt — końcowe wezwanie", value: kontakt }] }
+            field: { name: section, label: "Sekcja", widget: select, options: [{ label: "Ostatnie realizacje — karuzela", value: realizacje }, { label: "Usługi — Wszystko, czego potrzebują Twoje media", value: uslugi }, { label: "Dla kogo", value: dlaKogo }, { label: "Oferta — pakiety", value: oferta }, { label: "Opinie", value: opinie }, { label: "FAQ — pytania", value: faq }, { label: "Kontakt — końcowe wezwanie", value: kontakt }] }
 
   - name: landingi
     label: "Landingi ofert"
-    description: "Strony /oferta/… — edytujesz każdy tekst, łamanie linii (Enter) i wyrównanie sekcji. Enter = nowa linia. **tekst** = pogrubienie. Krótkie słowa (i, w, z…) same nie zostaną na końcu linii."
-    files:
-      - name: dzial-wideo
-        label: "Dział wideo (Pakiet PRO) — /oferta/dzial-wideo"
-        file: "src/data/oferty/dzial-wideo.json"
-        fields: &oferta
-          - { name: name, label: "Nazwa (w linkach „Zobacz też”)", widget: string }
-          - { name: order, label: "Kolejność", widget: number, value_type: int, default: 1 }
-          - { name: seoTitle, label: "Tytuł dla Google", widget: string, hint: "Do 60 znaków" }
-          - { name: seoDesc, label: "Opis dla Google", widget: text, hint: "120–160 znaków" }
-          - { name: service, label: "Nazwa usługi (dane dla Google)", widget: string }
-          - { name: pdf, label: "Plik PDF oferty", widget: file, required: false }
-          - { name: pkg, label: "Pakiet w generatorze", widget: select, default: pro, options: [start, pro, studio, none] }
-          - name: hero
-            label: "1. Pierwszy ekran"
-            widget: object
+    label_singular: "Landing"
+    folder: "src/data/oferty"
+    extension: json
+    format: json
+    create: true
+    identifier_field: name
+    slug: "{{slug}}"
+    summary: "{{name}}"
+    media_folder: "/public/uploads/oferty"
+    public_folder: "/uploads/oferty"
+    description: "Strony /oferta/<adres>. Nowy landing: otwórz istniejący → menu „…” → Duplikuj, zmień nazwę i treść. Adres powstaje z nazwy przy pierwszym zapisie. Enter = nowa linia, **tekst** = pogrubienie."
+    fields:
+      - { name: name, label: "Nazwa (w linkach „Zobacz też”)", widget: string }
+      - { name: draft, label: "Szkic (strona nie istnieje)", widget: boolean, default: false, required: false }
+      - { name: noindex, label: "Ukryj przed Google (tylko z linku)", widget: boolean, default: false, required: false, hint: "Dla ofert prywatnych i sezonowych wysyłanych mailem." }
+      - { name: order, label: "Kolejność", widget: number, value_type: int, default: 1 }
+      - { name: seoTitle, label: "Tytuł dla Google", widget: string, hint: "Do 60 znaków" }
+      - { name: seoDesc, label: "Opis dla Google", widget: text, hint: "120–160 znaków" }
+      - { name: service, label: "Nazwa usługi (dane dla Google)", widget: string }
+      - { name: pdf, label: "Plik PDF oferty", widget: file, required: false }
+      - { name: pkg, label: "Pakiet w generatorze", widget: select, default: pro, options: [start, pro, studio, none] }
+      - name: hero
+        label: "1. Pierwszy ekran"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Nagłówek — linia cienka", widget: string, required: false }
+          - { name: titleBold, label: "Nagłówek — linia gruba", widget: string, required: false }
+          - { name: lead, label: "Zdanie pod nagłówkiem", widget: text, required: false, hint: "Enter = nowa linia. **tekst** = pogrubienie. Krótkie słowa (i, w, z…) same nie zostaną na końcu linii." }
+          - { name: bgImage, label: "Tło — własny obraz (zamiast wideo)", widget: image, required: false }
+          - { name: bgVideo, label: "Tło — własne wideo MP4", widget: file, required: false }
+          - { name: bgOpacity, label: "Widoczność tła (%)", widget: number, value_type: int, default: 20, min: 5, max: 80, required: false }
+          - { name: sideImage, label: "Obraz obok nagłówka (zamiast karty z ceną)", widget: image, required: false }
+          - { name: sideAlt, label: "Opis obrazu (alt)", widget: string, required: false }
+          - { name: thumbs, label: "Pokaż miniatury zamiast karty z ceną", widget: boolean, default: false, required: false }
+          - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
+      - name: intro
+        label: "2. Zanim zaczniemy"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
+          - { name: text, label: "Treść", widget: text, required: false, hint: "Pusta linia = nowy akapit. Enter = nowa linia w akapicie." }
+          - { name: signature, label: "Podpis", widget: string, required: false }
+          - { name: signatureRole, label: "Podpis — rola", widget: string, required: false }
+          - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
+      - name: become
+        label: "3. Kim się stajesz"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
+          - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
+          - name: items
+            label: "Karty"
+            label_singular: Karta
+            widget: list
+            summary: "{{fields.t}}"
             fields:
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Nagłówek — linia cienka", widget: string, required: false }
-              - { name: titleBold, label: "Nagłówek — linia gruba", widget: string, required: false }
-              - { name: lead, label: "Zdanie pod nagłówkiem", widget: text, required: false, hint: "Enter = nowa linia. **tekst** = pogrubienie. Krótkie słowa (i, w, z…) same nie zostaną na końcu linii." }
-              - { name: thumbs, label: "Pokaż miniatury zamiast karty z ceną", widget: boolean, default: false, required: false }
-              - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
-          - name: intro
-            label: "2. Zanim zaczniemy"
-            widget: object
+              - { name: t, label: "Tytuł", widget: string, required: false }
+              - { name: d, label: "Opis", widget: text, required: false }
+          - { name: punch, label: "Zdanie na końcu", widget: text, required: false }
+          - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
+      - name: stats
+        label: "4. Liczby rynku"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
+          - { name: note, label: "Dopisek z boku", widget: text, required: false }
+          - name: items
+            label: "Liczby"
+            label_singular: Liczba
+            widget: list
+            summary: "{{fields.v}}{{fields.suf}}"
             fields:
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
-              - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
-              - { name: text, label: "Treść", widget: text, required: false, hint: "Pusta linia = nowy akapit. Enter = nowa linia w akapicie." }
-              - { name: signature, label: "Podpis", widget: string, required: false }
-              - { name: signatureRole, label: "Podpis — rola", widget: string, required: false }
-              - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
-          - name: become
-            label: "3. Kim się stajesz"
-            widget: object
+              - { name: v, label: "Wartość", widget: number, value_type: float }
+              - { name: suf, label: "Po liczbie (%, mln…)", widget: string, required: false }
+              - { name: d, label: "Opis", widget: text, required: false }
+              - { name: src, label: "Źródło", widget: string, required: false }
+      - name: proof
+        label: "5. Wyniki — wykresy"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
+          - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
+          - name: charts
+            label: "Wykresy porównawcze"
+            label_singular: Wykres
+            widget: list
+            summary: "{{fields.title}}"
             fields:
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
-              - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
-              - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
-              - name: items
-                label: "Karty"
-                label_singular: Karta
+              - { name: title, label: "Tytuł wykresu", widget: string, required: false }
+              - { name: sub, label: "Podtytuł", widget: string, required: false }
+              - { name: unit, label: "Jednostka (np. %)", widget: string, required: false }
+              - { name: max, label: "Skala — maksimum", widget: number, value_type: float, required: false, hint: "Puste = automatycznie" }
+              - { name: source, label: "Źródło danych", widget: string, required: false }
+              - name: bars
+                label: "Słupki"
+                label_singular: Słupek
                 widget: list
-                summary: "{{fields.t}}"
+                summary: "{{fields.label}}: {{fields.value}}"
                 fields:
-                  - { name: t, label: "Tytuł", widget: string, required: false }
-                  - { name: d, label: "Opis", widget: text, required: false }
-              - { name: punch, label: "Zdanie na końcu", widget: text, required: false }
-              - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
-          - name: stats
-            label: "4. Liczby rynku"
-            widget: object
+                  - { name: label, label: "Etykieta", widget: string, required: false }
+                  - { name: value, label: "Wartość", widget: number, value_type: float }
+                  - { name: highlight, label: "Nasz wynik (wyróżniony kolorem)", widget: boolean, default: false, required: false }
+                  - { name: from, label: "Zakres od (opcjonalnie)", widget: number, value_type: float, required: false }
+                  - { name: to, label: "Zakres do (opcjonalnie)", widget: number, value_type: float, required: false }
+                  - { name: display, label: "Własny napis zamiast liczby", widget: string, required: false }
+                  - { name: note, label: "Dopisek pod słupkiem", widget: string, required: false }
+          - { name: deltaLine, label: "Pokaż wykres 150+ rolek Delta HR", widget: boolean, default: false, required: false }
+          - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
+      - name: inside
+        label: "6. Co w środku"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
+          - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
+          - name: items
+            label: "Elementy"
+            label_singular: Element
+            widget: list
+            summary: "{{fields.n}} {{fields.t}}"
             fields:
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
-              - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
-              - { name: note, label: "Dopisek z boku", widget: text, required: false }
-              - name: items
-                label: "Liczby"
-                label_singular: Liczba
-                widget: list
-                summary: "{{fields.v}}{{fields.suf}}"
-                fields:
-                  - { name: v, label: "Wartość", widget: number, value_type: float }
-                  - { name: suf, label: "Po liczbie (%, mln…)", widget: string, required: false }
-                  - { name: d, label: "Opis", widget: text, required: false }
-                  - { name: src, label: "Źródło", widget: string, required: false }
-          - name: proof
-            label: "5. Wyniki — wykresy"
-            widget: object
+              - { name: n, label: "Liczba / numer", widget: string, required: false }
+              - { name: t, label: "Tytuł", widget: string, required: false }
+              - { name: d, label: "Opis", widget: text, required: false }
+          - { name: cardEyebrow, label: "Karta klipu — nadtytuł (tylko kampania)", widget: string, required: false }
+          - { name: cardTitle, label: "Karta klipu — tytuł", widget: string, required: false }
+          - { name: cardTitleLight, label: "Karta klipu — tytuł jasny", widget: string, required: false }
+          - { name: cardText, label: "Karta klipu — opis", widget: text, required: false }
+          - { name: listEyebrow, label: "Nadtytuł listy", widget: string, required: false }
+          - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
+      - name: special
+        label: "7. Sekcja specjalna (rytm / anatomia / algorytm)"
+        widget: object
+        fields:
+          - { name: kind, label: "Rodzaj", widget: select, required: false, options: [{ label: "Brak", value: "" }, { label: "Rytm miesiąca (tabela)", value: rytm }, { label: "Anatomia klipu (oś czasu)", value: anatomia }, { label: "Algorytm (lejek)", value: algorytm }] }
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
+          - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
+          - name: table
+            label: "Tabela tygodni (rytm)"
+            widget: list
+            required: false
+            summary: "{{fields.label}}"
             fields:
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
-              - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
-              - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
-              - name: charts
-                label: "Wykresy porównawcze"
-                label_singular: Wykres
-                widget: list
-                summary: "{{fields.title}}"
-                fields:
-                  - { name: title, label: "Tytuł wykresu", widget: string, required: false }
-                  - { name: sub, label: "Podtytuł", widget: string, required: false }
-                  - { name: unit, label: "Jednostka (np. %)", widget: string, required: false }
-                  - { name: max, label: "Skala — maksimum", widget: number, value_type: float, required: false, hint: "Puste = automatycznie" }
-                  - { name: source, label: "Źródło danych", widget: string, required: false }
-                  - name: bars
-                    label: "Słupki"
-                    label_singular: Słupek
-                    widget: list
-                    summary: "{{fields.label}}: {{fields.value}}"
-                    fields:
-                      - { name: label, label: "Etykieta", widget: string, required: false }
-                      - { name: value, label: "Wartość", widget: number, value_type: float }
-                      - { name: highlight, label: "Nasz wynik (wyróżniony kolorem)", widget: boolean, default: false, required: false }
-                      - { name: from, label: "Zakres od (opcjonalnie)", widget: number, value_type: float, required: false }
-                      - { name: to, label: "Zakres do (opcjonalnie)", widget: number, value_type: float, required: false }
-                      - { name: display, label: "Własny napis zamiast liczby", widget: string, required: false }
-                      - { name: note, label: "Dopisek pod słupkiem", widget: string, required: false }
-              - { name: deltaLine, label: "Pokaż wykres 150+ rolek Delta HR", widget: boolean, default: false, required: false }
-              - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
-          - name: inside
-            label: "6. Co w środku"
-            widget: object
+              - { name: label, label: "Wiersz", widget: string, required: false }
+              - { name: w1, label: "Tydz. 1", widget: string, required: false }
+              - { name: w2, label: "Tydz. 2", widget: string, required: false }
+              - { name: w3, label: "Tydz. 3", widget: string, required: false }
+              - { name: w4, label: "Tydz. 4", widget: string, required: false }
+          - name: timeline
+            label: "Oś czasu (anatomia)"
+            widget: list
+            required: false
+            summary: "{{fields.time}} {{fields.label}}"
             fields:
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
-              - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
-              - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
-              - name: items
-                label: "Elementy"
-                label_singular: Element
-                widget: list
-                summary: "{{fields.n}} {{fields.t}}"
-                fields:
-                  - { name: n, label: "Liczba / numer", widget: string, required: false }
-                  - { name: t, label: "Tytuł", widget: string, required: false }
-                  - { name: d, label: "Opis", widget: text, required: false }
-              - { name: cardEyebrow, label: "Karta klipu — nadtytuł (tylko kampania)", widget: string, required: false }
-              - { name: cardTitle, label: "Karta klipu — tytuł", widget: string, required: false }
-              - { name: cardTitleLight, label: "Karta klipu — tytuł jasny", widget: string, required: false }
-              - { name: cardText, label: "Karta klipu — opis", widget: text, required: false }
-              - { name: listEyebrow, label: "Nadtytuł listy", widget: string, required: false }
-              - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
-          - name: special
-            label: "7. Sekcja specjalna (rytm / anatomia / algorytm)"
-            widget: object
+              - { name: sec, label: "Długość (sekundy)", widget: number, value_type: float }
+              - { name: time, label: "Czas (np. 0–3 s)", widget: string, required: false }
+              - { name: label, label: "Nazwa", widget: string, required: false }
+              - { name: desc, label: "Opis", widget: text, required: false }
+              - { name: highlight, label: "Wyróżnij", widget: boolean, default: false, required: false }
+          - name: steps
+            label: "Kroki lejka (algorytm)"
+            widget: list
+            required: false
             fields:
-              - { name: kind, label: "Rodzaj", widget: select, options: [{ label: "Rytm miesiąca (tabela)", value: rytm }, { label: "Anatomia klipu (oś czasu)", value: anatomia }, { label: "Algorytm (lejek)", value: algorytm }] }
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
-              - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
-              - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
-              - name: table
-                label: "Tabela tygodni (rytm)"
-                widget: list
-                required: false
-                summary: "{{fields.label}}"
-                fields:
-                  - { name: label, label: "Wiersz", widget: string, required: false }
-                  - { name: w1, label: "Tydz. 1", widget: string, required: false }
-                  - { name: w2, label: "Tydz. 2", widget: string, required: false }
-                  - { name: w3, label: "Tydz. 3", widget: string, required: false }
-                  - { name: w4, label: "Tydz. 4", widget: string, required: false }
-              - name: timeline
-                label: "Oś czasu (anatomia)"
-                widget: list
-                required: false
-                summary: "{{fields.time}} {{fields.label}}"
-                fields:
-                  - { name: sec, label: "Długość (sekundy)", widget: number, value_type: float }
-                  - { name: time, label: "Czas (np. 0–3 s)", widget: string, required: false }
-                  - { name: label, label: "Nazwa", widget: string, required: false }
-                  - { name: desc, label: "Opis", widget: text, required: false }
-                  - { name: highlight, label: "Wyróżnij", widget: boolean, default: false, required: false }
-              - name: steps
-                label: "Kroki lejka (algorytm)"
-                widget: list
-                required: false
-                fields:
-                  - { name: t, label: "Krok", widget: string, required: false }
-                  - { name: d, label: "Opis", widget: string, required: false }
-              - name: cards
-                label: "Karty"
-                widget: list
-                required: false
-                summary: "{{fields.t}}"
-                fields:
-                  - { name: k, label: "Etykieta (np. Krok 1) — pusta = karta bez ramki", widget: string, required: false }
-                  - { name: t, label: "Tytuł", widget: string, required: false }
-                  - { name: d, label: "Opis", widget: text, required: false }
-              - { name: title2, label: "Drugi tytuł — pogrubiony", widget: string, required: false }
-              - { name: title2Light, label: "Drugi tytuł — jasny", widget: string, required: false }
-              - name: cards2
-                label: "Karty pod drugim tytułem"
-                widget: list
-                required: false
-                summary: "{{fields.t}}"
-                fields:
-                  - { name: k, label: "Etykieta", widget: string, required: false }
-                  - { name: t, label: "Tytuł", widget: string, required: false }
-                  - { name: d, label: "Opis", widget: text, required: false }
-              - { name: note, label: "Dopisek na końcu", widget: text, required: false }
-              - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
-          - name: opinie
-            label: "8. Opinie — nagłówek"
-            widget: object
+              - { name: t, label: "Krok", widget: string, required: false }
+              - { name: d, label: "Opis", widget: string, required: false }
+          - name: cards
+            label: "Karty"
+            widget: list
+            required: false
+            summary: "{{fields.t}}"
             fields:
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
-              - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
-          - name: projects
-            label: "9. Realizacje"
-            widget: object
+              - { name: k, label: "Etykieta (np. Krok 1) — pusta = karta bez ramki", widget: string, required: false }
+              - { name: t, label: "Tytuł", widget: string, required: false }
+              - { name: d, label: "Opis", widget: text, required: false }
+          - { name: title2, label: "Drugi tytuł — pogrubiony", widget: string, required: false }
+          - { name: title2Light, label: "Drugi tytuł — jasny", widget: string, required: false }
+          - name: cards2
+            label: "Karty pod drugim tytułem"
+            widget: list
+            required: false
+            summary: "{{fields.t}}"
             fields:
-              - { name: show, label: "Pokaż realizacje", widget: boolean, default: true }
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
-              - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
-          - name: faq
-            label: "10. Pytania"
-            widget: object
+              - { name: k, label: "Etykieta", widget: string, required: false }
+              - { name: t, label: "Tytuł", widget: string, required: false }
+              - { name: d, label: "Opis", widget: text, required: false }
+          - { name: note, label: "Dopisek na końcu", widget: text, required: false }
+          - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
+      - name: opinie
+        label: "8. Opinie — nagłówek"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
+      - name: projects
+        label: "9. Realizacje"
+        widget: object
+        fields:
+          - { name: show, label: "Pokaż realizacje", widget: boolean, default: true }
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
+      - name: faq
+        label: "10. Pytania"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
+          - name: items
+            label: "Pytania"
+            label_singular: Pytanie
+            widget: list
+            summary: "{{fields.q}}"
             fields:
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
-              - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
-              - name: items
-                label: "Pytania"
-                label_singular: Pytanie
-                widget: list
-                summary: "{{fields.q}}"
-                fields:
-                  - { name: q, label: "Pytanie", widget: string, required: false }
-                  - { name: a, label: "Odpowiedź", widget: text, required: false }
-              - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
-          - name: doubts
-            label: "11. Wątpliwości"
-            widget: object
+              - { name: q, label: "Pytanie", widget: string, required: false }
+              - { name: a, label: "Odpowiedź", widget: text, required: false }
+          - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
+      - name: doubts
+        label: "11. Wątpliwości"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
+          - name: items
+            label: "Wątpliwości"
+            label_singular: Wątpliwość
+            widget: list
+            summary: "{{fields.q}}"
             fields:
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
-              - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
-              - name: items
-                label: "Wątpliwości"
-                label_singular: Wątpliwość
-                widget: list
-                summary: "{{fields.q}}"
-                fields:
-                  - { name: q, label: "Wątpliwość", widget: string, required: false }
-                  - { name: a, label: "Odpowiedź", widget: text, required: false }
-              - { name: callText, label: "Karta „zadzwoń” — tekst", widget: text, required: false, hint: "Enter = nowa linia. **tekst** = pogrubienie. Krótkie słowa (i, w, z…) same nie zostaną na końcu linii." }
-              - { name: phone, label: "Telefon", widget: string, required: false }
-              - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
-          - name: invest
-            label: "12. Inwestycja (ceny)"
-            widget: object
+              - { name: q, label: "Wątpliwość", widget: string, required: false }
+              - { name: a, label: "Odpowiedź", widget: text, required: false }
+          - { name: callText, label: "Karta „zadzwoń” — tekst", widget: text, required: false, hint: "Enter = nowa linia. **tekst** = pogrubienie. Krótkie słowa (i, w, z…) same nie zostaną na końcu linii." }
+          - { name: phone, label: "Telefon", widget: string, required: false }
+          - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
+      - name: invest
+        label: "12. Inwestycja (ceny)"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
+          - name: cards
+            label: "Karty cenowe"
+            label_singular: Karta
+            widget: list
+            summary: "{{fields.name}} — {{fields.price}}"
             fields:
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Tytuł — część pogrubiona", widget: string, required: false }
-              - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
-              - name: cards
-                label: "Karty cenowe"
-                label_singular: Karta
-                widget: list
-                summary: "{{fields.name}} — {{fields.price}}"
-                fields:
-                  - { name: tag, label: "Etykieta (np. Najczęściej wybierany)", widget: string, required: false }
-                  - { name: name, label: "Nazwa", widget: string, required: false }
-                  - { name: price, label: "Cena (np. 7 200 albo od 3 500)", widget: string, required: false }
-                  - { name: per, label: "Po cenie (np. zł netto / mies.)", widget: string, required: false }
-                  - { name: note, label: "Dopisek pod ceną", widget: text, required: false }
-                  - { name: items, label: "Co zawiera", widget: list, field: { name: item, label: "Pozycja", widget: string } }
-                  - { name: featured, label: "Wyróżniona", widget: boolean, default: false, required: false }
-                  - { name: ctaLabel, label: "Przycisk — napis", widget: string, required: false }
-                  - { name: ctaHref, label: "Przycisk — adres (np. /generator?pakiet=pro)", widget: string, required: false }
-              - { name: footnote, label: "Dopisek pod kartami", widget: text, required: false }
-          - name: final
-            label: "13. Następny krok"
-            widget: object
-            fields:
-              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
-              - { name: title, label: "Nagłówek — linia cienka", widget: string, required: false }
-              - { name: titleBold, label: "Nagłówek — linia gruba", widget: string, required: false }
-              - { name: lead, label: "Tekst", widget: text, required: false, hint: "Enter = nowa linia. **tekst** = pogrubienie. Krótkie słowa (i, w, z…) same nie zostaną na końcu linii." }
-              - { name: cta, label: "Przycisk — napis", widget: string, required: false }
-              - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
-      - name: kampania-wideo
-        label: "Kampania wideo — /oferta/kampania-wideo"
-        file: "src/data/oferty/kampania-wideo.json"
-        fields: *oferta
-      - name: kanal-youtube
-        label: "Kanał na YouTube — /oferta/kanal-youtube"
-        file: "src/data/oferty/kanal-youtube.json"
-        fields: *oferta
+              - { name: tag, label: "Etykieta (np. Najczęściej wybierany)", widget: string, required: false }
+              - { name: name, label: "Nazwa", widget: string, required: false }
+              - { name: price, label: "Cena (np. 7 200 albo od 3 500)", widget: string, required: false }
+              - { name: per, label: "Po cenie (np. zł netto / mies.)", widget: string, required: false }
+              - { name: note, label: "Dopisek pod ceną", widget: text, required: false }
+              - { name: items, label: "Co zawiera", widget: list, field: { name: item, label: "Pozycja", widget: string } }
+              - { name: featured, label: "Wyróżniona", widget: boolean, default: false, required: false }
+              - { name: ctaLabel, label: "Przycisk — napis", widget: string, required: false }
+              - { name: ctaHref, label: "Przycisk — adres (np. /generator?pakiet=pro)", widget: string, required: false }
+          - { name: footnote, label: "Dopisek pod kartami", widget: text, required: false }
+      - name: final
+        label: "13. Następny krok"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Nagłówek — linia cienka", widget: string, required: false }
+          - { name: titleBold, label: "Nagłówek — linia gruba", widget: string, required: false }
+          - { name: lead, label: "Tekst", widget: text, required: false, hint: "Enter = nowa linia. **tekst** = pogrubienie. Krótkie słowa (i, w, z…) same nie zostaną na końcu linii." }
+          - { name: cta, label: "Przycisk — napis", widget: string, required: false }
+          - { name: align, label: "Wyrównanie tekstu", widget: select, default: lewo, required: false, options: [{ label: "Do lewej (zalecane)", value: lewo }, { label: "Do środka", value: srodek }, { label: "Wyjustowane", value: justuj }, { label: "Do prawej", value: prawo }] }
 
   - name: podstrony
     label: Podstrony

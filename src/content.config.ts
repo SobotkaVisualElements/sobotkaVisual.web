@@ -52,6 +52,13 @@ const work = defineCollection({
 			cover: z.string().optional(),
 			coverFocalX: z.number().optional(),
 			coverFocalY: z.number().optional(),
+			/** Data realizacji — strona sortuje od najnowszych */
+			date: z.coerce.date().optional(),
+			/** Okładka pionowa 1200×1920 do karuzeli na stronie głównej */
+			poster: z.string().optional(),
+			/** Film w nagłówku case study zamiast baneru: YouTube albo własny MP4 (pętla, bez kontrolek) */
+			youtube: z.string().optional(),
+			video: z.string().optional(),
 			layers: z.array(layer).optional(),
 			parallaxStrength: z.number().optional(),
 			blocks,
