@@ -15,13 +15,13 @@ tech:
   - Adobe Premiere Pro
 layers:
   - image: /uploads/realizacje/APJW_Tło.png
-    depth: 10
-    scale: 100
-  - image: /uploads/realizacje/APJW_Środek.png
     depth: 20
     scale: 100
-  - image: /uploads/realizacje/APJW_Przód.png
-    depth: 30
+  - image: /uploads/realizacje/APJW_Środek.png
+    depth: 50
+    scale: 100
+  - image: /uploads/APJW_Przód.png
+    depth: 70
     scale: 100
 parallaxStrength: 100
 featured: true
