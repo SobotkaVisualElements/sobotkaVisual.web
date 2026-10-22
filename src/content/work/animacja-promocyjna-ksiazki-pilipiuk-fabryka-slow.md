@@ -4,6 +4,7 @@ description: 'Animacja promocyjna książki „Łajdactwa zebrane” Andrzeja Pi
 category: Animacja
 client: Fabryka Słów
 clientLogo: /uploads/FabrykaSlowLogo.svg
+clientLogoTone: ciemne
 role: Animacja, motion design, montaż, sound design
 year: 2026
 date: 2026-10-19
@@ -20,12 +21,18 @@ layers:
   - image: /uploads/realizacje/APJW_Tło.png
     depth: 20
     scale: 100
+    x: 50
+    'y': 50
   - image: /uploads/realizacje/APJW_Środek.png
     depth: 50
     scale: 100
+    x: 50
+    'y': 50
   - image: /uploads/realizacje/APJW_Przód.png
     depth: 70
     scale: 100
+    x: 50
+    'y': 50
 parallaxStrength: 100
 featured: true
 order: 10
@@ -33,10 +40,10 @@ blocks:
   - type: wideo
     caption: ''
     youtube: ''
-    file: /uploads/realizacje/Andrzej Pilipiuk Jw _Web.mp4
-    url: https://media.sobotkavisual.pl/filmy/pilipiuk-lajdactwa-kwadrat.mp4
+    file: https://media.sobotkavisual.pl/filmy/pilipiuk-lajdactwa-15s.mp4
     format: '9:16'
     mode: petla
+    url: https://media.sobotkavisual.pl/filmy/pilipiuk-lajdactwa-kwadrat.mp4
   - type: tekst
     text: |-
       ### Punkt wyjścia: kreska Andrzeja Łaskiego
