@@ -456,6 +456,19 @@ collections:
                   - { name: to, label: "Zakres do (opcjonalnie)", widget: number, value_type: float, required: false }
                   - { name: display, label: "Własny napis zamiast liczby", widget: string, required: false }
                   - { name: note, label: "Dopisek pod słupkiem", widget: string, required: false }
+          - name: chips
+            label: "Chipy z liczbami przy zdjęciu (kinetyczny, do 3)"
+            label_singular: Chip
+            widget: list
+            required: false
+            max: 3
+            summary: "{{fields.value}}{{fields.suffix}} {{fields.label}}"
+            hint: "Puste = liczby wezmą się same z wykresów. Zawsze dopisz, czego dotyczy liczba."
+            fields:
+              - { name: value, label: "Liczba", widget: number, value_type: float }
+              - { name: suffix, label: "Po liczbie (%, +, mln…)", widget: string, required: false }
+              - { name: label, label: "Czego dotyczy", widget: string }
+              - { name: display, label: "albo własny napis zamiast liczby", widget: string, required: false }
           - name: ctr
             label: "Wykres przewagi CTR (karuzela miniatur w tle)"
             widget: object

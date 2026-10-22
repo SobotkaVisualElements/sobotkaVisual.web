@@ -8,6 +8,7 @@ import LayerTile from '../ui/LayerTile.astro';
 import VideoLoop from '../ui/VideoLoop.astro';
 import Carousel3D from '../ui/Carousel3D.astro';
 import { md } from '../../lib/md';
+import { tx } from '../../lib/typo';
 
 interface Props { blocks?: any[]; theme?: 'light' | 'dark' }
 const { blocks = [], theme = 'light' } = Astro.props;
@@ -146,7 +147,7 @@ function linePath(b: any) {
 							<path d={L.d} pathLength="1" class="svc-stroke" />
 							<circle cx={L.last[0]} cy={L.last[1]} r="5" class="svc-end" />
 						</svg>
-						{b.description && <p class="svc-stat-desc">{b.description}</p>}
+						{b.description && <p class="svc-stat-desc" set:html={tx(b.description)} />}
 					</div>
 				);
 			}
@@ -164,7 +165,7 @@ function linePath(b: any) {
 						</div>
 						<div>
 							<span class="svc-stat-label">{b.label}</span>
-							{b.description && <p class="svc-stat-desc">{b.description}</p>}
+							{b.description && <p class="svc-stat-desc" set:html={tx(b.description)} />}
 						</div>
 					</div>
 				);

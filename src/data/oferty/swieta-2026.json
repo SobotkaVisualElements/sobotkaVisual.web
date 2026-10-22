@@ -158,7 +158,24 @@
           "image": "/uploads/realizacje/maxresdefault (3).jpg"
         }
       ]
-    }
+    },
+    "chips": [
+      {
+        "value": 14,
+        "suffix": "",
+        "label": "materiałów w Pakiecie Święta"
+      },
+      {
+        "value": 134,
+        "suffix": "",
+        "label": "materiałów: Święta + PRO przez 6 miesięcy"
+      },
+      {
+        "value": 21,
+        "suffix": "%",
+        "label": "CTR miniatur w 1. godzinie (kanał klienta)"
+      }
+    ]
   },
   "inside": {
     "eyebrow": "Co dostajesz",

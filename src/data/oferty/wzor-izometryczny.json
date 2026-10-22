@@ -182,7 +182,24 @@
       "label": "rolek rocznie",
       "points": "0, 13, 26, 39, 52, 65, 78, 91, 104, 117, 130, 143, 156",
       "description": "Tak pracujemy z Delta HR: 3 rolki tygodniowo, bez przerw. To już realny nakład inwestycyjny i trwały ślad Twojej firmy w internecie. **Twoja promocja się skaluje!**"
-    }
+    },
+    "chips": [
+      {
+        "value": 21,
+        "suffix": "%",
+        "label": "CTR miniatur w 1. godzinie (kanał klienta)"
+      },
+      {
+        "value": 276,
+        "suffix": "",
+        "label": "materiałów rocznie w pakiecie PRO"
+      },
+      {
+        "value": 150,
+        "suffix": "+",
+        "label": "rolek rocznie (Delta HR)"
+      }
+    ]
   },
   "inside": {
     "eyebrow": "Co jest w środku · co miesiąc",

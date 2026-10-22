@@ -93,7 +93,7 @@ const u = 'g' + Math.random().toString(36).slice(2, 7);
 			</div>
 			<span class="gap-delta" style={`--td:${G[0].g.pct((G[0].g.yO + G[0].g.yB) / 2)}%`} set:html={tx(delta)} />
 			</div>
-			<div class="gap-x"><span set:html={tx(p.xStart ?? '')} />{(p.xMid ?? []).map((m) => <span set:html={tx(m)} />)}<span set:html={tx(p.xEnd ?? '')} /></div>
+			<div class="gap-x"><span set:html={tx(p.xStart ?? '')} />{(p.xMid ?? []).map((m) => <span class="gap-xm" set:html={tx(m)} />)}<span set:html={tx(p.xEnd ?? '')} /></div>
 		</div>
 		<div class="gap-legend">
 			<span><i class="is-ours"></i><span set:html={tx(ours.label)} /></span>
@@ -164,6 +164,7 @@ const u = 'g' + Math.random().toString(36).slice(2, 7);
 		.gap-svg-d { display: none !important; } .gap-svg-m { display: block !important; }
 		.gap-val { top: var(--tm); width: 18.5%; } .gap-x { padding-right: 23%; }
 		.gap-val small { display: none; }
+		.gap-xm { display: none; }
 		.gap-delta { top: 3%; left: 2%; right: auto; transform: none; }
 		.gap-wm { inset: 4% 24% 14% 0; font-size: clamp(22px, 8.5vw, 40px); }
 	}

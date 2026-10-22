@@ -37,7 +37,10 @@ const featured = cards.find((c) => c.featured) ?? cards[0];
 const marquee = (o.marquee || inside.map((i) => strip(i.t)).join(' / ') || 'Montaż / Animacja / Rolki / Grafika').toUpperCase();
 const firstProject: any = projects?.[0]?.data;
 const zoomImg = o.proof?.image || o.hero?.bgImage || firstProject?.cover || firstProject?.poster || firstProject?.layers?.[0]?.image || '/uploads/realizacje/maxresdefault.jpg';
-const highlights = [...(ctr ? [{ value: Number(ctr.ours?.value), unit: ctr.unit ?? '%', label: o.hero?.chipLabel || 'CTR miniatur w 1. godzinie' }] : []), ...(o.proof?.charts ?? []).flatMap((c: any) => (c.bars ?? []).filter((b: any) => b.highlight).map((b: any) => ({ ...b, unit: c.unit ?? '' })))].slice(0, 3);
+// chipy przy zoomie: z panelu (Wyniki → Chipy przy zdjęciu), a gdy puste — automatycznie z opisem, czego dotyczy liczba
+const autoChips = [...(ctr ? [{ value: Number(ctr.ours?.value), unit: ctr.unit ?? '%', label: 'CTR miniatur w 1. godzinie' }] : []), ...(o.proof?.charts ?? []).flatMap((c: any) => (c.bars ?? []).filter((b: any) => b.highlight).map((b: any) => ({ ...b, unit: c.unit ?? '', label: `${b.label} — ${String(c.title || '').toLowerCase()}` })))];
+const panelChips = (o.proof?.chips ?? []).filter((c: any) => c?.value !== undefined && c?.value !== '').map((c: any) => ({ value: Number(c.value), unit: c.suffix ?? '', label: c.label, display: c.display }));
+const highlights = (panelChips.length ? panelChips : autoChips).slice(0, 3);
 const toBars = (bars: any[] = []) => bars.map((b) => ({ ...b, value: Number(b.value) || 0, range: b.from !== undefined && b.from !== null && b.from !== '' && b.to ? [Number(b.from), Number(b.to)] as [number, number] : undefined }));
 const finalWord = strip(o.final?.titleBold || 'Zacznijmy').replace(/\s+/g, ' ').trim();
 const half = Math.ceil(finalWord.length / 2);
@@ -693,6 +696,51 @@ const iPrice = ['tablet', 'rakieta', 'moneta'];
 	@media (max-width: 1023px) { .kt-iso .k-hero-obj, .kt-xmas .k-hero-obj { max-height: 40vh; } }
 
 	.kt-xmas .bd-snow i { background: #fff; box-shadow: 0 1px 4px rgba(120,140,190,.45); }
+
+	/* ── TELEFON: bez przyklejonych scen. Wszystko w zwykłym przewijaniu, czytelne od razu, animacje „przy wejściu”.
+	   Na komputerze zostaje pełna wersja kinetyczna. ── */
+	@media (max-width: 767px) {
+		.k-scene { height: auto !important; min-height: 0 !important; }
+		.k-sticky { position: relative !important; top: auto !important; height: auto !important; min-height: 0 !important; overflow: visible !important; display: block; padding: 3.5rem 0 !important; }
+		.k-sticky > .k-wrap { width: auto; }
+		.k-ribbon { display: none; }
+		.k-hero-text, .k-hero-obj { transform: none !important; opacity: 1 !important; }
+		.k-scene:first-of-type .k-sticky { padding-top: 2rem !important; }
+		.k-hero-obj { max-height: none !important; width: min(100%, 360px); margin: 0 auto; }
+		/* karty „co w środku”: lista zamiast przelotu */
+		.k-marq-stage { display: block; }
+		.k-marq-head { position: static; }
+		.k-marq { position: relative; top: auto; translate: none; display: block; margin: 1.2rem 0 1.4rem; font-size: 64px; transform: none; animation: k-marq-m 26s linear infinite; }
+		.k-flycards { width: auto; height: auto; margin: 0 1.25rem; display: grid; gap: 1rem; perspective: none; }
+		.k-fly { position: relative !important; inset: auto; transform: none !important; opacity: 1 !important; padding: 1.4rem; }
+		.k-fly h3 { font-size: 20px; } .k-fly-n { font-size: 46px; }
+		.k-marq-progress { display: none; }
+		/* tekst zapalany słowami: od razu czytelny */
+		.k-words .kw { opacity: 1 !important; }
+		.k-words { font-size: calc(24px * var(--ks-words, 1)) !important; line-height: 1.22; }
+		.k-mission { gap: 2rem; }
+		/* kroki: wszystkie widoczne jeden pod drugim */
+		.k-steps-body { min-height: 0; padding: 1.4rem; }
+		.k-step { position: relative !important; inset: auto !important; opacity: 1 !important; transform: none !important; pointer-events: auto; padding-bottom: 1.3rem; margin-bottom: 1.3rem; border-bottom: 1px solid var(--soft); }
+		.k-step:last-child { border-bottom: 0; margin-bottom: 0; padding-bottom: 0; }
+		.k-step-n { font-size: 40px; } .k-step p { font-size: 16px; }
+		.k-track { display: none; }
+		/* wielkie numery: mniejsze, nie zasłaniają treści */
+		.k-big { min-height: 0; padding-bottom: 1.2rem; }
+		.k-big-num { height: 82px; } .k-big-num span { font-size: 84px; }
+		/* zoom: zwykła karta ze zdjęciem */
+		.k-zoom { width: calc(100vw - 2.5rem) !important; height: min(78svh, 620px) !important; margin: 0 auto; border-radius: 26px !important; }
+		.k-zoom img, .k-zoom-iso { transform: none !important; }
+		.k-zoom-copy { opacity: 1 !important; transform: none !important; left: 1.25rem; right: 1.25rem; bottom: 1.4rem; }
+		/* finał: sama karta, bez wielkiego rozjeżdżającego się słowa */
+		.k-final-word { display: none; }
+		.k-final-card { opacity: 1 !important; transform: none !important; margin: 3rem auto 0; padding: 1.8rem; }
+		.k-final .k-sticky { padding-bottom: 5rem !important; }
+		/* tło: mniej elementów = płynniej na telefonie */
+		.bd .bd-it:nth-of-type(n+7), .bd-snow i:nth-child(n+18), .bd-streaks i:nth-child(n+10) { display: none; }
+		.k-sec { padding: calc(3.5rem * var(--ks-pad, 1)) 0; }
+	}
+	@keyframes k-marq-m { to { transform: translateX(-50%); } }
 
 	.k-reduce .k-scene { height: auto; }
 	.k-reduce .k-step { position: relative; inset: auto; margin-bottom: 1.6rem; }

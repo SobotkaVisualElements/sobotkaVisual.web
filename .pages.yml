@@ -651,6 +651,19 @@ content:
     - name: image
       label: Obraz do sceny z przybliżeniem
       type: image
+    - name: chips
+      label: Chipy z liczbami przy zdjęciu (kinetyczny, do 3)
+      type: object
+      list:
+        max: 3
+        collapsible:
+          collapsed: true
+          summary: '{value}{suffix} {label}'
+      fields:
+      - {name: value, label: Liczba, type: number}
+      - {name: suffix, label: 'Po liczbie (%, +, mln…)', type: string}
+      - {name: label, label: Czego dotyczy, type: string}
+      - {name: display, label: albo własny napis zamiast liczby, type: string}
     - name: ctr
       label: Wykres przewagi CTR (karuzela miniatur w tle)
       type: object

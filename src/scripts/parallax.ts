@@ -102,5 +102,5 @@ const io = new IntersectionObserver((entries) => {
 		el.querySelectorAll<HTMLElement>('[data-count]').forEach(runCount);
 		io.unobserve(el);
 	});
-}, { threshold: 0.35 });
+}, { threshold: 0, rootMargin: '0px 0px -18% 0px' });
 document.querySelectorAll<HTMLElement>('.svc-anim').forEach((el) => io.observe(el));
