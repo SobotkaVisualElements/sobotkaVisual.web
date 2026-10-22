@@ -15,7 +15,7 @@ tech:
 cover: ''
 poster: ''
 youtube: ''
-video: /uploads/realizacje/Andrzej Pilipiuk Jw Łajdactwazebrane Wersja15s_WEB.mp4
+video: ''
 layers:
   - image: /uploads/realizacje/APJW_Tło.png
     depth: 20
