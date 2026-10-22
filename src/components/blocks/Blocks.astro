@@ -114,7 +114,9 @@ function linePath(b: any) {
 			case 'wideo': {
 				const id = ytId(b.youtube);
 				const vert = b.format === '9:16';
-				const vfile = b.url || b.file;
+				// link do pliku (np. media.sobotkavisual.pl/...mp4) wklejony w pole YouTube też zadziała
+				const ytAsFile = /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(b.youtube || '') ? b.youtube : '';
+				const vfile = b.url || ytAsFile || b.file;
 				return (id || vfile) && (
 					<figure class:list={['svc-b', vert && 'svc-vertical']}>
 						{b.mode === 'zwykly' ? (

@@ -49,7 +49,7 @@ const facts = [
 				{((project.data as any).youtube || (project.data as any).video || (project.data as any).videoUrl) ? (
 					<div class="liquid-card liquid-light mt-8 rounded-[24px] p-3">
 						<div class="overflow-hidden rounded-[16px]">
-							<VideoLoop youtube={(project.data as any).youtube} file={(project.data as any).videoUrl || (project.data as any).video} poster={cover} title={title} eager />
+							<VideoLoop youtube={/\.(mp4|webm|mov|m4v)(\?|#|$)/i.test((project.data as any).youtube || '') ? '' : (project.data as any).youtube} file={(project.data as any).videoUrl || (/\.(mp4|webm|mov|m4v)(\?|#|$)/i.test((project.data as any).youtube || '') ? (project.data as any).youtube : '') || (project.data as any).video} poster={cover} title={title} eager />
 						</div>
 					</div>
 				) : ((project.data as any).layers?.some((l: any) => l?.image) || cover) && (

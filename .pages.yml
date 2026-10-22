@@ -78,7 +78,7 @@ content:
     label: albo plik MP4 w nagłówku
     type: file
   - name: videoUrl
-    label: albo link do filmu z media.sobotkavisual.pl (zalecane)
+    label: albo link do filmu z biblioteki media.sobotkavisual.pl (Kopiuj link)
     type: string
   - &id005
     name: layers
@@ -286,13 +286,13 @@ content:
       label: Wideo
       fields:
       - name: youtube
-        label: Link YouTube
+        label: Link YouTube albo link do pliku MP4 (media.sobotkavisual.pl)
         type: string
       - name: file
         label: albo plik MP4
         type: file
       - name: url
-        label: albo link do filmu z media.sobotkavisual.pl (zalecane)
+        label: albo link do filmu z biblioteki media.sobotkavisual.pl (Kopiuj link)
         type: string
       - name: format
         label: Format
@@ -561,7 +561,7 @@ content:
       label: Tło — wideo MP4
       type: file
     - name: bgVideoUrl
-      label: albo link do filmu z media.sobotkavisual.pl (zalecane)
+      label: albo link do filmu z biblioteki media.sobotkavisual.pl (Kopiuj link)
       type: string
     - name: bgOpacity
       label: Widoczność tła %
@@ -1259,7 +1259,7 @@ content:
       label: Wideo w tle
       type: file
     - name: videoUrl
-      label: albo link do filmu z media.sobotkavisual.pl (zalecane)
+      label: albo link do filmu z biblioteki media.sobotkavisual.pl (Kopiuj link)
       type: string
     - name: poster
       label: Plakat

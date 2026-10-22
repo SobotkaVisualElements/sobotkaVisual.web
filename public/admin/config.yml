@@ -38,7 +38,7 @@ collections:
       - { name: poster, label: "Okładka pionowa 1200×1920 (karuzela na głównej)", widget: image, required: false, hint: "Pion 10:16. Bez niej karuzela przytnie baner." }
       - { name: youtube, label: "Film YouTube w nagłówku (zamiast baneru)", widget: string, required: false, hint: "Link do Twojego filmu. Gra w pętli, bez dźwięku, z przyciskiem włączania dźwięku." }
       - { name: video, label: "albo własny plik MP4 w nagłówku", widget: file, required: false, hint: "Do ok. 20 MB. Pętla bez kontrolek, z przyciskiem dźwięku." }
-      - { name: videoUrl, label: "albo link do filmu z media.sobotkavisual.pl (zalecane)", widget: string, required: false, hint: "Wgraj film do repo svc-media i wklej link, np. https://media.sobotkavisual.pl/filmy/nazwa.mp4 — ma pierwszeństwo przed plikiem i nie obciąża repozytorium strony." }
+      - { name: videoUrl, label: "albo link do filmu z media.sobotkavisual.pl (zalecane)", widget: string, required: false, hint: "Wybierz film w bibliotece [media.sobotkavisual.pl](https://media.sobotkavisual.pl) → Kopiuj link → wklej tutaj. Ma pierwszeństwo przed plikiem." }
       - name: layers
         label: "Warstwy parallaksy (do 3)"
         label_singular: Warstwa
@@ -134,9 +134,9 @@ collections:
             widget: object
             summary: "{{fields.youtube}}"
             fields:
-              - { name: youtube, label: "Link YouTube", widget: string, required: false, hint: "Zwykły link do filmu lub shorta. Ładuje się dopiero po kliknięciu — strona zostaje szybka." }
+              - { name: youtube, label: "Link YouTube albo link do pliku MP4", widget: string, required: false, hint: "Link z YouTube albo link do pliku z biblioteki [media.sobotkavisual.pl](https://media.sobotkavisual.pl) (Kopiuj link) — oba zadziałają." }
               - { name: file, label: "albo plik MP4", widget: file, required: false }
-              - { name: url, label: "albo link do filmu z media.sobotkavisual.pl (zalecane)", widget: string, required: false, hint: "Wgraj film do repo svc-media i wklej link, np. https://media.sobotkavisual.pl/filmy/nazwa.mp4 — ma pierwszeństwo przed plikiem i nie obciąża repozytorium strony." }
+              - { name: url, label: "albo link do filmu z media.sobotkavisual.pl (zalecane)", widget: string, required: false, hint: "Wybierz film w bibliotece [media.sobotkavisual.pl](https://media.sobotkavisual.pl) → Kopiuj link → wklej tutaj. Ma pierwszeństwo przed plikiem." }
               - { name: format, label: "Format", widget: select, default: "16:9", options: ["16:9", "9:16"] }
               - { name: mode, label: "Tryb", widget: select, default: petla, options: [{ label: "Pętla bez kontrolek + przycisk dźwięku", value: petla }, { label: "Zwykły odtwarzacz (dla długich filmów)", value: zwykly }] }
               - { name: caption, label: "Podpis", widget: string, required: false }
@@ -201,7 +201,7 @@ collections:
               - { name: ctaSecondaryLabel, label: "Przycisk drugi — napis", widget: string }
               - { name: ctaSecondaryHref, label: "Przycisk drugi — dokąd prowadzi", widget: string, default: "/work" }
               - { name: video, label: "Wideo w tle (MP4)", widget: file, required: false, hint: "Krótka pętla, wyciszona, do 3 MB. Na telefonie pokaże się plakat zamiast wideo." }
-              - { name: videoUrl, label: "albo link do wideo w tle z media.sobotkavisual.pl", widget: string, required: false, hint: "Wgraj film do repo svc-media i wklej link, np. https://media.sobotkavisual.pl/filmy/nazwa.mp4 — ma pierwszeństwo przed plikiem i nie obciąża repozytorium strony." }
+              - { name: videoUrl, label: "albo link do wideo w tle z media.sobotkavisual.pl", widget: string, required: false, hint: "Wybierz film w bibliotece [media.sobotkavisual.pl](https://media.sobotkavisual.pl) → Kopiuj link → wklej tutaj. Ma pierwszeństwo przed plikiem." }
               - { name: poster, label: "Plakat / klatka zastępcza", widget: image, required: false, hint: "Widoczny na telefonie i zanim wideo się wczyta." }
               - { name: videoOpacity, label: "Przyciemnienie tła (%)", widget: number, value_type: int, default: 30, min: 5, max: 70, hint: "Im mniej, tym ciemniejsze tło i czytelniejszy tekst." }
               - { name: clientsLabel, label: "Napis nad logotypami", widget: string, default: "Zaufali nam" }
@@ -397,7 +397,7 @@ collections:
           - { name: lead, label: "Zdanie pod nagłówkiem", widget: text, required: false, hint: "Enter = nowa linia. **tekst** = pogrubienie. Krótkie słowa (i, w, z…) same nie zostaną na końcu linii." }
           - { name: bgImage, label: "Tło — własny obraz (zamiast wideo)", widget: image, required: false }
           - { name: bgVideo, label: "Tło — własne wideo MP4", widget: file, required: false }
-          - { name: bgVideoUrl, label: "Tło — albo link do wideo z media.sobotkavisual.pl", widget: string, required: false, hint: "Wgraj film do repo svc-media i wklej link, np. https://media.sobotkavisual.pl/filmy/nazwa.mp4 — ma pierwszeństwo przed plikiem i nie obciąża repozytorium strony." }
+          - { name: bgVideoUrl, label: "Tło — albo link do wideo z media.sobotkavisual.pl", widget: string, required: false, hint: "Wybierz film w bibliotece [media.sobotkavisual.pl](https://media.sobotkavisual.pl) → Kopiuj link → wklej tutaj. Ma pierwszeństwo przed plikiem." }
           - { name: bgOpacity, label: "Widoczność tła (%)", widget: number, value_type: int, default: 20, min: 5, max: 80, required: false }
           - { name: sideImage, label: "Obraz obok nagłówka (zamiast karty z ceną)", widget: image, required: false }
           - { name: sideAlt, label: "Opis obrazu (alt)", widget: string, required: false }
