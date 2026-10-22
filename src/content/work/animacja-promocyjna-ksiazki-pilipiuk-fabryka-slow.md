@@ -40,7 +40,7 @@ blocks:
   - type: wideo
     caption: ''
     youtube: ''
-    file: https://media.sobotkavisual.pl/filmy/pilipiuk-lajdactwa-15s.mp4
+    file: ''
     format: '9:16'
     mode: petla
     url: https://media.sobotkavisual.pl/filmy/pilipiuk-lajdactwa-kwadrat.mp4
