@@ -10,7 +10,7 @@
  */
 import { tx } from '../../lib/typo';
 
-export interface CarouselItem { img?: string; title?: string; category?: string; href?: string; youtube?: string; logo?: string; alt?: string }
+export interface CarouselItem { img?: string; title?: string; category?: string; href?: string; youtube?: string; logo?: string; logoTone?: string; alt?: string }
 interface Props {
 	items: CarouselItem[];
 	orientation?: 'pion' | 'poziom';
@@ -67,7 +67,7 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 						{it.img ? <img src={it.img} alt="" loading={k < 6 ? 'eager' : 'lazy'} decoding="async" draggable="false" /> : <span class="c3d-ph"><small>{it.category}</small><b set:html={tx(it.title)} /></span>}
 						<span class="c3d-shade"></span>
 						{it.yt && variant !== 'tlo' && <span class="c3d-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg></span>}
-						{it.logo && variant !== 'tlo' && <span class="c3d-logo"><img src={it.logo} alt="" loading="lazy" /></span>}
+						{it.logo && variant !== 'tlo' && <span class="c3d-logo"><img src={it.logo} alt="" loading="lazy" class={it.logoTone !== 'oryginalne' ? 'logo-dark' : undefined} /></span>}
 					</Tag>
 				);
 			})}

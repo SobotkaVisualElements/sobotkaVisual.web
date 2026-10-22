@@ -2,7 +2,7 @@ import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
 /* Warstwy parallaksy (do 3 PNG 1920×1200) i klocki treści z panelu CMS */
-const layer = z.object({ image: z.string().optional(), depth: z.number().optional(), scale: z.number().optional() });
+const layer = z.object({ image: z.string().optional(), depth: z.number().optional(), scale: z.number().optional(), x: z.number().optional(), y: z.number().optional() });
 const blocks = z.array(z.object({ type: z.string() }).passthrough()).optional();
 
 /*
@@ -45,6 +45,8 @@ const work = defineCollection({
 			client: z.string().optional(),
 			/** Logotyp klienta (PNG/SVG, najlepiej przezroczyste tło) */
 			clientLogo: z.string().optional(),
+			/** Jak wyświetlić logo: ciemne (domyślnie, przyciemnia białe logo), oryginalne kolory */
+			clientLogoTone: z.string().optional(),
 			/** 公開サイト・リポジトリ（任意） */
 			url: z.string().url().optional(),
 			repo: z.string().url().optional(),

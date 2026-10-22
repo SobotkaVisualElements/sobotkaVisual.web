@@ -43,6 +43,13 @@ content:
   - name: clientLogo
     label: Logotyp klienta (PNG/SVG, przezroczyste tło)
     type: image
+  - name: clientLogoTone
+    label: Kolor logotypu
+    type: select
+    options:
+      values:
+      - {value: ciemne, label: Ciemny (przyciemnia białe i kolorowe logo)}
+      - {value: oryginalne, label: Oryginalne kolory}
   - name: role
     label: Rola / zakres
     type: string
@@ -72,7 +79,7 @@ content:
     type: file
   - &id005
     name: layers
-    label: Warstwy parallaksy (do 3, 1920×1200)
+    label: Warstwy parallaksy (do 3, najlepiej z zapasem np. 2400×1500)
     type: object
     fields:
     - name: image
@@ -82,7 +89,13 @@ content:
       label: Głębia 0–100
       type: number
     - name: scale
-      label: Skala % (100–160)
+      label: Skala / przybliżenie kadru % (100–200; plik z zapasem ok. 125)
+      type: number
+    - name: x
+      label: Kadr w poziomie % (0 lewo, 50 środek, 100 prawo)
+      type: number
+    - name: y
+      label: Kadr w pionie % (0 góra, 50 środek, 100 dół)
       type: number
     list:
       collapsible:
@@ -155,6 +168,77 @@ content:
           collapsible:
             collapsed: true
             summary: '{caption}'
+    - name: oferta
+      label: Przycisk „Sprawdź ofertę” (zielony, do generatora)
+      fields:
+      - {name: label, label: Napis na przycisku, type: string, default: Sprawdź ofertę}
+      - {name: lead, label: Zdanie nad przyciskiem, type: string}
+      - {name: note, label: Dopisek pod przyciskiem, type: string}
+      - name: tryb
+        label: Rodzaj współpracy w generatorze
+        type: select
+        options:
+          values:
+          - {value: jednorazowa, label: Jednorazowa}
+          - {value: stala, label: Stała (pakiet miesięczny)}
+      - name: pakiet
+        label: Pakiet (dla współpracy stałej)
+        type: select
+        options:
+          values:
+          - {value: none, label: Bez pakietu}
+          - {value: start, label: START}
+          - {value: pro, label: PRO}
+          - {value: studio, label: STUDIO}
+      - name: items
+        label: Co ma być w ofercie
+        type: object
+        list:
+          collapsible:
+            collapsed: true
+            summary: '{qty} × {id}'
+        fields:
+        - name: id
+          label: Element
+          type: select
+          options:
+            values:
+            - {value: montaz, label: "Montaż długiej formy"}
+            - {value: rolki, label: "Rolki / shorty / TikTok"}
+            - {value: rolkaani, label: "Animowana rolka"}
+            - {value: skrot, label: "Skrót meczowy / eventowy"}
+            - {value: wizerunek, label: "Materiał wizerunkowy 2 min"}
+            - {value: animacja, label: "Element animowany (belka, plansza)"}
+            - {value: trailer, label: "Trailer animowany 30–45 s"}
+            - {value: okladka, label: "Animowana okładka / motion cover"}
+            - {value: miniatury, label: "Miniatury / okładki"}
+            - {value: grafika, label: "Grafika statyczna (post, baner)"}
+            - {value: postani, label: "Animowany post promocyjny"}
+            - {value: scenariusz, label: "Scenariusz materiału"}
+            - {value: dzwiek, label: "Opracowanie dźwięku + licencja"}
+            - {value: lektor, label: "Lektor profesjonalny"}
+            - {value: napisy, label: "Napisy"}
+            - {value: zdjecia, label: "Dzień zdjęciowy"}
+        - {name: qty, label: Ilość, type: number}
+      - name: extras
+        label: Rozszerzenia
+        type: select
+        options:
+          multiple: true
+          values:
+          - {value: system, label: "System oprawy graficznej (wdrożenie)"}
+          - {value: trans, label: "Pakiet oprawy transmisyjnej"}
+          - {value: express, label: "Tryb ekspresowy (poniżej 48 h)"}
+          - {value: format, label: "Dodatkowy format lub wersja językowa"}
+          - {value: prawa, label: "Rozszerzenie praw o kampanie płatne"}
+          - {value: wylacz, label: "Wyłączność w branży na obszarze"}
+      - name: align
+        label: Położenie
+        type: select
+        options:
+          values:
+          - {value: srodek, label: Na środku}
+          - {value: lewo, label: Do lewej}
     - name: karuzela3d
       label: Karuzela 3D (jak na głównej)
       fields:

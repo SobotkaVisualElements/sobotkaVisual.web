@@ -38,7 +38,7 @@ const withUtm = (h: string = '/generator') => `${h || '/generator'}${(h || '').i
 const clients = ((home as any).clients ?? []).filter((c: any) => c.logo);
 const projects = o.projects?.show === false ? [] : (await getPublishedProjects()).slice(0, Number(o.projects?.limit) || 9);
 // realizacje w karuzeli 3D (poziome banery 16:10)
-const workItems = projects.map((p: any) => ({ href: `/work/${p.id}`, title: p.data.title, category: p.data.category, logo: p.data.clientLogo,
+const workItems = projects.map((p: any) => ({ href: `/work/${p.id}`, title: p.data.title, category: p.data.category, logo: p.data.clientLogo, logoTone: p.data.clientLogoTone,
 	img: p.data.cover || p.data.layers?.find((l: any) => l?.image)?.image || p.data.poster || '' }));
 const thumbs = ['/uploads/realizacje/maxresdefault (1).jpg', '/uploads/realizacje/maxresdefault (3).jpg', '/uploads/realizacje/maxresdefault.jpg'];
 const others = all.filter((x) => x.slug !== slug && !x.draft && !x.noindex);

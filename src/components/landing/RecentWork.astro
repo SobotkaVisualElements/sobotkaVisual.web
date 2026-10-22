@@ -13,7 +13,7 @@ const t = { eyebrow: 'Ostatnie realizacje', title: 'Zobacz, co ostatnio', titleL
 const items = (await getPublishedProjects()).slice(0, Number(t.limit) || 9).map((p) => {
 	const d: any = p.data;
 	const img = d.poster || d.cover || d.layers?.find((l: any) => l?.image)?.image || '';
-	return { href: `/work/${p.id}`, title: d.title, category: d.category, img, logo: d.clientLogo };
+	return { href: `/work/${p.id}`, title: d.title, category: d.category, img, logo: d.clientLogo, logoTone: d.clientLogoTone };
 });
 ---
 {items.length > 0 && (

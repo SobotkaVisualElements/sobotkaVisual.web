@@ -29,6 +29,7 @@ collections:
       - { name: category, label: "Kategoria", widget: select, options: ["Montaż", "Animacja", "Identyfikacja", "Oprawa transmisyjna", "Grafika"] }
       - { name: client, label: "Klient", widget: string, required: false }
       - { name: clientLogo, label: "Logotyp klienta", widget: image, required: false, hint: "PNG lub SVG z przezroczystym tłem. Pokazuje się w nagłówku realizacji, na kafelku i w karuzeli." }
+      - { name: clientLogoTone, label: "Kolor logotypu", widget: select, default: ciemne, required: false, options: [{ label: "Ciemny (przyciemnia białe i kolorowe logo)", value: ciemne }, { label: "Oryginalne kolory", value: oryginalne }] }
       - { name: role, label: "Rola / zakres", widget: string, required: false }
       - { name: year, label: "Rok", widget: number, value_type: int, default: 2026 }
       - { name: date, label: "Data realizacji", widget: datetime, time_format: false, date_format: "DD.MM.YYYY", format: "YYYY-MM-DD", required: false, hint: "Najnowsze realizacje pokazują się na górze listy i w karuzeli na głównej." }
@@ -44,11 +45,13 @@ collections:
         required: false
         max: 3
         summary: "Głębia {{fields.depth}} · skala {{fields.scale}}%"
-        hint: "Szablon 1920×1200 px (16:10). Pierwsza warstwa = tło, ostatnia = przód. Warstwy 2 i 3 jako PNG z przezroczystością. Przeciągnij, aby zmienić kolejność."
+        hint: "Szablon 16:10. Najlepiej eksportuj z zapasem 25% (np. 2400×1500, kadr 1920×1200 w środku) — obiekty z przodu wychodzą poza kadr i przy ruchu nie widać ich krawędzi. Kadrujesz polami Skala i Kadr. Pierwsza warstwa = tło, ostatnia = przód, PNG z przezroczystością."
         fields: &layerfields
           - { name: image, label: "Obraz (PNG/JPG/WebP 1920×1200)", widget: image }
           - { name: depth, label: "Głębia — jak mocno się rusza (0–100)", widget: number, value_type: int, default: 30, min: 0, max: 100, hint: "Tło 10–20, środek 30–45, przód 55–80. Większa różnica między warstwami = mocniejszy efekt 3D." }
-          - { name: scale, label: "Skala (%)", widget: number, value_type: int, default: 112, min: 100, max: 160, hint: "Zapas na ruch, żeby nie było widać krawędzi. Im większa głębia, tym większa skala." }
+          - { name: scale, label: "Skala / przybliżenie kadru (%)", widget: number, value_type: int, default: 112, min: 100, max: 200, hint: "Zapas na ruch, żeby nie było widać krawędzi. Przy pliku z zapasem (np. 2400×1500) ustaw ok. 125%." }
+          - { name: x, label: "Kadr w poziomie (%)", widget: number, value_type: int, default: 50, min: 0, max: 100, required: false, hint: "0 = lewa krawędź obrazu, 50 = środek, 100 = prawa." }
+          - { name: y, label: "Kadr w pionie (%)", widget: number, value_type: int, default: 50, min: 0, max: 100, required: false, hint: "0 = góra obrazu, 50 = środek, 100 = dół." }
       - { name: parallaxStrength, label: "Siła parallaksy całego kafelka (%)", widget: number, value_type: int, default: 100, min: 0, max: 200, required: false, hint: "0 = brak ruchu, 100 = standard, 200 = mocno" }
       - { name: featured, label: "Wyróżniona", widget: boolean, default: false }
       - { name: order, label: "Kolejność (gdy ta sama data)", widget: number, value_type: int, default: 10, hint: "Liczy się tylko przy realizacjach z tą samą datą: mniejsza liczba = wyżej." }
@@ -86,6 +89,27 @@ collections:
                 fields:
                   - { name: image, label: "Zdjęcie", widget: image }
                   - { name: caption, label: "Podpis", widget: string, required: false }
+          - name: oferta
+            label: "Przycisk „Sprawdź ofertę” (zielony, do generatora)"
+            widget: object
+            summary: "{{fields.label}} · {{fields.pakiet}}"
+            fields:
+              - { name: label, label: "Napis na przycisku", widget: string, default: "Sprawdź ofertę" }
+              - { name: lead, label: "Zdanie nad przyciskiem", widget: string, required: false, hint: "Np. Chcesz podobną animację dla swojej książki?" }
+              - { name: note, label: "Dopisek pod przyciskiem", widget: string, required: false }
+              - { name: tryb, label: "Rodzaj współpracy w generatorze", widget: select, default: jednorazowa, options: [{ label: "Jednorazowa", value: jednorazowa }, { label: "Stała (pakiet miesięczny)", value: stala }] }
+              - { name: pakiet, label: "Pakiet (dla współpracy stałej)", widget: select, default: none, options: [{ label: "Bez pakietu", value: none }, { label: "START", value: start }, { label: "PRO", value: pro }, { label: "STUDIO", value: studio }] }
+              - name: items
+                label: "Co ma być w ofercie"
+                label_singular: Element
+                widget: list
+                required: false
+                summary: "{{fields.qty}} × {{fields.id}}"
+                fields:
+                  - { name: id, label: "Element", widget: select, options: [{ label: "Montaż długiej formy", value: montaz }, { label: "Rolki / shorty / TikTok", value: rolki }, { label: "Animowana rolka", value: rolkaani }, { label: "Skrót meczowy / eventowy", value: skrot }, { label: "Materiał wizerunkowy 2 min", value: wizerunek }, { label: "Element animowany (belka, plansza)", value: animacja }, { label: "Trailer animowany 30–45 s", value: trailer }, { label: "Animowana okładka / motion cover", value: okladka }, { label: "Miniatury / okładki", value: miniatury }, { label: "Grafika statyczna (post, baner)", value: grafika }, { label: "Animowany post promocyjny", value: postani }, { label: "Scenariusz materiału", value: scenariusz }, { label: "Opracowanie dźwięku + licencja", value: dzwiek }, { label: "Lektor profesjonalny", value: lektor }, { label: "Napisy", value: napisy }, { label: "Dzień zdjęciowy", value: zdjecia }] }
+                  - { name: qty, label: "Ilość", widget: number, value_type: int, default: 1, min: 0, max: 24 }
+              - { name: extras, label: "Rozszerzenia (zaznaczone w generatorze)", widget: select, multiple: true, required: false, options: [{ label: "System oprawy graficznej (wdrożenie)", value: system }, { label: "Pakiet oprawy transmisyjnej", value: trans }, { label: "Tryb ekspresowy (poniżej 48 h)", value: express }, { label: "Dodatkowy format lub wersja językowa", value: format }, { label: "Rozszerzenie praw o kampanie płatne", value: prawa }, { label: "Wyłączność w branży na obszarze", value: wylacz }] }
+              - { name: align, label: "Położenie", widget: select, default: srodek, options: [{ label: "Na środku", value: srodek }, { label: "Do lewej", value: lewo }] }
           - name: karuzela3d
             label: "Karuzela 3D (jak na głównej)"
             widget: object

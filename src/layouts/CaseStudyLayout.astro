@@ -40,9 +40,7 @@ const facts = [
 					<span class="text-ink/30" aria-hidden="true">·</span>
 					<span class="text-ink/45">{year}</span>
 					{(project.data as any).clientLogo && (
-						<span class="ml-auto flex h-11 max-w-[180px] items-center rounded-xl border border-ink/10 bg-white px-3 py-2 shadow-sm">
-							<img src={(project.data as any).clientLogo} alt={client ? `Logo: ${client}` : 'Logo klienta'} class="h-full w-auto max-w-full object-contain" />
-						</span>
+						<img src={(project.data as any).clientLogo} alt={client ? `Logo: ${client}` : 'Logo klienta'} class:list={['ml-auto h-11 w-auto max-w-[170px] object-contain', (project.data as any).clientLogoTone !== 'oryginalne' && 'logo-dark']} />
 					)}
 				</div>
 

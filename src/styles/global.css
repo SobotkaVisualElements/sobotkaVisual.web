@@ -275,3 +275,6 @@ p, li, blockquote, figcaption { text-wrap: pretty; }
 h1, h2, h3 { text-wrap: balance; }
 /* Wyrównanie „wyjustowane” z panelu — z dzieleniem wyrazów, żeby nie robiły się dziury */
 .svc-justify p, .svc-justify .of-text, p.svc-justify { text-align: justify; hyphens: auto; -webkit-hyphens: auto; text-wrap: wrap; }
+
+/* logotyp klienta: białe/kolorowe logo → ciemne, czytelne na jasnym tle */
+.logo-dark { filter: brightness(0) saturate(100%); opacity: .82; }

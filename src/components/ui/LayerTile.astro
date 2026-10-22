@@ -3,9 +3,10 @@
  * Kafelek warstwowy 16:10 (szablon 1920×1200).
  * Warstwy: pierwsza = najdalej (tło), ostatnia = najbliżej (przód).
  *  depth  0–100  jak mocno warstwa się rusza (odległość między warstwami)
- *  scale  100–160 skala warstwy w %, zapas na ruch, żeby nie było widać krawędzi
+ *  scale  100–200 skala warstwy w % (przybliżenie kadru), zapas na ruch, żeby nie było widać krawędzi
+ *  x, y   0–100 kadrowanie: który punkt obrazu jest w środku (przy większych plikach z zapasem)
  */
-export interface Layer { image?: string; depth?: number; scale?: number }
+export interface Layer { image?: string; depth?: number; scale?: number; x?: number; y?: number }
 interface Props {
 	layers?: Layer[];
 	image?: string; // pojedynczy obrazek (stary format) — traktowany jak 1 warstwa
@@ -34,7 +35,7 @@ const pos = `object-position:${focalX ?? 50}% ${focalY ?? 50}%`;
 				data-scale={l.scale ?? 110 + i * 4}
 				loading={eager ? 'eager' : 'lazy'}
 				decoding="async"
-				style={pos}
+				style={l.x !== undefined || l.y !== undefined ? `object-position:${l.x ?? 50}% ${l.y ?? 50}%;transform-origin:${l.x ?? 50}% ${l.y ?? 50}%` : pos}
 				class="pointer-events-none absolute inset-0 h-full w-full object-cover will-change-transform"
 			/>
 		))
