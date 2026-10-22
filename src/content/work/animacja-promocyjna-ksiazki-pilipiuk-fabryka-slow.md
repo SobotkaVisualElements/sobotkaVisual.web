@@ -23,7 +23,7 @@ layers:
   - image: /uploads/realizacje/APJW_Środek.png
     depth: 50
     scale: 100
-  - image: /uploads/APJW_Przód.png
+  - image: /uploads/realizacje/APJW_Przód.png
     depth: 70
     scale: 100
 parallaxStrength: 100
