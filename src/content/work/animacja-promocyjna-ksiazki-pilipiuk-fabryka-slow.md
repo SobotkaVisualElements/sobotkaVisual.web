@@ -55,6 +55,17 @@ blocks:
       - **tło** - animacja narracyjna,
       - **środek** - animowana ramka z motywami z okładki,
       - **przód** - tytuł książki.
+  - type: oferta
+    label: Sprawdź ofertę
+    lead: ''
+    note: ''
+    tryb: jednorazowa
+    pakiet: none
+    items:
+      - id: rolkaani
+        qty: 1
+    extras: []
+    align: srodek
 ---
 
 Fabryka Słów zaufała nam po raz kolejny, a my dostaliśmy okazję, żeby pokazać naszą filozofię twórczą na materii, którą znamy i lubimy od lat. Tym razem promowaliśmy najnowsze wydanie zbioru opowiadań Andrzeja Pilipiuka. Jakub Wędrowycz, wojsławicki egzorcysta-amator i bimbrownik, potrzebował oprawy godnej samego Wielkiego Grafomana. Gotową realizację zobaczysz wkrótce na naszym kanale YouTube.
