@@ -16,7 +16,16 @@ cover: ''
 poster: ''
 youtube: ''
 video: ''
-layers: []
+layers:
+  - image: /uploads/realizacje/Tło.png
+    depth: 10
+    scale: 112
+  - image: /uploads/realizacje/Środek.png
+    depth: 45
+    scale: 112
+  - image: /uploads/realizacje/Przód.png
+    depth: 60
+    scale: 100
 parallaxStrength: 100
 featured: false
 order: 10
