@@ -17,6 +17,7 @@ cover: ''
 poster: ''
 youtube: ''
 video: ''
+videoUrl: ''
 layers:
   - image: /uploads/realizacje/APJW_Tło.png
     depth: 20
@@ -40,10 +41,10 @@ blocks:
   - type: wideo
     caption: ''
     youtube: ''
-    file: https://media.sobotkavisual.pl/filmy/pilipiuk-lajdactwa-15s.mp4
+    file: ''
+    url: https://media.sobotkavisual.pl/filmy/pilipiuk-lajdactwa-15s.mp4
     format: '9:16'
     mode: petla
-    url: https://media.sobotkavisual.pl/filmy/pilipiuk-lajdactwa-kwadrat.mp4
   - type: tekst
     text: |-
       ### Punkt wyjścia: kreska Andrzeja Łaskiego
