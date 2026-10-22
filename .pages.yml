@@ -77,6 +77,9 @@ content:
   - name: video
     label: albo plik MP4 w nagłówku
     type: file
+  - name: videoUrl
+    label: albo link do filmu z media.sobotkavisual.pl (zalecane)
+    type: string
   - &id005
     name: layers
     label: Warstwy parallaksy (do 3, najlepiej z zapasem np. 2400×1500)
@@ -288,6 +291,9 @@ content:
       - name: file
         label: albo plik MP4
         type: file
+      - name: url
+        label: albo link do filmu z media.sobotkavisual.pl (zalecane)
+        type: string
       - name: format
         label: Format
         type: select
@@ -554,6 +560,9 @@ content:
     - name: bgVideo
       label: Tło — wideo MP4
       type: file
+    - name: bgVideoUrl
+      label: albo link do filmu z media.sobotkavisual.pl (zalecane)
+      type: string
     - name: bgOpacity
       label: Widoczność tła %
       type: number
@@ -1249,6 +1258,9 @@ content:
     - name: video
       label: Wideo w tle
       type: file
+    - name: videoUrl
+      label: albo link do filmu z media.sobotkavisual.pl (zalecane)
+      type: string
     - name: poster
       label: Plakat
       type: image

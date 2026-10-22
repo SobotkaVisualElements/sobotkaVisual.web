@@ -98,7 +98,7 @@ const ld = {
 				<img src={o.hero.bgImage} alt="" class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover" style={`opacity:${(o.hero.bgOpacity ?? 30) / 100}`} />
 			) : !o.hero?.thumbs && (
 				<video class="pointer-events-none absolute inset-0 z-0 hidden h-full w-full object-cover md:block" style={`opacity:${(o.hero?.bgOpacity ?? 20) / 100}`} autoplay muted loop playsinline preload="metadata">
-					<source src={o.hero?.bgVideo || '/uploads/Reklama WEB.mp4'} />
+					<source src={(o.hero?.bgVideoUrl || o.hero?.bgVideo) || 'https://media.sobotkavisual.pl/filmy/reklama-hero.mp4'} />
 				</video>
 			)}
 			<span class="pointer-events-none absolute inset-0 bg-grid opacity-35"></span>

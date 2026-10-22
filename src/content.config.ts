@@ -63,6 +63,8 @@ const work = defineCollection({
 			/** Film w nagłówku case study zamiast baneru: YouTube albo własny MP4 (pętla, bez kontrolek) */
 			youtube: z.string().optional(),
 			video: z.string().optional(),
+			/** albo link do filmu z Cloudflare R2 (https://media.sobotkavisual.pl/...) */
+			videoUrl: z.string().optional(),
 			layers: z.array(layer).optional(),
 			parallaxStrength: z.number().optional(),
 			blocks,

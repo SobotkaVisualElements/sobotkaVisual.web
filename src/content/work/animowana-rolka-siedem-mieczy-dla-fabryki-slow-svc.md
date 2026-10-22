@@ -41,6 +41,7 @@ blocks:
     caption: ''
     youtube: ''
     file: /uploads/realizacje/AnthonyRyan_SiedemMieczy_RolkaAnimowana_WEB.mp4
+    url: https://media.sobotkavisual.pl/filmy/siedem-mieczy-rolka.mp4
     format: '9:16'
     mode: petla
   - type: oferta

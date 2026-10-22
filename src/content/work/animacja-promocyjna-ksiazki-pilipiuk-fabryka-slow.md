@@ -34,6 +34,7 @@ blocks:
     caption: ''
     youtube: ''
     file: /uploads/realizacje/Andrzej Pilipiuk Jw _Web.mp4
+    url: https://media.sobotkavisual.pl/filmy/pilipiuk-lajdactwa-kwadrat.mp4
     format: '9:16'
     mode: petla
   - type: tekst

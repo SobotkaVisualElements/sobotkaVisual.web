@@ -45,7 +45,7 @@ const toBars = (bars: any[] = []) => bars.map((b) => ({ ...b, value: Number(b.va
 const finalWord = strip(o.final?.titleBold || 'Zacznijmy').replace(/\s+/g, ' ').trim();
 const half = Math.ceil(finalWord.length / 2);
 const fan = [...opinie.map((q) => ({ kind: 'q', ...q })), ...(highlights[0] ? [{ kind: 'stat', value: highlights[0].value, unit: highlights[0].unit, label: highlights[0].label }] : [])];
-const heroMedia = o.hero?.sideImage ? { type: 'img', src: o.hero.sideImage } : xmas || iso ? { type: 'iso' } : { type: 'video', src: o.hero?.bgVideo || '/uploads/Reklama WEB.mp4' };
+const heroMedia = o.hero?.sideImage ? { type: 'img', src: o.hero.sideImage } : xmas || iso ? { type: 'iso' } : { type: 'video', src: (o.hero?.bgVideoUrl || o.hero?.bgVideo) || 'https://media.sobotkavisual.pl/filmy/reklama-hero.mp4' };
 // ikony odpalane przewijaniem
 const xIcons = ['prezent', 'dzwonek', 'gwiazda', 'choinka', 'bombka', 'sanie', 'czapka', 'kalendarz-xii'];
 const isoLike = iso || xmas;

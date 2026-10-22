@@ -46,10 +46,10 @@ const facts = [
 
 				<h1 class="mt-3 text-[clamp(2rem,5vw,3.1rem)] font-bold leading-[1.06] tracking-[-0.02em] text-balance text-ink" set:html={nbspHtml(title.replace(/&/g, "&amp;").replace(/</g, "&lt;"))} />
 				<p class="mt-4 max-w-[640px] text-lg text-ink/70 text-pretty" set:html={nbspHtml(description.replace(/&/g, "&amp;").replace(/</g, "&lt;"))} />
-				{((project.data as any).youtube || (project.data as any).video) ? (
+				{((project.data as any).youtube || (project.data as any).video || (project.data as any).videoUrl) ? (
 					<div class="liquid-card liquid-light mt-8 rounded-[24px] p-3">
 						<div class="overflow-hidden rounded-[16px]">
-							<VideoLoop youtube={(project.data as any).youtube} file={(project.data as any).video} poster={cover} title={title} eager />
+							<VideoLoop youtube={(project.data as any).youtube} file={(project.data as any).videoUrl || (project.data as any).video} poster={cover} title={title} eager />
 						</div>
 					</div>
 				) : ((project.data as any).layers?.some((l: any) => l?.image) || cover) && (

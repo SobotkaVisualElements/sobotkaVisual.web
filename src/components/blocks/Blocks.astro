@@ -114,7 +114,8 @@ function linePath(b: any) {
 			case 'wideo': {
 				const id = ytId(b.youtube);
 				const vert = b.format === '9:16';
-				return (id || b.file) && (
+				const vfile = b.url || b.file;
+				return (id || vfile) && (
 					<figure class:list={['svc-b', vert && 'svc-vertical']}>
 						{b.mode === 'zwykly' ? (
 							id ? (
@@ -123,10 +124,10 @@ function linePath(b: any) {
 									<span class="svc-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg></span>
 								</button>
 							) : (
-								<video src={b.file} controls controlslist="nodownload" preload="metadata" playsinline class:list={['svc-media', vert ? 'aspect-[9/16]' : 'aspect-video']} />
+								<video src={vfile} controls controlslist="nodownload" preload="metadata" playsinline class:list={['svc-media', vert ? 'aspect-[9/16]' : 'aspect-video']} />
 							)
 						) : (
-							<VideoLoop youtube={b.youtube} file={b.file} ratio={vert ? '9:16' : '16:9'} title={b.caption || 'Wideo'} class="svc-media rounded-[16px]" />
+							<VideoLoop youtube={b.youtube} file={vfile} ratio={vert ? '9:16' : '16:9'} title={b.caption || 'Wideo'} class="svc-media rounded-[16px]" />
 						)}
 						{b.caption && <figcaption>{b.caption}</figcaption>}
 					</figure>

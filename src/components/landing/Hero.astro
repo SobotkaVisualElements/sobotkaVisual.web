@@ -6,6 +6,7 @@ const clients: { name: string; logo: string; height?: number }[] = (home as any)
 	{ name: 'Betters', logo: '/betters.svg', height: 28 },
 ];
 const h = { h1prefix: 'Bądź', h1accent: 'wyjątkowy', lead: 'Motion design, montaż i color grading dla marek, które chcą pokazać światu swój potencjał.', ctaPrimaryLabel: 'Bezpłatna wycena', ctaPrimaryHref: '/#kontakt', ctaSecondaryLabel: 'Zobacz realizacje', ctaSecondaryHref: '/work', video: '', poster: '', videoOpacity: 30, clientsLabel: 'Zaufali nam', ...(home as any).hero };
+if ((h as any).videoUrl) h.video = (h as any).videoUrl; // film z Cloudflare R2 ma pierwszeństwo
 ---
 <section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
 	{h.video && (
