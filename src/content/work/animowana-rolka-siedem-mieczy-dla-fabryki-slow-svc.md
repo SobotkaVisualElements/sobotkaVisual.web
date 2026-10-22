@@ -4,6 +4,7 @@ description: Pionowa rolka do książki Anthony’ego Ryana, zrobiona z ilustrac
 category: Animacja
 client: Fabryka Słów
 clientLogo: /uploads/FabrykaSlowLogo.svg
+clientLogoTone: ciemne
 role: Animacja, motion design, montaż, sound design
 year: 2026
 date: 2026-09-23
@@ -20,12 +21,18 @@ layers:
   - image: /uploads/realizacje/Tło.png
     depth: 10
     scale: 112
+    x: 50
+    'y': 50
   - image: /uploads/realizacje/Środek.png
     depth: 45
     scale: 112
+    x: 50
+    'y': 50
   - image: /uploads/realizacje/Przód.png
     depth: 60
     scale: 100
+    x: 50
+    'y': 50
 parallaxStrength: 100
 featured: false
 order: 10
@@ -36,6 +43,17 @@ blocks:
     file: /uploads/realizacje/AnthonyRyan_SiedemMieczy_RolkaAnimowana_WEB.mp4
     format: '9:16'
     mode: petla
+  - type: oferta
+    label: Sprawdź ofertę
+    lead: Chcesz podobną animację dla swojej książki?
+    note: ''
+    tryb: jednorazowa
+    pakiet: none
+    items:
+      - id: rolkaani
+        qty: 1
+    extras: []
+    align: srodek
 ---
 
 ## „Siedem Mieczy"
