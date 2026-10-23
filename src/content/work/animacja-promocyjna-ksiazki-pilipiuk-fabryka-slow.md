@@ -14,7 +14,7 @@ tech:
   - Adobe After Effect
   - Adobe Premiere Pro
 cover: ''
-poster: ''
+poster: https://media.sobotkavisual.pl/obrazy/Pilipiuk_Wedrowycz-Lajdactwa_Pion.jpg
 youtube: ''
 video: ''
 videoUrl: ''
