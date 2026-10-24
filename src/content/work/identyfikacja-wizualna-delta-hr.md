@@ -6,8 +6,8 @@ client: Delta HR
 clientLogo: https://media.sobotkavisual.pl/filmy/DeltaHRLogo.svg
 clientLogoTone: ciemne
 role: Scenariusze, montaż, miniatury
-year: 2026
-date: ''
+year: 2025
+date: 2025-10-01
 tech:
   - Premiere Pro
   - After Effects
