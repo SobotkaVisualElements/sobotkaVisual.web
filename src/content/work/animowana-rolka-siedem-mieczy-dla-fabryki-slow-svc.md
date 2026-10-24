@@ -14,9 +14,10 @@ tech:
   - Adobe After Effect
   - Adobe Premiere Pro
 cover: ''
-poster: ''
+poster: https://media.sobotkavisual.pl/obrazy/Ryan_Siedem-Mieczy_Pion.jpg
 youtube: ''
 video: ''
+videoUrl: ''
 layers:
   - image: /uploads/realizacje/Tło.png
     depth: 10
