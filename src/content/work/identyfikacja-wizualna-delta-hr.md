@@ -1,13 +1,36 @@
 ---
-title: 'Wideo rekrutacyjne dla Delta HR — 3 rolki tygodniowo przez rok'
-description: 'Scenariusze, montaż i miniatury do rolek rekrutujących kierowców zawodowych na rynki Niemiec, Beneluksu i Francji. Ponad 150 materiałów w powtarzalnym formacie.'
-category: 'Montaż'
-tech: ['Premiere Pro', 'After Effects', 'Photoshop']
+title: Wideo rekrutacyjne dla Delta HR — 3 rolki tygodniowo przez rok
+description: Scenariusze, montaż i miniatury do rolek rekrutujących kierowców zawodowych na rynki Niemiec, Beneluksu i Francji. Ponad 150 materiałów w powtarzalnym formacie.
+category: Montaż
+client: Delta HR
+clientLogo: https://media.sobotkavisual.pl/filmy/DeltaHRLogo.svg
+clientLogoTone: ciemne
+role: Scenariusze, montaż, miniatury
 year: 2026
-role: 'Scenariusze, montaż, miniatury'
-client: 'Delta HR'
+date: ''
+tech:
+  - Premiere Pro
+  - After Effects
+  - Photoshop
+cover: ''
+poster: https://media.sobotkavisual.pl/obrazy/DeltaHR_Pion.jpg
+youtube: ''
+video: ''
+videoUrl: ''
+layers: []
+parallaxStrength: 100
 featured: true
 order: 1
+blocks:
+  - type: oferta
+    label: Sprawdź ofertę
+    lead: Potrzebujesz regularnych materiałów rekrutacyjnych lub sprzedażowych?
+    note: ''
+    tryb: stala
+    pakiet: start
+    items: []
+    extras: []
+    align: srodek
 ---
 
 ## Klient i cel
@@ -45,5 +68,3 @@ Gdy któryś format przestawał działać, sami proponowaliśmy zmiany w komunik
 ## Zakres usług
 
 Scenariusze krótkich form · montaż rolek pionowych · napisy · miniatury · system scenariuszowy (powtarzalny format)
-
-Potrzebujesz regularnych materiałów rekrutacyjnych lub sprzedażowych? [Policz swój pakiet w generatorze](/generator).
