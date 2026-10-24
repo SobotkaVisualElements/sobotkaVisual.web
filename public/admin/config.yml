@@ -124,6 +124,7 @@ collections:
                 summary: "{{fields.title}}"
                 fields:
                   - { name: image, label: "Obraz", widget: image, required: false, hint: "Możesz pominąć, jeśli wkleisz link YouTube — miniatura pobierze się sama." }
+                  - { name: video, label: "Film MP4 — link z biblioteki media.sobotkavisual.pl", widget: string, required: false, hint: "Gra w pętli bez dźwięku, gdy kafelek jest na środku. Obraz powyżej (opcjonalny) to klatka przed wczytaniem. [Otwórz bibliotekę](https://media.sobotkavisual.pl)" }
                   - { name: youtube, label: "Link YouTube (odtwarza się po kliknięciu)", widget: string, required: false }
                   - { name: title, label: "Tytuł pod karuzelą", widget: string, required: false }
                   - { name: link, label: "albo link do strony (np. /work/...)", widget: string, required: false }

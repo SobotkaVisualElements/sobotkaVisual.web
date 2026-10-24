@@ -101,7 +101,7 @@ function linePath(b: any) {
 			}
 
 			case 'karuzela3d': {
-				const its = (b.items ?? []).map((x: any) => ({ img: x.image, youtube: x.youtube, title: x.title, href: x.link, logo: x.logo })).filter((x: any) => x.img || x.youtube);
+				const its = (b.items ?? []).map((x: any) => ({ img: x.image, youtube: x.youtube, video: x.video, title: x.title, href: x.link, logo: x.logo })).filter((x: any) => x.img || x.youtube || x.video);
 				const o = b.orientation === 'pion' ? 'pion' : 'poziom';
 				return its.length > 0 && (
 					<figure class="svc-b svc-wide">

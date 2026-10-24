@@ -267,6 +267,9 @@ content:
         - name: image
           label: Obraz (można pominąć przy linku YouTube)
           type: image
+        - name: video
+          label: Film MP4 — link z biblioteki media.sobotkavisual.pl (gra w pętli na środku)
+          type: string
         - name: youtube
           label: Link YouTube (odtwarza się po kliknięciu)
           type: string
