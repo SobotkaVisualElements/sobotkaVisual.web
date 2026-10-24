@@ -12,7 +12,7 @@ tech:
   - Premiere Pro
   - After Effects
   - Photoshop
-cover: ''
+cover: https://media.sobotkavisual.pl/obrazy/DeltaHR_Pion.jpg
 poster: https://media.sobotkavisual.pl/obrazy/DeltaHR_Pion.jpg
 youtube: ''
 video: ''
