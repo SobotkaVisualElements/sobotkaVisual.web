@@ -7,7 +7,7 @@ clientLogo: ''
 clientLogoTone: ciemne
 role: Identyfikacja wizualna, miniatury, motion design
 year: 2026
-date: ''
+date: 2026-01-01
 tech:
   - Photoshop
   - Illustrator
