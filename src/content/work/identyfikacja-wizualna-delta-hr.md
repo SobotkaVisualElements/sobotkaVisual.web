@@ -3,7 +3,7 @@ title: Wideo rekrutacyjne dla Delta HR — 3 rolki tygodniowo przez rok
 description: Scenariusze, montaż i miniatury do rolek rekrutujących kierowców zawodowych na rynki Niemiec, Beneluksu i Francji. Ponad 150 materiałów w powtarzalnym formacie.
 category: Montaż
 client: Delta HR
-clientLogo: https://media.sobotkavisual.pl/filmy/DeltaHRLogo.svg
+clientLogo: https://media.sobotkavisual.pl/svg/DeltaHRLogo.svg
 clientLogoTone: ciemne
 role: Scenariusze, montaż, miniatury
 year: 2025
