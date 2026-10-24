@@ -3,38 +3,52 @@ title: Identyfikacja wizualna kanału Przemysława Langiera — CTR miniatur 21%
 description: 'Kompletna paczka graficzna kanału YouTube: miniatury, profilowe, tło, banery, animowane belki i intro. Klikalność miniatur 21% w pierwszej godzinie po publikacji.'
 category: Identyfikacja
 client: Przemysław Langier
+clientLogo: ''
+clientLogoTone: ciemne
 role: Identyfikacja wizualna, miniatury, motion design
 year: 2026
+date: ''
 tech:
   - Photoshop
   - Illustrator
   - After Effects
 cover: ''
+poster: ''
+youtube: ''
+video: ''
+videoUrl: ''
 layers: []
 parallaxStrength: 100
 featured: true
 order: 3
 blocks:
-  - type: karuzela
-    images:
-      - image: /uploads/realizacje/maxresdefault (1).jpg
-        caption: ''
+  - type: karuzela3d
+    caption: ''
+    orientation: miniatury
+    items:
       - image: /uploads/realizacje/maxresdefault (3).jpg
-        caption: ''
-      - image: /uploads/realizacje/maxresdefault.jpg
-        caption: ''
-      - image: /uploads/realizacje/maxresdefault (2).jpg
-        caption: ''
+        youtube: ''
+        title: ''
+        link: ''
+        logo: /uploads/realizacje/maxresdefault.jpg
+      - image: /uploads/realizacje/maxresdefault (1).jpg
+        youtube: ''
+        title: ''
+        link: ''
+        logo: /uploads/realizacje/maxresdefault (2).jpg
       - image: /uploads/realizacje/maxresdefault.webp
-        caption: ''
+        youtube: ''
+        title: ''
+        link: ''
+        logo: ''
   - type: wykres_kolowy
-    value: 21
     label: CTR miniatur w pierwszej godzinie po publikacji
+    value: 21
     suffix: '%'
     description: Ponad co piąta osoba, której YouTube pokazał miniaturę, kliknęła w film.
   - type: wykres_liniowy
+    label: Ponad co piąta osoba, której YouTube pokazał miniaturę, kliknęła w film.
     value: 21
-    label: Klikalność miniatur w kolejnych godzinach
     points: 21, 15, 15, 9
     prefix: ''
     suffix: '%'
