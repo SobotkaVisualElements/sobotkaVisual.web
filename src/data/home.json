@@ -9,7 +9,6 @@
     "ctaSecondaryHref": "/work",
     "video": "/uploads/Reklama WEB.mp4",
     "videoUrl": "https://media.sobotkavisual.pl/filmy/reklama-hero.mp4",
-    "poster": "",
     "videoOpacity": 30,
     "clientsLabel": "Zaufali nam"
   },
@@ -35,34 +34,57 @@
       "height": 60
     }
   ],
+  "realizacje": {
+    "eyebrow": "Ostatnie realizacje",
+    "title": "Zobacz, co ostatnio",
+    "titleLight": "stworzyliśmy.",
+    "lead": "Montaż, animacje i oprawa — najnowsze projekty dla marek, twórców i wydawnictw.",
+    "limit": 9,
+    "showLogos": false
+  },
+  "booking": {
+    "label": "Umów 15 minut rozmowy",
+    "note": "Bez zobowiązań. Wybierasz termin, który Ci pasuje."
+  },
+  "liczby": {
+    "show": true,
+    "items": [
+      {
+        "pre": "od ",
+        "v": 2020,
+        "d": "tworzymy wideo i animacje"
+      },
+      {
+        "v": 250,
+        "suf": "+",
+        "d": "materiałów dla firm i twórców rocznie"
+      },
+      {
+        "v": 21,
+        "suf": "%",
+        "d": "widzów klika nasze miniatury w 1. godzinie (typowo 2–10%)"
+      },
+      {
+        "v": 250,
+        "suf": "+",
+        "d": "materiałów „zawsze na czas” "
+      }
+    ]
+  },
+  "whatsapp": {
+    "show": true,
+    "phone": "48668472759",
+    "text": "Dzień dobry, piszę ze strony sobotkavisual.pl. Chciałbym zapytać o",
+    "label": "Napisz na WhatsApp"
+  },
+  "oferta": {
+    "showLandings": false
+  },
   "uslugi": {
     "titleBig": "Wszystko,",
     "titleSmall": "czego potrzebują Twoje media",
     "lead": "Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość."
   },
-  "dlaKogo": {
-    "eyebrow": "Dla kogo",
-    "titleLine1": "Media dla tych,",
-    "titleLine2": "którzy chcą się wyróżnić"
-  },
-  "kontakt": {
-    "title": "Pokażmy światu Twój potencjał",
-    "lead": "Napisz w dwóch zdaniach, czym się zajmujesz i czego potrzebujesz. Odezwiemy się z bezpłatną wyceną."
-  },
-  "tiles": [
-    {
-      "body": "Montaż odcinków, miniatury i rolki, które odzyskują Twój czas i podbijają klikalność.",
-      "image": "https://picsum.photos/id/378/1920/1280.webp",
-      "note": "",
-      "title": "Twórcy internetowi"
-    },
-    {
-      "body": "Materiały produktowe i wizerunkowe na najwyższym poziomie.",
-      "image": "",
-      "note": "Wy decydujecie, co pokazać — produkcję bierzemy na siebie.",
-      "title": "Marki i firmy"
-    }
-  ],
   "features": [
     {
       "icon": "montaz",
@@ -95,6 +117,27 @@
       "body": "Opracowanie dźwięku, lektor, dzień zdjęciowy — kompletne zaplecze produkcyjne."
     }
   ],
+  "dlaKogo": {
+    "eyebrow": "Dla kogo",
+    "titleLine1": "Media dla tych,",
+    "titleLine2": "którzy chcą się wyróżnić"
+  },
+  "tiles": [
+    {
+      "title": "Twórcy internetowi",
+      "body": "Montaż odcinków, miniatury i rolki, które odzyskują Twój czas i podbijają klikalność.",
+      "image": "https://picsum.photos/id/378/1920/1280.webp"
+    },
+    {
+      "title": "Marki i firmy",
+      "body": "Materiały produktowe i wizerunkowe na najwyższym poziomie.",
+      "note": "Wy decydujecie, co pokazać — produkcję bierzemy na siebie."
+    }
+  ],
+  "kontakt": {
+    "title": "Pokażmy światu Twój potencjał",
+    "lead": "Napisz w dwóch zdaniach, czym się zajmujesz i czego potrzebujesz. Odezwiemy się z bezpłatną wyceną."
+  },
   "sections": [
     "realizacje",
     "uslugi",
@@ -106,57 +149,5 @@
     "probna",
     "faq",
     "kontakt"
-  ],
-  "realizacje": {
-    "eyebrow": "Ostatnie realizacje",
-    "title": "Zobacz, co ostatnio",
-    "titleLight": "stworzyliśmy.",
-    "lead": "Montaż, animacje i oprawa — najnowsze projekty dla marek, twórców i wydawnictw.",
-    "limit": 9
-  },
-  "booking": {
-    "url": "",
-    "label": "Umów 15 minut rozmowy",
-    "note": "Bez zobowiązań. Wybierasz termin, który Ci pasuje."
-  },
-  "liczby": {
-    "show": true,
-    "items": [
-      {
-        "v": 2020,
-        "pre": "od ",
-        "suf": "",
-        "d": "tworzymy wideo i animacje"
-      },
-      {
-        "v": 150,
-        "pre": "",
-        "suf": "+",
-        "d": "rolek rocznie dla jednego klienta (Delta HR)"
-      },
-      {
-        "v": 21,
-        "pre": "",
-        "suf": "%",
-        "d": "CTR miniatur w 1. godzinie (typowo 2–10%)"
-      },
-      {
-        "v": 100,
-        "pre": "",
-        "suf": "+",
-        "d": "materiałów „zawsze na czas” — opinia Delta HR"
-      }
-    ]
-  },
-  "whatsapp": {
-    "show": true,
-    "phone": "48668472759",
-    "text": "Dzień dobry, piszę ze strony sobotkavisual.pl. Chciałbym zapytać o",
-    "label": "Napisz na WhatsApp"
-  },
-  "google": {
-    "url": "",
-    "rating": "",
-    "count": ""
-  }
+  ]
 }
