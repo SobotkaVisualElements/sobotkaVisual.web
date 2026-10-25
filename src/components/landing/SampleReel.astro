@@ -1,0 +1,86 @@
+---
+/*
+ * „Darmowa rolka próbna” — firma wysyła link do materiału, dostaje jedną zmontowaną rolkę za darmo.
+ * Formularz wysyła maila przez /api/order (ten sam co generator). Gdy wysyłka nie zadziała — otwiera program pocztowy.
+ * Panel: Strona główna → Sekcja: Darmowa rolka próbna.
+ */
+import home from '../../data/home.json';
+import IsoIcon from '../iso/IsoIcon.astro';
+import { tx } from '../../lib/typo';
+const s: any = {
+	eyebrow: 'Sprawdź mnie za darmo',
+	title: 'Darmowa rolka próbna z Twojego materiału',
+	lead: 'Wyślij link do nagrania — zmontuję z niego jedną rolkę z napisami i dźwiękiem. Zobaczysz jakość, zanim cokolwiek zapłacisz.',
+	rules: ['Materiał do 3 minut (telefon też się nada)', 'Gotowa rolka w 3–5 dni roboczych', 'Jedna próbka na firmę', 'Bez zobowiązań — rolka zostaje u Ciebie'],
+	button: 'Chcę darmową rolkę',
+	...((home as any).probna ?? {}),
+};
+---
+<section id="probna" class="relative overflow-hidden border-t border-white/6 bg-linear-160 from-navy to-navy-deep text-cloud">
+	<span class="pointer-events-none absolute inset-0 bg-grid opacity-30"></span>
+	<div class="relative z-2 mx-auto grid max-w-[1200px] items-center gap-10 px-8 py-20 lg:grid-cols-[1.05fr_1fr]">
+		<div>
+			<span class="sr-ico" aria-hidden="true"><IsoIcon name="telefon" /></span>
+			<span class="text-[13px] font-bold tracking-[0.12em] text-orange-glow uppercase">{s.eyebrow}</span>
+			<h2 class="mt-3 text-[34px] leading-tight font-bold tracking-[-0.02em] text-cloud md:text-[44px]" set:html={tx(s.title)} />
+			<p class="mt-4 max-w-[540px] text-[18px] leading-relaxed text-sky-mist" set:html={tx(s.lead)} />
+			<ul class="mt-6 grid gap-2.5 text-[15px] text-cloud sm:grid-cols-2">
+				{s.rules.map((r: string) => <li class="flex gap-2.5"><span class="font-extrabold text-[#2ee59d]">✓</span><span set:html={tx(r)} /></li>)}
+			</ul>
+		</div>
+		<form id="sr-form" class="sr-form liquid-card glass rounded-[22px] p-7" novalidate>
+			<label class="sr-f"><span>Imię i firma</span><input name="firma" required autocomplete="organization" placeholder="np. Anna, Piekarnia Kłos" /></label>
+			<label class="sr-f"><span>E-mail</span><input name="email" type="email" required autocomplete="email" placeholder="adres do odpowiedzi" /></label>
+			<label class="sr-f"><span>Link do materiału</span><input name="link" required placeholder="Dysk Google, WeTransfer, YouTube…" /></label>
+			<label class="sr-f"><span>Do czego ma być rolka? <small>(opcjonalnie)</small></span><textarea name="opis" rows="2" placeholder="np. promocja nowego produktu na Instagramie"></textarea></label>
+			<input name="firma_www" class="sr-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+			<button type="submit" class="sr-btn btn-saber">{s.button} →</button>
+			<p class="sr-note">Odpowiadam w 24 h w dni robocze · bez spamu · Twój materiał nie trafi nigdzie dalej</p>
+			<p class="sr-ok hidden" role="status">Dziękuję! Materiał dotarł — odezwę się w ciągu 24 h.</p>
+		</form>
+	</div>
+</section>
+<style is:global>
+	.sr-ico { display: block; width: 96px; height: 96px; margin: -10px 0 6px -12px; }
+	.sr-ico .iso { width: 100%; height: 100%; }
+	.sr-form { display: grid; gap: 14px; }
+	.sr-f { display: grid; gap: 6px; font-size: 13px; font-weight: 700; color: #fff; }
+	.sr-f small { font-weight: 500; opacity: .6; }
+	.sr-f input, .sr-f textarea { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,.18); background: rgba(10,6,48,.55); color: #fff; font: inherit; font-weight: 500; font-size: 15px; }
+	.sr-f input:focus, .sr-f textarea:focus { outline: none; border-color: #b03cff; box-shadow: 0 0 0 3px rgba(176,60,255,.3); }
+	.sr-f .bad { border-color: #ff5a78; }
+	.sr-hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+	.sr-btn { margin-top: 4px; padding: 15px; border-radius: 999px; font-weight: 800; font-size: 16px; color: #fff; cursor: pointer; border: 0;
+		background: linear-gradient(150deg, #6d4dff, #b03cff 60%, #ff5fd2); box-shadow: 0 14px 34px -12px rgba(176,60,255,.9); transition: transform .2s; }
+	.sr-btn:hover { transform: translateY(-2px); }
+	.sr-btn:disabled { opacity: .6; cursor: wait; }
+	.sr-note { font-size: 12.5px; text-align: center; color: var(--color-sky-mist, #c3c0dc); opacity: .8; }
+	.sr-ok { padding: 12px; border-radius: 12px; text-align: center; font-weight: 700; color: #2ee59d; background: rgba(46,229,157,.1); border: 1px solid rgba(46,229,157,.4); }
+</style>
+<script>
+	const f = document.getElementById('sr-form') as HTMLFormElement | null;
+	f?.addEventListener('submit', async (e) => {
+		e.preventDefault();
+		const v = (n: string) => (f.elements.namedItem(n) as HTMLInputElement).value.trim();
+		let ok = true;
+		['firma', 'email', 'link'].forEach((n) => {
+			const el = f.elements.namedItem(n) as HTMLInputElement;
+			const bad = !el.value.trim() || (n === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(el.value.trim()));
+			el.classList.toggle('bad', bad); if (bad) ok = false;
+		});
+		if (!ok) return;
+		const body = ['Zgłoszenie: DARMOWA ROLKA PRÓBNA', '', `Kto: ${v('firma')}`, `Link do materiału: ${v('link')}`, `Do czego: ${v('opis') || '-'}`].join('\n');
+		const btn = f.querySelector('button') as HTMLButtonElement;
+		btn.disabled = true;
+		try {
+			const r = await fetch('/api/order', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ temat: 'probna', email: v('email'), firma: v('firma'), firma_www: v('firma_www'), zamowienie: body }) });
+			if (!r.ok) throw new Error('api');
+			f.querySelectorAll('.sr-f, .sr-btn, .sr-note').forEach((el) => el.classList.add('hidden'));
+			f.querySelector('.sr-ok')?.classList.remove('hidden');
+		} catch {
+			location.href = `mailto:kontakt@sobotkavisual.pl?subject=${encodeURIComponent('Darmowa rolka próbna')}&body=${encodeURIComponent(body)}`;
+			btn.disabled = false;
+		}
+	});
+</script>

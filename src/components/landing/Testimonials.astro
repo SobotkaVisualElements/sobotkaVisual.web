@@ -2,12 +2,22 @@
 import SectionHeader from './SectionHeader.astro';
 import { opinie as quotes } from '../../data/opinie';
 import Stars from '../ui/Stars.astro';
+import home from '../../data/home.json';
+// odznaka opinii Google — pokazuje się dopiero po wpisaniu linku w panelu (tylko prawdziwe dane)
+const g: any = (home as any).google ?? {};
 ---
 <section class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
 	<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
 	<span data-speed="0.04" class="pointer-events-none absolute top-12.5 left-[6%] text-[28px] text-orange">✦</span>
 	<div class="relative z-2 mx-auto max-w-[1200px] px-8 py-20">
-		<SectionHeader eyebrow="Opinie" title="Nie musisz wierzyć nam na słowo" on="navy" class="max-w-[620px] mb-12" />
+		<SectionHeader eyebrow="Opinie" title="Nie musisz wierzyć nam na słowo" on="navy" class={g.url ? 'max-w-[620px] mb-6' : 'max-w-[620px] mb-12'} />
+		{g.url && (
+			<div class="text-center"><a href={g.url} target="_blank" rel="noopener" class="gg-badge">
+				<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#ffc107" d="M43.6 20.5H42V20H24v8h11.3A12 12 0 1 1 32 15.1l5.7-5.7A20 20 0 1 0 44 24c0-1.2-.1-2.3-.4-3.5z"/><path fill="#ff3d00" d="m6.3 14.7 6.6 4.8A12 12 0 0 1 32 15.1l5.7-5.7A20 20 0 0 0 6.3 14.7z"/><path fill="#4caf50" d="M24 44a20 20 0 0 0 13.4-5.2l-6.2-5.2A12 12 0 0 1 12.7 28l-6.5 5A20 20 0 0 0 24 44z"/><path fill="#1976d2" d="M43.6 20.5H42V20H24v8h11.3a12 12 0 0 1-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.2-.1-2.3-.4-3.5z"/></svg>
+				<b>{String(g.rating || '5,0').replace('.', ',')}</b><span class="gg-stars" aria-hidden="true">★★★★★</span>
+				<span>{g.count ? `${g.count} opinii w Google` : 'Opinie w Google'} →</span>
+			</a></div>
+		)}
 		<div class="grid gap-6 md:grid-cols-2">
 			{quotes.map((q) => (
 				<div class="liquid-card glass rounded-2xl p-8">
@@ -25,3 +35,10 @@ import Stars from '../ui/Stars.astro';
 		</div>
 	</div>
 </section>
+<style is:global>
+	.gg-badge { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 36px; padding: 10px 18px; border-radius: 999px; background: #fff; color: #0a0630; font-size: 14px; font-weight: 600; transition: transform .2s; }
+	.gg-badge:hover { transform: translateY(-2px); }
+	.gg-badge svg { width: 22px; height: 22px; }
+	.gg-badge b { font-size: 17px; font-weight: 900; }
+	.gg-stars { color: #fbbc04; letter-spacing: 1px; }
+</style>

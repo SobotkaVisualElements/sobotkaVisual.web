@@ -1,0 +1,80 @@
+---
+/*
+ * „Dzień contentowy” — jeden dzień nagrań u klienta = treści na cały miesiąc (zamówienie jednorazowe).
+ * Cena liczona z cennika jak w generatorze (src/lib/pricing.ts → dzienPreset), więc nie trzeba jej przepisywać.
+ * Pod spodem strefy dojazdu. Panel: Strona główna → Sekcja: Dzień contentowy.
+ */
+import home from '../../data/home.json';
+import IsoIcon from '../iso/IsoIcon.astro';
+import { dzienPreset, oneoffDeal, dojazd, groups, zl } from '../../lib/pricing';
+import { tx } from '../../lib/typo';
+const s: any = {
+	eyebrow: 'Bez abonamentu',
+	title: 'Jeden dzień nagrań = treści na cały miesiąc',
+	lead: 'Przyjeżdżam do Twojej firmy na jeden dzień. Nagrywamy wszystko naraz, a Ty dostajesz gotowe rolki i grafiki do publikacji przez kolejne 30 dni.',
+	button: 'Ustaw swój dzień w generatorze',
+	...((home as any).dzien ?? {}),
+};
+const d = oneoffDeal(dzienPreset);
+const names: Record<string, string> = Object.fromEntries(groups.flatMap((g) => g.items.map((i) => [i.id, i.name])));
+const label: Record<string, string> = { zdjecia: 'dzień nagrań u Ciebie (do 6 h)', rolki: 'rolek z napisami i dźwiękiem', grafika: 'grafiki z kadrów na social media' };
+const what = Object.entries(dzienPreset).map(([id, q]) => ({ q, t: label[id] ?? names[id] }));
+---
+<section id="dzien" class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
+	<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
+	<div class="relative z-2 mx-auto max-w-[1200px] px-8 py-20">
+		<div class="cd-card">
+			<span class="cd-ico" aria-hidden="true"><IsoIcon name="kamera" /></span>
+			<div class="cd-main">
+				<span class="text-[13px] font-bold tracking-[0.12em] text-white/80 uppercase">{s.eyebrow}</span>
+				<h2 class="mt-3 text-[30px] leading-tight font-bold tracking-[-0.02em] text-white md:text-[42px]" set:html={tx(s.title)} />
+				<p class="mt-4 max-w-[560px] text-[17px] leading-relaxed text-white/85" set:html={tx(s.lead)} />
+				<ul class="mt-6 grid gap-2.5 text-[16px] text-white">
+					{what.map((w) => <li class="flex items-baseline gap-3"><b class="cd-q">{w.q}×</b><span set:html={tx(w.t)} /></li>)}
+				</ul>
+			</div>
+			<div class="cd-price">
+				<span class="deal-ribbon">Przecena <b>−{d.disc}%</b></span>
+				<span class="text-sm text-white/75">Cena za cały dzień</span>
+				<span class="cd-old">{zl(d.list)}</span>
+				<span class="cd-new">{zl(d.final)}</span>
+				<span class="cd-per">≈ {zl(d.final / (dzienPreset.rolki || 1))} za rolkę — z nagraniem i grafikami</span>
+				<a href={d.link} class="cd-btn btn-saber">{s.button} →</a>
+			</div>
+		</div>
+
+		<div class="cd-zones">
+			<h3 class="text-[20px] font-bold text-cloud">Dojazd — płacisz raz za dzień nagrań, nie za każdą rolkę</h3>
+			<div class="mt-5 grid gap-4 md:grid-cols-3">
+				{dojazd.map((z, i) => (
+					<div class:list={['cd-zone', i === 0 && 'is-free']}>
+						<span class="cd-zone-p">{z.price}</span>
+						<span class="cd-zone-z">{z.zone}</span>
+						<span class="cd-zone-n">{z.note}</span>
+					</div>
+				))}
+			</div>
+		</div>
+	</div>
+</section>
+<style is:global>
+	.cd-card { position: relative; display: grid; gap: 28px; padding: clamp(28px, 4vw, 48px); border-radius: 28px; grid-template-columns: 1.4fr 1fr; align-items: center;
+		background: linear-gradient(150deg, #6d4dff, #b03cff 60%, #ff5fd2); box-shadow: 0 0 60px -14px rgba(176,60,255,.85), 0 30px 70px -30px rgba(0,0,0,.6); }
+	.cd-ico { position: absolute; top: -58px; right: 24px; width: 120px; height: 120px; filter: drop-shadow(0 16px 24px rgba(0,0,0,.45)); }
+	.cd-ico .iso { width: 100%; height: 100%; }
+	.cd-q { display: inline-grid; place-items: center; min-width: 46px; padding: 2px 8px; border-radius: 10px; background: rgba(255,255,255,.18); font-weight: 900; }
+	.cd-price { position: relative; display: flex; flex-direction: column; gap: 4px; padding: 30px 26px 26px; border-radius: 22px; background: rgba(10,6,48,.55); border: 1px solid rgba(255,255,255,.2); }
+	.cd-old { margin-top: 6px; color: rgba(255,255,255,.55); text-decoration: line-through; font-size: 15px; }
+	.cd-new { font-family: var(--font-display, Montserrat), sans-serif; font-size: clamp(40px, 5vw, 54px); line-height: 1; font-weight: 800; color: #fff; }
+	.cd-per { margin-top: 6px; font-size: 14px; color: #2ee59d; font-weight: 700; }
+	.cd-btn { margin-top: 18px; display: block; text-align: center; padding: 14px; border-radius: 999px; background: #fff; color: #3a1d9e; font-weight: 800; transition: transform .2s; }
+	.cd-btn:hover { transform: translateY(-2px); }
+	.cd-zones { margin-top: 44px; }
+	.cd-zone { display: flex; flex-direction: column; gap: 4px; padding: 20px 22px; border-radius: 18px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); }
+	.cd-zone.is-free { border-color: rgba(46,229,157,.5); background: rgba(46,229,157,.07); }
+	.cd-zone-p { font-family: var(--font-display, Montserrat), sans-serif; font-size: 24px; font-weight: 800; color: #fff; }
+	.cd-zone.is-free .cd-zone-p { color: #2ee59d; }
+	.cd-zone-z { font-weight: 700; color: #fff; }
+	.cd-zone-n { font-size: 13.5px; color: var(--color-sky-mist, #c3c0dc); }
+	@media (max-width: 899px) { .cd-card { grid-template-columns: 1fr; } .cd-ico { width: 92px; height: 92px; top: -44px; right: 12px; } }
+</style>

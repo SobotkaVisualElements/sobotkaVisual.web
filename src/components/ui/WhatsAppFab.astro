@@ -1,0 +1,31 @@
+---
+/*
+ * Pływający przycisk WhatsApp z gotową wiadomością (prawy dolny róg).
+ * Panel: Strona główna → WhatsApp (pokaż / numer / treść). Chowa się przy stopce, żeby nie zasłaniać linków.
+ */
+import home from '../../data/home.json';
+const w: any = { show: true, phone: '48668472759', text: 'Dzień dobry, piszę ze strony sobotkavisual.pl. Chciałbym zapytać o', label: 'Napisz na WhatsApp', ...((home as any).whatsapp ?? {}) };
+const href = `https://wa.me/${String(w.phone).replace(/\D/g, '')}?text=${encodeURIComponent(w.text)}`;
+---
+{w.show && (
+	<a href={href} target="_blank" rel="noopener" class="wa-fab" aria-label={w.label} data-wa>
+		<svg viewBox="0 0 32 32" aria-hidden="true"><path fill="currentColor" d="M16 3a13 13 0 0 0-11.2 19.6L3 29l6.6-1.7A13 13 0 1 0 16 3zm0 23.6c-2 0-3.9-.5-5.6-1.5l-.4-.2-3.9 1 1-3.8-.3-.4A10.6 10.6 0 1 1 16 26.6zm5.8-7.9c-.3-.2-1.9-.9-2.2-1s-.5-.2-.7.2-.8 1-1 1.2-.4.2-.7 0a8.7 8.7 0 0 1-4.3-3.8c-.3-.6.3-.5 1-1.7.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6a1.2 1.2 0 0 0-.9.4 3.6 3.6 0 0 0-1.1 2.7 6.3 6.3 0 0 0 1.3 3.3 14.4 14.4 0 0 0 5.5 4.9c2 .9 2.8.9 3.9.8a3.2 3.2 0 0 0 2.1-1.5 2.6 2.6 0 0 0 .2-1.5c-.1-.2-.3-.3-.6-.4z"/></svg>
+		<span class="wa-l">{w.label}</span>
+	</a>
+)}
+<style is:global>
+	.wa-fab { position: fixed; right: 18px; bottom: 18px; z-index: 60; display: flex; align-items: center; gap: 10px; padding: 12px; border-radius: 999px; background: #25d366; color: #05391b;
+		font-weight: 800; font-size: 14px; box-shadow: 0 12px 30px -8px rgba(37,211,102,.7); transition: transform .25s, opacity .3s; }
+	.wa-fab svg { width: 30px; height: 30px; flex: none; }
+	.wa-fab .wa-l { max-width: 0; overflow: hidden; white-space: nowrap; transition: max-width .35s, margin .35s; }
+	.wa-fab:hover { transform: translateY(-2px); }
+	.wa-fab:hover .wa-l { max-width: 200px; margin-right: 6px; }
+	.wa-fab.is-off { opacity: 0; pointer-events: none; transform: translateY(20px); }
+	@media (max-width: 767px) { .wa-fab { right: 14px; bottom: 14px; padding: 11px; } .wa-fab svg { width: 28px; height: 28px; } }
+	@media print { .wa-fab { display: none; } }
+</style>
+<script>
+	const fab = document.querySelector<HTMLElement>('[data-wa]');
+	const foot = document.querySelector('footer');
+	if (fab && foot) new IntersectionObserver(([e]) => fab.classList.toggle('is-off', e.isIntersecting)).observe(foot);
+</script>

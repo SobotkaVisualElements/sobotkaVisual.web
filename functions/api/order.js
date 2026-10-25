@@ -8,7 +8,8 @@ export async function onRequestPost({ request, env }) {
 	};
 	try {
 		const data = await request.json();
-		const { email, firma, nip, telefon, zamowienie } = data || {};
+		const { email, firma, nip, telefon, zamowienie, temat } = data || {};
+		const probna = temat === 'probna';
 
 		if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
 			return new Response(JSON.stringify({ ok: false, error: 'Niepoprawny e-mail' }), { status: 400, headers: cors });
@@ -21,7 +22,7 @@ export async function onRequestPost({ request, env }) {
 		const FROM = env.MAIL_FROM || 'Generator SVC <generator@sobotkavisual.pl>';
 
 		const html = `
-			<h2>Nowe zapytanie z generatora</h2>
+			<h2>${probna ? 'Darmowa rolka próbna — nowe zgłoszenie' : 'Nowe zapytanie z generatora'}</h2>
 			<p><b>Firma:</b> ${esc(firma) || '-'}<br>
 			<b>NIP:</b> ${esc(nip) || '-'}<br>
 			<b>E-mail:</b> ${esc(email)}<br>
@@ -33,7 +34,7 @@ export async function onRequestPost({ request, env }) {
 		const r = await fetch('https://api.resend.com/emails', {
 			method: 'POST',
 			headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-			body: JSON.stringify({ from: FROM, to: [TO], reply_to: email, subject: `Zapytanie z generatora — ${firma || email}`, html }),
+			body: JSON.stringify({ from: FROM, to: [TO], reply_to: email, subject: `${probna ? 'Rolka próbna' : 'Zapytanie z generatora'} — ${firma || email}`, html }),
 		});
 		if (!r.ok) {
 			const t = await r.text();
@@ -47,9 +48,9 @@ export async function onRequestPost({ request, env }) {
 			body: JSON.stringify({
 				from: FROM,
 				to: [email],
-				subject: 'Dziękujemy za zapytanie — Sobotka Visual Creations',
+				subject: probna ? 'Mamy Twój materiał — darmowa rolka próbna' : 'Dziękujemy za zapytanie — Sobotka Visual Creations',
 				html: `<p>Dzień dobry,</p>
-				<p>dziękujemy za przesłanie konfiguracji. Odezwiemy się z odpowiedzią <b>do 48 godzin</b>.</p>
+				<p>${probna ? 'dziękujemy za zgłoszenie do darmowej rolki próbnej. Sprawdzimy materiał i odezwiemy się <b>do 24 godzin</b> w dni robocze.' : 'dziękujemy za przesłanie konfiguracji. Odezwiemy się z odpowiedzią <b>do 48 godzin</b>.'}</p>
 				<p>Poniżej kopia Państwa zapytania:</p>
 				<pre style="font-family:ui-monospace,monospace;white-space:pre-wrap">${esc(zamowienie) || ''}</pre>
 				<p>Pozdrawiamy,<br>Sobotka Visual Creations<br>kontakt@sobotkavisual.pl · 668 472 759</p>`,

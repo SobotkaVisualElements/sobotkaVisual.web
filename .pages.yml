@@ -1522,6 +1522,58 @@ content:
       - {name: v, label: Liczba, type: number}
       - {name: suf, label: 'Po liczbie (%, +)', type: string}
       - {name: d, label: Opis, type: string}
+  - name: proces
+    label: Sekcja „Jak pracujemy” (6 kroków)
+    type: object
+    fields:
+    - {name: eyebrow, label: Nadtytuł, type: string}
+    - {name: title, label: Tytuł, type: string}
+    - name: steps
+      label: Kroki — puste = domyślne
+      type: object
+      list: {max: 6, collapsible: {collapsed: true, summary: '{t}'}}
+      fields:
+      - {name: t, label: Krok, type: string}
+      - {name: d, label: Opis, type: text}
+  - name: probna
+    label: Sekcja „Darmowa rolka próbna”
+    type: object
+    fields:
+    - {name: eyebrow, label: Nadtytuł, type: string}
+    - {name: title, label: Tytuł, type: string}
+    - {name: lead, label: Zdanie pod tytułem, type: text}
+    - {name: rules, label: Warunki (punkty), type: string, list: true}
+    - {name: button, label: Napis na przycisku, type: string}
+  - name: dzien
+    label: Sekcja „Dzień contentowy” (cena liczona z cennika)
+    type: object
+    fields:
+    - {name: eyebrow, label: Nadtytuł, type: string}
+    - {name: title, label: Tytuł, type: string}
+    - {name: lead, label: Opis, type: text}
+    - {name: button, label: Napis na przycisku, type: string}
+  - name: warunki
+    label: Warunki pod cennikiem (4 kafelki) — puste = domyślne
+    type: object
+    list: {max: 4, collapsible: {collapsed: true, summary: '{t}'}}
+    fields:
+    - {name: t, label: Pogrubione, type: string}
+    - {name: d, label: Dopisek, type: string}
+  - name: whatsapp
+    label: Pływający przycisk WhatsApp
+    type: object
+    fields:
+    - {name: show, label: Pokaż, type: boolean}
+    - {name: phone, label: 'Numer (z 48, bez spacji)', type: string}
+    - {name: text, label: Gotowa wiadomość, type: text}
+    - {name: label, label: Napis po najechaniu, type: string}
+  - name: google
+    label: Opinie Google — tylko prawdziwe dane, pusty link = ukryte
+    type: object
+    fields:
+    - {name: url, label: Link do opinii w Google, type: string}
+    - {name: rating, label: 'Ocena (np. 5,0)', type: string}
+    - {name: count, label: Liczba opinii, type: string}
   - name: oferta
     label: Oferta — pakiety (zielone „Zyskujesz”)
     type: object
@@ -1593,6 +1645,17 @@ content:
     - name: titleLine2
       label: Tytuł linia 2
       type: string
+    - name: tabs
+      label: Zakładki (Marketing / HR / Sprzedaż / Sport) — puste = domyślne
+      type: object
+      list: {max: 5, collapsible: {collapsed: true, summary: '{label}'}}
+      fields:
+      - {name: label, label: Napis na zakładce, type: string}
+      - {name: title, label: Nagłówek, type: string}
+      - {name: body, label: Opis, type: text}
+      - {name: points, label: Co dostajesz (punkty), type: string, list: true}
+      - {name: cta, label: Napis na przycisku, type: string}
+      - {name: href, label: 'Link przycisku (np. /generator?pakiet=pro albo #dzien)', type: string}
   - name: tiles
     label: Kafelki Dla kogo
     type: object
@@ -1631,7 +1694,7 @@ content:
     label: Kolejność sekcji pod Hero
     type: string
     list: true
-    description: 'Dozwolone: realizacje, uslugi, dlaKogo, oferta, opinie, faq, kontakt. Przeciągnij, aby zmienić kolejność.'
+    description: 'Dozwolone: realizacje, uslugi, dlaKogo, proces, oferta, dzien, opinie, probna, faq, kontakt. Przeciągnij, aby zmienić kolejność.'
 - name: manifest
   label: Manifest (filozofia tworzenia)
   type: file

@@ -1,0 +1,54 @@
+---
+/*
+ * „Jak pracujemy” — 6 kroków współpracy. Klient z firmy wie, co go czeka, zanim napisze.
+ * Panel: Strona główna → Sekcja: Jak pracujemy.
+ */
+import SectionHeader from './SectionHeader.astro';
+import home from '../../data/home.json';
+import { tx } from '../../lib/typo';
+const fallback = [
+	{ t: 'Rozmowa', d: '15 minut przez telefon albo wideo. Mówisz, co sprzedajesz i komu — ja słucham i dopytuję.' },
+	{ t: 'Plan i wycena', d: 'W 24 h dostajesz zakres, harmonogram i cenę na piśmie. Bez gwiazdek i ukrytych dopłat.' },
+	{ t: 'Nagranie', d: 'Przyjeżdżam z kamerą albo pracuję na Twoich materiałach. Do 40 km od Opola lub Nysy dojazd w cenie.' },
+	{ t: 'Montaż i animacja', d: 'Montaż, napisy, dźwięk i oprawa graficzna w jednym miejscu — bez podwykonawców.' },
+	{ t: 'Poprawki', d: 'Oglądasz, komentujesz, poprawiam. Rundy poprawek są wliczone w pakiet.' },
+	{ t: 'Publikacja', d: 'Dostajesz gotowe pliki w formatach pod każdą platformę i harmonogram publikacji.' },
+];
+const p: any = { eyebrow: 'Jak pracujemy', title: 'Sześć kroków od rozmowy do publikacji', ...((home as any).proces ?? {}) };
+const steps: any[] = p.steps?.length ? p.steps : fallback;
+---
+<section id="proces" class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
+	<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
+	<div class="relative z-2 mx-auto max-w-[1200px] px-8 py-20">
+		<SectionHeader eyebrow={p.eyebrow} title={p.title} on="navy" class="mx-auto mb-12 max-w-[680px] text-center" />
+		<ol class="pr-grid svc-anim">
+			{steps.map((s, i) => (
+				<li class="pr-step" style={`--i:${i}`}>
+					<span class="pr-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+					<h3 class="pr-t" set:html={tx(s.t)} />
+					<p class="pr-d" set:html={tx(s.d)} />
+				</li>
+			))}
+		</ol>
+	</div>
+</section>
+<style is:global>
+	.pr-grid { position: relative; display: grid; gap: 22px; grid-template-columns: repeat(3, minmax(0, 1fr)); counter-reset: pr; list-style: none; padding: 0; }
+	.pr-step { position: relative; padding: 26px 24px 24px; border-radius: 20px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+		opacity: 0; transform: translateY(26px); transition: opacity .7s calc(var(--i) * .12s), transform .7s calc(var(--i) * .12s) cubic-bezier(.2,.8,.2,1), border-color .3s; }
+	.pr-grid.is-in .pr-step { opacity: 1; transform: none; }
+	.pr-step:hover { border-color: rgba(176,60,255,.6); }
+	.pr-num { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; font-family: var(--font-display, Montserrat), sans-serif; font-weight: 900; font-size: 20px; color: #fff;
+		background: linear-gradient(150deg, #6d4dff, #b03cff 60%, #ff5fd2); box-shadow: 0 10px 28px -10px rgba(176,60,255,.9); }
+	.pr-t { margin-top: 16px; font-size: 20px; font-weight: 700; color: #fff; }
+	.pr-d { margin-top: 8px; font-size: 15px; line-height: 1.55; color: var(--color-sky-mist, #c3c0dc); text-wrap: pretty; }
+	/* linia łącząca kroki (komputer) */
+	@media (min-width: 900px) {
+		.pr-step:not(:nth-child(3n))::after { content: ''; position: absolute; top: 51px; right: -22px; width: 22px; height: 2px; background: linear-gradient(90deg, #b03cff, #ff5fd2);
+			transform: scaleX(0); transform-origin: left; transition: transform .5s calc(var(--i) * .12s + .5s); }
+		.pr-grid.is-in .pr-step::after { transform: scaleX(1); }
+	}
+	@media (max-width: 899px) { .pr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+	@media (max-width: 599px) { .pr-grid { grid-template-columns: 1fr; gap: 14px; } .pr-step { padding: 20px; display: grid; grid-template-columns: 52px 1fr; column-gap: 16px; } .pr-t { margin-top: 0; align-self: center; } .pr-d { grid-column: 1 / -1; } }
+	@media (prefers-reduced-motion: reduce) { .pr-step { opacity: 1; transform: none; transition: none; } }
+</style>

@@ -4,6 +4,13 @@ import SaveBadge from '../ui/SaveBadge.astro';
 import Zap from '../ui/Zap.astro';
 import IsoIcon from '../iso/IsoIcon.astro';
 const iPrice = ['tablet', 'rakieta', 'moneta'];
+// jasne warunki pod cennikiem (panel: Strona główna → Warunki pod cennikiem)
+const warunki: any[] = (home as any).warunki?.length ? (home as any).warunki : [
+	{ t: 'Bez ukrytych dopłat', d: 'Cena z generatora to cena na fakturze.' },
+	{ t: 'Gotowe pliki są Twoje', d: 'Używasz ich gdzie chcesz, bez limitu czasu.' },
+	{ t: 'Możesz bez abonamentu', d: 'Pojedyncze zlecenia i dzień contentowy też.' },
+	{ t: 'Odpowiedź w 24 h', d: 'W dni robocze, bez spamu i nachodzenia.' },
+];
 import { packageDeal, zl } from '../../lib/pricing';
 import home from '../../data/home.json';
 // panel → Strona główna → Oferta (pakiety)
@@ -64,6 +71,11 @@ const tiers = [
 			</span>
 			<span class="relative z-2 shrink-0 rounded-full bg-cloud px-7 py-3.5 font-bold text-navy-deep">Otwórz generator →</span>
 		</a>
+		<ul class="wr-grid">
+			{warunki.map((w) => (
+				<li class="wr-it"><span class="wr-ck" aria-hidden="true">✓</span><span><b>{w.t}</b><small>{w.d}</small></span></li>
+			))}
+		</ul>
 		{cfg.showLandings && (
 			<div class="mt-8 flex flex-wrap justify-center gap-3">
 				<a href="/oferta/dzial-wideo" class="rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-sm font-semibold text-sky-mist transition-colors hover:border-orange/60 hover:text-cloud">Dział wideo dla firmy →</a>
@@ -87,5 +99,12 @@ const tiers = [
 	.price-card.is-feat .text-orange-glow, .price-card.is-feat li > span { color: #fff; }
 	.price-card.is-feat .feat-pill { background: rgba(255,255,255,.95); color: #3a1d9e; }
 	.price-card.is-feat .feat-btn { box-shadow: 0 12px 30px -10px rgba(40,10,120,.7); }
+	.wr-grid { margin-top: 28px; display: grid; gap: 14px; grid-template-columns: repeat(4, minmax(0, 1fr)); list-style: none; padding: 0; }
+	.wr-it { display: flex; gap: 12px; align-items: flex-start; padding: 16px 18px; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); }
+	.wr-it b { display: block; color: #fff; font-size: 15px; }
+	.wr-it small { display: block; margin-top: 3px; font-size: 13px; line-height: 1.45; color: var(--color-sky-mist, #c3c0dc); }
+	.wr-ck { flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: rgba(46,229,157,.15); color: #2ee59d; font-weight: 900; font-size: 13px; }
+	@media (max-width: 899px) { .wr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+	@media (max-width: 520px) { .wr-grid { grid-template-columns: 1fr; } }
 	@media (max-width: 767px) { .price-iso { width: 88px; height: 88px; top: -40px; } }
 </style>

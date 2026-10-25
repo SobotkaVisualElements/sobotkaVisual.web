@@ -270,6 +270,84 @@ collections:
               - { name: eyebrow, label: "Nadtytuł", widget: string }
               - { name: titleLine1, label: "Tytuł — linia 1", widget: string }
               - { name: titleLine2, label: "Tytuł — linia 2", widget: string }
+              - name: tabs
+                label: "Zakładki (Marketing / HR / Sprzedaż / Sport) — puste = domyślne"
+                label_singular: Zakładka
+                widget: list
+                required: false
+                max: 5
+                summary: "{{fields.label}}"
+                fields:
+                  - { name: label, label: "Napis na zakładce", widget: string }
+                  - { name: title, label: "Nagłówek", widget: string }
+                  - { name: body, label: "Opis", widget: text }
+                  - { name: points, label: "Co dostajesz (punkty)", widget: list, field: { name: point, label: Punkt, widget: string } }
+                  - { name: cta, label: "Napis na przycisku", widget: string, required: false }
+                  - { name: href, label: "Link przycisku", widget: string, required: false, hint: "np. /generator?pakiet=pro albo #dzien" }
+          - name: proces
+            label: "Sekcja: Jak pracujemy (6 kroków)"
+            widget: object
+            required: false
+            fields:
+              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+              - { name: title, label: "Tytuł", widget: string, required: false }
+              - name: steps
+                label: "Kroki — puste = domyślne"
+                label_singular: Krok
+                widget: list
+                required: false
+                max: 6
+                summary: "{{fields.t}}"
+                fields:
+                  - { name: t, label: "Krok", widget: string }
+                  - { name: d, label: "Opis", widget: text }
+          - name: probna
+            label: "Sekcja: Darmowa rolka próbna"
+            widget: object
+            required: false
+            fields:
+              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+              - { name: title, label: "Tytuł", widget: string, required: false }
+              - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
+              - { name: rules, label: "Warunki (punkty)", widget: list, required: false, field: { name: rule, label: Warunek, widget: string } }
+              - { name: button, label: "Napis na przycisku", widget: string, required: false }
+          - name: dzien
+            label: "Sekcja: Dzień contentowy (cena liczona z cennika)"
+            widget: object
+            required: false
+            fields:
+              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+              - { name: title, label: "Tytuł", widget: string, required: false }
+              - { name: lead, label: "Opis", widget: text, required: false }
+              - { name: button, label: "Napis na przycisku", widget: string, required: false }
+          - name: warunki
+            label: "Warunki pod cennikiem (4 kafelki) — puste = domyślne"
+            label_singular: Warunek
+            widget: list
+            required: false
+            max: 4
+            summary: "{{fields.t}}"
+            fields:
+              - { name: t, label: "Pogrubione", widget: string }
+              - { name: d, label: "Dopisek", widget: string }
+          - name: whatsapp
+            label: "Pływający przycisk WhatsApp"
+            widget: object
+            required: false
+            fields:
+              - { name: show, label: "Pokaż", widget: boolean, default: true, required: false }
+              - { name: phone, label: "Numer (z 48, bez spacji)", widget: string, required: false }
+              - { name: text, label: "Gotowa wiadomość", widget: text, required: false }
+              - { name: label, label: "Napis po najechaniu", widget: string, required: false }
+          - name: google
+            label: "Opinie Google (odznaka nad opiniami)"
+            widget: object
+            required: false
+            hint: "Wpisz tylko prawdziwe dane z wizytówki Google. Pusty link = odznaka ukryta."
+            fields:
+              - { name: url, label: "Link do opinii w Google", widget: string, required: false }
+              - { name: rating, label: "Ocena (np. 5,0)", widget: string, required: false }
+              - { name: count, label: "Liczba opinii", widget: string, required: false }
           - name: kontakt
             label: "Sekcja: Kontakt"
             widget: object
@@ -384,7 +462,7 @@ collections:
             label: "Sekcje pod Hero"
             label_singular: Sekcja
             widget: list
-            field: { name: section, label: "Sekcja", widget: select, options: [{ label: "Ostatnie realizacje — karuzela", value: realizacje }, { label: "Usługi — Wszystko, czego potrzebują Twoje media", value: uslugi }, { label: "Dla kogo", value: dlaKogo }, { label: "Oferta — pakiety", value: oferta }, { label: "Opinie", value: opinie }, { label: "FAQ — pytania", value: faq }, { label: "Kontakt — końcowe wezwanie", value: kontakt }] }
+            field: { name: section, label: "Sekcja", widget: select, options: [{ label: "Ostatnie realizacje — karuzela", value: realizacje }, { label: "Usługi — Wszystko, czego potrzebują Twoje media", value: uslugi }, { label: "Dla kogo", value: dlaKogo }, { label: "Oferta — pakiety", value: oferta }, { label: "Opinie", value: opinie }, { label: "FAQ — pytania", value: faq }, { label: "Kontakt — końcowe wezwanie", value: kontakt }, { label: "Jak pracujemy — 6 kroków", value: proces }, { label: "Darmowa rolka próbna — formularz", value: probna }, { label: "Dzień contentowy + dojazd", value: dzien }] }
 
   - name: manifest
     label: "Manifest (filozofia tworzenia)"

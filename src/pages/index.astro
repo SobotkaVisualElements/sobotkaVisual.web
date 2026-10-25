@@ -10,11 +10,14 @@ import FinalCta from '../components/landing/FinalCta.astro';
 import RecentWork from '../components/landing/RecentWork.astro';
 import home from '../data/home.json';
 import StatsBar from '../components/ui/StatsBar.astro';
+import Process from '../components/landing/Process.astro';
+import SampleReel from '../components/landing/SampleReel.astro';
+import ContentDay from '../components/landing/ContentDay.astro';
 
 // Kolejność sekcji ustawiana w panelu (Strona główna → Kolejność sekcji).
 // Hero zawsze pierwsze (tam jest nagłówek H1 dla Google). Usunięta z listy sekcja znika ze strony.
-const map: Record<string, any> = { realizacje: RecentWork, uslugi: Features, dlaKogo: Showcase, oferta: Pricing, opinie: Testimonials, faq: Faq, kontakt: FinalCta };
-const fallback = ['realizacje', 'uslugi', 'dlaKogo', 'oferta', 'opinie', 'faq', 'kontakt'];
+const map: Record<string, any> = { realizacje: RecentWork, uslugi: Features, dlaKogo: Showcase, oferta: Pricing, opinie: Testimonials, faq: Faq, kontakt: FinalCta, proces: Process, probna: SampleReel, dzien: ContentDay };
+const fallback = ['realizacje', 'uslugi', 'dlaKogo', 'proces', 'oferta', 'dzien', 'opinie', 'probna', 'faq', 'kontakt'];
 const order: string[] = ((home as any).sections?.length ? (home as any).sections : fallback)
 	.map((s: any) => (typeof s === 'string' ? s : s?.section))
 	.filter((s: string, i: number, arr: string[]) => map[s] && arr.indexOf(s) === i);

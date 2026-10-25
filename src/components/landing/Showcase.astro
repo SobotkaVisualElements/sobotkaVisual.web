@@ -2,6 +2,14 @@
 import home from '../../data/home.json';
 import LayerTile from '../ui/LayerTile.astro';
 const tiles = home.tiles;
+// zakładki „ta sama oferta, język Twojego działu” (panel: Sekcja: Dla kogo → Zakładki)
+const tabsFallback = [
+	{ label: 'Marketing', title: 'Stała obecność w social mediach — bez zatrudniania', body: 'Co tydzień nowe rolki, grafiki i animacje w jednym stylu. Ty zatwierdzasz, ja produkuję.', points: ['rolki i shorty co tydzień', 'miniatury i grafiki w spójnym systemie', 'animowane logo i oprawa marki'], cta: 'Zobacz pakiet PRO', href: '/generator?pakiet=pro' },
+	{ label: 'HR i rekrutacja', title: 'Rolki rekrutacyjne, które przyciągają kandydatów', body: 'Krótkie filmy z ofertami pracy i „dniem z życia” zespołu. Robię to stale dla agencji Delta HR — ponad 150 rolek rocznie.', points: ['oferty pracy w formie rolek', 'zespół i miejsce pracy od kuchni', 'napisy pod oglądanie bez dźwięku'], cta: 'Zobacz dzień contentowy', href: '#dzien' },
+	{ label: 'Sprzedaż', title: 'Produkt w ruchu sprzedaje lepiej niż zdjęcie', body: 'Animowane prezentacje produktu, promocje i posty, które zatrzymują kciuk w trakcie przewijania.', points: ['animowane rolki z ofertą', 'animowane posty promocyjne', 'krótka prezentacja produktu'], cta: 'Wyceń w generatorze', href: '/generator?tryb=jednorazowa&rolkaani=2&postani=4' },
+	{ label: 'Kluby i sport', title: 'Pełna oprawa meczowa i skróty po spotkaniu', body: 'Intro transmisji, belki z wynikiem, statystyki i skład — plus skróty, które kibice udostępniają.', points: ['oprawa transmisji', 'skróty meczowe', 'animowane statystyki i skład'], cta: 'Zobacz oprawę transmisyjną', href: '/uslugi/oprawa-transmisyjna/' },
+];
+const tabs: any[] = (home as any).dlaKogo?.tabs?.length ? (home as any).dlaKogo.tabs : tabsFallback;
 const t = { eyebrow: 'Dla kogo', titleLine1: 'Media dla tych,', titleLine2: 'którzy chcą się wyróżnić', ...(home as any).dlaKogo };
 ---
 <section id="dla-kogo" class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
@@ -26,5 +34,47 @@ const t = { eyebrow: 'Dla kogo', titleLine1: 'Media dla tych,', titleLine2: 'kt�
 				</div>
 			))}
 		</div>
+		<div class="dk-tabs" data-dk>
+			<div class="dk-bar" role="tablist" aria-label="Dla kogo">
+				{tabs.map((tb, i) => <button type="button" role="tab" class:list={['dk-btn', i === 0 && 'is-on']} aria-selected={i === 0 ? 'true' : 'false'} data-i={i}>{tb.label}</button>)}
+			</div>
+			{tabs.map((tb, i) => (
+				<div role="tabpanel" class:list={['dk-panel', i === 0 && 'is-on']} data-i={i}>
+					<div>
+						<h3 class="text-[24px] leading-tight font-bold text-cloud md:text-[28px]">{tb.title}</h3>
+						<p class="mt-3 text-[16px] leading-relaxed text-sky-mist">{tb.body}</p>
+					</div>
+					<div>
+						<ul class="grid gap-2.5 text-[15px] text-cloud">{(tb.points ?? []).map((pt: string) => <li class="flex gap-2.5"><span class="font-extrabold text-[#2ee59d]">✓</span>{pt}</li>)}</ul>
+						{tb.href && <a href={tb.href} class="dk-cta btn-saber">{tb.cta || 'Sprawdź'} →</a>}
+					</div>
+				</div>
+			))}
+		</div>
 	</div>
 </section>
+<style is:global>
+	.dk-tabs { margin: 56px auto 0; max-width: 900px; }
+	.dk-bar { display: flex; gap: 8px; padding: 6px; border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); overflow-x: auto; scrollbar-width: none; }
+	.dk-bar::-webkit-scrollbar { display: none; }
+	.dk-btn { flex: 1 0 auto; padding: 11px 18px; border-radius: 999px; font-weight: 700; font-size: 15px; color: var(--color-sky-mist, #c3c0dc); white-space: nowrap; cursor: pointer; transition: background .25s, color .25s; }
+	.dk-btn:hover { color: #fff; }
+	.dk-btn.is-on { color: #fff; background: linear-gradient(150deg, #6d4dff, #b03cff 60%, #ff5fd2); box-shadow: 0 8px 22px -8px rgba(176,60,255,.8); }
+	.dk-panel { display: none; margin-top: 18px; padding: 28px; border-radius: 22px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); gap: 28px; grid-template-columns: 1.2fr 1fr; align-items: start; }
+	.dk-panel.is-on { display: grid; animation: dk-in .45s cubic-bezier(.2,.8,.2,1); }
+	@keyframes dk-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+	.dk-cta { display: inline-block; margin-top: 18px; padding: 12px 22px; border-radius: 999px; font-weight: 800; background: #fff; color: #3a1d9e; transition: transform .2s; }
+	.dk-cta:hover { transform: translateY(-2px); }
+	@media (max-width: 767px) { .dk-panel { grid-template-columns: 1fr; padding: 22px; gap: 18px; } .dk-btn { flex: 0 0 auto; font-size: 14px; padding: 10px 14px; } }
+</style>
+<script>
+	document.querySelectorAll<HTMLElement>('[data-dk]').forEach((box) => {
+		const btns = box.querySelectorAll<HTMLElement>('.dk-btn');
+		const panels = box.querySelectorAll<HTMLElement>('.dk-panel');
+		btns.forEach((b) => b.addEventListener('click', () => {
+			btns.forEach((x) => { const on = x === b; x.classList.toggle('is-on', on); x.setAttribute('aria-selected', String(on)); });
+			panels.forEach((p) => p.classList.toggle('is-on', p.dataset.i === b.dataset.i));
+			b.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
+		}));
+	});
+</script>

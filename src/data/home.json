@@ -99,8 +99,11 @@
     "realizacje",
     "uslugi",
     "dlaKogo",
+    "proces",
     "oferta",
+    "dzien",
     "opinie",
+    "probna",
     "faq",
     "kontakt"
   ],
@@ -144,5 +147,16 @@
         "d": "materiałów „zawsze na czas” — opinia Delta HR"
       }
     ]
+  },
+  "whatsapp": {
+    "show": true,
+    "phone": "48668472759",
+    "text": "Dzień dobry, piszę ze strony sobotkavisual.pl. Chciałbym zapytać o",
+    "label": "Napisz na WhatsApp"
+  },
+  "google": {
+    "url": "",
+    "rating": "",
+    "count": ""
   }
 }

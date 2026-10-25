@@ -48,7 +48,18 @@ export const extras = [
 	{ id: 'format',  name: 'Dodatkowy format lub wersja językowa', type: 'pct',  value: 15 },
 	{ id: 'prawa',   name: 'Rozszerzenie praw o kampanie płatne',  type: 'pct',  value: 25 },
 	{ id: 'wylacz',  name: 'Wyłączność w branży na obszarze',      type: 'pct',  value: 30 },
+	{ id: 'dojazd',  name: 'Dojazd 40–100 km (raz na dzień nagrań)', type: 'flat', value: 150, hint: 'Do 40 km od Opola lub Nysy dojazd jest w cenie' },
 ];
+
+/* Strefy dojazdu — opłata raz na dzień nagrań, nie za każdą rolkę. */
+export const dojazd = [
+	{ zone: 'Do 40 km od Opola lub Nysy', price: 'w cenie', note: 'Opole, Nysa, Brzeg, Prudnik, Krapkowice, Głuchołazy' },
+	{ zone: '40–100 km', price: '150 zł', note: 'np. Wrocław, Kędzierzyn-Koźle, Gliwice, Kluczbork' },
+	{ zone: 'Powyżej 100 km', price: '1,20 zł / km', note: 'liczone w obie strony, raz na dzień nagrań' },
+];
+
+/* „Dzień contentowy”: jeden dzień nagrań u klienta = treści na cały miesiąc. Zamówienie jednorazowe, liczone jak w generatorze. */
+export const dzienPreset: Record<string, number> = { zdjecia: 1, rolki: 10, grafika: 4 };
 
 const priceOf: Record<string, number> = Object.fromEntries(groups.flatMap((g) => g.items.map((i) => [i.id, i.price])));
 /** Wartość zawartości pakietu przy zamawianiu każdego elementu osobno (cennik jednostkowy SVC). */
@@ -87,4 +98,14 @@ export function cardDeal(c: any) {
 	const name = String(c?.name ?? '').replace(/\*\*/g, '').trim().toUpperCase();
 	const p: any = packages.find((x) => x.id !== 'none' && name === x.name);
 	return p ? packageDeal(p.id) : null;
+}
+
+/** Zestaw jednorazowy liczony dokładnie jak generator w trybie „jednorazowa”: suma pozycji, rabat 4% za każdą pozycję, max 30%. */
+export function oneoffDeal(preset: Record<string, number>) {
+	const items = Object.entries(preset).filter(([, q]) => q > 0);
+	const list = items.reduce((s, [id, q]) => s + (priceOf[id] ?? 0) * q, 0);
+	const disc = Math.min(30, items.length * 4);
+	const final = Math.round(list * (1 - disc / 100));
+	const link = '/generator?tryb=jednorazowa&' + items.map(([id, q]) => `${id}=${q}`).join('&');
+	return { list, final, disc, link };
 }
