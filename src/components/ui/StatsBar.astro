@@ -1,0 +1,33 @@
+---
+/* Pasek „w liczbach” — tylko prawdziwe dane (panel: Strona główna → Liczby). Liczniki odpalają się przy wejściu w ekran. */
+import home from '../../data/home.json';
+interface Props { tone?: 'dark' | 'light' }
+const { tone = 'dark' } = Astro.props;
+const l: any = (home as any).liczby ?? {};
+const items: any[] = (l.items ?? []).filter((i: any) => i && i.v !== undefined && i.v !== '');
+---
+{l.show !== false && items.length > 0 && (
+	<section class:list={['stb', `stb--${tone}`]} aria-label="W liczbach">
+		<div class="stb-in svc-anim">
+			{items.slice(0, 4).map((i) => (
+				<div class="stb-it">
+					<b>{i.pre}<span data-count={i.v}>{i.v}</span>{i.suf}</b>
+					<span>{i.d}</span>
+				</div>
+			))}
+		</div>
+	</section>
+)}
+<style is:global>
+	.stb { border-top: 1px solid rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.06); background: var(--color-navy-deep, #0a0630); color: #fff; }
+	.stb-in { max-width: 1200px; margin: 0 auto; padding: 2.2rem 2rem; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; }
+	.stb-it { display: flex; flex-direction: column; gap: .3rem; padding-left: 1rem; border-left: 2px solid rgba(237,36,78,.6); }
+	.stb-it b { font-family: var(--font-display); font-weight: 900; font-size: clamp(30px, 3.4vw, 44px); line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+	.stb-it > span { font-size: 13.5px; line-height: 1.4; color: var(--color-sky-mist, #d0c9c3); text-wrap: balance; }
+	.stb--light { background: #fff; color: var(--color-ink); border-color: rgba(10,6,48,.08); }
+	.stb--light .stb-it > span { color: rgba(10,6,48,.6); }
+	@media (max-width: 760px) { .stb-in { grid-template-columns: 1fr 1fr; padding: 1.8rem 1.25rem; } }
+</style>
+<script>
+	import '../../scripts/parallax.ts';
+</script>

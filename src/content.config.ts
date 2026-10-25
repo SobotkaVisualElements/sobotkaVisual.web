@@ -3,6 +3,8 @@ import { glob } from 'astro/loaders';
 
 /* Warstwy parallaksy (do 3 PNG 1920×1200) i klocki treści z panelu CMS */
 const layer = z.object({ image: z.string().optional(), depth: z.number().optional(), scale: z.number().optional(), x: z.number().optional(), y: z.number().optional() });
+// puste pole z panelu ('' albo null) = brak wartości — inaczej budowanie strony się wywraca
+const empty = (v: unknown) => (v === '' || v === null ? undefined : v);
 const blocks = z.array(z.object({ type: z.string() }).passthrough()).optional();
 
 /*
@@ -40,7 +42,7 @@ const work = defineCollection({
 			category: z.string(),
 			/** 使用技術・スタック */
 			tech: z.array(z.string()).default([]),
-			year: z.number(),
+			year: z.preprocess(empty, z.coerce.number().default(new Date().getFullYear())),
 			role: z.string().optional(),
 			client: z.string().optional(),
 			/** Logotyp klienta (PNG/SVG, najlepiej przezroczyste tło) */
@@ -48,16 +50,21 @@ const work = defineCollection({
 			/** Jak wyświetlić logo: ciemne (domyślnie, przyciemnia białe logo), oryginalne kolory */
 			clientLogoTone: z.string().optional(),
 			/** 公開サイト・リポジトリ（任意） */
-			url: z.string().url().optional(),
-			repo: z.string().url().optional(),
+			url: z.preprocess(empty, z.string().url().optional()),
+			repo: z.preprocess(empty, z.string().url().optional()),
 			/** サムネイル（任意）。無い場合はグラデーションのプレースホルダを表示 */
 			thumbnail: image().optional(),
 			/** Okładka wgrana przez panel CMS (ścieżka w /public/uploads) */
 			cover: z.string().optional(),
-			coverFocalX: z.number().optional(),
-			coverFocalY: z.number().optional(),
+			coverFocalX: z.preprocess(empty, z.coerce.number().optional()),
+			coverFocalY: z.preprocess(empty, z.coerce.number().optional()),
 			/** Data realizacji — strona sortuje od najnowszych */
-			date: z.coerce.date().optional(),
+			date: z.preprocess(empty, z.coerce.date().optional()),
+			/** Współpraca stała: aktywna (od kiedy) albo zakończona (od – do) */
+			collab: z.preprocess(empty, z.boolean().optional()),
+			collabStatus: z.preprocess(empty, z.string().optional()),
+			collabFrom: z.preprocess(empty, z.coerce.date().optional()),
+			collabTo: z.preprocess(empty, z.coerce.date().optional()),
 			/** Okładka pionowa 1200×1920 do karuzeli na stronie głównej */
 			poster: z.string().optional(),
 			/** Film w nagłówku case study zamiast baneru: YouTube albo własny MP4 (pętla, bez kontrolek) */
@@ -66,11 +73,11 @@ const work = defineCollection({
 			/** albo link do filmu z Cloudflare R2 (https://media.sobotkavisual.pl/...) */
 			videoUrl: z.string().optional(),
 			layers: z.array(layer).optional(),
-			parallaxStrength: z.number().optional(),
+			parallaxStrength: z.preprocess(empty, z.coerce.number().optional()),
 			blocks,
 			featured: z.boolean().default(false),
 			/** 並び順（小さいほど前）。同値は year の新しい順 */
-			order: z.number().default(0),
+			order: z.preprocess(empty, z.coerce.number().default(0)),
 			draft: z.boolean().default(false),
 		}),
 });

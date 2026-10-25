@@ -1,0 +1,108 @@
+{
+  "name": "Montaż wideo",
+  "order": 1,
+  "icon": "montaz",
+  "draft": false,
+  "seoTitle": "Montaż wideo dla firm i twórców — Opole, Nysa, zdalnie | SVC",
+  "seoDesc": "Montaż filmów firmowych, wywiadów, podcastów i materiałów na YouTube: dynamiczne cięcie, napisy, dźwięk i color grading. Wycena online w 60 sekund.",
+  "hero": {
+    "eyebrow": "Usługa · montaż",
+    "title": "Montaż wideo,",
+    "titleBold": "który trzyma widza do końca.",
+    "lead": "Z godzin nagrań robimy materiał, który ma tempo, rytm i jasny cel. Ty nagrywasz albo przesyłasz pliki — my zamieniamy je w film gotowy do publikacji."
+  },
+  "deliver": {
+    "eyebrow": "Co dostajesz",
+    "title": "Zakres",
+    "titleLight": "usługi.",
+    "items": [
+      {
+        "t": "Filmy firmowe i wizerunkowe",
+        "d": "O firmie, ludziach i produktach — na stronę, LinkedIn i prezentacje."
+      },
+      {
+        "t": "Wywiady, podcasty, webinary",
+        "d": "Długie formy pocięte tak, żeby się nie dłużyły. Z napisami i planszami."
+      },
+      {
+        "t": "Materiały na YouTube",
+        "d": "Odcinki z dynamicznym cięciem, grafiką i dźwiękiem pod retencję widza."
+      },
+      {
+        "t": "Skróty z wydarzeń",
+        "d": "Mecze, konferencje, eventy — najlepsze momenty w 1–3 minuty."
+      },
+      {
+        "t": "Napisy i wersje językowe",
+        "d": "Wypalone napisy i dodatkowe formaty: pion, poziom, kwadrat."
+      },
+      {
+        "t": "Kolor i dźwięk",
+        "d": "Korekcja barwna, wyrównanie głośności, muzyka z licencją."
+      }
+    ]
+  },
+  "process": {
+    "eyebrow": "Jak to robimy",
+    "title": "Cztery kroki,",
+    "titleLight": "zero chaosu.",
+    "items": [
+      {
+        "t": "Brief",
+        "d": "15 minut rozmowy: cel filmu, odbiorca, długość i gdzie będzie publikowany."
+      },
+      {
+        "t": "Materiały",
+        "d": "Przesyłasz nagrania przez link. Jeśli trzeba — dojeżdżamy z kamerą."
+      },
+      {
+        "t": "Montaż",
+        "d": "Pierwsza wersja zwykle w 5–7 dni roboczych. Komentujesz na osi czasu."
+      },
+      {
+        "t": "Publikacja",
+        "d": "Gotowe pliki we wszystkich formatach + miniatura i opis pod YouTube."
+      }
+    ]
+  },
+  "prices": {
+    "title": "Ile to kosztuje",
+    "note": "Ceny netto, orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
+    "items": [
+      "montaz",
+      "skrot",
+      "wizerunek",
+      "napisy"
+    ],
+    "extras": []
+  },
+  "work": {
+    "categories": [
+      "Montaż"
+    ],
+    "title": "Zobacz",
+    "titleLight": "nasze realizacje."
+  },
+  "cities": [
+    "montaz-wideo-opole",
+    "montaz-wideo-nysa",
+    "montaz-wideo-wroclaw",
+    "montaz-wideo-kedzierzyn-kozle",
+    "film-reklamowy-opole",
+    "film-reklamowy-nysa"
+  ],
+  "faq": [
+    {
+      "q": "Ile kosztuje montaż filmu?",
+      "a": "Montaż długiej formy (10–20 minut) zaczyna się od 1 250 zł netto. Dokładną cenę zestawu policzysz w generatorze na stronie."
+    },
+    {
+      "q": "Jak długo trwa montaż?",
+      "a": "Standardowo 5–7 dni roboczych od otrzymania materiałów. Tryb ekspresowy poniżej 48 godzin jest możliwy za dopłatą."
+    },
+    {
+      "q": "Czy mogę nanieść poprawki?",
+      "a": "Tak. Komentujesz konkretne momenty filmu, a my wprowadzamy zmiany. Liczba rund zależy od pakietu."
+    }
+  ]
+}

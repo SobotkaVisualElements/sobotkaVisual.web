@@ -25,7 +25,7 @@ try {
 export default defineConfig({
   // sitemap / RSS / canonical URL の絶対化に使う。デプロイ先に合わせて site.config.ts で変更する
   site: site.url,
-  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/admin') && !page.includes('/search') && ![...hidden].some((h) => page.endsWith(h)) })],
+  integrations: [mdx(), sitemap({ filter: (page) => !page.includes('/admin') && !page.includes('/linki') && !page.includes('/search') && ![...hidden].some((h) => page.endsWith(h)) })],
   vite: {
     plugins: [tailwindcss()],
   },

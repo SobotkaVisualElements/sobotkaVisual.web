@@ -41,18 +41,24 @@ blocks:
         title: ''
         link: ''
         logo: ''
-  - type: wykres_kolowy
-    label: CTR miniatur w pierwszej godzinie po publikacji
-    value: 21
-    suffix: '%'
-    description: Ponad co piąta osoba, której YouTube pokazał miniaturę, kliknęła w film.
-  - type: wykres_liniowy
-    label: Ponad co piąta osoba, której YouTube pokazał miniaturę, kliknęła w film.
-    value: 21
-    points: 21, 15, 15, 9
-    prefix: ''
-    suffix: '%'
-    description: '1. godzina: 21% · 2.–3. godzina: 15% · później ok. 9% — gdy YouTube pokazuje film szerszej, mniej zaangażowanej widowni.'
+  - type: wykres_przewaga
+    eyebrow: Klikalność miniatur (CTR)
+    title: Pierwsza godzina decyduje o zasięgu.
+    sub: Ilu widzów, którym YouTube pokazał miniaturę, klika w film. Im więcej kliknięć na starcie, tym szerzej algorytm go rozsyła.
+    watermark: Twoja przewaga nad konkurencją
+    unit: '%'
+    xStart: publikacja
+    xEnd: 1 godzina
+    base:
+      label: Typowy kanał na YouTube
+      value: 10
+      display: do 10%
+    ours:
+      label: Kanał Przemysława Langiera
+      value: 21
+    delta: ponad 2× więcej kliknięć
+    source: 'Typowy kanał: YouTube Help „Wyświetlenia i CTR” — połowa kanałów ma CTR 2–10%. Kanał klienta: YouTube Studio, 1. godzina po publikacji (później 15%, a po 3 godzinach ok. 9%, gdy film trafia do szerszej widowni).'
+    quoteFrom: Przemysław Langier
 ---
 
 ## Klient i cel

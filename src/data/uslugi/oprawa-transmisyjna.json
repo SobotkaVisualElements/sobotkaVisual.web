@@ -1,0 +1,105 @@
+{
+  "name": "Oprawa transmisyjna",
+  "order": 5,
+  "icon": "transmisja",
+  "draft": false,
+  "seoTitle": "Oprawa transmisji dla klubów sportowych i firm — intro, statystyki, belki | SVC",
+  "seoDesc": "Pełna oprawa transmisji: intro, outro, animowane statystyki, składy, formacje i belki. Dla klubów sportowych, eventów i firm transmitujących na żywo.",
+  "hero": {
+    "eyebrow": "Usługa · transmisje",
+    "title": "Oprawa transmisyjna,",
+    "titleBold": "jak w dużej telewizji.",
+    "lead": "Transmisja wygląda profesjonalnie, gdy każdy element mówi tym samym językiem. Projektujemy i animujemy kompletną szatę: od intro po animowane statystyki i składy."
+  },
+  "deliver": {
+    "eyebrow": "Co dostajesz",
+    "title": "Zakres",
+    "titleLight": "usługi.",
+    "items": [
+      {
+        "t": "Intro i outro",
+        "d": "Otwarcie i zamknięcie transmisji z identyfikacją klubu lub firmy."
+      },
+      {
+        "t": "Składy i formacje",
+        "d": "Animowane prezentacje zawodników i ustawień."
+      },
+      {
+        "t": "Statystyki na żywo",
+        "d": "Plansze z wynikiem, czasem, kartkami i danymi meczu."
+      },
+      {
+        "t": "Belki i podpisy",
+        "d": "Nazwiska, funkcje, sponsorzy — gotowe do podmiany tekstu."
+      },
+      {
+        "t": "Przejścia i plansze",
+        "d": "Reklamy sponsorów, przerwy, zapowiedzi."
+      },
+      {
+        "t": "Pliki pod realizatora",
+        "d": "Formaty i kanał alfa dopasowane do Waszego systemu transmisji."
+      }
+    ]
+  },
+  "process": {
+    "eyebrow": "Jak to robimy",
+    "title": "Cztery kroki,",
+    "titleLight": "zero chaosu.",
+    "items": [
+      {
+        "t": "Wymagania",
+        "d": "Program do transmisji, rozdzielczość i lista elementów."
+      },
+      {
+        "t": "Projekt",
+        "d": "Spójna szata graficzna do akceptacji."
+      },
+      {
+        "t": "Animacja",
+        "d": "Wszystkie elementy w ruchu, przygotowane do podmiany treści."
+      },
+      {
+        "t": "Test",
+        "d": "Sprawdzamy wszystko w Waszym systemie przed pierwszą transmisją."
+      }
+    ]
+  },
+  "prices": {
+    "title": "Ile to kosztuje",
+    "note": "Ceny netto, orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
+    "items": [
+      "animacja",
+      "skrot",
+      "okladka"
+    ],
+    "extras": [
+      "trans"
+    ]
+  },
+  "work": {
+    "categories": [
+      "Oprawa transmisyjna",
+      "Animacja"
+    ],
+    "title": "Zobacz",
+    "titleLight": "nasze realizacje."
+  },
+  "cities": [
+    "oprawa-transmisji-klub-sportowy"
+  ],
+  "faq": [
+    {
+      "q": "Ile kosztuje oprawa transmisji?",
+      "a": "Kompletny pakiet oprawy transmisyjnej zaczyna się od 6 000 zł netto. Pojedyncze elementy (belka, plansza) od 675 zł."
+    },
+    {
+      "q": "Czy oprawa zadziała w naszym programie?",
+      "a": "Tak. Przygotowujemy pliki pod popularne programy (np. OBS, vMix) i testujemy je przed pierwszą transmisją."
+    },
+    {
+      "q": "Czy możemy sami zmieniać teksty?",
+      "a": "Tak. Belki i plansze przygotowujemy tak, żeby nazwiska i wyniki dało się podmieniać bez nas."
+    }
+  ]
+}

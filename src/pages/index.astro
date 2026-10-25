@@ -9,6 +9,7 @@ import Faq from '../components/landing/Faq.astro';
 import FinalCta from '../components/landing/FinalCta.astro';
 import RecentWork from '../components/landing/RecentWork.astro';
 import home from '../data/home.json';
+import StatsBar from '../components/ui/StatsBar.astro';
 
 // Kolejność sekcji ustawiana w panelu (Strona główna → Kolejność sekcji).
 // Hero zawsze pierwsze (tam jest nagłówek H1 dla Google). Usunięta z listy sekcja znika ze strony.
@@ -21,5 +22,6 @@ const order: string[] = ((home as any).sections?.length ? (home as any).sections
 
 <BaseLayout>
 	<Hero />
+	<StatsBar />
 	{order.map((id) => { const C = map[id]; return <C />; })}
 </BaseLayout>

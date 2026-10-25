@@ -110,5 +110,39 @@
     "titleLight": "stworzyliśmy.",
     "lead": "Montaż, animacje i oprawa — najnowsze projekty dla marek, twórców i wydawnictw.",
     "limit": 9
+  },
+  "booking": {
+    "url": "",
+    "label": "Umów 15 minut rozmowy",
+    "note": "Bez zobowiązań. Wybierasz termin, który Ci pasuje."
+  },
+  "liczby": {
+    "show": true,
+    "items": [
+      {
+        "v": 2020,
+        "pre": "od ",
+        "suf": "",
+        "d": "tworzymy wideo i animacje"
+      },
+      {
+        "v": 150,
+        "pre": "",
+        "suf": "+",
+        "d": "rolek rocznie dla jednego klienta (Delta HR)"
+      },
+      {
+        "v": 21,
+        "pre": "",
+        "suf": "%",
+        "d": "CTR miniatur w 1. godzinie (typowo 2–10%)"
+      },
+      {
+        "v": 100,
+        "pre": "",
+        "suf": "+",
+        "d": "materiałów „zawsze na czas” — opinia Delta HR"
+      }
+    ]
   }
 }

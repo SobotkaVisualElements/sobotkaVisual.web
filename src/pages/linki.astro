@@ -1,0 +1,71 @@
+---
+/*
+ * Linki do wysyłania klientom — wszystkie landingi (także ukryte przed Google i szkice) i realizacje.
+ * Strona nie jest w Google ani w menu: wejdź na sobotkavisual.pl/linki
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPublishedProjects } from '../lib/projects';
+
+const site = 'https://sobotkavisual.pl';
+const files = import.meta.glob('../data/oferty/*.json', { eager: true }) as Record<string, any>;
+const offers = Object.entries(files)
+	.map(([path, mod]) => ({ slug: path.split('/').pop()!.replace('.json', ''), ...(mod.default ?? mod) }))
+	.sort((a, b) => (a.order ?? 99) - (b.order ?? 99));
+const work = await getPublishedProjects();
+const rows = [
+	...offers.map((o: any) => ({ group: 'Landingi ofert', name: o.name || o.slug, url: `${site}/oferta/${o.slug}/`, tag: o.draft ? 'szkic — nie działa' : o.noindex ? 'ukryty przed Google' : 'publiczny', off: !!o.draft })),
+	...work.map((p: any) => ({ group: 'Realizacje', name: p.data.title, url: `${site}/work/${p.id}/`, tag: p.data.client || '', off: false })),
+	{ group: 'Inne', name: 'Generator pakietów', url: `${site}/generator/`, tag: '', off: false },
+	{ group: 'Inne', name: 'Manifest', url: `${site}/manifest/`, tag: '', off: false },
+];
+const groups = [...new Set(rows.map((r) => r.group))];
+---
+<BaseLayout title="Linki do wysłania" description="Lista linków do ofert i realizacji." noindex>
+	<section class="lk">
+		<div class="lk-wrap">
+			<h1>Linki do wysłania klientom</h1>
+			<p class="lk-lead">Kliknij <b>Kopiuj</b> i wklej w mailu albo wiadomości. Na liście są też oferty ukryte przed Google — działają tylko z linku.</p>
+			{groups.map((g) => (
+				<div class="lk-group">
+					<h2>{g}</h2>
+					{rows.filter((r) => r.group === g).map((r) => (
+						<div class:list={['lk-row', r.off && 'is-off']}>
+							<div class="lk-txt"><b>{r.name}</b>{r.tag && <span class="lk-tag">{r.tag}</span>}<small>{r.url}</small></div>
+							<div class="lk-acts">
+								<button type="button" class="lk-btn" data-copy={r.url} disabled={r.off}>Kopiuj</button>
+								<a class="lk-open" href={r.url} target="_blank" rel="noopener" aria-label="Otwórz">↗</a>
+							</div>
+						</div>
+					))}
+				</div>
+			))}
+		</div>
+	</section>
+</BaseLayout>
+<style is:global>
+	.lk { background: var(--color-navy-deep); color: var(--color-cloud); min-height: 80vh; }
+	.lk-wrap { max-width: 900px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+	.lk h1 { font-size: clamp(30px, 4vw, 44px); font-weight: 900; letter-spacing: -.03em; }
+	.lk-lead { margin-top: .6rem; color: var(--color-sky-mist); }
+	.lk-group { margin-top: 2.6rem; }
+	.lk-group h2 { font-size: 13px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: var(--color-orange-glow); margin-bottom: .8rem; }
+	.lk-row { display: flex; gap: 1rem; align-items: center; justify-content: space-between; padding: .9rem 1rem; border-radius: 14px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08); margin-bottom: .6rem; }
+	.lk-row.is-off { opacity: .5; }
+	.lk-txt { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+	.lk-txt b { font-size: 15.5px; }
+	.lk-txt small { color: var(--color-sky-mist); font-size: 12.5px; word-break: break-all; }
+	.lk-tag { align-self: flex-start; font-size: 11px; font-weight: 700; padding: 1px 8px; border-radius: 99px; background: rgba(255,255,255,.08); color: var(--color-sky-mist); }
+	.lk-acts { display: flex; gap: 8px; flex-shrink: 0; }
+	.lk-btn { padding: .6rem 1.1rem; border-radius: 99px; background: var(--color-orange); color: #fff; font-weight: 700; font-size: 14px; }
+	.lk-btn.done { background: #2ee59d; color: #04261a; }
+	.lk-btn:disabled { background: rgba(255,255,255,.1); }
+	.lk-open { display: grid; place-items: center; width: 40px; border-radius: 99px; border: 1px solid rgba(255,255,255,.18); color: var(--color-sky-mist); }
+</style>
+<script>
+	document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((b) => b.addEventListener('click', async () => {
+		const url = b.dataset.copy!;
+		try { await navigator.clipboard.writeText(url); } catch { prompt('Skopiuj link:', url); return; }
+		b.textContent = 'Skopiowano ✓'; b.classList.add('done');
+		setTimeout(() => { b.textContent = 'Kopiuj'; b.classList.remove('done'); }, 1500);
+	}));
+</script>

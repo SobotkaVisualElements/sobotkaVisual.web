@@ -30,7 +30,7 @@ const items = (await getPublishedProjects()).slice(0, Number(t.limit) || 9).map(
 		</div>
 
 		<div class="relative z-2 mt-10 mb-20">
-			<Carousel3D items={items} orientation="pion" label="Ostatnie realizacje" />
+			<Carousel3D items={items} orientation="pion" label="Ostatnie realizacje" showLogos={t.showLogos !== false} />
 		</div>
 	</section>
 )}

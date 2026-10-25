@@ -100,9 +100,9 @@ const ld = {
 	.mf-toc a:hover { color: #fff; padding-left: .4rem; }
 	.mf-list { padding: 2rem 0 5rem; }
 	.mf-item { display: grid; grid-template-columns: auto 1fr; gap: clamp(1rem, 4vw, 3.5rem); padding: clamp(2.2rem, 5vw, 4rem) 0; border-top: 1px solid rgba(255,255,255,.1); scroll-margin-top: 90px; }
-	.mf-n { font-family: var(--font-display); font-weight: 900; font-size: clamp(56px, 10vw, 140px); line-height: .8; letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 1.5px rgba(255,90,120,.7);
-		min-width: 1.3em; transition: color .8s .2s; }
-	.mf-item.is-in .mf-n { color: rgba(237,36,78,.16); }
+	.mf-n { font-family: var(--font-display); font-weight: 900; font-size: clamp(56px, 10vw, 140px); line-height: .8; letter-spacing: -.05em; color: transparent; background: linear-gradient(180deg, rgba(255,90,120,.9), rgba(255,90,120,.08) 85%); -webkit-background-clip: text; background-clip: text;
+		min-width: 1.3em; transition: filter .8s .2s; }
+	.mf-item.is-in .mf-n { filter: drop-shadow(0 6px 24px rgba(237,36,78,.35)); }
 	.mf-body h2 { font-family: var(--font-display); font-size: clamp(26px, 3.6vw, 44px); line-height: 1.08; letter-spacing: -.03em; font-weight: 800; text-wrap: balance; }
 	.mf-body > p { margin-top: 1rem; max-width: 640px; font-size: clamp(16px, 1.5vw, 18.5px); line-height: 1.7; color: var(--color-sky-mist); text-wrap: pretty; hyphens: auto; }
 	.mf-body h2, .mf-body > p, .mf-q { opacity: 0; transform: translateY(26px); transition: opacity .7s, transform .9s cubic-bezier(.2,.8,.2,1); }

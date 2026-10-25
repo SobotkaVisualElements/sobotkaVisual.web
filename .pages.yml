@@ -61,6 +61,26 @@ content:
     type: date
     options:
       format: yyyy-MM-dd
+  - name: collab
+    label: Współpraca stała (abonament, nie jednorazowe zlecenie)
+    type: boolean
+  - name: collabStatus
+    label: Współpraca — status
+    type: select
+    options:
+      values:
+      - {value: aktywna, label: Aktywna (trwa)}
+      - {value: zakonczona, label: Zakończona}
+  - name: collabFrom
+    label: Współpraca — od
+    type: date
+    options:
+      format: yyyy-MM-dd
+  - name: collabTo
+    label: Współpraca — do (tylko gdy zakończona)
+    type: date
+    options:
+      format: yyyy-MM-dd
   - name: tech
     label: Narzędzia
     type: string
@@ -282,6 +302,9 @@ content:
         - name: logo
           label: Logotyp klienta
           type: image
+      - name: showLogos
+        label: Pokaż logo klienta na kafelkach
+        type: boolean
       - name: caption
         label: Podpis
         type: string
@@ -342,8 +365,79 @@ content:
       - name: caption
         label: Podpis
         type: string
+    - name: wykres_przewaga
+      label: Wykres przewagi (typowo vs z nami) — zalecany
+      fields:
+      - name: eyebrow
+        label: Nadtytuł
+        type: string
+      - name: title
+        label: Tytuł
+        type: string
+      - name: sub
+        label: Opis pod tytułem
+        type: text
+      - name: watermark
+        label: Wielki półprzezroczysty napis
+        type: string
+      - name: unit
+        label: Jednostka (np. %)
+        type: string
+      - name: curve
+        label: Kształt linii
+        type: select
+        options:
+          values:
+          - {value: szybki, label: Szybki wzrost, potem wypłaszczenie}
+          - {value: liniowy, label: Równy wzrost (skala w czasie)}
+      - name: xStart
+        label: Oś — początek
+        type: string
+      - name: xMid
+        label: Oś — punkty pośrednie (po przecinku)
+        type: string
+      - name: xEnd
+        label: Oś — koniec
+        type: string
+      - name: base
+        label: Szara linia — typowo / konkurencja
+        type: object
+        fields:
+        - name: label
+          label: Opis
+          type: string
+        - name: value
+          label: Wartość
+          type: number
+        - name: display
+          label: Własny napis
+          type: string
+      - name: ours
+        label: Zielona linia — z nami
+        type: object
+        fields:
+        - name: label
+          label: Opis
+          type: string
+        - name: value
+          label: Wartość
+          type: number
+        - name: display
+          label: Własny napis
+          type: string
+      - name: delta
+        label: Napis na zielonym obszarze różnicy
+        type: string
+      - name: source
+        label: Źródło danych
+        type: text
+      - name: quoteFrom
+        label: Cytat klienta pod wykresem
+        type: select
+        options:
+          values: [Przemysław Langier, Adam Przebinda]
     - name: wykres_liniowy
-      label: Wykres liniowy
+      label: (stary) Wykres liniowy
       fields:
       - name: value
         label: Wartość
@@ -364,7 +458,7 @@ content:
         label: Opis
         type: text
     - name: wykres_kolowy
-      label: Wykres kołowy %
+      label: (stary) Wykres kołowy %
       fields:
       - name: value
         label: Wartość 0–100
@@ -390,6 +484,101 @@ content:
       - name: role
         label: Rola / firma
         type: string
+- name: uslugi
+  label: Usługi (podstrony)
+  type: collection
+  path: src/data/uslugi
+  format: json
+  filename: '{primary}.json'
+  view:
+    primary: name
+    sort: order
+  fields:
+  - {name: name, label: Nazwa usługi, type: string}
+  - {name: order, label: Kolejność, type: number}
+  - name: icon
+    label: Ikona
+    type: select
+    options:
+      values: [montaz, motion, rolki, grafika, transmisja, dzwiek, kamera, strategia]
+  - {name: draft, label: Szkic (ukryta), type: boolean}
+  - {name: seoTitle, label: Tytuł dla Google, type: string}
+  - {name: seoDesc, label: Opis dla Google, type: text}
+  - name: hero
+    label: Pierwszy ekran
+    type: object
+    fields:
+    - {name: eyebrow, label: Nadtytuł, type: string}
+    - {name: title, label: Nagłówek — linia cienka, type: string}
+    - {name: titleBold, label: Nagłówek — linia gruba, type: string}
+    - {name: lead, label: Opis, type: text}
+  - name: deliver
+    label: Co dostajesz
+    type: object
+    fields:
+    - {name: eyebrow, label: Nadtytuł, type: string}
+    - {name: title, label: Tytuł — pogrubiony, type: string}
+    - {name: titleLight, label: Tytuł — jasny, type: string}
+    - name: items
+      label: Elementy
+      type: object
+      list: {collapsible: {collapsed: true, summary: '{t}'}}
+      fields:
+      - {name: t, label: Tytuł, type: string}
+      - {name: d, label: Opis, type: text}
+  - name: process
+    label: Jak to robimy
+    type: object
+    fields:
+    - {name: eyebrow, label: Nadtytuł, type: string}
+    - {name: title, label: Tytuł — pogrubiony, type: string}
+    - {name: titleLight, label: Tytuł — jasny, type: string}
+    - name: items
+      label: Kroki
+      type: object
+      list: {collapsible: {collapsed: true, summary: '{t}'}}
+      fields:
+      - {name: t, label: Krok, type: string}
+      - {name: d, label: Opis, type: text}
+  - name: prices
+    label: Ceny (z cennika generatora)
+    type: object
+    fields:
+    - {name: title, label: Tytuł, type: string}
+    - {name: note, label: Dopisek, type: text}
+    - name: items
+      label: Pozycje z cennika
+      type: select
+      options:
+        multiple: true
+        values: [montaz, rolki, rolkaani, skrot, wizerunek, animacja, trailer, okladka, miniatury, grafika, postani, scenariusz, dzwiek, lektor, napisy, zdjecia]
+    - name: extras
+      label: Pakiety dodatkowe
+      type: select
+      options:
+        multiple: true
+        values: [system, trans]
+  - name: work
+    label: Realizacje
+    type: object
+    fields:
+    - name: categories
+      label: Pokaż realizacje z kategorii
+      type: select
+      options:
+        multiple: true
+        values: [Montaż, Animacja, Identyfikacja, Oprawa transmisyjna, Grafika]
+    - {name: title, label: Tytuł — pogrubiony, type: string}
+    - {name: titleLight, label: Tytuł — jasny, type: string}
+  - {name: cities, label: 'Strony lokalne (np. montaz-wideo-opole)', type: string, list: true}
+  - name: faq
+    label: Pytania
+    type: object
+    list: {collapsible: {collapsed: true, summary: '{q}'}}
+    fields:
+    - {name: q, label: Pytanie, type: string}
+    - {name: a, label: Odpowiedź, type: text}
+  - *id006
 - name: landingi
   label: Landingi ofert
   type: collection
@@ -1181,6 +1370,12 @@ content:
       - name: price
         label: Cena
         type: string
+      - name: value
+        label: Wartość do porównania (zł) — zielone „Zyskujesz”; puste przy START/PRO/STUDIO = z cennika
+        type: number
+      - name: valueLabel
+        label: Z czym porównujemy (np. średnio u agencji)
+        type: string
       - name: per
         label: Po cenie
         type: string
@@ -1303,6 +1498,44 @@ content:
     - name: limit
       label: Ile realizacji
       type: number
+    - name: showLogos
+      label: Pokaż logo klienta na kafelkach karuzeli
+      type: boolean
+  - name: booking
+    label: Rezerwacja rozmowy (kalendarz)
+    type: object
+    fields:
+    - {name: url, label: 'Link do kalendarza (Cal.com, Calendly) — puste = telefon', type: string}
+    - {name: label, label: Napis na przycisku, type: string}
+    - {name: note, label: Dopisek, type: string}
+  - name: liczby
+    label: Pasek „w liczbach” (pod pierwszym ekranem)
+    type: object
+    fields:
+    - {name: show, label: Pokaż, type: boolean}
+    - name: items
+      label: Liczby (do 4, tylko prawdziwe)
+      type: object
+      list: {max: 4, collapsible: {collapsed: true, summary: '{v} {d}'}}
+      fields:
+      - {name: pre, label: Przed liczbą, type: string}
+      - {name: v, label: Liczba, type: number}
+      - {name: suf, label: 'Po liczbie (%, +)', type: string}
+      - {name: d, label: Opis, type: string}
+  - name: oferta
+    label: Oferta — pakiety (zielone „Zyskujesz”)
+    type: object
+    fields:
+    - {name: saveLabel, label: Napis nad kwotą, type: string}
+    - {name: compareLabel, label: 'Z czym porównujemy (np. wartość przy zamawianiu osobno)', type: string}
+    - name: values
+      label: Wartość do porównania (zł / mies.) — puste = z cennika usług
+      type: object
+      fields:
+      - {name: start, label: START, type: number}
+      - {name: pro, label: PRO, type: number}
+      - {name: studio, label: STUDIO, type: number}
+    - {name: showLandings, label: Pokaż linki do landingów pod generatorem, type: boolean}
   - name: uslugi
     label: Sekcja Usługi
     type: object

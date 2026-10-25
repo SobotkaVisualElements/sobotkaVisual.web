@@ -1,0 +1,107 @@
+{
+  "name": "Animacja i motion design",
+  "order": 2,
+  "icon": "motion",
+  "draft": false,
+  "seoTitle": "Animacja i motion design dla firm — logo, infografiki, trailery | SVC",
+  "seoDesc": "Animacje 2D i 2.5D: animowane logo, infografiki, trailery, booktrailery i elementy oprawy. Ruch, który zatrzymuje uwagę w pierwszej sekundzie.",
+  "hero": {
+    "eyebrow": "Usługa · animacja",
+    "title": "Animacja i motion design,",
+    "titleBold": "które tłumaczą i sprzedają.",
+    "lead": "Ruch zatrzymuje kciuk szybciej niż zdjęcie. Animujemy logo, dane, produkty i ilustracje — także te, które już masz, jak w booktrailerach dla Fabryki Słów."
+  },
+  "deliver": {
+    "eyebrow": "Co dostajesz",
+    "title": "Zakres",
+    "titleLight": "usługi.",
+    "items": [
+      {
+        "t": "Animowane logo",
+        "d": "Krótki znak firmy w ruchu — na początek i koniec każdego filmu."
+      },
+      {
+        "t": "Infografiki i mapy",
+        "d": "Liczby i procesy podane tak, że się je ogląda, a nie przewija."
+      },
+      {
+        "t": "Trailery i booktrailery",
+        "d": "15–45 sekund, które budują napięcie i odsyłają do zakupu."
+      },
+      {
+        "t": "Elementy oprawy",
+        "d": "Belki, plansze, przejścia — jeden styl w każdym materiale."
+      },
+      {
+        "t": "Animowane posty",
+        "d": "Statyczne grafiki zamienione w krótki ruch pod social media."
+      },
+      {
+        "t": "Animacja ilustracji",
+        "d": "Rozkładamy grafikę na warstwy i dajemy jej głębię (parallaksa 2.5D)."
+      }
+    ]
+  },
+  "process": {
+    "eyebrow": "Jak to robimy",
+    "title": "Cztery kroki,",
+    "titleLight": "zero chaosu.",
+    "items": [
+      {
+        "t": "Koncepcja",
+        "d": "Ustalamy, co animacja ma powiedzieć i w jakim stylu."
+      },
+      {
+        "t": "Storyboard",
+        "d": "Szkic kluczowych klatek do akceptacji, zanim zaczniemy animować."
+      },
+      {
+        "t": "Animacja",
+        "d": "Ruch, dźwięk i dopracowanie detali. Podgląd do komentarzy."
+      },
+      {
+        "t": "Formaty",
+        "d": "Pliki pod stronę, social media i — na życzenie — z przezroczystym tłem."
+      }
+    ]
+  },
+  "prices": {
+    "title": "Ile to kosztuje",
+    "note": "Ceny netto, orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
+    "items": [
+      "animacja",
+      "trailer",
+      "okladka",
+      "postani"
+    ],
+    "extras": []
+  },
+  "work": {
+    "categories": [
+      "Animacja"
+    ],
+    "title": "Zobacz",
+    "titleLight": "nasze realizacje."
+  },
+  "cities": [
+    "motion-design-opole",
+    "motion-design-katowice",
+    "animacje-opole",
+    "animacje-nysa",
+    "animacje-wroclaw"
+  ],
+  "faq": [
+    {
+      "q": "Ile kosztuje animacja?",
+      "a": "Animacja na zamówienie to 2 500–4 000 zł netto za minutę. Animowane logo zaczyna się od 900 zł, element oprawy od 675 zł."
+    },
+    {
+      "q": "Czy animujecie gotowe grafiki?",
+      "a": "Tak. Najczęściej pracujemy na materiałach klienta: logo, ilustracjach, okładkach. Nie trzeba projektować wszystkiego od zera."
+    },
+    {
+      "q": "W jakim formacie dostanę animację?",
+      "a": "MP4 pod stronę i social media, a na życzenie także wersje z kanałem alfa do dalszego montażu."
+    }
+  ]
+}

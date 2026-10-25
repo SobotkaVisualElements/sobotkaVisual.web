@@ -13,6 +13,8 @@ import IsoIcon from '../iso/IsoIcon.astro';
 import Backdrop from './Backdrop.astro';
 import Carousel3D from '../ui/Carousel3D.astro';
 import Deadline from './Deadline.astro';
+import SaveBadge from '../ui/SaveBadge.astro';
+import { cardValue, cardDeal, zl } from '../../lib/pricing';
 import GapChart from '../ui/GapChart.astro';
 import Blocks from '../blocks/Blocks.astro';
 import { tx } from '../../lib/typo';
@@ -321,7 +323,9 @@ const iPrice = ['tablet', 'rakieta', 'moneta'];
 						{iso && <span class="k-price-ico is-iso"><IsoIcon name={iPrice[i % 3]} /></span>}
 						<span class="k-price-tag">{c.tag}</span>
 						<h3 set:html={tx(c.name)} />
-						<div class="k-price-val"><b set:html={tx(c.price)} /><span set:html={tx(c.per)} /></div>
+						{cardDeal(c) && <span class="deal-ribbon">Przecena <b>−{cardDeal(c)!.disc}%</b></span>}
+						<SaveBadge price={cardDeal(c)?.final ?? c.price} value={cardValue(c)} per={/mies/.test(c.per || '') ? '/ mies.' : ''} label={o.invest?.saveLabel || 'Zyskujesz'} compare={c.valueLabel || o.invest?.compareLabel || undefined} tone={theme === 'kt-light' && !c.featured ? 'light' : 'dark'} />
+						<div class="k-price-val">{cardDeal(c) && <s class="k-price-old">{zl(cardDeal(c)!.list)}</s>}<b set:html={cardDeal(c) ? zl(cardDeal(c)!.final).replace(/\u00a0zł$/, '') : tx(c.price)} /><span set:html={tx(c.per)} /></div>
 						<p class="k-price-note" set:html={tx(c.note)} />
 						<ul>{(c.items ?? []).map((it: string) => <li set:html={tx(it)} />)}</ul>
 						{c.ctaLabel && <a href={withUtm(c.ctaHref)} class:list={['k-btn', c.featured ? 'k-btn-acc' : 'k-btn-ghost']}>{c.ctaLabel} →</a>}
@@ -597,6 +601,7 @@ const iPrice = ['tablet', 'rakieta', 'moneta'];
 	.k-price-val { display: flex; flex-wrap: wrap; align-items: baseline; gap: .5rem; margin-top: 1rem; }
 	.k-price-val b { font-family: var(--font-display); font-size: 52px; line-height: 1; letter-spacing: -.04em; }
 	.k-price-val span { color: var(--mut); font-size: 14px; }
+	.k-price-old { width: 100%; font-size: 15px; color: var(--mut); opacity: .8; }
 	.k-price-note { margin-top: .5rem; font-size: 13.5px; color: var(--mut); }
 	.k-price ul { margin: 1.4rem 0 1.6rem; display: grid; gap: .55rem; font-size: 15px; }
 	.k-price li::before { content: '✓'; color: var(--acc); font-weight: 700; margin-right: .6rem; }
@@ -666,7 +671,7 @@ const iPrice = ['tablet', 'rakieta', 'moneta'];
 	.kt-iso .k-track-pt.is-active .k-track-dot { background: var(--cy); border-color: var(--cy); box-shadow: 0 0 0 7px rgba(62,230,255,.2), 0 0 18px var(--cy); }
 	.kt-iso .k-track-fill, .kt-iso .k-marq-progress span { background: linear-gradient(90deg, var(--cy), #b03cff); }
 	.kt-iso .k-step-n, .kt-iso .k-fly-n, .kt-iso .k-strip-n, .kt-iso .k-chip-num, .kt-iso .k-stat-num small { color: var(--cy); text-shadow: 0 0 18px rgba(62,230,255,.6); }
-	.kt-iso .k-big-num span { color: transparent; -webkit-text-stroke: 1.5px rgba(143,244,255,.65); }
+	.kt-iso .k-big-num span { color: transparent; background: linear-gradient(180deg, rgba(143,244,255,.75), rgba(143,244,255,.06)); -webkit-background-clip: text; background-clip: text; }
 	.kt-iso .k-words .kw { text-shadow: 0 0 24px rgba(109,77,255,.35); }
 	.kt-iso .k-qa summary::after { color: var(--cy); }
 	.kt-iso .k-mbar { background: #22185c; }

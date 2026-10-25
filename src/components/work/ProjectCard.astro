@@ -3,6 +3,7 @@ import { getImage } from 'astro:assets';
 import type { Project } from '../../lib/projects';
 import { slugify } from '../../lib/posts';
 import LayerTile from '../ui/LayerTile.astro';
+import { collabInfo } from '../../lib/collab';
 
 interface Props {
 	project: Project;
@@ -12,6 +13,7 @@ interface Props {
 const { project } = Astro.props;
 const d: any = project.data;
 const { title, description, category, tech, year } = d;
+const co = collabInfo(d);
 
 // kolejność: warstwy z panelu → okładka z panelu → stara miniatura z repo
 let layers = (d.layers ?? []).filter((l: any) => l?.image);
@@ -31,7 +33,9 @@ if (!layers.length && d.thumbnail) {
 		<div class="flex items-center gap-2 text-[12px] font-bold tracking-[0.1em] text-orange-deep uppercase">
 			<span>{category}</span>
 			<span class="text-ink/25" aria-hidden="true">·</span>
-			<span class="text-ink/45">{year}</span>
+			{co ? (
+				<span class:list={['collab-pill', co.active ? 'is-on' : 'is-off']} title={`Współpraca stała ${co.range}`}><i></i>Stała · {co.short}</span>
+			) : <span class="text-ink/45">{year}</span>}
 			{d.clientLogo && (
 				<img src={d.clientLogo} alt={d.client ? `Logo: ${d.client}` : ''} loading="lazy" class:list={['ml-auto h-9 w-auto max-w-[130px] object-contain', d.clientLogoTone !== 'oryginalne' && 'logo-dark']} />
 			)}

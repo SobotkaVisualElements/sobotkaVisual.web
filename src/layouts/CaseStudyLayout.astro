@@ -5,6 +5,7 @@ import Blocks from '../components/blocks/Blocks.astro';
 import LayerTile from '../components/ui/LayerTile.astro';
 import VideoLoop from '../components/ui/VideoLoop.astro';
 import { nbspHtml } from '../lib/typo';
+import { collabInfo } from '../lib/collab';
 
 interface Props {
 	project: Project;
@@ -19,9 +20,11 @@ const { title, description, category, tech, year, role, client, url, repo, cover
 const facts = [
 	role && { label: 'Zakres', value: role },
 	client && { label: 'Klient', value: client },
-	{ label: 'Rok', value: String(year) },
+	...(collabInfo(project.data)
+		? [{ label: 'Współpraca stała', value: [collabInfo(project.data)!.range, collabInfo(project.data)!.len].filter(Boolean).join(' · '), status: collabInfo(project.data)! }]
+		: [{ label: 'Rok', value: String(year) }]),
 	{ label: 'Kategoria', value: category },
-].filter(Boolean) as { label: string; value: string }[];
+].filter(Boolean) as { label: string; value: string; status?: any }[];
 ---
 
 <BaseLayout title={title} description={description} type="article">
@@ -97,7 +100,10 @@ const facts = [
 							<dt class="text-xs font-bold uppercase tracking-wider text-ink/45">
 								{fact.label}
 							</dt>
-							<dd class="mt-1 font-semibold text-ink">{fact.value}</dd>
+							<dd class="mt-1 font-semibold text-ink">
+								{fact.status && <span class:list={['collab-pill', fact.status.active ? 'is-on' : 'is-off']}><i></i>{fact.status.status}</span>}
+								{fact.value}
+							</dd>
 						</div>
 					))
 				}

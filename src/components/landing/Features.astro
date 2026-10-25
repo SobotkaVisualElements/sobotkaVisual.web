@@ -2,6 +2,9 @@
 import home from '../../data/home.json';
 import LayerTile from '../ui/LayerTile.astro';
 import SvcIcon from '../ui/SvcIcon.astro';
+import IsoIcon from '../iso/IsoIcon.astro';
+// animowane ikony izometryczne (jak na landingu izometrycznym) — przypisane do usług
+const isoFor: Record<string, string> = { montaz: 'monitor', motion: 'rakieta', rolki: 'telefon', grafika: 'tablet', transmisja: 'wykres', dzwiek: 'kamera' };
 const t = { titleBig: 'Wszystko,', titleSmall: 'czego potrzebują Twoje media', lead: 'Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość.', ...(home as any).uslugi };
 const fallback = [
 	{ title: 'Montaż wideo', body: 'Długie formy z dynamicznym cięciem, napisami, korekcją dźwięku i color gradingiem.', icon: 'montaz' },
@@ -11,6 +14,7 @@ const fallback = [
 	{ title: 'Oprawa transmisyjna', body: 'Intro, outro, animowane statystyki, formacje i skład — pełna szata meczowa.', icon: 'transmisja' },
 	{ title: 'Dźwięk i produkcja', body: 'Opracowanie dźwięku, lektor, dzień zdjęciowy — kompletne zaplecze produkcyjne.', icon: 'dzwiek' },
 ];
+const svcLink: Record<string, string> = { montaz: '/uslugi/montaz-wideo/', motion: '/uslugi/animacja-motion-design/', rolki: '/uslugi/rolki-i-krotkie-formy/', grafika: '/uslugi/oprawa-graficzna/', transmisja: '/uslugi/oprawa-transmisyjna/', dzwiek: '/uslugi/dzwiek-i-produkcja/' };
 const features: any[] = (home as any).features?.length ? (home as any).features : fallback;
 ---
 <section id="uslugi" class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
@@ -28,8 +32,9 @@ const features: any[] = (home as any).features?.length ? (home as any).features 
 				const hasLayers = (f.layers ?? []).some((l: any) => l?.image);
 				const inner = (
 					<>
-						<h3 class="text-[21px] font-semibold text-cloud">{f.title}</h3>
+						<h3 class="text-[21px] font-semibold text-cloud">{(f.href || svcLink[f.icon]) ? <a href={f.href || svcLink[f.icon]} class="after:absolute after:inset-0 after:z-10">{f.title}</a> : f.title}</h3>
 						<p class="mt-2 text-[15px] leading-normal text-sky-mist">{f.body}</p>
+						{(f.href || svcLink[f.icon]) && <span class="mt-4 inline-block text-sm font-bold text-orange-glow transition-transform group-hover:translate-x-1">Zobacz usługę →</span>}
 					</>
 				);
 				return hasLayers ? (
@@ -44,8 +49,8 @@ const features: any[] = (home as any).features?.length ? (home as any).features 
 					</div>
 				) : (
 					<div data-layers data-strength={f.strength ?? 100} class="liquid-card glass group rounded-2xl p-7">
-						<span data-depth="25" data-scale="100" class="mb-5 flex size-14 items-center justify-center rounded-chip border border-white/20 bg-white/[0.04] p-3 text-cloud transition-colors duration-300 group-hover:border-orange/60 group-hover:text-orange-glow">
-							<SvcIcon name={f.icon || 'montaz'} />
+						<span data-depth="25" data-scale="100" class="svc-iso mb-3 block">
+							<IsoIcon name={isoFor[f.icon] || 'monitor'} />
 						</span>
 						{inner}
 					</div>
@@ -54,3 +59,9 @@ const features: any[] = (home as any).features?.length ? (home as any).features 
 		</div>
 	</div>
 </section>
+<style is:global>
+	.svc-iso { width: 118px; height: 118px; margin: -14px 0 0 -14px; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+	.svc-iso .iso { width: 100%; height: 100%; }
+	.group:hover .svc-iso { transform: translateY(-4px) scale(1.04); }
+	@media (max-width: 767px) { .svc-iso { width: 100px; height: 100px; } }
+</style>

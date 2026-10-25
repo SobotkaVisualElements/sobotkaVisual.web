@@ -1,53 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-// Ceny wprost z Cennika Master 2026
-const packages = [
-	{ id: 'none',   name: 'Bez pakietu', price: 0,     desc: 'Składam sam z elementów', preset: {} },
-	{ id: 'start',  name: 'START',  price: 2500,  desc: 'Stała obecność, bez wideo',
-	  preset: { rolki: 6, miniatury: 6, animacja: 1 } },
-	{ id: 'pro',    name: 'PRO',    price: 7200,  desc: 'Pełne zaplecze marketingu', recommended: true,
-	  preset: { montaz: 4, rolki: 8, miniatury: 8, animacja: 3 } },
-	{ id: 'studio', name: 'STUDIO', price: 12900, desc: 'Najwyższy poziom + strategia',
-	  preset: { montaz: 6, rolki: 12, miniatury: 16, animacja: 5, zdjecia: 1 } },
-];
-
-const groups = [
-	{ title: 'Wideo i krótkie formy', items: [
-		{ id: 'montaz',    name: 'Montaż długiej formy',      price: 1250, max: 12, hint: 'Odcinki, wywiady, materiały 10–20 min' },
-		{ id: 'rolki',     name: 'Rolki / shorty / TikTok',   price: 320,  max: 20, hint: 'Najszybszy zasięg', rec: true },
-		{ id: 'rolkaani',  name: 'Animowana rolka',           price: 650,  max: 12, hint: 'Rolka z pełną oprawą motion', rec: true },
-		{ id: 'skrot',     name: 'Skrót meczowy / eventowy',  price: 950,  max: 8 },
-		{ id: 'wizerunek', name: 'Materiał wizerunkowy 2 min', price: 4500, max: 4 },
-	]},
-	{ title: 'Animacja i motion', items: [
-		{ id: 'animacja',  name: 'Element animowany (belka, plansza)', price: 675, max: 12, hint: 'Buduje rozpoznawalność' },
-		{ id: 'trailer',   name: 'Trailer animowany 30–45 s', price: 4300, max: 4 },
-		{ id: 'okladka',   name: 'Animowana okładka / motion cover', price: 1150, max: 8 },
-	]},
-	{ title: 'Grafika i opakowanie', items: [
-		{ id: 'miniatury', name: 'Miniatury / okładki',       price: 220, max: 24, hint: 'Decydują o klikalności', rec: true },
-		{ id: 'grafika',   name: 'Grafika statyczna (post, baner)', price: 180, max: 24 },
-		{ id: 'postani',   name: 'Animowany post promocyjny', price: 280, max: 12 },
-	]},
-	{ title: 'Koncepcja, dźwięk, produkcja', items: [
-		{ id: 'scenariusz', name: 'Scenariusz materiału',     price: 600, max: 8 },
-		{ id: 'dzwiek',     name: 'Opracowanie dźwięku + licencja', price: 400, max: 12 },
-		{ id: 'lektor',     name: 'Lektor profesjonalny',     price: 900, max: 8 },
-		{ id: 'napisy',     name: 'Napisy',                   price: 150, max: 16 },
-		{ id: 'zdjecia',    name: 'Dzień zdjęciowy',          price: 1150, max: 4, hint: 'Świeży materiał zamiast archiwum' },
-	]},
-];
-
-// Dopłaty i warunki handlowe — zaznaczane „ptaszkiem" (mnożniki wg Cennika, cz. C)
-const extras = [
-	{ id: 'system',  name: 'System oprawy graficznej (wdrożenie)', type: 'flat', value: 5500, hint: 'Spójny system: intro, outro, belki, kolory' },
-	{ id: 'trans',   name: 'Pakiet oprawy transmisyjnej',          type: 'flat', value: 6000 },
-	{ id: 'express', name: 'Tryb ekspresowy (poniżej 48 h)',       type: 'pct',  value: 50 },
-	{ id: 'format',  name: 'Dodatkowy format lub wersja językowa', type: 'pct',  value: 15 },
-	{ id: 'prawa',   name: 'Rozszerzenie praw o kampanie płatne',  type: 'pct',  value: 25 },
-	{ id: 'wylacz',  name: 'Wyłączność w branży na obszarze',      type: 'pct',  value: 30 },
-];
+import { packages, groups, extras } from '../lib/pricing';
 ---
 
 <BaseLayout title="Zaprojektuj własny pakiet" description="Skonfiguruj współpracę i zobacz, ile zyskujesz — Sobotka Visual Creations.">

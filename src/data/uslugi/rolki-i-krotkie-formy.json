@@ -1,0 +1,105 @@
+{
+  "name": "Rolki i krótkie formy",
+  "order": 3,
+  "icon": "rolki",
+  "draft": false,
+  "seoTitle": "Rolki, shorty i TikToki dla firm — regularnie, w jednym stylu | SVC",
+  "seoDesc": "Pionowe rolki na Instagram, TikTok, YouTube Shorts i Facebook. Scenariusz, montaż, napisy i miniatury — także w stałym rytmie, np. 3 rolki tygodniowo.",
+  "hero": {
+    "eyebrow": "Usługa · rolki",
+    "title": "Rolki i krótkie formy,",
+    "titleBold": "które publikujesz regularnie.",
+    "lead": "Algorytmy nagradzają regularność. Robimy rolki seriami — w jednym stylu, z napisami i hakiem w pierwszych sekundach. Dla Delta HR to 3 rolki tygodniowo przez cały rok."
+  },
+  "deliver": {
+    "eyebrow": "Co dostajesz",
+    "title": "Zakres",
+    "titleLight": "usługi.",
+    "items": [
+      {
+        "t": "Rolki z napisami",
+        "d": "Pion 9:16 z wypalonymi napisami — działa także bez dźwięku."
+      },
+      {
+        "t": "Animowane rolki",
+        "d": "Rolka z pełną oprawą motion, gdy nie ma nagrań albo potrzebujesz efektu „wow”."
+      },
+      {
+        "t": "Scenariusze",
+        "d": "Hak, treść i wezwanie do działania rozpisane przed nagraniem."
+      },
+      {
+        "t": "Seria w jednym stylu",
+        "d": "Szablony, kolory i typografia, po których klient rozpoznaje Twoją markę."
+      },
+      {
+        "t": "Miniatury i okładki",
+        "d": "Okładki rolek spójne z profilem i kanałem."
+      },
+      {
+        "t": "Plan publikacji",
+        "d": "Co, kiedy i gdzie wychodzi — raz w miesiącu, bez zgadywania."
+      }
+    ]
+  },
+  "process": {
+    "eyebrow": "Jak to robimy",
+    "title": "Cztery kroki,",
+    "titleLight": "zero chaosu.",
+    "items": [
+      {
+        "t": "Strategia",
+        "d": "Tematy, formaty i częstotliwość dopasowane do celu: rekrutacja, sprzedaż, zasięg."
+      },
+      {
+        "t": "Scenariusze",
+        "d": "Krótkie scenariusze do akceptacji. Wiesz, co nagrywasz."
+      },
+      {
+        "t": "Produkcja",
+        "d": "Montaż serii, napisy, muzyka, okładki."
+      },
+      {
+        "t": "Publikacja i wnioski",
+        "d": "Co miesiąc sprawdzamy, co działa, i poprawiamy kolejne odcinki."
+      }
+    ]
+  },
+  "prices": {
+    "title": "Ile to kosztuje",
+    "note": "Ceny netto, orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
+    "items": [
+      "rolki",
+      "rolkaani",
+      "miniatury",
+      "scenariusz"
+    ],
+    "extras": []
+  },
+  "work": {
+    "categories": [
+      "Montaż",
+      "Animacja"
+    ],
+    "title": "Zobacz",
+    "titleLight": "nasze realizacje."
+  },
+  "cities": [
+    "rolki-social-media-opole",
+    "social-media-nysa"
+  ],
+  "faq": [
+    {
+      "q": "Ile kosztuje rolka?",
+      "a": "Rolka zmontowana z Twoich materiałów (z napisami) zaczyna się od 390 zł netto, rolka z nagraniem u Ciebie od 550 zł, a animowana rolka od 850 zł. W pakietach miesięcznych pojedyncza rolka wychodzi taniej."
+    },
+    {
+      "q": "Ile rolek publikować?",
+      "a": "Minimum 2–3 tygodniowo, żeby algorytm i odbiorcy zaczęli Cię rozpoznawać. Ważniejsza od liczby jest regularność."
+    },
+    {
+      "q": "Czy musimy nagrywać sami?",
+      "a": "Nie zawsze. Część rolek powstaje z Waszych zdjęć, grafik i animacji, a na nagrania możemy przyjechać z kamerą."
+    }
+  ]
+}

@@ -7,6 +7,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Carousel3D from '../../components/ui/Carousel3D.astro';
 import GapChart from '../../components/ui/GapChart.astro';
+import SaveBadge from '../../components/ui/SaveBadge.astro';
+import { cardValue, cardDeal, zl } from '../../lib/pricing';
 import { opinie } from '../../data/opinie';
 import CompareBars from '../../components/ui/CompareBars.astro';
 import Stars from '../../components/ui/Stars.astro';
@@ -73,7 +75,7 @@ const ld = {
 			'@type': 'Service', '@id': `${url}#usluga`, name: o.service, serviceType: o.service, url, description: o.seoDesc,
 			provider: { '@id': `${site}/#firma` },
 			areaServed: [{ '@type': 'AdministrativeArea', name: 'województwo opolskie' }, { '@type': 'Country', name: 'Polska' }],
-			offers: cards.map((c) => ({ '@type': 'Offer', name: c.name, priceCurrency: 'PLN', price: String(c.price).replace(/[^\d]/g, ''), description: c.note })),
+			offers: cards.map((c) => ({ '@type': 'Offer', name: c.name, priceCurrency: 'PLN', price: cardDeal(c) ? String(cardDeal(c)!.final) : String(c.price).replace(/[^\d]/g, ''), description: c.note })),
 		},
 		{ '@type': 'FAQPage', '@id': `${url}#faq`, mainEntity: (o.faq?.items ?? []).map((f: any) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
 		{
@@ -437,11 +439,14 @@ const ld = {
 				<h2 class="of-h mt-4 text-[38px] leading-[1.05] md:text-[52px]"><span set:html={tx(o.invest.title)} /> <span class="of-light" set:html={tx(o.invest.titleLight)} /></h2>
 				<div class:list={['mt-10 grid items-start gap-6', cards.length >= 3 ? 'md:grid-cols-3' : 'md:grid-cols-2']}>
 					{cards.map((c) => (
-						<div class:list={['liquid-card glass rounded-[24px] p-8', c.featured && 'border-orange/50 shadow-[0_0_50px_-10px_rgba(237,36,78,.55)]']}>
+						<div class:list={['liquid-card glass relative rounded-[24px] p-8', c.featured && 'border-orange/50 shadow-[0_0_50px_-10px_rgba(237,36,78,.55)]']}>
 							<span class:list={['inline-block rounded-full px-3 py-1 text-[11px] font-bold tracking-[0.08em] uppercase', c.featured ? 'bg-orange text-cloud' : 'bg-white/8 text-sky-mist']}>{c.tag}</span>
 							<h3 class="mt-4 text-[20px] font-bold text-cloud" set:html={tx(c.name)} />
+							{cardDeal(c) && <span class="deal-ribbon">Przecena <b>−{cardDeal(c)!.disc}%</b></span>}
+							<SaveBadge price={cardDeal(c)?.final ?? c.price} value={cardValue(c)} per={/mies/.test(c.per || '') ? '/ mies.' : ''} label={o.invest?.saveLabel || 'Zyskujesz'} compare={c.valueLabel || o.invest?.compareLabel || undefined} />
 							<div class="mt-4 flex flex-wrap items-baseline gap-x-2">
-								<span class="font-display text-[48px] leading-none font-bold text-cloud" set:html={tx(c.price)} />
+								{cardDeal(c) && <span class="text-[15px] text-slate-500 line-through">{zl(cardDeal(c)!.list)}</span>}
+								<span class="font-display text-[48px] leading-none font-bold text-cloud" set:html={cardDeal(c) ? zl(cardDeal(c)!.final).replace(/\u00a0zł$/, '') : tx(c.price)} />
 								<span class="text-[14px] text-sky-mist" set:html={tx(c.per)} />
 							</div>
 							<p class="mt-2 text-[13px] text-sky-mist" set:html={tx(c.note)} />

@@ -1,0 +1,332 @@
+---
+/*
+ * Podstrona usługi (/uslugi/<adres>) — treść w panelu: Usługi → wybierz usługę.
+ * Sekcje: hero z animowaną ikoną, „co dostajesz”, proces (linia rysuje się przy przewijaniu),
+ * ceny z cennika (te same co w generatorze), realizacje w karuzeli 3D, FAQ, miasta, rozmowa.
+ */
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SvcIcon from '../../components/ui/SvcIcon.astro';
+import Carousel3D from '../../components/ui/Carousel3D.astro';
+import OfferButton from '../../components/ui/OfferButton.astro';
+import BookingCta from '../../components/ui/BookingCta.astro';
+import StatsBar from '../../components/ui/StatsBar.astro';
+import Blocks from '../../components/blocks/Blocks.astro';
+import { getPublishedProjects } from '../../lib/projects';
+import { groups, extras, zl } from '../../lib/pricing';
+import { tx } from '../../lib/typo';
+
+export function getStaticPaths() {
+	const files = import.meta.glob('../../data/uslugi/*.json', { eager: true }) as Record<string, any>;
+	return Object.entries(files)
+		.filter(([, m]) => !(m.default ?? m).draft)
+		.map(([path]) => ({ params: { slug: path.split('/').pop()!.replace('.json', '') } }));
+}
+
+const { slug } = Astro.params;
+const files = import.meta.glob('../../data/uslugi/*.json', { eager: true }) as Record<string, any>;
+const all = Object.entries(files)
+	.map(([path, m]) => ({ slug: path.split('/').pop()!.replace('.json', ''), ...(m.default ?? m) }))
+	.filter((s: any) => !s.draft)
+	.sort((a: any, b: any) => (a.order ?? 99) - (b.order ?? 99));
+const s: any = all.find((x: any) => x.slug === slug);
+const others = all.filter((x: any) => x.slug !== slug);
+const site = 'https://sobotkavisual.pl';
+const url = `${site}/uslugi/${slug}/`;
+
+// ceny z cennika (jedno źródło z generatorem)
+const allItems = groups.flatMap((g) => g.items);
+const priceRows = [
+	...(s.prices?.items ?? []).map((id: string) => allItems.find((i) => i.id === id)).filter(Boolean).map((i: any) => ({ id: i.id, name: i.name, price: `od ${zl(i.price)}`, hint: i.hint })),
+	...(s.prices?.extras ?? []).map((id: string) => extras.find((e) => e.id === id)).filter((e: any) => e && e.type === 'flat').map((e: any) => ({ id: e.id, name: e.name, price: `od ${zl(e.value)}`, hint: e.hint, extra: true })),
+];
+const genQuery = new URLSearchParams({ pakiet: 'none', tryb: 'jednorazowa', utm_source: 'usluga', utm_campaign: slug! });
+priceRows.filter((r: any) => !r.extra).slice(0, 2).forEach((r: any) => genQuery.set(r.id, '1'));
+const genExtras = priceRows.filter((r: any) => r.extra).map((r: any) => r.id);
+if (genExtras.length) genQuery.set('x', genExtras.join(','));
+
+// realizacje z pasującej kategorii
+const cats: string[] = s.work?.categories ?? [];
+const work = (await getPublishedProjects()).filter((p: any) => !cats.length || cats.includes(p.data.category)).slice(0, 9)
+	.map((p: any) => ({ href: `/work/${p.id}`, title: p.data.title, category: p.data.category, img: p.data.cover || p.data.layers?.find((l: any) => l?.image)?.image || p.data.poster || '' }));
+
+// strony lokalne (miasta) — linkowanie wewnętrzne pod SEO
+const cityPages = import.meta.glob('./*.astro');
+const cities = (s.cities ?? []).filter((c: string) => cityPages[`./${c}.astro`]).map((c: string) => ({
+	href: `/uslugi/${c}/`,
+	label: c.split('-').map((w: string, i: number) => (i === 0 ? w[0].toUpperCase() + w.slice(1) : w)).join(' ')
+		.replace(/\bopole\b/, 'Opole').replace(/\bnysa\b/, 'Nysa').replace(/\bwroclaw\b/, 'Wrocław').replace(/\bkatowice\b/, 'Katowice').replace(/kedzierzyn kozle/, 'Kędzierzyn-Koźle')
+		.replace(/^Montaz/, 'Montaż').replace(/youtube/, 'YouTube').replace(/^Grafika miniatury/, 'Grafika i miniatury').replace(/klub sportowy/, 'dla klubu sportowego'),
+}));
+
+const ld = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{ '@type': 'Service', '@id': `${url}#usluga`, name: s.name, serviceType: s.name, url, description: s.seoDesc, provider: { '@id': `${site}/#firma` },
+			areaServed: [{ '@type': 'City', name: 'Opole' }, { '@type': 'City', name: 'Nysa' }, { '@type': 'Country', name: 'Polska' }],
+			hasOfferCatalog: { '@type': 'OfferCatalog', name: s.name, itemListElement: priceRows.map((r: any) => ({ '@type': 'Offer', name: r.name, priceSpecification: { '@type': 'PriceSpecification', priceCurrency: 'PLN', minPrice: String(r.price).replace(/\D/g, '') } })) } },
+		{ '@type': 'FAQPage', mainEntity: (s.faq ?? []).map((f: any) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) },
+		{ '@type': 'BreadcrumbList', itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Strona główna', item: `${site}/` },
+			{ '@type': 'ListItem', position: 2, name: 'Usługi', item: `${site}/uslugi/` },
+			{ '@type': 'ListItem', position: 3, name: s.name, item: url },
+		] },
+	],
+};
+---
+<BaseLayout title={s.seoTitle || s.name} description={s.seoDesc}>
+	<div class="us">
+		<!-- HERO -->
+		<section class="us-hero">
+			<span class="us-grid" aria-hidden="true"></span>
+			<div class="us-wrap us-hero-in">
+				<div>
+					<nav class="us-crumbs" aria-label="Okruszki"><a href="/uslugi/">Usługi</a> <span>/</span> {s.name}</nav>
+					<p class="us-eyebrow" set:html={tx(s.hero?.eyebrow)} />
+					<h1 class="us-h1"><span set:html={tx(s.hero?.title)} /> <b set:html={tx(s.hero?.titleBold)} /></h1>
+					<p class="us-lead" set:html={tx(s.hero?.lead)} />
+					<div class="us-ctas">
+						<a href={`/generator?${genQuery}`} class="btn-saber us-btn us-btn-acc">Wyceń w 60 sekund →</a>
+						<a href="#realizacje" class="btn-saber us-btn">Zobacz realizacje</a>
+					</div>
+				</div>
+				<div class="us-orb" aria-hidden="true">
+					<span class="us-ring r1"></span><span class="us-ring r2"></span><span class="us-ring r3"></span>
+					<span class="us-glow"></span>
+					<div class="us-ico"><SvcIcon name={s.icon || 'montaz'} /></div>
+					{[0, 1, 2, 3, 4, 5].map((k) => <i class="us-spark" style={`--k:${k}`}></i>)}
+				</div>
+			</div>
+		</section>
+
+		<StatsBar />
+
+		<!-- CO DOSTAJESZ -->
+		{s.deliver?.items?.length > 0 && (
+			<section class="us-sec">
+				<div class="us-wrap">
+					<p class="us-eyebrow" set:html={tx(s.deliver.eyebrow)} />
+					<h2 class="us-h2"><span set:html={tx(s.deliver.title)} /> <span class="us-light" set:html={tx(s.deliver.titleLight)} /></h2>
+					<div class="us-cards">
+						{s.deliver.items.map((it: any, i: number) => (
+							<article class="us-card svc-anim" style={`--d:${(i % 3) * 0.08}s`}>
+								<span class="us-card-n">{String(i + 1).padStart(2, '0')}</span>
+								<h3 set:html={tx(it.t)} />
+								<p set:html={tx(it.d)} />
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+		)}
+
+		<!-- PROCES -->
+		{s.process?.items?.length > 0 && (
+			<section class="us-sec us-proc-sec">
+				<div class="us-wrap">
+					<p class="us-eyebrow" set:html={tx(s.process.eyebrow)} />
+					<h2 class="us-h2"><span set:html={tx(s.process.title)} /> <span class="us-light" set:html={tx(s.process.titleLight)} /></h2>
+					<ol class="us-proc svc-anim" style={`--n:${s.process.items.length}`}>
+						<svg class="us-proc-line" viewBox="0 0 100 2" preserveAspectRatio="none" aria-hidden="true"><line pathLength="1" x1="0" y1="1" x2="100" y2="1" /></svg>
+						{s.process.items.map((st: any, i: number) => (
+							<li style={`--d:${0.25 + i * 0.25}s`}>
+								<span class="us-dot">{i + 1}</span>
+								<h3 set:html={tx(st.t)} />
+								<p set:html={tx(st.d)} />
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		)}
+
+		<!-- KLOCKI Z PANELU (np. wykres przewagi, wideo) -->
+		{s.blocks?.length > 0 && <section class="us-sec"><div class="us-wrap us-narrow"><Blocks blocks={s.blocks} theme="dark" /></div></section>}
+
+		<!-- CENY -->
+		{priceRows.length > 0 && (
+			<section class="us-sec">
+				<div class="us-wrap us-prices-wrap">
+					<div>
+						<p class="us-eyebrow">Cennik</p>
+						<h2 class="us-h2" set:html={tx(s.prices?.title || 'Ile to kosztuje')} />
+						<p class="us-lead us-small" set:html={tx(s.prices?.note)} />
+					</div>
+					<div class="us-prices svc-anim">
+						{priceRows.map((r: any, i: number) => (
+							<div class="us-price" style={`--d:${i * 0.07}s`}>
+								<div><b set:html={tx(r.name)} />{r.hint && <small set:html={tx(r.hint)} />}</div>
+								<span set:html={tx(r.price)} />
+							</div>
+						))}
+						<OfferButton href={`/generator?${genQuery}`} label="Sprawdź ofertę" align="lewo" />
+					</div>
+				</div>
+			</section>
+		)}
+
+		<!-- REALIZACJE -->
+		{work.length > 0 && (
+			<section id="realizacje" class="us-sec">
+				<div class="us-wrap us-center">
+					<p class="us-eyebrow us-eyebrow-c">Realizacje</p>
+					<h2 class="us-h2"><span set:html={tx(s.work?.title || 'Zobacz')} /> <span class="us-light" set:html={tx(s.work?.titleLight || 'nasze realizacje.')} /></h2>
+				</div>
+				<div class="us-car"><Carousel3D items={work} orientation="poziom" tone="dark" label={`Realizacje — ${s.name}`} /></div>
+			</section>
+		)}
+
+		<!-- FAQ -->
+		{s.faq?.length > 0 && (
+			<section class="us-sec">
+				<div class="us-wrap us-faq-wrap">
+					<div>
+						<p class="us-eyebrow">Pytania</p>
+						<h2 class="us-h2">Najczęściej <span class="us-light">pytacie o to.</span></h2>
+					</div>
+					<div class="us-faq">
+						{s.faq.map((f: any, i: number) => (
+							<details open={i === 0}><summary set:html={tx(f.q)} /><p set:html={tx(f.a)} /></details>
+						))}
+					</div>
+				</div>
+			</section>
+		)}
+
+		<!-- MIASTA + INNE USŁUGI -->
+		<section class="us-sec us-links">
+			<div class="us-wrap">
+				{cities.length > 0 && (
+					<div class="us-chips-row">
+						<span class="us-chips-k">Lokalnie</span>
+						{cities.map((c: any) => <a href={c.href} class="us-chip">{c.label}</a>)}
+					</div>
+				)}
+				<div class="us-chips-row">
+					<span class="us-chips-k">Inne usługi</span>
+					{others.map((o: any) => <a href={`/uslugi/${o.slug}/`} class="us-chip">{o.name}</a>)}
+				</div>
+			</div>
+		</section>
+
+		<!-- ROZMOWA -->
+		<section class="us-final">
+			<div class="us-wrap us-center">
+				<h2 class="us-h2">Porozmawiajmy o <span class="us-light">Twoim projekcie.</span></h2>
+				<p class="us-lead us-center">15 minut wystarczy, żeby ustalić zakres, termin i budżet. Wycenę dostajesz od razu.</p>
+				<div class="us-final-cta"><BookingCta /></div>
+			</div>
+		</section>
+	</div>
+	<script type="application/ld+json" set:html={JSON.stringify(ld)} />
+</BaseLayout>
+
+<style is:global>
+	.us { background: radial-gradient(110% 60% at 85% 0%, #2a1060 0%, transparent 55%), var(--color-navy-deep); color: var(--color-cloud); overflow-x: clip; }
+	.us-wrap { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+	.us-narrow { max-width: 900px; }
+	.us-center { text-align: center; }
+	.us-sec { padding: clamp(4rem, 8vw, 6.5rem) 0; border-top: 1px solid rgba(255,255,255,.06); }
+	.us-eyebrow { display: flex; align-items: center; gap: .7rem; font-size: 12.5px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--color-orange-glow); }
+	.us-eyebrow::before { content: ''; width: 26px; height: 2px; background: currentColor; }
+	.us-eyebrow-c { justify-content: center; }
+	.us-h1 { margin-top: 1rem; font-family: var(--font-display); font-size: clamp(38px, 5.6vw, 76px); line-height: 1; letter-spacing: -.04em; font-weight: 300; text-wrap: balance; }
+	.us-h1 b { display: block; font-weight: 900; }
+	.us-h2 { margin-top: .8rem; font-family: var(--font-display); font-size: clamp(30px, 4vw, 52px); line-height: 1.05; letter-spacing: -.035em; font-weight: 800; text-wrap: balance; }
+	.us-light { font-weight: 300; color: rgba(255,255,255,.6); }
+	.us-lead { margin-top: 1.3rem; max-width: 600px; font-size: clamp(16.5px, 1.4vw, 19px); line-height: 1.6; color: var(--color-sky-mist); text-wrap: pretty; }
+	.us-lead.us-center { margin-inline: auto; }
+	.us-small { font-size: 15px; }
+	.us-crumbs { font-size: 13px; color: var(--color-sky-mist); margin-bottom: 1.2rem; }
+	.us-crumbs a { color: var(--color-orange-glow); } .us-crumbs span { opacity: .4; margin: 0 .3rem; }
+	.us-btn { display: inline-flex; padding: .95rem 1.6rem; border-radius: 999px; font-weight: 700; border: 2px solid rgba(255,255,255,.55); transition: transform .2s; }
+	.us-btn:hover { transform: translateY(-2px); }
+	.us-btn-acc { background: var(--color-orange); border-color: var(--color-orange); }
+	.us-ctas { margin-top: 2rem; display: flex; flex-wrap: wrap; gap: 12px; }
+
+	/* hero + orb z ikoną */
+	.us-hero { position: relative; padding: clamp(4.5rem, 9vw, 7.5rem) 0 clamp(3.5rem, 7vw, 6rem); }
+	.us-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px); background-size: 46px 46px;
+		mask-image: radial-gradient(70% 70% at 70% 40%, #000, transparent); pointer-events: none; }
+	.us-hero-in { position: relative; display: grid; gap: 3rem; align-items: center; }
+	@media (min-width: 960px) { .us-hero-in { grid-template-columns: 1.25fr .9fr; } }
+	.us-orb { position: relative; width: min(380px, 70vw); aspect-ratio: 1; margin: 0 auto; display: grid; place-items: center; }
+	.us-ring { position: absolute; inset: 0; border-radius: 50%; border: 1px solid rgba(255,255,255,.12); animation: us-spin 30s linear infinite; }
+	.us-ring::after { content: ''; position: absolute; top: -4px; left: 50%; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--color-orange-bright); box-shadow: 0 0 14px var(--color-orange); }
+	.us-ring.r2 { inset: 13%; animation-duration: 20s; animation-direction: reverse; border-style: dashed; border-color: rgba(255,255,255,.1); }
+	.us-ring.r3 { inset: 26%; animation-duration: 14s; }
+	.us-ring.r3::after { background: #2ee59d; box-shadow: 0 0 12px #2ee59d; }
+	@keyframes us-spin { to { transform: rotate(360deg); } }
+	.us-glow { position: absolute; inset: 22%; border-radius: 50%; background: radial-gradient(circle, rgba(237,36,78,.55), transparent 70%); filter: blur(20px); animation: us-breathe 4s ease-in-out infinite; }
+	@keyframes us-breathe { 0%,100% { transform: scale(.9); opacity: .7; } 50% { transform: scale(1.08); opacity: 1; } }
+	.us-ico { position: relative; width: 38%; aspect-ratio: 1; padding: 6%; border-radius: 28%; color: #fff; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.18); backdrop-filter: blur(10px); box-shadow: 0 30px 60px -20px rgba(0,0,0,.6); }
+	.us-ico .svc-ico { width: 100%; height: 100%; }
+	.us-spark { position: absolute; left: 50%; top: 50%; width: 5px; height: 5px; border-radius: 50%; background: #fff; opacity: 0;
+		animation: us-spark 3.6s calc(var(--k) * .6s) ease-out infinite; --a: calc(var(--k) * 60deg); }
+	@keyframes us-spark { 0% { transform: rotate(var(--a)) translateX(30px); opacity: 0; } 20% { opacity: .9; } 100% { transform: rotate(var(--a)) translateX(170px); opacity: 0; } }
+
+	/* co dostajesz */
+	.us-cards { margin-top: 2.6rem; display: grid; gap: 1.1rem; }
+	@media (min-width: 700px) { .us-cards { grid-template-columns: 1fr 1fr; } }
+	@media (min-width: 1024px) { .us-cards { grid-template-columns: repeat(3, 1fr); } }
+	.us-card { position: relative; padding: 1.6rem; border-radius: 22px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+		opacity: 0; transform: translateY(24px); transition: opacity .6s var(--d), transform .8s var(--d) cubic-bezier(.2,.8,.2,1), border-color .3s, background .3s; }
+	.us-card.is-in { opacity: 1; transform: none; }
+	.us-card:hover { border-color: rgba(237,36,78,.55); background: rgba(237,36,78,.06); }
+	.us-card-n { font-family: var(--font-display); font-weight: 900; font-size: 15px; color: var(--color-orange-glow); }
+	.us-card h3 { margin-top: .6rem; font-size: 19px; font-weight: 800; letter-spacing: -.01em; }
+	.us-card p { margin-top: .45rem; font-size: 15px; line-height: 1.55; color: var(--color-sky-mist); }
+
+	/* proces */
+	.us-proc { position: relative; margin-top: 3rem; display: grid; gap: 1.8rem; list-style: none; padding: 0; }
+	@media (min-width: 900px) { .us-proc { grid-template-columns: repeat(var(--n), 1fr); gap: 1.4rem; } }
+	.us-proc-line { position: absolute; left: 22px; right: 22px; top: 21px; width: calc(100% - 44px); height: 2px; overflow: visible; display: none; }
+	@media (min-width: 900px) { .us-proc-line { display: block; } }
+	.us-proc-line line { stroke: var(--color-orange); stroke-width: 2; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.6s cubic-bezier(.65,0,.35,1); }
+	.us-proc.is-in .us-proc-line line { stroke-dashoffset: 0; }
+	.us-proc li { position: relative; opacity: 0; transform: translateY(16px); transition: opacity .5s var(--d), transform .6s var(--d); }
+	.us-proc.is-in li { opacity: 1; transform: none; }
+	.us-dot { position: relative; z-index: 1; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; background: var(--color-navy-deep); border: 2px solid var(--color-orange); font-weight: 900; }
+	.us-proc li h3 { margin-top: 1rem; font-size: 19px; font-weight: 800; }
+	.us-proc li p { margin-top: .4rem; font-size: 15px; line-height: 1.55; color: var(--color-sky-mist); }
+
+	/* ceny */
+	.us-prices-wrap { display: grid; gap: 2.5rem; }
+	@media (min-width: 960px) { .us-prices-wrap { grid-template-columns: .9fr 1.1fr; align-items: start; } }
+	.us-prices { display: flex; flex-direction: column; gap: .6rem; }
+	.us-price { display: flex; justify-content: space-between; gap: 1rem; align-items: center; padding: 1rem 1.2rem; border-radius: 16px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
+		opacity: 0; transform: translateX(20px); transition: opacity .5s var(--d), transform .6s var(--d); }
+	.us-prices.is-in .us-price { opacity: 1; transform: none; }
+	.us-price b { display: block; font-size: 16px; }
+	.us-price small { display: block; margin-top: 2px; font-size: 13px; color: var(--color-sky-mist); }
+	.us-price > span { flex-shrink: 0; font-family: var(--font-display); font-weight: 800; font-size: 17px; color: #fff; }
+	.us-prices .ob-wrap { margin: 1.4rem 0 0; }
+
+	.us-car { margin-top: 2.5rem; }
+
+	/* faq */
+	.us-faq-wrap { display: grid; gap: 2rem; }
+	@media (min-width: 960px) { .us-faq-wrap { grid-template-columns: .8fr 1.2fr; } }
+	.us-faq details { border-bottom: 1px solid rgba(255,255,255,.1); padding: 1.1rem 0; }
+	.us-faq summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 1rem; font-weight: 700; font-size: 17px; }
+	.us-faq summary::after { content: '+'; color: var(--color-orange-glow); font-size: 22px; line-height: 1; transition: transform .3s; }
+	.us-faq details[open] summary::after { transform: rotate(45deg); }
+	.us-faq p { margin-top: .7rem; color: var(--color-sky-mist); line-height: 1.6; }
+
+	.us-links { padding: 2.5rem 0; }
+	.us-chips-row { display: flex; flex-wrap: wrap; gap: .5rem; align-items: center; margin: .5rem 0; }
+	.us-chips-k { font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--color-sky-mist); margin-right: .4rem; }
+	.us-chip { padding: .5rem .95rem; border-radius: 99px; border: 1px solid rgba(255,255,255,.14); font-size: 14px; color: var(--color-sky-mist); transition: border-color .2s, color .2s; }
+	.us-chip:hover { border-color: var(--color-orange); color: #fff; }
+
+	.us-final { padding: clamp(4rem, 8vw, 6rem) 0 7rem; background: radial-gradient(70% 80% at 50% 100%, rgba(237,36,78,.25), transparent 70%); }
+	.us-final-cta { margin-top: 2rem; }
+
+	@media (prefers-reduced-motion: reduce) {
+		.us-ring, .us-glow, .us-spark { animation: none !important; }
+		.us-card, .us-proc li, .us-price { opacity: 1 !important; transform: none !important; }
+		.us-proc-line line { stroke-dashoffset: 0 !important; }
+	}
+</style>
+<script>
+	import '../../scripts/parallax.ts';
+</script>

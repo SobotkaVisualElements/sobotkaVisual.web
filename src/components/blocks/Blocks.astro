@@ -8,6 +8,8 @@ import LayerTile from '../ui/LayerTile.astro';
 import VideoLoop from '../ui/VideoLoop.astro';
 import Carousel3D from '../ui/Carousel3D.astro';
 import OfferButton from '../ui/OfferButton.astro';
+import GapChart from '../ui/GapChart.astro';
+import { opinie } from '../../data/opinie';
 import { md } from '../../lib/md';
 import { tx } from '../../lib/typo';
 
@@ -88,6 +90,17 @@ function linePath(b: any) {
 				);
 			}
 
+			case 'wykres_przewaga': {
+				// nowy wykres „przewagi” (jak na landingach): szara linia = typowo, zielona = z nami, obszar różnicy
+				const q = opinie.find((x) => x.name === b.quoteFrom);
+				return (
+					<div class="svc-b svc-gap">
+						<GapChart {...b} curve={b.curve || 'szybki'} xMid={b.xMid ? String(b.xMid).split(',').map((x: string) => x.trim()).filter(Boolean) : undefined}
+							quote={q ? { text: q.quote, name: q.name, role: q.role } : undefined} tone={theme} />
+					</div>
+				);
+			}
+
 			case 'oferta': {
 				// link do generatora z gotowo ustawioną ofertą
 				const q = new URLSearchParams();
@@ -105,7 +118,7 @@ function linePath(b: any) {
 				const o = b.orientation === 'pion' ? 'pion' : 'poziom';
 				return its.length > 0 && (
 					<figure class="svc-b svc-wide">
-						<Carousel3D items={its} orientation={o} ratio={b.orientation === 'miniatury' ? '16/9' : undefined} tone={theme} label={b.caption || 'Karuzela'} />
+						<Carousel3D items={its} orientation={o} ratio={b.orientation === 'miniatury' ? '16/9' : undefined} tone={theme} label={b.caption || 'Karuzela'} showLogos={!!b.showLogos} />
 						{b.caption && <figcaption>{b.caption}</figcaption>}
 					</figure>
 				);
@@ -209,6 +222,9 @@ function linePath(b: any) {
 	.svc-b figcaption, .svc-slide-cap { margin-top: .6rem; font-size: 14px; color: var(--muted); text-align: center; }
 	.svc-media { display: block; width: 100%; border-radius: 16px; border: 1px solid var(--line); object-fit: cover; }
 	.svc-narrow { max-width: 560px; margin-inline: auto; width: 100%; }
+	.svc-gap { margin-block: 1.5rem; }
+	.svc-blocks--light .gap-quote { color: var(--color-ink, #0a0630); }
+	.svc-blocks--light .gap-quote cite { color: rgba(10,6,48,.6); }
 	.svc-wide { width: 100vw; margin-inline: calc(50% - 50vw); overflow: clip; padding-block: 8px; }
 	.svc-vertical { max-width: 340px; margin-inline: auto; width: 100%; }
 	.svc-text { font-size: 17px; line-height: 1.7; color: var(--muted); }

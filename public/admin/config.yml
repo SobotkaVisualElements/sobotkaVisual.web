@@ -10,6 +10,9 @@ slug:
   clean_accents: true
   sanitize_replacement: "-"
 
+site_url: https://sobotkavisual.pl
+display_url: https://sobotkavisual.pl
+
 media_folder: "public/uploads"
 public_folder: "/uploads"
 locale: pl
@@ -19,6 +22,7 @@ collections:
     label: Realizacje
     label_singular: Realizacja
     folder: "src/content/work"
+    preview_path: "work/{{slug}}/"
     create: true
     slug: "{{slug}}"
     media_folder: "/public/uploads/realizacje"
@@ -33,6 +37,10 @@ collections:
       - { name: role, label: "Rola / zakres", widget: string, required: false }
       - { name: year, label: "Rok", widget: number, value_type: int, default: 2026 }
       - { name: date, label: "Data realizacji", widget: datetime, time_format: false, date_format: "DD.MM.YYYY", format: "YYYY-MM-DD", required: false, hint: "Najnowsze realizacje pokazują się na górze listy i w karuzeli na głównej." }
+      - { name: collab, label: "Współpraca stała", widget: boolean, default: false, required: false, hint: "Włącz, jeśli to stała współpraca (abonament), a nie jednorazowe zlecenie." }
+      - { name: collabStatus, label: "Współpraca — status", widget: select, default: aktywna, required: false, options: [{ label: "Aktywna (trwa)", value: aktywna }, { label: "Zakończona", value: zakonczona }] }
+      - { name: collabFrom, label: "Współpraca — od", widget: datetime, time_format: false, date_format: "MM.YYYY", format: "YYYY-MM-DD", required: false }
+      - { name: collabTo, label: "Współpraca — do (tylko gdy zakończona)", widget: datetime, time_format: false, date_format: "MM.YYYY", format: "YYYY-MM-DD", required: false }
       - { name: tech, label: "Narzędzia", widget: list, required: false }
       - { name: cover, label: "Baner 1920×1200 (kafelek i nagłówek)", widget: image, required: false, hint: "Poziomy baner 16:10. Używany na kafelkach i w nagłówku realizacji, gdy nie ma filmu ani warstw." }
       - { name: poster, label: "Okładka pionowa 1200×1920 (karuzela na głównej)", widget: image, required: false, hint: "Pion 10:16. Bez niej karuzela przytnie baner." }
@@ -129,6 +137,7 @@ collections:
                   - { name: title, label: "Tytuł pod karuzelą", widget: string, required: false }
                   - { name: link, label: "albo link do strony (np. /work/...)", widget: string, required: false }
                   - { name: logo, label: "Logotyp klienta", widget: image, required: false }
+              - { name: showLogos, label: "Pokaż logo klienta na kafelkach", widget: boolean, default: false, required: false }
               - { name: caption, label: "Podpis", widget: string, required: false }
           - name: wideo
             label: "Wideo"
@@ -153,8 +162,39 @@ collections:
                 fields: *layerfields
               - { name: strength, label: "Siła parallaksy (%)", widget: number, value_type: int, default: 100, min: 0, max: 200 }
               - { name: caption, label: "Podpis", widget: string, required: false }
+          - name: wykres_przewaga
+            label: "Wykres przewagi (typowo vs z nami) — zalecany"
+            widget: object
+            summary: "{{fields.title}}"
+            fields:
+              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+              - { name: title, label: "Tytuł", widget: string, required: false }
+              - { name: sub, label: "Opis pod tytułem", widget: text, required: false }
+              - { name: watermark, label: "Wielki półprzezroczysty napis", widget: string, required: false }
+              - { name: unit, label: "Jednostka (np. %)", widget: string, required: false }
+              - { name: curve, label: "Kształt linii", widget: select, default: szybki, options: [{ label: "Szybki wzrost, potem wypłaszczenie", value: szybki }, { label: "Równy wzrost (skala w czasie)", value: liniowy }] }
+              - { name: xStart, label: "Oś — początek", widget: string, required: false }
+              - { name: xMid, label: "Oś — punkty pośrednie (po przecinku)", widget: string, required: false }
+              - { name: xEnd, label: "Oś — koniec", widget: string, required: false }
+              - name: base
+                label: "Szara linia — typowo / konkurencja"
+                widget: object
+                fields:
+                  - { name: label, label: "Opis", widget: string, required: false }
+                  - { name: value, label: "Wartość", widget: number, value_type: float }
+                  - { name: display, label: "Własny napis (np. do 10%)", widget: string, required: false }
+              - name: ours
+                label: "Zielona linia — z nami"
+                widget: object
+                fields:
+                  - { name: label, label: "Opis", widget: string, required: false }
+                  - { name: value, label: "Wartość", widget: number, value_type: float }
+                  - { name: display, label: "Własny napis", widget: string, required: false }
+              - { name: delta, label: "Napis na zielonym obszarze różnicy", widget: string, required: false }
+              - { name: source, label: "Źródło danych", widget: text, required: false }
+              - { name: quoteFrom, label: "Cytat klienta pod wykresem", widget: select, required: false, options: ["", "Przemysław Langier", "Adam Przebinda"] }
           - name: wykres_liniowy
-            label: "Wykres liniowy (animowany)"
+            label: "(stary) Wykres liniowy (animowany)"
             widget: object
             summary: "{{fields.value}}{{fields.suffix}} — {{fields.label}}"
             fields:
@@ -165,7 +205,7 @@ collections:
               - { name: suffix, label: "Po liczbie", widget: string, default: "%", required: false }
               - { name: description, label: "Opis pod wykresem", widget: text, required: false }
           - name: wykres_kolowy
-            label: "Wykres kołowy % (animowany)"
+            label: "(stary) Wykres kołowy % (animowany)"
             widget: object
             summary: "{{fields.value}}% — {{fields.label}}"
             fields:
@@ -298,6 +338,48 @@ collections:
               - { name: titleLight, label: "Tytuł — część jasna", widget: string, required: false }
               - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
               - { name: limit, label: "Ile realizacji pokazać", widget: number, value_type: int, default: 9, min: 3, max: 20 }
+              - { name: showLogos, label: "Pokaż logo klienta na kafelkach karuzeli", widget: boolean, default: true, required: false }
+          - name: booking
+            label: "Rezerwacja rozmowy (kalendarz)"
+            widget: object
+            required: false
+            fields:
+              - { name: url, label: "Link do kalendarza (Cal.com, Calendly, Google)", widget: string, required: false, hint: "Puste = przycisk z telefonem." }
+              - { name: label, label: "Napis na przycisku", widget: string, default: "Umów 15 minut rozmowy", required: false }
+              - { name: note, label: "Dopisek pod przyciskiem", widget: string, required: false }
+          - name: liczby
+            label: "Pasek „w liczbach” (pod pierwszym ekranem)"
+            widget: object
+            required: false
+            fields:
+              - { name: show, label: "Pokaż", widget: boolean, default: true, required: false }
+              - name: items
+                label: "Liczby (do 4, tylko prawdziwe)"
+                label_singular: Liczba
+                widget: list
+                max: 4
+                summary: "{{fields.pre}}{{fields.v}}{{fields.suf}} {{fields.d}}"
+                fields:
+                  - { name: pre, label: "Przed liczbą (np. od )", widget: string, required: false }
+                  - { name: v, label: "Liczba", widget: number, value_type: float }
+                  - { name: suf, label: "Po liczbie (%, +)", widget: string, required: false }
+                  - { name: d, label: "Opis", widget: string }
+          - name: oferta
+            label: "Oferta — pakiety (zielone „Zyskujesz”)"
+            widget: object
+            required: false
+            fields:
+              - { name: saveLabel, label: "Napis nad kwotą", widget: string, default: "Zyskujesz", required: false }
+              - { name: compareLabel, label: "Z czym porównujemy", widget: string, default: "wartość przy zamawianiu osobno", required: false, hint: "Np. „średnio u agencji w Opolu” — tylko jeśli masz realne ceny konkurencji." }
+              - name: values
+                label: "Wartość do porównania (zł / mies.) — puste = liczona z cennika usług"
+                widget: object
+                required: false
+                fields:
+                  - { name: start, label: "START", widget: number, value_type: int, required: false }
+                  - { name: pro, label: "PRO", widget: number, value_type: int, required: false }
+                  - { name: studio, label: "STUDIO", widget: number, value_type: int, required: false }
+              - { name: showLandings, label: "Pokaż linki do landingów pod generatorem", widget: boolean, default: false, required: false }
           - name: sections
             label: "Sekcje pod Hero"
             label_singular: Sekcja
@@ -334,10 +416,85 @@ collections:
           - { name: ctaLabel, label: "Przycisk — napis", widget: string, required: false }
           - { name: ctaHref, label: "Przycisk — link", widget: string, required: false }
 
+  - name: uslugi
+    label: "Usługi (podstrony)"
+    label_singular: "Usługa"
+    folder: "src/data/uslugi"
+    extension: json
+    format: json
+    create: true
+    preview_path: "uslugi/{{slug}}/"
+    identifier_field: name
+    summary: "{{name}}"
+    sortable_fields: [order, name]
+    description: "Każda usługa = osobna podstrona /uslugi/<adres> (dobre pod Google). Ceny biorą się same z cennika generatora."
+    fields:
+      - { name: name, label: "Nazwa usługi", widget: string }
+      - { name: order, label: "Kolejność", widget: number, value_type: int, default: 10 }
+      - { name: icon, label: "Ikona", widget: select, options: ["montaz", "motion", "rolki", "grafika", "transmisja", "dzwiek", "kamera", "strategia"] }
+      - { name: draft, label: "Szkic (ukryta)", widget: boolean, default: false, required: false }
+      - { name: seoTitle, label: "Tytuł dla Google", widget: string, hint: "Do 60 znaków" }
+      - { name: seoDesc, label: "Opis dla Google", widget: text, hint: "120–160 znaków" }
+      - name: hero
+        label: "Pierwszy ekran"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Nagłówek — linia cienka", widget: string }
+          - { name: titleBold, label: "Nagłówek — linia gruba", widget: string }
+          - { name: lead, label: "Opis", widget: text }
+      - name: deliver
+        label: "Co dostajesz"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — pogrubiony", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — jasny", widget: string, required: false }
+          - { name: items, label: "Elementy", label_singular: Element, widget: list, summary: "{{fields.t}}", fields: [{ name: t, label: "Tytuł", widget: string }, { name: d, label: "Opis", widget: text }] }
+      - name: process
+        label: "Jak to robimy"
+        widget: object
+        fields:
+          - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+          - { name: title, label: "Tytuł — pogrubiony", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — jasny", widget: string, required: false }
+          - { name: items, label: "Kroki", label_singular: Krok, widget: list, summary: "{{fields.t}}", fields: [{ name: t, label: "Krok", widget: string }, { name: d, label: "Opis", widget: text }] }
+      - name: prices
+        label: "Ceny (z cennika generatora)"
+        widget: object
+        fields:
+          - { name: title, label: "Tytuł", widget: string, required: false }
+          - { name: note, label: "Dopisek", widget: text, required: false }
+          - { name: items, label: "Pozycje z cennika", widget: select, multiple: true, options: [{ label: "Montaż długiej formy", value: montaz }, { label: "Rolki / shorty", value: rolki }, { label: "Animowana rolka", value: rolkaani }, { label: "Skrót meczowy / eventowy", value: skrot }, { label: "Materiał wizerunkowy", value: wizerunek }, { label: "Element animowany", value: animacja }, { label: "Trailer animowany", value: trailer }, { label: "Animowana okładka", value: okladka }, { label: "Miniatury / okładki", value: miniatury }, { label: "Grafika statyczna", value: grafika }, { label: "Animowany post", value: postani }, { label: "Scenariusz", value: scenariusz }, { label: "Dźwięk + licencja", value: dzwiek }, { label: "Lektor", value: lektor }, { label: "Napisy", value: napisy }, { label: "Dzień zdjęciowy", value: zdjecia }] }
+          - { name: extras, label: "Pakiety dodatkowe", widget: select, multiple: true, required: false, options: [{ label: "System oprawy graficznej", value: system }, { label: "Pakiet oprawy transmisyjnej", value: trans }] }
+      - name: work
+        label: "Realizacje"
+        widget: object
+        fields:
+          - { name: categories, label: "Pokaż realizacje z kategorii", widget: select, multiple: true, options: ["Montaż", "Animacja", "Identyfikacja", "Oprawa transmisyjna", "Grafika"] }
+          - { name: title, label: "Tytuł — pogrubiony", widget: string, required: false }
+          - { name: titleLight, label: "Tytuł — jasny", widget: string, required: false }
+      - { name: cities, label: "Strony lokalne (adresy z /uslugi/, np. montaz-wideo-opole)", widget: list, required: false }
+      - name: faq
+        label: "Pytania"
+        label_singular: Pytanie
+        widget: list
+        summary: "{{fields.q}}"
+        fields:
+          - { name: q, label: "Pytanie", widget: string }
+          - { name: a, label: "Odpowiedź", widget: text }
+      - name: blocks
+        label: "Dodatkowe klocki (np. wykres przewagi, wideo)"
+        label_singular: Klocek
+        widget: list
+        required: false
+        types: *blocktypes
+
   - name: landingi
     label: "Landingi ofert"
     label_singular: "Landing"
     folder: "src/data/oferty"
+    preview_path: "oferta/{{slug}}/"
     extension: json
     format: json
     create: true
@@ -346,7 +503,7 @@ collections:
     summary: "{{name}}"
     media_folder: "/public/uploads/oferty"
     public_folder: "/uploads/oferty"
-    description: "Strony /oferta/<adres>. Nowy landing: otwórz istniejący → menu „…” → Duplikuj, zmień nazwę i treść. Adres powstaje z nazwy przy pierwszym zapisie. Enter = nowa linia, **tekst** = pogrubienie."
+    description: "Wszystkie linki do kopiowania (też ukrytych ofert): sobotkavisual.pl/linki. Strony /oferta/<adres>. Nowy landing: otwórz istniejący → menu „…” → Duplikuj, zmień nazwę i treść. Adres powstaje z nazwy przy pierwszym zapisie. Enter = nowa linia, **tekst** = pogrubienie."
     fields:
       - { name: name, label: "Nazwa (w linkach „Zobacz też”)", widget: string }
       - { name: layout, label: "Wygląd strony", widget: select, default: klasyczny, options: [{ label: "Klasyczny", value: klasyczny }, { label: "Kinetyczny — animacje przy przewijaniu", value: kinetyczny }] }
@@ -729,6 +886,8 @@ collections:
               - { name: tag, label: "Etykieta (np. Najczęściej wybierany)", widget: string, required: false }
               - { name: name, label: "Nazwa", widget: string, required: false }
               - { name: price, label: "Cena (np. 7 200 albo od 3 500)", widget: string, required: false }
+              - { name: value, label: "Wartość do porównania (zł) — zielone „Zyskujesz”", widget: number, value_type: int, required: false, hint: "Ile ta sama zawartość kosztuje osobno albo u konkurencji. Puste przy START/PRO/STUDIO = liczone z cennika usług." }
+              - { name: valueLabel, label: "Z czym porównujemy (np. średnio u agencji)", widget: string, required: false }
               - { name: per, label: "Po cenie (np. zł netto / mies.)", widget: string, required: false }
               - { name: note, label: "Dopisek pod ceną", widget: text, required: false }
               - { name: items, label: "Co zawiera", widget: list, field: { name: item, label: "Pozycja", widget: string } }
@@ -736,6 +895,8 @@ collections:
               - { name: ctaLabel, label: "Przycisk — napis", widget: string, required: false }
               - { name: ctaHref, label: "Przycisk — adres (np. /generator?pakiet=pro)", widget: string, required: false }
           - { name: footnote, label: "Dopisek pod kartami", widget: text, required: false }
+          - { name: saveLabel, label: "Napis „Zyskujesz” (dla wszystkich kart)", widget: string, required: false }
+          - { name: compareLabel, label: "Z czym porównujemy (dla wszystkich kart)", widget: string, required: false }
       - name: final
         label: "13. Następny krok"
         widget: object

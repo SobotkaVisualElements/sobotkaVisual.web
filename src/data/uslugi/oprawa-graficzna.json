@@ -1,0 +1,108 @@
+{
+  "name": "Oprawa graficzna",
+  "order": 4,
+  "icon": "grafika",
+  "draft": false,
+  "seoTitle": "Oprawa graficzna i miniatury YouTube — system, który buduje markę | SVC",
+  "seoDesc": "Miniatury, okładki, banery i spójny system graficzny dla firm i kanałów YouTube. Rozpoznawalność od pierwszego spojrzenia, wyższa klikalność.",
+  "hero": {
+    "eyebrow": "Usługa · grafika",
+    "title": "Oprawa graficzna,",
+    "titleBold": "po której Cię rozpoznają.",
+    "lead": "Spójny wygląd sprawia, że klient wie, czyj to materiał, zanim przeczyta nazwę. Projektujemy system: miniatury, okładki, banery i szablony, z których korzystasz miesiącami."
+  },
+  "deliver": {
+    "eyebrow": "Co dostajesz",
+    "title": "Zakres",
+    "titleLight": "usługi.",
+    "items": [
+      {
+        "t": "Miniatury YouTube",
+        "d": "Kompozycja, typografia i kolor zaprojektowane pod kliknięcie."
+      },
+      {
+        "t": "System graficzny",
+        "d": "Szablony i zasady, dzięki którym każdy kolejny materiał wygląda spójnie."
+      },
+      {
+        "t": "Banery i tła kanałów",
+        "d": "YouTube, Facebook, LinkedIn — jedna wizytówka wszędzie."
+      },
+      {
+        "t": "Posty i okładki",
+        "d": "Grafiki do social mediów w stałym stylu."
+      },
+      {
+        "t": "Identyfikacja kanału",
+        "d": "Profilowe, tło, belki i intro — kompletna paczka."
+      },
+      {
+        "t": "Materiały do druku",
+        "d": "Plakaty i ulotki w tej samej estetyce, gdy są potrzebne."
+      }
+    ]
+  },
+  "process": {
+    "eyebrow": "Jak to robimy",
+    "title": "Cztery kroki,",
+    "titleLight": "zero chaosu.",
+    "items": [
+      {
+        "t": "Audyt",
+        "d": "Sprawdzamy, jak dziś wyglądasz i co odróżnia Cię od konkurencji."
+      },
+      {
+        "t": "Kierunek",
+        "d": "Paleta, typografia i 2–3 przykładowe projekty do wyboru."
+      },
+      {
+        "t": "System",
+        "d": "Szablony i zasady na kolejne materiały."
+      },
+      {
+        "t": "Wdrożenie",
+        "d": "Pliki źródłowe i grafiki gotowe do publikacji."
+      }
+    ]
+  },
+  "prices": {
+    "title": "Ile to kosztuje",
+    "note": "Ceny netto, orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
+    "items": [
+      "miniatury",
+      "grafika",
+      "postani"
+    ],
+    "extras": [
+      "system"
+    ]
+  },
+  "work": {
+    "categories": [
+      "Identyfikacja",
+      "Grafika"
+    ],
+    "title": "Zobacz",
+    "titleLight": "nasze realizacje."
+  },
+  "cities": [
+    "grafika-miniatury-youtube",
+    "grafika-opole",
+    "grafika-nysa",
+    "projektowanie-graficzne-nysa"
+  ],
+  "faq": [
+    {
+      "q": "Ile kosztuje miniatura YouTube?",
+      "a": "Miniatura zaczyna się od 220 zł netto. Przy stałej współpracy taniej, bo pracujemy na gotowym systemie."
+    },
+    {
+      "q": "Co to jest system graficzny?",
+      "a": "Zestaw szablonów, kolorów i zasad. Dzięki niemu każdy kolejny materiał powstaje szybciej i wygląda spójnie — niezależnie od tego, kto go publikuje."
+    },
+    {
+      "q": "Czy miniatury naprawdę zwiększają klikalność?",
+      "a": "Na kanale, dla którego projektujemy miniatury, CTR w pierwszej godzinie wynosi 21%, przy typowych 2–10% na YouTube."
+    }
+  ]
+}

@@ -1,0 +1,33 @@
+---
+/*
+ * Zielony baner „Ile zyskujesz” nad ceną pakietu.
+ * value = ile ta sama zawartość kosztuje inaczej (osobno / u konkurencji), price = nasza cena.
+ */
+import { toNum, zl } from '../../lib/pricing';
+interface Props { price: unknown; value?: number; per?: string; label?: string; compare?: string; tone?: 'dark' | 'light' }
+const { price, value = 0, per = '', label = 'Zyskujesz', compare = 'wartość przy zamawianiu osobno', tone = 'dark' } = Astro.props;
+const p = toNum(price), save = value - p;
+const pct = value ? Math.round((save / value) * 100) : 0;
+---
+{p > 0 && save > 0 && (
+	<div class:list={['sb', `sb--${tone}`]}>
+		<span class="sb-k">{label}</span>
+		<span class="sb-v">{zl(save)}{per && <small> {per}</small>}</span>
+		<span class="sb-c">{compare}: <s>{zl(value)}</s> · <b>−{pct}%</b></span>
+	</div>
+)}
+<style is:global>
+	.sb { position: relative; overflow: hidden; display: flex; flex-direction: column; gap: 2px; margin: 1.1rem 0 .4rem; padding: .8rem 1rem; border-radius: 16px;
+		background: linear-gradient(135deg, rgba(46,229,157,.2), rgba(46,229,157,.07)); border: 1px solid rgba(46,229,157,.45); }
+	.sb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(100deg, transparent 30%, rgba(255,255,255,.18) 50%, transparent 70%); transform: translateX(-100%); animation: sb-shine 4s ease-in-out infinite; }
+	@keyframes sb-shine { 0%,60% { transform: translateX(-100%); } 90%,100% { transform: translateX(100%); } }
+	.sb-k { font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #2ee59d; }
+	.sb-v { font-family: var(--font-display, Montserrat), sans-serif; font-weight: 900; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.1; letter-spacing: -.02em; color: #2ee59d; }
+	.sb-v small { font-size: 14px; font-weight: 700; opacity: .85; }
+	.sb-c { font-size: 12.5px; color: rgba(214,222,255,.75); }
+	.sb-c s { opacity: .8; } .sb-c b { color: #2ee59d; }
+	.sb--light { background: linear-gradient(135deg, rgba(14,164,99,.14), rgba(14,164,99,.05)); border-color: rgba(14,164,99,.45); }
+	.sb--light .sb-k, .sb--light .sb-v, .sb--light .sb-c b { color: #0b8f55; }
+	.sb--light .sb-c { color: rgba(10,6,48,.62); }
+	@media (prefers-reduced-motion: reduce) { .sb::after { animation: none; } }
+</style>

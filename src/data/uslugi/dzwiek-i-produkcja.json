@@ -1,0 +1,104 @@
+{
+  "name": "Dźwięk i produkcja",
+  "order": 6,
+  "icon": "dzwiek",
+  "draft": false,
+  "seoTitle": "Dźwięk, lektor, scenariusz i dzień zdjęciowy dla firm | SVC",
+  "seoDesc": "Kompletne zaplecze produkcji wideo: scenariusz, nagrania na miejscu, opracowanie dźwięku, lektor i muzyka z licencją. Opole, Nysa i okolice.",
+  "hero": {
+    "eyebrow": "Usługa · produkcja",
+    "title": "Dźwięk i produkcja,",
+    "titleBold": "czyli wszystko poza montażem.",
+    "lead": "Dobry film zaczyna się przed montażem: od scenariusza, nagrania i dźwięku. Zapewniamy całe zaplecze, więc nie musisz szukać kilku wykonawców."
+  },
+  "deliver": {
+    "eyebrow": "Co dostajesz",
+    "title": "Zakres",
+    "titleLight": "usługi.",
+    "items": [
+      {
+        "t": "Scenariusz",
+        "d": "Struktura filmu, teksty i plan zdjęć."
+      },
+      {
+        "t": "Dzień zdjęciowy",
+        "d": "Przyjeżdżamy z kamerą i nagrywamy u Ciebie w firmie."
+      },
+      {
+        "t": "Opracowanie dźwięku",
+        "d": "Czyszczenie nagrań, wyrównanie głośności, efekty."
+      },
+      {
+        "t": "Lektor",
+        "d": "Profesjonalny głos do reklam, prezentacji i animacji."
+      },
+      {
+        "t": "Muzyka z licencją",
+        "d": "Bez ryzyka blokad na YouTube i w social mediach."
+      },
+      {
+        "t": "Koordynacja",
+        "d": "Jedna osoba kontaktowa od pomysłu do publikacji."
+      }
+    ]
+  },
+  "process": {
+    "eyebrow": "Jak to robimy",
+    "title": "Cztery kroki,",
+    "titleLight": "zero chaosu.",
+    "items": [
+      {
+        "t": "Plan",
+        "d": "Co, gdzie i kogo nagrywamy. Scenariusz do akceptacji."
+      },
+      {
+        "t": "Nagrania",
+        "d": "Dzień zdjęciowy lub nagrania zdalne."
+      },
+      {
+        "t": "Dźwięk",
+        "d": "Lektor, muzyka, czyszczenie i miks."
+      },
+      {
+        "t": "Oddanie",
+        "d": "Gotowe pliki i materiały źródłowe."
+      }
+    ]
+  },
+  "prices": {
+    "title": "Ile to kosztuje",
+    "note": "Ceny netto, orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
+    "items": [
+      "scenariusz",
+      "zdjecia",
+      "dzwiek",
+      "lektor"
+    ],
+    "extras": []
+  },
+  "work": {
+    "categories": [
+      "Montaż"
+    ],
+    "title": "Zobacz",
+    "titleLight": "nasze realizacje."
+  },
+  "cities": [
+    "film-reklamowy-opole",
+    "film-reklamowy-nysa"
+  ],
+  "faq": [
+    {
+      "q": "Ile kosztuje dzień zdjęciowy?",
+      "a": "Dzień zdjęciowy zaczyna się od 1 150 zł netto. Dojazd do 40 km jest w cenie."
+    },
+    {
+      "q": "Czy macie lektora?",
+      "a": "Tak. Współpracujemy z profesjonalnymi lektorami. Nagranie lektorskie to od 900 zł netto."
+    },
+    {
+      "q": "Czy muzyka jest legalna?",
+      "a": "Tak. Używamy muzyki z licencją, więc film nie zostanie zablokowany na YouTube ani w social mediach."
+    }
+  ]
+}

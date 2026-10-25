@@ -31,13 +31,13 @@ const { Content } = await render(page);
 		<div class="relative z-2 mx-auto max-w-[860px] px-6 py-16 sm:px-8">
 			<article class="prose-svc"><Content /></article>
 			{page.data.blocks?.length ? <Blocks blocks={page.data.blocks} theme="dark" /> : null}
-			<a href="/generator" class="liquid-card mt-12 flex flex-col items-center gap-4 rounded-[24px] border-2 border-orange bg-linear-100 from-orange-deep via-orange to-orange-bright px-7 py-8 text-center shadow-[0_18px_50px_-12px_rgba(237,36,78,.65)] sm:flex-row sm:justify-between sm:text-left">
+			{page.id !== 'polityka-prywatnosci' && <a href="/generator" class="liquid-card mt-12 flex flex-col items-center gap-4 rounded-[24px] border-2 border-orange bg-linear-100 from-orange-deep via-orange to-orange-bright px-7 py-8 text-center shadow-[0_18px_50px_-12px_rgba(237,36,78,.65)] sm:flex-row sm:justify-between sm:text-left">
 				<span>
 					<span class="block font-display text-[24px] leading-tight font-bold text-cloud">Policz swój pakiet</span>
 					<span class="mt-1 block text-[15px] text-white/85">Ustaw zakres suwakami — rabat rośnie do 30%.</span>
 				</span>
 				<span class="shrink-0 rounded-full bg-cloud px-6 py-3 font-bold text-navy-deep">Otwórz generator →</span>
-			</a>
+			</a>}
 		</div>
 	</section>
 	<script type="application/ld+json" set:html={JSON.stringify({

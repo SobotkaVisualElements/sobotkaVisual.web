@@ -1,0 +1,15 @@
+---
+/* Warstwa pioruna (SVG) — animuje ją src/scripts/zap.ts na rodzicu z atrybutem data-zap. */
+interface Props { color?: string; core?: string; class?: string }
+const { color = '#7cf3ff', core = '#f4feff', class: cls = '' } = Astro.props;
+const fid = 'zf' + Math.random().toString(36).slice(2, 8);
+---
+<svg class:list={['zap-layer', cls]} data-zap-svg aria-hidden="true"><defs><filter id={fid} x="-30%" y="-80%" width="160%" height="260%"><feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="b1" /><feGaussianBlur in="SourceAlpha" stdDeviation="6" result="b2" /><feFlood flood-color={color} result="c" /><feComposite in="c" in2="b1" operator="in" result="g1" /><feComposite in="c" in2="b2" operator="in" result="g2" /><feMerge><feMergeNode in="g2" /><feMergeNode in="g2" /><feMergeNode in="g1" /><feMergeNode in="SourceGraphic" /></feMerge></filter></defs><g data-zap-core filter={`url(#${fid})`} style={`fill:${core}`}></g></svg>
+<style is:global>
+	.zap-layer { display: none; position: absolute; left: -26px; top: -26px; width: calc(100% + 52px); height: calc(100% + 52px); overflow: visible; pointer-events: none; }
+	@media (hover: hover) and (min-width: 768px) and (prefers-reduced-motion: no-preference) { .zap-layer { display: block; } }
+	html.ob-lite .zap-layer { display: none !important; }
+</style>
+<script>
+	import '../../scripts/zap.ts';
+</script>

@@ -121,13 +121,13 @@ const u = 'g' + Math.random().toString(36).slice(2, 7);
 	.gap-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #2ee59d; }
 	.gap-head h3 { margin-top: 6px; font-size: clamp(24px, 3.2vw, 34px); line-height: 1.1; font-weight: 800; letter-spacing: -.02em; text-wrap: balance; }
 	.gap-sub { margin-top: 8px; max-width: 560px; font-size: 15px; line-height: 1.55; color: rgba(214,222,255,.78); text-wrap: pretty; }
-	.gap-plot { margin-top: 22px; }
+	.gap-plot { margin-top: 22px; container-type: inline-size; }
 	.gap-box { position: relative; }
 	.gap-svg-m { display: none !important; }
 	.gap-plot svg { display: block; width: 100%; height: auto; overflow: visible; position: relative; z-index: 1; }
 	.gap-wm { position: absolute; inset: 6% 20% 16% 0; z-index: 0; display: flex; align-items: center; justify-content: center; text-align: center;
 		font-family: Montserrat, sans-serif; font-weight: 900; font-style: italic; text-transform: uppercase; line-height: .92; letter-spacing: -.02em;
-		font-size: clamp(26px, 6.2vw, 78px); color: rgba(255,255,255,.09); text-wrap: balance; pointer-events: none; user-select: none;
+		font-size: clamp(22px, 8.4cqw, 78px); color: rgba(255,255,255,.09); text-wrap: balance; pointer-events: none; user-select: none;
 		transform: translateY(14px); opacity: 0; transition: opacity 1s .9s, transform 1.2s .9s cubic-bezier(.2,.8,.2,1); }
 	.gap-grid { stroke: rgba(255,255,255,.07); stroke-width: 1; stroke-dasharray: 4 6; }
 	.gap-axis { stroke: rgba(255,255,255,.22); stroke-width: 1.5; }
@@ -151,7 +151,7 @@ const u = 'g' + Math.random().toString(36).slice(2, 7);
 	.gap-legend > span { display: inline-flex; align-items: center; gap: 8px; }
 	.gap-legend i { width: 22px; height: 4px; border-radius: 4px; background: #9aa0bd; }
 	.gap-legend i.is-ours { background: #2ee59d; box-shadow: 0 0 10px rgba(46,229,157,.7); }
-	.gap-src { margin-top: 12px; font-size: 12px; line-height: 1.5; color: rgba(214,222,255,.5); text-wrap: pretty; }
+	.gap .gap-src { margin-top: 12px; text-align: left !important; font-size: 12px; line-height: 1.5; color: rgba(214,222,255,.62) !important; text-wrap: pretty; }
 	.gap-quote { position: relative; max-width: 640px; margin: 22px auto 0; text-align: center; color: #fff; }
 	.gap-quote p { margin-top: 10px; font-size: clamp(16px, 2vw, 19px); line-height: 1.5; font-style: italic; text-wrap: balance; }
 	.gap-quote cite { display: block; margin-top: 8px; font-style: normal; font-size: 13px; color: rgba(214,222,255,.7); }
