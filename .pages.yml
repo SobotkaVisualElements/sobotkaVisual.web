@@ -1544,6 +1544,8 @@ content:
     - {name: lead, label: Zdanie pod tytułem, type: text}
     - {name: rules, label: Warunki (punkty), type: string, list: true}
     - {name: button, label: Napis na przycisku, type: string}
+    - {name: note, label: Dopisek pod przyciskiem, type: string}
+    - {name: ok, label: Komunikat po wysłaniu, type: string}
   - name: dzien
     label: Sekcja „Dzień contentowy” (cena liczona z cennika)
     type: object
@@ -1684,6 +1686,7 @@ content:
     label: Sekcja Kontakt
     type: object
     fields:
+    - {name: note, label: 'Zielony dopisek (np. Odpowiadamy w 24 h…) — puste = ukryty', type: string}
     - name: title
       label: Tytuł
       type: string

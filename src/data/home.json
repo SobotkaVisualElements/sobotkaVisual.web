@@ -9,9 +9,9 @@
     "ctaSecondaryHref": "/work",
     "video": "/uploads/Reklama WEB.mp4",
     "videoUrl": "https://media.sobotkavisual.pl/filmy/reklama-hero.mp4",
-    "poster": "",
     "videoOpacity": 30,
-    "clientsLabel": "Zaufali nam"
+    "clientsLabel": "Zaufali nam",
+    "poster": ""
   },
   "clients": [
     {
@@ -35,34 +35,58 @@
       "height": 60
     }
   ],
+  "realizacje": {
+    "eyebrow": "Ostatnie realizacje",
+    "title": "Zobacz, co ostatnio",
+    "titleLight": "stworzyliśmy.",
+    "lead": "Montaż, animacje i oprawa — najnowsze projekty dla marek, twórców i wydawnictw.",
+    "limit": 9,
+    "showLogos": false
+  },
+  "booking": {
+    "label": "Umów 15 minut rozmowy",
+    "note": "Bez zobowiązań. Wybierasz termin, który Ci pasuje.",
+    "url": ""
+  },
+  "liczby": {
+    "show": true,
+    "items": [
+      {
+        "pre": "od ",
+        "v": 2020,
+        "d": "tworzymy wideo i animacje"
+      },
+      {
+        "v": 250,
+        "suf": "+",
+        "d": "materiałów dla firm i twórców rocznie"
+      },
+      {
+        "v": 21,
+        "suf": "%",
+        "d": "widzów klika nasze miniatury w 1. godzinie (typowo 2–10%)"
+      },
+      {
+        "v": 250,
+        "suf": "+",
+        "d": "materiałów „zawsze na czas” "
+      }
+    ]
+  },
+  "whatsapp": {
+    "show": true,
+    "phone": "48668472759",
+    "text": "Dzień dobry, piszę ze strony sobotkavisual.pl. Chciałbym zapytać o",
+    "label": "Napisz na WhatsApp"
+  },
+  "oferta": {
+    "showLandings": false
+  },
   "uslugi": {
     "titleBig": "Wszystko,",
     "titleSmall": "czego potrzebują Twoje media",
     "lead": "Od pojedynczej rolki po pełne zaplecze produkcyjne. Jedno miejsce, jedna spójna jakość."
   },
-  "dlaKogo": {
-    "eyebrow": "Dla kogo",
-    "titleLine1": "Media dla tych,",
-    "titleLine2": "którzy chcą się wyróżnić"
-  },
-  "kontakt": {
-    "title": "Pokażmy światu Twój potencjał",
-    "lead": "Napisz w dwóch zdaniach, czym się zajmujesz i czego potrzebujesz. Odezwiemy się z bezpłatną wyceną."
-  },
-  "tiles": [
-    {
-      "body": "Montaż odcinków, miniatury i rolki, które odzyskują Twój czas i podbijają klikalność.",
-      "image": "https://picsum.photos/id/378/1920/1280.webp",
-      "note": "",
-      "title": "Twórcy internetowi"
-    },
-    {
-      "body": "Materiały produktowe i wizerunkowe na najwyższym poziomie.",
-      "image": "",
-      "note": "Wy decydujecie, co pokazać — produkcję bierzemy na siebie.",
-      "title": "Marki i firmy"
-    }
-  ],
   "features": [
     {
       "icon": "montaz",
@@ -95,6 +119,78 @@
       "body": "Opracowanie dźwięku, lektor, dzień zdjęciowy — kompletne zaplecze produkcyjne."
     }
   ],
+  "dlaKogo": {
+    "eyebrow": "Dla kogo",
+    "titleLine1": "Media dla tych,",
+    "titleLine2": "którzy chcą się wyróżnić",
+    "tabs": [
+      {
+        "label": "Marketing",
+        "title": "Stała obecność w social mediach — bez zatrudniania",
+        "body": "Co tydzień nowe rolki, grafiki i animacje w jednym stylu. Ty zatwierdzasz, my produkujemy.",
+        "points": [
+          "rolki i shorty co tydzień",
+          "miniatury i grafiki w spójnym systemie",
+          "animowane logo i oprawa marki"
+        ],
+        "cta": "Zobacz pakiet PRO",
+        "href": "/generator?pakiet=pro"
+      },
+      {
+        "label": "HR i rekrutacja",
+        "title": "Rolki rekrutacyjne, które przyciągają kandydatów",
+        "body": "Krótkie filmy z ofertami pracy i „dniem z życia” zespołu. Robimy to stale dla agencji Delta HR — ponad 150 rolek rocznie.",
+        "points": [
+          "oferty pracy w formie rolek",
+          "zespół i miejsce pracy od kuchni",
+          "napisy pod oglądanie bez dźwięku"
+        ],
+        "cta": "Zobacz dzień contentowy",
+        "href": "#dzien"
+      },
+      {
+        "label": "Sprzedaż",
+        "title": "Produkt w ruchu sprzedaje lepiej niż zdjęcie",
+        "body": "Animowane prezentacje produktu, promocje i posty, które zatrzymują kciuk w trakcie przewijania.",
+        "points": [
+          "animowane rolki z ofertą",
+          "animowane posty promocyjne",
+          "krótka prezentacja produktu"
+        ],
+        "cta": "Wyceń w generatorze",
+        "href": "/generator?tryb=jednorazowa&rolkaani=2&postani=4"
+      },
+      {
+        "label": "Kluby i sport",
+        "title": "Pełna oprawa meczowa i skróty po spotkaniu",
+        "body": "Intro transmisji, belki z wynikiem, statystyki i skład — plus skróty, które kibice udostępniają.",
+        "points": [
+          "oprawa transmisji",
+          "skróty meczowe",
+          "animowane statystyki i skład"
+        ],
+        "cta": "Zobacz oprawę transmisyjną",
+        "href": "/uslugi/oprawa-transmisyjna/"
+      }
+    ]
+  },
+  "tiles": [
+    {
+      "title": "Twórcy internetowi",
+      "body": "Montaż odcinków, miniatury i rolki, które odzyskują Twój czas i podbijają klikalność.",
+      "image": "https://picsum.photos/id/378/1920/1280.webp"
+    },
+    {
+      "title": "Marki i firmy",
+      "body": "Materiały produktowe i wizerunkowe na najwyższym poziomie.",
+      "note": "Wy decydujecie, co pokazać — produkcję bierzemy na siebie."
+    }
+  ],
+  "kontakt": {
+    "title": "Pokażmy światu Twój potencjał",
+    "lead": "Napisz w dwóch zdaniach, czym się zajmujesz i czego potrzebujesz. Odezwiemy się z bezpłatną wyceną.",
+    "note": "Odpowiadamy w 24 h w dni robocze · wycena za darmo · bez spamu"
+  },
   "sections": [
     "realizacje",
     "uslugi",
@@ -107,56 +203,77 @@
     "faq",
     "kontakt"
   ],
-  "realizacje": {
-    "eyebrow": "Ostatnie realizacje",
-    "title": "Zobacz, co ostatnio",
-    "titleLight": "stworzyliśmy.",
-    "lead": "Montaż, animacje i oprawa — najnowsze projekty dla marek, twórców i wydawnictw.",
-    "limit": 9
-  },
-  "booking": {
-    "url": "",
-    "label": "Umów 15 minut rozmowy",
-    "note": "Bez zobowiązań. Wybierasz termin, który Ci pasuje."
-  },
-  "liczby": {
-    "show": true,
-    "items": [
-      {
-        "v": 2020,
-        "pre": "od ",
-        "suf": "",
-        "d": "tworzymy wideo i animacje"
-      },
-      {
-        "v": 150,
-        "pre": "",
-        "suf": "+",
-        "d": "rolek rocznie dla jednego klienta (Delta HR)"
-      },
-      {
-        "v": 21,
-        "pre": "",
-        "suf": "%",
-        "d": "CTR miniatur w 1. godzinie (typowo 2–10%)"
-      },
-      {
-        "v": 100,
-        "pre": "",
-        "suf": "+",
-        "d": "materiałów „zawsze na czas” — opinia Delta HR"
-      }
-    ]
-  },
-  "whatsapp": {
-    "show": true,
-    "phone": "48668472759",
-    "text": "Dzień dobry, piszę ze strony sobotkavisual.pl. Chciałbym zapytać o",
-    "label": "Napisz na WhatsApp"
-  },
   "google": {
     "url": "",
     "rating": "",
     "count": ""
-  }
+  },
+  "probna": {
+    "eyebrow": "Sprawdź nas za darmo",
+    "title": "Darmowa rolka próbna z Twojego materiału",
+    "lead": "Wyślij link do nagrania — zmontujemy z niego jedną rolkę z napisami i dźwiękiem. Zobaczysz jakość, zanim cokolwiek zapłacisz.",
+    "rules": [
+      "Materiał do 3 minut (telefon też się nada)",
+      "Gotowa rolka w 3–5 dni roboczych",
+      "Jedna próbka na firmę",
+      "Bez zobowiązań — rolka zostaje u Ciebie"
+    ],
+    "button": "Chcę darmową rolkę",
+    "note": "Odpowiadamy w 24 h w dni robocze · bez spamu · Twój materiał nie trafi nigdzie dalej",
+    "ok": "Dziękujemy! Materiał dotarł — odezwiemy się w ciągu 24 h."
+  },
+  "proces": {
+    "eyebrow": "Jak pracujemy",
+    "title": "Sześć kroków od rozmowy do publikacji",
+    "steps": [
+      {
+        "t": "Rozmowa",
+        "d": "15 minut przez telefon albo wideo. Mówisz, co sprzedajesz i komu — my słuchamy i dopytujemy."
+      },
+      {
+        "t": "Plan i wycena",
+        "d": "W 24 h dostajesz zakres, harmonogram i cenę na piśmie. Bez gwiazdek i ukrytych dopłat."
+      },
+      {
+        "t": "Nagranie",
+        "d": "Przyjeżdżamy z kamerą albo pracujemy na Twoich materiałach. Do 40 km od Opola lub Nysy dojazd w cenie."
+      },
+      {
+        "t": "Montaż i animacja",
+        "d": "Montaż, napisy, dźwięk i oprawa graficzna w jednym miejscu — bez podwykonawców."
+      },
+      {
+        "t": "Poprawki",
+        "d": "Oglądasz, komentujesz, my poprawiamy. Rundy poprawek są wliczone w pakiet."
+      },
+      {
+        "t": "Publikacja",
+        "d": "Dostajesz gotowe pliki w formatach pod każdą platformę i harmonogram publikacji."
+      }
+    ]
+  },
+  "dzien": {
+    "eyebrow": "Bez abonamentu",
+    "title": "Jeden dzień nagrań = treści na cały miesiąc",
+    "lead": "Przyjeżdżamy do Twojej firmy na jeden dzień. Nagrywamy wszystko naraz, a Ty dostajesz gotowe rolki i grafiki do publikacji przez kolejne 30 dni.",
+    "button": "Ustaw swój dzień w generatorze"
+  },
+  "warunki": [
+    {
+      "t": "Bez ukrytych dopłat",
+      "d": "Cena z generatora to cena na fakturze."
+    },
+    {
+      "t": "Gotowe pliki są Twoje",
+      "d": "Używasz ich gdzie chcesz, bez limitu czasu."
+    },
+    {
+      "t": "Możesz bez abonamentu",
+      "d": "Pojedyncze zlecenia i dzień contentowy też."
+    },
+    {
+      "t": "Odpowiedź w 24 h",
+      "d": "W dni robocze, bez spamu i nachodzenia."
+    }
+  ]
 }

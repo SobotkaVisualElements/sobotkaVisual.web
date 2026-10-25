@@ -8,11 +8,13 @@ import home from '../../data/home.json';
 import IsoIcon from '../iso/IsoIcon.astro';
 import { tx } from '../../lib/typo';
 const s: any = {
-	eyebrow: 'Sprawdź mnie za darmo',
+	eyebrow: 'Sprawdź nas za darmo',
 	title: 'Darmowa rolka próbna z Twojego materiału',
-	lead: 'Wyślij link do nagrania — zmontuję z niego jedną rolkę z napisami i dźwiękiem. Zobaczysz jakość, zanim cokolwiek zapłacisz.',
+	lead: 'Wyślij link do nagrania — zmontujemy z niego jedną rolkę z napisami i dźwiękiem. Zobaczysz jakość, zanim cokolwiek zapłacisz.',
 	rules: ['Materiał do 3 minut (telefon też się nada)', 'Gotowa rolka w 3–5 dni roboczych', 'Jedna próbka na firmę', 'Bez zobowiązań — rolka zostaje u Ciebie'],
 	button: 'Chcę darmową rolkę',
+	note: 'Odpowiadamy w 24 h w dni robocze · bez spamu · Twój materiał nie trafi nigdzie dalej',
+	ok: 'Dziękujemy! Materiał dotarł — odezwiemy się w ciągu 24 h.',
 	...((home as any).probna ?? {}),
 };
 ---
@@ -35,8 +37,8 @@ const s: any = {
 			<label class="sr-f"><span>Do czego ma być rolka? <small>(opcjonalnie)</small></span><textarea name="opis" rows="2" placeholder="np. promocja nowego produktu na Instagramie"></textarea></label>
 			<input name="firma_www" class="sr-hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
 			<button type="submit" class="sr-btn btn-saber">{s.button} →</button>
-			<p class="sr-note">Odpowiadam w 24 h w dni robocze · bez spamu · Twój materiał nie trafi nigdzie dalej</p>
-			<p class="sr-ok hidden" role="status">Dziękuję! Materiał dotarł — odezwę się w ciągu 24 h.</p>
+			<p class="sr-note">{s.note}</p>
+			<p class="sr-ok hidden" role="status">{s.ok}</p>
 		</form>
 	</div>
 </section>

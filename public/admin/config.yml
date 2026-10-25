@@ -311,6 +311,8 @@ collections:
               - { name: lead, label: "Zdanie pod tytułem", widget: text, required: false }
               - { name: rules, label: "Warunki (punkty)", widget: list, required: false, field: { name: rule, label: Warunek, widget: string } }
               - { name: button, label: "Napis na przycisku", widget: string, required: false }
+              - { name: note, label: "Dopisek pod przyciskiem", widget: string, required: false }
+              - { name: ok, label: "Komunikat po wysłaniu", widget: string, required: false }
           - name: dzien
             label: "Sekcja: Dzień contentowy (cena liczona z cennika)"
             widget: object
@@ -354,6 +356,7 @@ collections:
             fields:
               - { name: title, label: "Tytuł", widget: string }
               - { name: lead, label: "Zdanie pod tytułem", widget: text }
+              - { name: note, label: "Zielony dopisek (np. Odpowiadamy w 24 h…) — puste = ukryty", widget: string, required: false }
 
       - name: kafelki
         label: "Kafelki „Dla kogo”"
