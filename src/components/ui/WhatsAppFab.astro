@@ -21,7 +21,7 @@ const href = `https://wa.me/${String(w.phone).replace(/\D/g, '')}?text=${encodeU
 	.wa-fab:hover { transform: translateY(-2px); }
 	.wa-fab:hover .wa-l { max-width: 200px; margin-right: 6px; }
 	.wa-fab.is-off { opacity: 0; pointer-events: none; transform: translateY(20px); }
-	@media (max-width: 767px) { .wa-fab { right: 14px; bottom: 14px; padding: 11px; } .wa-fab svg { width: 28px; height: 28px; } }
+	@media (max-width: 767px) { .wa-fab { right: 14px; bottom: 14px; padding: 11px; } .wa-fab svg { width: 28px; height: 28px; } body:has(.k-mbar) .wa-fab { bottom: 78px; } }
 	@media print { .wa-fab { display: none; } }
 </style>
 <script>

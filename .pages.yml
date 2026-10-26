@@ -615,6 +615,8 @@ content:
         label: Świąteczny
       - name: izometryczny
         label: Izometryczny
+      - name: halloween
+        label: Halloween (fiolet, zieleń, pomarańcz)
   - name: draft
     label: Szkic (strona nie istnieje)
     type: boolean
@@ -1300,6 +1302,8 @@ content:
     - *id002
     - *id003
     - *id004
+    - {name: client, label: 'Najpierw realizacje klienta (np. Fabryka Słów)', type: string}
+    - {name: limit, label: Ile realizacji, type: number}
   - name: faq
     label: 10. Pytania
     type: object
