@@ -7,6 +7,7 @@
 import LayerTile from '../ui/LayerTile.astro';
 import VideoLoop from '../ui/VideoLoop.astro';
 import Carousel3D from '../ui/Carousel3D.astro';
+import { splitLinks } from '../../lib/embed';
 import OfferButton from '../ui/OfferButton.astro';
 import GapChart from '../ui/GapChart.astro';
 import { opinie } from '../../data/opinie';
@@ -114,7 +115,10 @@ function linePath(b: any) {
 			}
 
 			case 'karuzela3d': {
-				const its = (b.items ?? []).map((x: any) => ({ img: x.image, youtube: x.youtube, video: x.video, title: x.title, href: x.link, logo: x.logo })).filter((x: any) => x.img || x.youtube || x.video);
+				// linki z platform (jeden pod drugim) — każdy staje się kafelkiem; film gra z TikToka / Facebooka / Instagrama / YouTube
+				const fromLinks = splitLinks(b.links).map((l: string, k: number) => ({ link: l, title: b.linksTitle ? `${b.linksTitle} ${k + 1}` : '', logo: b.linksLogo, category: b.linksCategory }));
+				const its = [...(b.items ?? []).map((x: any) => ({ img: x.image, youtube: x.youtube, video: x.video, title: x.title, href: x.link, logo: x.logo })), ...fromLinks]
+					.filter((x: any) => x.img || x.youtube || x.video || x.link);
 				const o = b.orientation === 'pion' ? 'pion' : 'poziom';
 				return its.length > 0 && (
 					<figure class="svc-b svc-wide">

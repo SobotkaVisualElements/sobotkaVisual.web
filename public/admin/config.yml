@@ -133,10 +133,14 @@ collections:
                 fields:
                   - { name: image, label: "Obraz", widget: image, required: false, hint: "Możesz pominąć, jeśli wkleisz link YouTube — miniatura pobierze się sama." }
                   - { name: video, label: "Film MP4 — link z biblioteki media.sobotkavisual.pl", widget: string, required: false, hint: "Gra w pętli bez dźwięku, gdy kafelek jest na środku. Obraz powyżej (opcjonalny) to klatka przed wczytaniem. [Otwórz bibliotekę](https://media.sobotkavisual.pl)" }
-                  - { name: youtube, label: "Link YouTube (odtwarza się po kliknięciu)", widget: string, required: false }
+                  - { name: youtube, label: "Link do filmu: YouTube, TikTok, Facebook albo Instagram (odtwarza się po kliknięciu)", widget: string, required: false }
                   - { name: title, label: "Tytuł pod karuzelą", widget: string, required: false }
                   - { name: link, label: "albo link do strony (np. /work/...)", widget: string, required: false }
                   - { name: logo, label: "Logotyp klienta", widget: image, required: false }
+              - { name: links, label: "Szybko: linki do rolek (jeden pod drugim)", widget: text, required: false, hint: "Wklej linki z TikToka, Facebooka, Instagrama albo YouTube — każdy stanie się kafelkiem. Plików nie trzeba wgrywać, film gra z platformy." }
+              - { name: linksTitle, label: "Tytuł dla rolek z linków (dopisze numer, np. „Rolka rekrutacyjna 1”)", widget: string, required: false }
+              - { name: linksCategory, label: "Kategoria dla rolek z linków", widget: string, required: false }
+              - { name: linksLogo, label: "Logo klienta dla rolek z linków", widget: image, required: false }
               - { name: showLogos, label: "Pokaż logo klienta na kafelkach", widget: boolean, default: false, required: false }
               - { name: caption, label: "Podpis", widget: string, required: false }
           - name: wideo

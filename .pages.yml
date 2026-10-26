@@ -276,6 +276,10 @@ content:
             label: Miniatury YouTube 16:9
           - name: pion
             label: Pionowe okładki 10:16
+      - {name: links, label: 'Szybko: linki do rolek z TikToka / Facebooka / Instagrama / YouTube (jeden pod drugim)', type: text}
+      - {name: linksTitle, label: 'Tytuł dla rolek z linków (dopisze numer)', type: string}
+      - {name: linksCategory, label: Kategoria dla rolek z linków, type: string}
+      - {name: linksLogo, label: Logo klienta dla rolek z linków, type: image}
       - name: items
         label: Kafelki
         type: object
@@ -291,7 +295,7 @@ content:
           label: Film MP4 — link z biblioteki media.sobotkavisual.pl (gra w pętli na środku)
           type: string
         - name: youtube
-          label: Link YouTube (odtwarza się po kliknięciu)
+          label: Link do filmu — YouTube, TikTok, Facebook albo Instagram (po kliknięciu)
           type: string
         - name: title
           label: Tytuł pod karuzelą
