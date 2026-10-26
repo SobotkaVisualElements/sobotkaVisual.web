@@ -7,8 +7,10 @@
 import IsoIcon from '../iso/IsoIcon.astro';
 import { tx } from '../../lib/typo';
 
-interface Props { d: any }
-const { d } = Astro.props;
+interface Props { d: any; theme?: 'xmas' | 'hall' }
+const { d, theme = 'xmas' } = Astro.props;
+const hall = theme === 'hall';
+const overIcons = hall ? ['dynia', 'nietoperz', 'duch'] : ['prezent', 'sanie', 'choinka'];
 const end = new Date(d?.date || '').getTime();
 const valid = Number.isFinite(end);
 const expiredAtBuild = valid && Date.now() > end;
@@ -16,10 +18,10 @@ const ho = String(d?.expiredHo || 'Ho ho ho').split(/\s+/);
 ---
 {valid && (
 	<>
-		<section class:list={['dl', expiredAtBuild && 'is-hidden']} data-deadline={end}>
+		<section class:list={['dl', hall && 'dl--hall', expiredAtBuild && 'is-hidden']} data-deadline={end}>
 			<div class="dl-wrap">
 				{d.eyebrow && <p class="dl-eyebrow" set:html={tx(d.eyebrow)} />}
-				<h2 class="dl-big svc-anim"><span class="dl-l1" set:html={tx(d.title || 'Oferta do')} /><span class="dl-l2" set:html={tx(d.titleBold || '')} /></h2>
+				<h2 class="dl-big svc-anim"><span class="dl-l1" set:html={tx(d.title || 'Oferta do')} /><span class="dl-l2" style={`--len:${Math.max(9, String(d.titleBold || '').length)}`} set:html={tx(d.titleBold || '')} /></h2>
 				<div class="dl-count" role="timer" aria-label="Do końca oferty">
 					{[['d', 'dni'], ['h', 'godz.'], ['m', 'min'], ['s', 'sek.']].map(([k, l]) => (
 						<div class="dl-cell"><b data-dl={k}>00</b><small>{l}</small></div>
@@ -29,13 +31,13 @@ const ho = String(d?.expiredHo || 'Ho ho ho').split(/\s+/);
 			</div>
 		</section>
 
-		<section class:list={['dl-over', !expiredAtBuild && 'is-hidden']} aria-live="polite">
+		<section class:list={['dl-over', hall && 'dl--hall', !expiredAtBuild && 'is-hidden']} aria-live="polite">
 			<div class="dl-snow" aria-hidden="true">{Array.from({ length: 40 }, (_, i) => <i style={`--x:${(i * 37) % 100};--s:${0.5 + ((i * 7) % 10) / 10};--t:${6 + (i % 7)}s;--dl:${-(i % 9)}s`}></i>)}</div>
 			<div class="dl-over-in">
 				<div class="dl-over-icons" aria-hidden="true">
-					<IsoIcon name="prezent" mode="static" class="dlo-a" />
-					<IsoIcon name="sanie" mode="static" class="dlo-b" />
-					<IsoIcon name="choinka" mode="static" class="dlo-c" />
+					<IsoIcon name={overIcons[0]} mode="static" class="dlo-a" />
+					<IsoIcon name={overIcons[1]} mode="static" class="dlo-b" />
+					<IsoIcon name={overIcons[2]} mode="static" class="dlo-c" />
 				</div>
 				<h1 class="dl-over-t" set:html={tx(d.expiredTitle || 'Oferta minęła.')} />
 				<p class="dl-over-l" set:html={tx(d.expiredLead || 'Do zobaczenia za rok!')} />
@@ -55,7 +57,7 @@ const ho = String(d?.expiredHo || 'Ho ho ho').split(/\s+/);
 	.dl-big { margin-top: .6rem; font-family: Montserrat, sans-serif; font-weight: 900; text-transform: uppercase; line-height: .84; letter-spacing: -.045em; }
 	.dl-big span { display: block; }
 	.dl-l1 { font-size: clamp(44px, 10vw, 150px); font-style: italic; color: var(--ink, #fff); opacity: .9; }
-	.dl-l2 { font-size: clamp(52px, 13.2vw, 220px); text-wrap: balance; background: linear-gradient(90deg, #ffc65c, #ff5a78 55%, #ed244e); -webkit-background-clip: text; background-clip: text; color: transparent;
+	.dl-l2 { padding-top: .14em; margin-top: -.14em; font-size: clamp(34px, min(13.2vw, calc(138vw / var(--len, 9))), 220px); text-wrap: balance; background: linear-gradient(90deg, #ffc65c, #ff5a78 55%, #ed244e); -webkit-background-clip: text; background-clip: text; color: transparent;
 		filter: drop-shadow(0 18px 40px rgba(237,36,78,.35)); }
 	.dl-big span { transform: translateY(40px); opacity: 0; transition: transform 1s cubic-bezier(.2,.9,.2,1), opacity .8s; }
 	.dl-big .dl-l2 { transition-delay: .15s; }
@@ -93,6 +95,18 @@ const ho = String(d?.expiredHo || 'Ho ho ho').split(/\s+/);
 	.dl-snow i { position: absolute; top: -10px; left: calc(var(--x) * 1%); width: calc(var(--s) * 8px); height: calc(var(--s) * 8px); border-radius: 50%; background: #fff; opacity: .8;
 		animation: dl-fall var(--t) var(--dl) linear infinite; }
 	@keyframes dl-fall { to { transform: translate(30px, 110vh); } }
+	/* halloween */
+	.dl--hall .dl-eyebrow { color: #3dff8f; }
+	.dl--hall .dl-l2 { background: linear-gradient(90deg, #ffb21e, #ff6a00 50%, #b6ff6b); -webkit-background-clip: text; background-clip: text; filter: drop-shadow(0 18px 40px rgba(255,106,0,.4)); }
+	.dl--hall .dl-cell { border-color: rgba(61,255,143,.25); }
+	.dl--hall .dl-cell b { color: #fff; text-shadow: 0 0 22px rgba(61,255,143,.45); }
+	.dl-over.dl--hall { background: radial-gradient(90% 60% at 50% 0%, #3b1478, transparent 60%), radial-gradient(70% 50% at 50% 100%, #0f3d2a, transparent 70%), #12062b; }
+	.dl--hall .dl-over-l { color: #ff8a1e; }
+	.dl--hall .dl-ho { color: #3dff8f; text-shadow: 0 10px 40px rgba(61,255,143,.5); }
+	.dl--hall .dl-snow i { background: #ffb05c; box-shadow: 0 0 8px #ff8a1e; animation-name: dl-rise; }
+	.dl--hall .dl-snow i:nth-child(3n) { background: #3dff8f; box-shadow: 0 0 8px #3dff8f; }
+	@keyframes dl-rise { from { transform: translate(0, 110vh); } to { transform: translate(30px, -20px); } }
+	.dl--hall .dl-btn-acc { background: #ff6a00; border-color: #ff6a00; color: #1a0636; box-shadow: 0 14px 34px -12px rgba(255,106,0,.8); }
 	@media (prefers-reduced-motion: reduce) { .dl-ho span, .dl-snow i { animation: none; } .dl-big span { transform: none; opacity: 1; } }
 </style>
 

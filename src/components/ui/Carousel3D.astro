@@ -9,8 +9,9 @@
  * dzieje się daleko za krawędzią ekranu, gdy karta jest już całkiem przezroczysta — nic nie miga.
  */
 import { tx } from '../../lib/typo';
+import { parseEmbed } from '../../lib/embed';
 
-export interface CarouselItem { img?: string; title?: string; category?: string; href?: string; youtube?: string; logo?: string; logoTone?: string; alt?: string; video?: string }
+export interface CarouselItem { img?: string; title?: string; category?: string; href?: string; youtube?: string; logo?: string; logoTone?: string; alt?: string; video?: string; /** link do filmu: YouTube, TikTok, Facebook, Instagram */ link?: string }
 interface Props {
 	items: CarouselItem[];
 	orientation?: 'pion' | 'poziom';
@@ -33,9 +34,14 @@ const items = raw
 		const video = it.video || (isVid(it.youtube) ? it.youtube : '') || (isVid(it.img) ? it.img : '');
 		const id = isVid(it.youtube) ? '' : ytId(it.youtube);
 		const img = isVid(it.img) ? '' : it.img;
-		return { ...it, video, yt: id, img: img || (id ? `https://i.ytimg.com/vi/${id}/maxresdefault.jpg` : '') };
+		// link z platformy (TikTok, Facebook, Instagram, YouTube): film gra z platformy po kliknięciu
+		const ext = parseEmbed(it.link || it.youtube);
+		const ytx = id || (ext?.kind === 'yt' ? ext.id : '');
+		// Shorts: pionowy odtwarzacz; miniatura YouTube pobiera się sama
+		const thumb = ytx ? `https://i.ytimg.com/vi/${ytx}/${ext?.vertical ? 'hqdefault' : 'maxresdefault'}.jpg` : '';
+		return { ...it, video, yt: ext?.vertical ? '' : id, ext: id && !ext?.vertical ? null : ext, img: img || thumb };
 	})
-	.filter((it) => it.img || it.video || it.title);
+	.filter((it) => it.img || it.video || it.title || it.ext);
 const n = items.length;
 // tyle kopii, żeby zawsze było ≥ 14 kart (zawinięcie poza ekranem)
 const reps = n ? Math.max(1, Math.ceil(14 / n)) : 0;
@@ -65,6 +71,9 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 						type={it.href ? undefined : 'button'}
 						data-real={it.real}
 						data-yt={it.yt || undefined}
+						data-ext={it.ext ? it.ext.src : undefined}
+						data-ext-v={it.ext?.vertical ? '1' : undefined}
+						data-tt={it.ext?.kind === 'tt' && !it.img ? it.ext.url : undefined}
 						draggable="false"
 						tabindex={it.clone || variant === 'tlo' ? '-1' : undefined}
 						aria-hidden={it.clone ? 'true' : undefined}
@@ -72,9 +81,12 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 					>
 						{it.video
 							? <video class="c3d-vid" data-src={it.video} poster={it.img || undefined} muted loop playsinline preload="none" draggable="false" controlslist="nodownload" disablepictureinpicture></video>
-							: it.img ? <img src={it.img} alt="" loading={k < 6 ? 'eager' : 'lazy'} decoding="async" draggable="false" /> : <span class="c3d-ph"><small>{it.category}</small><b set:html={tx(it.title)} /></span>}
+							: it.img ? <img src={it.img} alt="" loading={k < 6 ? 'eager' : 'lazy'} decoding="async" draggable="false" />
+							: it.ext ? <span class:list={['c3d-ph', 'c3d-ext', `is-${it.ext.kind}`]}>{it.logo && <img class="c3d-ext-logo" src={it.logo} alt="" loading="lazy" />}<small>{it.category || it.ext.label}</small><b set:html={tx(it.title || 'Zobacz rolkę')} /></span>
+							: <span class="c3d-ph"><small>{it.category}</small><b set:html={tx(it.title)} /></span>}
+						{it.ext && variant !== 'tlo' && <span class:list={['c3d-badge', `is-${it.ext.kind}`]}>{it.ext.label}</span>}
 						<span class="c3d-shade"></span>
-						{it.yt && variant !== 'tlo' && <span class="c3d-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg></span>}
+						{(it.yt || it.ext) && variant !== 'tlo' && <span class="c3d-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg></span>}
 						{showLogos && it.logo && variant !== 'tlo' && <span class="c3d-logo"><img src={it.logo} alt="" loading="lazy" class={it.logoTone !== 'oryginalne' ? 'logo-dark' : undefined} /></span>}
 					</Tag>
 				);
@@ -91,7 +103,7 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 					<button type="button" class="c3d-btn" data-dir="1" aria-label="Następna">→</button>
 				</div>
 				<div class="c3d-dots"></div>
-				<script type="application/json" class="c3d-data" set:html={JSON.stringify(items.map(({ href, title, category, yt }) => ({ href, title: title ? tx(title).replace(/<[^>]+>/g, '') : '', category, yt })))} />
+				<script type="application/json" class="c3d-data" set:html={JSON.stringify(items.map(({ href, title, category, yt, ext }) => ({ href, title: title ? tx(title).replace(/<[^>]+>/g, '') : '', category, yt, ext: ext?.url })))} />
 			</>
 		)}
 	</div>
@@ -143,6 +155,15 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 	.c3d-modal { position: fixed; inset: 0; z-index: 200; display: grid; place-items: center; padding: 20px; background: rgba(6,4,30,.88); backdrop-filter: blur(8px); }
 	.c3d-modal > div { position: relative; width: min(1100px, 100%); aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; box-shadow: 0 40px 100px -30px #000; }
 	.c3d-modal iframe { width: 100%; height: 100%; border: 0; display: block; }
+	.c3d-modal > div.is-v { width: auto; height: min(86vh, 900px); aspect-ratio: 9 / 16; max-width: 100%; background: #000; }
+	/* karty z linkiem z platformy: miniatura z TikToka albo kafelek w kolorach strony */
+	.c3d-ext { position: relative; }
+	.c3d-ext.is-fb { background: radial-gradient(120% 90% at 85% 100%, rgba(24,119,242,.55), transparent 60%), linear-gradient(160deg, #120a4a, #1b0545 60%, #13205c); }
+	.c3d-ext.is-tt { background: radial-gradient(120% 90% at 85% 100%, rgba(37,244,238,.35), transparent 60%), radial-gradient(90% 70% at 10% 0%, rgba(254,44,85,.35), transparent 60%), linear-gradient(160deg, #0b0b1a, #1b0545); }
+	.c3d-ext.is-ig { background: radial-gradient(120% 90% at 85% 100%, rgba(225,48,108,.5), transparent 60%), radial-gradient(90% 70% at 10% 0%, rgba(252,175,69,.35), transparent 60%), linear-gradient(160deg, #120a4a, #1b0545); }
+	.c3d-ext-logo { position: absolute; top: 9%; left: 8%; width: auto !important; height: 26px !important; max-width: 60%; object-fit: contain; filter: brightness(0) invert(1); opacity: .9; }
+	.c3d-badge { position: absolute; top: 10px; right: 10px; padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 800; letter-spacing: .04em; color: #fff; background: rgba(10,6,48,.7); backdrop-filter: blur(6px); pointer-events: none; }
+	.c3d-badge.is-tt { background: #000; } .c3d-badge.is-fb { background: #1877f2; } .c3d-badge.is-ig { background: linear-gradient(90deg, #f58529, #dd2a7b, #8134af); } .c3d-badge.is-yt { background: #ff0000; }
 	.c3d-modal button { position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 999px; background: #fff; color: #0a0630; font-weight: 800; font-size: 18px; }
 </style>
 
@@ -211,7 +232,7 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 				shown = real;
 				const it = data[real] || {};
 				if (cat) cat.textContent = it.category || '';
-				if (ttl) { ttl.textContent = it.title || ''; ttl.href = it.href || (it.yt ? `https://youtu.be/${it.yt}` : '#'); ttl.target = it.href ? '' : '_blank'; }
+				if (ttl) { ttl.textContent = it.title || ''; ttl.href = it.href || (it.yt ? `https://youtu.be/${it.yt}` : it.ext || '#'); ttl.target = it.href ? '' : '_blank'; }
 				if (dots) Array.from(dots.children).forEach((b, j) => b.classList.toggle('on', j === real));
 			}
 		};
@@ -239,6 +260,7 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 				if (d !== 0) { e.preventDefault(); target = Math.round(pos) + d; kick(); restart(); return; }
 				const yt = c.dataset.yt;
 				if (yt && !c.getAttribute('href')) { e.preventDefault(); openYt(yt); }
+				else if (c.dataset.ext && !c.getAttribute('href')) { e.preventDefault(); openEmbed(c.dataset.ext, c.dataset.extV === '1'); }
 			}));
 
 			let x0 = 0, down = false, moved = false;
@@ -272,10 +294,22 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 		render();
 	});
 
-	function openYt(id: string) {
+	function openYt(id: string) { openEmbed(`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`, false); }
+
+	// miniatury rolek z TikToka (TikTok udostępnia je publicznie; podpisane linki wygasają, więc pobieramy je przy wejściu na stronę)
+	document.querySelectorAll<HTMLElement>('.c3d-card[data-tt]').forEach((c) => {
+		const ph = c.querySelector<HTMLElement>('.c3d-ext');
+		fetch(`https://www.tiktok.com/oembed?url=${encodeURIComponent(c.dataset.tt!)}`).then((r) => r.ok ? r.json() : null).then((j) => {
+			if (!j?.thumbnail_url || !ph) return;
+			ph.style.background = `center / cover no-repeat url("${j.thumbnail_url}")`;
+			ph.querySelectorAll('small, b, .c3d-ext-logo').forEach((x) => ((x as HTMLElement).style.display = 'none'));
+		}).catch(() => {});
+	});
+
+	function openEmbed(src: string, vertical: boolean) {
 		const m = document.createElement('div');
 		m.className = 'c3d-modal';
-		m.innerHTML = `<div><iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen title="Wideo"></iframe><button type="button" aria-label="Zamknij">✕</button></div>`;
+		m.innerHTML = `<div class="${vertical ? 'is-v' : ''}"><iframe src="${src}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen; clipboard-write" allowfullscreen title="Wideo"></iframe><button type="button" aria-label="Zamknij">✕</button></div>`;
 		const close = () => { m.remove(); document.removeEventListener('keydown', esc); };
 		const esc = (e: KeyboardEvent) => { if (e.key === 'Escape') close(); };
 		m.addEventListener('click', (e) => { if (e.target === m || (e.target as HTMLElement).closest('button')) close(); });

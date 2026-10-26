@@ -1,0 +1,386 @@
+{
+  "name": "Wydawnictwa — booktrailery, rolki i animowane okładki",
+  "layout": "kinetyczny",
+  "theme": "izometryczny",
+  "draft": false,
+  "noindex": false,
+  "order": 3,
+  "seoTitle": "Booktrailer, animowana okładka i rolki dla wydawnictw | Sobotka Visual",
+  "seoDesc": "Animowane booktrailery, okładki w ruchu i rolki z ilustracji do premier książek. Robimy je m.in. dla Fabryki Słów. Booktrailer od 4 300 zł, animowana okładka od 1 150 zł.",
+  "service": "Booktrailery i animacje dla wydawnictw",
+  "pdf": "",
+  "pkg": "pro",
+  "marquee": "Booktrailery / Animowane okładki / Rolki z ilustracji / Premiery książek",
+  "hero": {
+    "eyebrow": "Dla wydawnictw · premiery książek",
+    "title": "Okładka, która",
+    "titleBold": "rusza się w feedzie.",
+    "lead": "Booktrailery, animowane okładki i rolki z ilustracji. Z jednej okładki robimy materiał na całą kampanię premierową — tak jak dla Fabryki Słów.",
+    "bgImage": "",
+    "bgVideo": "",
+    "bgOpacity": 20,
+    "sideImage": "",
+    "sideAlt": "",
+    "thumbs": false,
+    "align": "lewo",
+    "chipValue": "15 s",
+    "chipLabel": "booktrailer z jednej ilustracji"
+  },
+  "intro": {
+    "eyebrow": "Zanim zaczniemy",
+    "title": "Książkę ocenia się",
+    "titleLight": "po okładce. W feedzie — po pierwszej sekundzie.",
+    "text": "Czytelnicy odkrywają książki na Instagramie, TikToku i YouTube. Statyczna okładka przegrywa tam z każdym filmikiem, który się rusza.\n\nZ ilustracji okładki robimy animację z paralaksą, liternictwem i dźwiękiem: booktrailer na premierę, okładkę w ruchu do sklepu i social mediów oraz serię rolek z cytatami. Bez nowych ilustracji i bez sesji zdjęciowych.",
+    "signature": "Krzysztof Sobotka",
+    "signatureRole": "Sobotka Visual Creations · Opole",
+    "align": "lewo"
+  },
+  "become": {
+    "eyebrow": "Jak to wygląda",
+    "title": "Od okładki",
+    "titleLight": "do premiery w 2–3 tygodnie.",
+    "lead": "",
+    "items": [
+      {
+        "t": "Tydzień 1 — materiały",
+        "d": "Przesyłacie okładkę w warstwach (PSD), opis i cytaty. Rozkładamy ilustrację na plany do paralaksy."
+      },
+      {
+        "t": "Tydzień 2 — animacja",
+        "d": "Ruch, liternictwo, dźwięk. Dostajecie wersję do akceptacji z jedną rundą poprawek."
+      },
+      {
+        "t": "Tydzień 3 — premiera",
+        "d": "Booktrailer, okładka w ruchu i rolki w formatach pod sklep, YouTube, Instagram i TikTok."
+      }
+    ],
+    "punch": "Wy macie okładkę. My robimy z niej kampanię.",
+    "align": "lewo"
+  },
+  "stats": {
+    "eyebrow": "Liczby, które grają na Ciebie",
+    "title": "Wideo",
+    "titleLight": "sprzedaje szybciej niż opis.",
+    "note": "To dane o rynku, nie obietnice wyników. Pokazują, gdzie zapadają decyzje Twoich klientów.",
+    "items": [
+      {
+        "v": 85,
+        "suf": "%",
+        "d": "ludzi mówi, że film przekonał ich do zakupu produktu lub usługi.",
+        "src": "Wyzowl, za: SocialPilot"
+      },
+      {
+        "v": 83,
+        "suf": "%",
+        "d": "marketerów mówi, że wideo bezpośrednio zwiększyło ich sprzedaż.",
+        "src": "Wyzowl, za: SocialPilot"
+      },
+      {
+        "v": 63,
+        "suf": "%",
+        "d": "konsumentów woli krótki film o produkcie niż tekst czy rozmowę handlową.",
+        "src": "Wyzowl, za: SocialPilot"
+      },
+      {
+        "v": 29,
+        "suf": " mln",
+        "d": "użytkowników YouTube w Polsce. Twoi klienci już tam są.",
+        "src": "DataReportal, „Digital 2025: Poland”, za: Radio Kielce"
+      }
+    ]
+  },
+  "proof": {
+    "eyebrow": "Wyniki, nie obietnice",
+    "title": "Nasze liczby",
+    "titleLight": "na tle reszty.",
+    "lead": "Zakres pakietów i realne realizacje dla wydawnictwa. Bez naciągania.",
+    "charts": [
+      {
+        "title": "Ile materiałów z jednego tytułu",
+        "sub": "Ile razy czytelnik zobaczy książkę w okresie premiery.",
+        "unit": "",
+        "max": 30,
+        "source": "zakres pakietów SVC 2026",
+        "bars": [
+          {
+            "label": "Sama okładka statyczna",
+            "value": 1
+          },
+          {
+            "label": "Premiera tytułu",
+            "value": 6,
+            "highlight": true,
+            "note": "booktrailer + animowana okładka + 4 rolki"
+          },
+          {
+            "label": "Seria wydawnicza przez 3 miesiące",
+            "value": 27,
+            "highlight": true,
+            "note": "co miesiąc: booktrailer, 2 okładki, 6 rolek"
+          }
+        ]
+      }
+    ],
+    "deltaLine": false,
+    "align": "lewo",
+    "ctr": {
+      "show": false,
+      "eyebrow": "Klikalność miniatur (CTR)",
+      "title": "Pierwsza godzina decyduje o zasięgu.",
+      "sub": "Ilu widzów, którym YouTube pokazał miniaturę, klika w film. Im więcej kliknięć na starcie, tym szerzej algorytm go rozsyła.",
+      "watermark": "Twoja przewaga nad konkurencją",
+      "unit": "%",
+      "xStart": "publikacja",
+      "xEnd": "1 godzina",
+      "base": {
+        "label": "Typowy kanał na YouTube",
+        "value": 10,
+        "display": "do 10%"
+      },
+      "ours": {
+        "label": "Kanał, z którym pracujemy",
+        "value": 21
+      },
+      "delta": "ponad 2× więcej kliknięć",
+      "source": "Typowy kanał: YouTube Help „Wyświetlenia i CTR” — połowa kanałów ma CTR 2–10%. Z nami: YouTube Studio kanału klienta, 1. godzina po publikacji.",
+      "quoteFrom": "Przemysław Langier",
+      "thumbs": [
+        {
+          "image": "/uploads/realizacje/maxresdefault.jpg"
+        },
+        {
+          "image": "/uploads/realizacje/maxresdefault (1).jpg"
+        },
+        {
+          "image": "/uploads/realizacje/maxresdefault (2).jpg"
+        },
+        {
+          "image": "/uploads/realizacje/maxresdefault (3).jpg"
+        }
+      ]
+    },
+    "chips": [
+      {
+        "value": 41,
+        "suffix": "",
+        "label": "animowanych elementów w booktrailerze „Łajdactw zebranych”"
+      },
+      {
+        "value": 15,
+        "suffix": " s",
+        "label": "booktrailer z jednej ilustracji okładki"
+      },
+      {
+        "value": 6,
+        "suffix": "",
+        "label": "materiałów w pakiecie Premiera"
+      }
+    ]
+  },
+  "inside": {
+    "eyebrow": "Co dostajesz",
+    "title": "Jedna okładka,",
+    "titleLight": "cała kampania premierowa.",
+    "lead": "Pracujemy na ilustracji, którą już macie. Nie trzeba nic dorysowywać ani nagrywać.",
+    "items": [
+      {
+        "n": "01",
+        "t": "Booktrailer",
+        "d": "15–45 sekund z paralaksą, liternictwem i dźwiękiem. Na YouTube, stronę i zapowiedź premiery."
+      },
+      {
+        "n": "02",
+        "t": "Animowana okładka",
+        "d": "Okładka w ruchu w pętli — do sklepu internetowego, newslettera i postów."
+      },
+      {
+        "n": "03",
+        "t": "Rolki z cytatami",
+        "d": "Pionowe rolki z fragmentami i ilustracjami. Niosą premierę przez kolejne tygodnie."
+      },
+      {
+        "n": "04",
+        "t": "Wszystkie formaty",
+        "d": "16:9, 9:16 i 1:1 — gotowe pod YouTube, Instagram, TikTok i sklep."
+      }
+    ],
+    "align": "lewo"
+  },
+  "special": {
+    "kind": "",
+    "eyebrow": "Dlaczego my",
+    "title": "",
+    "titleLight": "",
+    "lead": "",
+    "title2": "Robimy to już",
+    "title2Light": "dla wydawnictwa.",
+    "cards2": [
+      {
+        "k": "Doświadczenie",
+        "t": "Booktrailery dla Fabryki Słów",
+        "d": "„Łajdactwa zebrane” Andrzeja Pilipiuka i „Siedem Mieczy” Anthony’ego Ryana — z ilustracji okładek."
+      },
+      {
+        "k": "Jakość",
+        "t": "Animacja z prawdziwej ilustracji",
+        "d": "Rozkładamy okładkę na plany i animujemy ją jak scenę filmową. Bez tanich szablonów."
+      },
+      {
+        "k": "Rytm",
+        "t": "Stała obsługa premier",
+        "d": "Przy stałej współpracy każda premiera dostaje komplet materiałów w tym samym standardzie."
+      }
+    ],
+    "align": "lewo"
+  },
+  "opinie": {
+    "eyebrow": "Opinie",
+    "title": "Nie musisz wierzyć",
+    "titleLight": "nam na słowo."
+  },
+  "projects": {
+    "show": true,
+    "eyebrow": "Realizacje",
+    "title": "Booktrailery,",
+    "titleLight": "które już pracują dla wydawnictwa.",
+    "client": "Fabryka Słów",
+    "limit": 9
+  },
+  "faq": {
+    "eyebrow": "Pytania",
+    "title": "Odpowiadamy,",
+    "titleLight": "zanim zapytasz.",
+    "align": "lewo",
+    "items": [
+      {
+        "q": "Czy potrzebujecie nowych ilustracji?",
+        "a": "Nie. Pracujemy na okładce, którą już macie. Najlepiej w warstwach (PSD) — jeśli ich nie ma, rozdzielimy plany sami."
+      },
+      {
+        "q": "Ile trwa booktrailer?",
+        "a": "Zwykle 2–3 tygodnie od otrzymania materiałów. Przy bliskiej premierze dajcie znać — tryb ekspresowy jest możliwy za dopłatą."
+      },
+      {
+        "q": "Czy zrobicie wersję obcojęzyczną?",
+        "a": "Tak. Dodatkowa wersja językowa to +15% do ceny materiału."
+      },
+      {
+        "q": "Kto ma prawa do materiałów?",
+        "a": "Wydawnictwo, po zapłacie. Możecie używać ich w sklepie, social mediach i kampaniach płatnych zgodnie z licencją ilustracji."
+      }
+    ]
+  },
+  "doubts": {
+    "eyebrow": "Wątpliwości",
+    "title": "Każde „ale”",
+    "titleLight": "zasługuje na odpowiedź.",
+    "items": [],
+    "callText": "",
+    "phone": "668 472 759",
+    "align": "lewo"
+  },
+  "invest": {
+    "eyebrow": "Inwestycja",
+    "title": "Wybierz",
+    "titleLight": "zakres premiery.",
+    "saveLabel": "Zyskujesz",
+    "cards": [
+      {
+        "tag": "Na start",
+        "name": "Animowana okładka",
+        "price": "1 150",
+        "per": "zł netto / tytuł",
+        "note": "Jednorazowo. Gotowa w 5–7 dni roboczych.",
+        "items": [
+          "okładka w ruchu 8–15 s, w pętli",
+          "paralaksa z ilustracji",
+          "pion, kwadrat i poziom",
+          "1 runda poprawek"
+        ],
+        "featured": false,
+        "ctaLabel": "Zamawiam okładkę",
+        "ctaHref": "/generator?tryb=jednorazowa&okladka=1"
+      },
+      {
+        "tag": "Najczęściej wybierany",
+        "name": "Premiera tytułu",
+        "price": "6 490",
+        "per": "zł netto / tytuł",
+        "value": 8850,
+        "valueLabel": "przy zamawianiu osobno",
+        "note": "Jednorazowo. Komplet na premierę w 2–3 tygodnie.",
+        "items": [
+          "booktrailer 15–45 s",
+          "animowana okładka",
+          "4 rolki z cytatami i ilustracjami",
+          "dźwięk i liternictwo",
+          "formaty pod sklep i social media"
+        ],
+        "featured": true,
+        "ctaLabel": "Planuję premierę",
+        "ctaHref": "/generator?tryb=jednorazowa&trailer=1&okladka=1&rolkaani=4"
+      },
+      {
+        "tag": "Dla wydawnictw z planem",
+        "name": "Seria wydawnicza",
+        "price": "7 900",
+        "per": "zł netto / mies.",
+        "value": 11700,
+        "valueLabel": "przy zamawianiu osobno",
+        "note": "Min. 3 miesiące. Stały termin i standard dla każdej premiery.",
+        "items": [
+          "1 booktrailer co miesiąc",
+          "2 animowane okładki",
+          "6 rolek z cytatami",
+          "harmonogram premier i raport"
+        ],
+        "featured": false,
+        "ctaLabel": "Porozmawiajmy o serii",
+        "ctaHref": "/generator?tryb=jednorazowa&trailer=1&okladka=2&rolkaani=6"
+      }
+    ],
+    "footnote": "Ceny netto. Do pracy potrzebujemy okładki w warstwach (PSD) albo ilustracji w wysokiej rozdzielczości."
+  },
+  "final": {
+    "eyebrow": "Następny krok",
+    "title": "Pokażcie nam",
+    "titleBold": "okładkę.",
+    "lead": "Wyślijcie okładkę i datę premiery. W 24 godziny odpiszemy z planem i wyceną.",
+    "cta": "Wyślij okładkę",
+    "align": "lewo"
+  },
+  "icons": {
+    "hero": [
+      "ksiazka",
+      "kamera",
+      "telefon",
+      "tablet",
+      "monitor"
+    ],
+    "fly": [
+      "ksiazka",
+      "telefon",
+      "tablet",
+      "kamera",
+      "monitor",
+      "kalendarz"
+    ],
+    "big": [
+      "ksiazka",
+      "kalendarz",
+      "kamera",
+      "wykres"
+    ],
+    "zoom": [
+      "ksiazka",
+      "telefon",
+      "tablet"
+    ],
+    "price": [
+      "tablet",
+      "ksiazka",
+      "rakieta"
+    ],
+    "final": "ksiazka"
+  }
+}
