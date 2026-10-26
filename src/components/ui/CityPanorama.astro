@@ -123,6 +123,50 @@ if (key.includes('opole')) {
 	houses(800, 1080, 43);
 	for (const [x, h] of [[1120, 210], [1180, 250], [1250, 190], [1330, 230]]) { box(x, 22, h, front, false); smoke.push([x + 11, G - h]); } // kominy Azotów
 	dome(1380, 90, 50, 26); dome(1480, 90, 50, 26); // zbiorniki
+} else if (key.includes('prudnik')) {
+	fabric(53, 40, 100);
+	houses(10, 420, 55, true);
+	tower(450, 56, 150, 'spire', 62); // Wieża Woka (okrągła wieża zamkowa)
+	houses(520, 700, 57);
+	pitched(720, 160, 80, 30); tower(785, 30, 160, 'helm'); // ratusz
+	church(960, 160, 90, 52); tower(1120, 34, 170, 'helm'); // kościół św. Michała
+	houses(1170, 1640, 59, true);
+} else if (key.includes('brzeg')) {
+	fabric(61, 40, 110);
+	houses(0, 260, 63, true);
+	box(280, 230, 96); stepped(300, 70, 96, 2, 14); stepped(440, 70, 96, 2, 14); tower(372, 56, 150, 'helm', 24); // Zamek Piastów Śląskich — brama i wieża
+	tower(560, 54, 172, 'helm'); // Wieża Lwów
+	houses(630, 760, 65, true);
+	stepped(780, 190, 90, 3, 14); tower(790, 30, 150, 'helm'); tower(940, 30, 150, 'helm'); // ratusz z dwiema wieżami
+	church(1040, 200, 110, 70); tower(1030, 44, 200, 'flat'); tower(1206, 44, 200, 'flat'); // kościół św. Mikołaja — dwie masywne wieże
+	houses(1270, 1640, 67);
+} else if (key.includes('kluczbork')) {
+	fabric(71, 40, 100);
+	houses(0, 520, 73, true);
+	pitched(560, 200, 86, 34); tower(645, 34, 180, 'helm', 28); // ratusz
+	houses(780, 980, 75);
+	church(1000, 180, 96, 60); tower(1160, 36, 180, 'spire', 70); // kościół
+	houses(1220, 1640, 77, true);
+} else if (key.includes('raciborz')) {
+	water = true; fabric(79, 40, 110);
+	houses(0, 300, 81);
+	box(330, 210, 84); pitched(330, 210, 84, 40); tower(540, 40, 130, 'helm'); // Zamek Piastowski
+	church(600, 90, 70, 60); spire(645, 318 - 70 - 60 + 6, 10, 70); // kaplica zamkowa św. Tomasza — smukła sygnaturka
+	houses(720, 900, 83, true);
+	church(930, 200, 100, 56); tower(1110, 40, 190, 'helm', 30); // kościół Wniebowzięcia NMP
+	houses(1180, 1640, 85);
+} else if (key.includes('gliwice')) {
+	fabric(89, 50, 150);
+	houses(0, 260, 91);
+	// Radiostacja Gliwice — drewniana wieża kratownicowa
+	front.push(`M330 ${G} L356 ${G - 300} H364 L390 ${G} Z`);
+	stroke.push(Array.from({ length: 10 }, (_, k) => { const y1 = G - k * 30, y2 = G - (k + 1) * 30, a = 30 - k * 2.4, b = 30 - (k + 1) * 2.4; return `M${360 - a} ${y1} L${360 + b} ${y2} M${360 + a} ${y1} L${360 - b} ${y2} M${360 - a} ${y1} H${360 + a}`; }).join(' '));
+	lights.push([360, G - 304]);
+	houses(420, 620, 93, true);
+	pitched(640, 160, 84, 30); tower(705, 30, 150, 'helm'); // ratusz
+	church(860, 170, 96, 56); tower(1020, 40, 200, 'spire', 76); // kościół Wszystkich Świętych
+	dome(1110, 200, 30, 70, 2); // Palmiarnia
+	box(1340, 70, 150); box(1420, 60, 110); box(1490, 90, 170);
 } else {
 	fabric(43, 50, 150);
 	houses(0, 500, 47); box(520, 80, 150); box(610, 60, 110); tower(700, 28, 250, 'spire', 70); lights.push([714, G - 322]); box(760, 90, 130); houses(860, 1640, 51);

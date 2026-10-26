@@ -1,0 +1,172 @@
+---
+/*
+ * /obszar-dzialania — gdzie przyjeżdżamy na nagrania i co robimy zdalnie dla całej Polski.
+ * Mapa (SVG, wektor): Polska z zaznaczonym regionem + przybliżenie regionu ze strefami dojazdu i klikalnymi miastami.
+ * Dane miast: src/data/miasta.ts. Nie ma tej strony w menu — prowadzi do niej stopka i podstrony miast.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import IsoIcon from '../components/iso/IsoIcon.astro';
+import { miasta, zdalnie } from '../data/miasta';
+
+// rzut: x = (dł. − 14) · cos(52°) · k, y = (55 − szer.) · k  (1° szerokości ≈ 111 km)
+const K = 100, C = 0.6157;
+const px = (lon: number, lat: number) => [(lon - 14) * C * K, (55 - lat) * K];
+// granica Polski (uproszczona)
+const border = [[14.25, 53.92], [15.5, 54.18], [16.5, 54.55], [17.6, 54.8], [18.4, 54.83], [18.6, 54.42], [19.6, 54.45], [20.5, 54.39], [21.5, 54.33], [22.79, 54.36], [23.5, 53.95], [23.6, 53.6], [23.9, 53.1], [23.9, 52.7], [23.2, 52.3], [23.65, 52.08], [23.6, 51.6], [24.1, 51.0], [24.15, 50.87], [23.5, 50.4], [22.68, 49.6], [22.9, 49.1], [22.56, 49.08], [22.0, 49.2], [21.4, 49.4], [20.9, 49.3], [20.2, 49.2], [19.8, 49.2], [19.4, 49.6], [18.85, 49.5], [18.6, 49.75], [18.0, 50.0], [17.6, 50.27], [16.9, 50.45], [16.9, 50.2], [16.7, 50.1], [16.4, 50.6], [15.4, 50.8], [14.82, 50.87], [14.95, 51.4], [14.7, 51.9], [14.6, 52.6], [14.15, 52.85], [14.4, 53.3]];
+const borderD = 'M' + border.map(([a, b]) => px(a, b).map((n) => n.toFixed(1)).join(' ')).join(' L') + ' Z';
+const big = [['Warszawa', 21.01, 52.23], ['Kraków', 19.94, 50.06], ['Poznań', 16.93, 52.41], ['Gdańsk', 18.65, 54.35], ['Łódź', 19.46, 51.76]] as const;
+// przybliżenie regionu
+const R = { lon0: 16.45, lon1: 19.55, lat0: 49.88, lat1: 51.3 };
+const [rx0, ry0] = px(R.lon0, R.lat1), [rx1, ry1] = px(R.lon1, R.lat0);
+const opole = px(17.93, 50.67), nysa = px(17.33, 50.47);
+const km = (n: number) => (n / 111) * K; // km → jednostki mapy
+const label = (n: string) => n;
+const free = miasta.filter((m) => m.free), paid = miasta.filter((m) => !m.free);
+---
+<BaseLayout title="Obszar działania — Opole, Nysa, Śląsk i cała Polska zdalnie | SVC" description="Gdzie przyjeżdżamy na nagrania: Opole, Nysa, Brzeg, Prudnik, Kluczbork, Kędzierzyn-Koźle, Racibórz, Gliwice, Wrocław, Katowice. Montaż, animacje i grafika zdalnie dla firm z całej Polski.">
+	<section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
+		<span class="pointer-events-none absolute inset-0 bg-grid opacity-30"></span>
+		<div class="relative z-2 mx-auto max-w-[1200px] px-6 pt-24 pb-10 sm:px-8">
+			<nav class="lp-crumbs" aria-label="Okruszki"><a href="/">Strona główna</a><span>›</span><b>Obszar działania</b></nav>
+			<h1 class="mt-4 text-[38px] leading-[1.05] font-bold tracking-[-0.02em] md:text-[56px]">Gdzie działamy</h1>
+			<p class="mt-4 max-w-[680px] text-[19px] leading-[1.65] text-sky-mist">Na nagrania przyjeżdżamy w promieniu ok. 100 km od Opola. Montaż, animacje i grafikę robimy zdalnie — dla firm z całej Polski.</p>
+		</div>
+
+		<div class="relative z-2 mx-auto grid max-w-[1200px] items-start gap-8 px-6 pb-20 sm:px-8 lg:grid-cols-[1.6fr_1fr]">
+			<!-- mapa regionu -->
+			<figure class="oa-map">
+				<svg viewBox={`${rx0} ${ry0} ${rx1 - rx0} ${ry1 - ry0}`} role="img" aria-label="Mapa dojazdu: strefy wokół Opola i Nysy oraz miasta, do których przyjeżdżamy">
+					<defs>
+						<radialGradient id="oa-z100"><stop offset="0" stop-color="#ffc65c" stop-opacity=".18" /><stop offset="1" stop-color="#ffc65c" stop-opacity=".05" /></radialGradient>
+						<radialGradient id="oa-z40"><stop offset="0" stop-color="#2ee59d" stop-opacity=".35" /><stop offset="1" stop-color="#2ee59d" stop-opacity=".12" /></radialGradient>
+						<clipPath id="oa-pl"><path d={borderD} /></clipPath>
+					</defs>
+					<path d={borderD} class="oa-land" />
+					<g clip-path="url(#oa-pl)">
+						<circle cx={opole[0]} cy={opole[1]} r={km(100)} fill="url(#oa-z100)" class="oa-ring oa-ring-100" />
+						<circle cx={opole[0]} cy={opole[1]} r={km(40)} fill="url(#oa-z40)" class="oa-ring" />
+						<circle cx={nysa[0]} cy={nysa[1]} r={km(40)} fill="url(#oa-z40)" class="oa-ring" />
+					</g>
+					<path d={borderD} class="oa-border" />
+					{miasta.map((m, i) => {
+						const [x, y] = px(m.lon, m.lat);
+						const main = m.name === 'Opole' || m.name === 'Nysa';
+						return (
+							<a href={`${m.pages[0][0]}/`} class:list={['oa-pin', m.free && 'is-free', main && 'is-main']} style={`--i:${i}`} aria-label={`${m.name} — dojazd ${m.dojazd}`}>
+								<circle cx={x} cy={y} r={main ? 4.6 : 3.4} class="oa-dot" />
+								<circle cx={x} cy={y} r={main ? 4.6 : 3.4} class="oa-pulse" />
+								<text x={x + (m.lab?.[0] ?? 7)} y={y + (m.lab?.[1] ?? 3)} text-anchor={m.lab?.[2] ?? 'start'}>{label(m.name)}</text>
+							</a>
+						);
+					})}
+				</svg>
+				<figcaption class="oa-legend">
+					<span><i class="is-free"></i>do 40 km od Opola lub Nysy — dojazd w cenie</span>
+					<span><i></i>do ok. 100 km — 150 zł raz na dzień nagrań</span>
+				</figcaption>
+				<!-- Polska z zaznaczonym regionem -->
+				<svg class="oa-mini" viewBox="-10 -10 640 620" aria-hidden="true">
+					<path d={borderD} class="oa-mini-land" />
+					<rect x={rx0} y={ry0} width={rx1 - rx0} height={ry1 - ry0} class="oa-mini-box" />
+					{big.map(([n, a, b]) => { const [x, y] = px(a, b); return <><circle cx={x} cy={y} r="5" class="oa-mini-dot" /><text x={x + 9} y={y + 5}>{n}</text></>; })}
+				</svg>
+			</figure>
+
+			<!-- lista miast -->
+			<div class="oa-list">
+				<h2>Dojazd w cenie</h2>
+				<ul>{free.map((m) => <li><a href={`${m.pages[0][0]}/`}><b>{m.name}</b><span>{m.km}</span></a></li>)}</ul>
+				<h2 class="mt-7">150 zł za dzień nagrań</h2>
+				<ul>{paid.map((m) => <li><a href={`${m.pages[0][0]}/`}><b>{m.name}</b><span>{m.km}</span></a></li>)}</ul>
+				<p class="oa-note">Dalej? Też przyjedziemy — 1,20 zł za km, raz na dzień nagrań. Zapytaj o termin.</p>
+			</div>
+		</div>
+	</section>
+
+	<!-- zdalnie -->
+	<section class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
+		<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
+		<div class="relative z-2 mx-auto max-w-[1200px] px-6 py-20 sm:px-8">
+			<div class="oa-remote-head">
+				<span class="oa-remote-ico" aria-hidden="true"><IsoIcon name="monitor" /></span>
+				<div>
+					<h2 class="text-[30px] leading-tight font-bold md:text-[38px]">Zdalnie w całej Polsce</h2>
+					<p class="mt-3 max-w-[620px] text-[18px] leading-relaxed text-sky-mist">Wysyłasz nagrania przez internet, a my odsyłamy gotowy materiał. Bez dojazdów, bez spotkań na żywo — rozmowa przez telefon albo wideo.</p>
+				</div>
+			</div>
+			<div class="oa-cards">
+				{zdalnie.map(([h, n, d]) => <a href={h} class="oa-card liquid-card glass"><b>{n}</b><span>{d}</span><i>Zobacz →</i></a>)}
+			</div>
+
+			<h2 class="mt-16 text-[24px] font-bold">Wszystkie podstrony miast</h2>
+			<div class="oa-all">
+				{miasta.map((m) => (
+					<div><b>{m.name}</b><ul>{m.pages.map(([h, l]) => <li><a href={`${h}/`}>{l} {m.name}</a></li>)}</ul></div>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "ProfessionalService",
+		"@id": "https://sobotkavisual.pl/#firma",
+		"name": "Sobotka Visual Creations",
+		"telephone": "+48668472759",
+		"areaServed": [...miasta.map((m) => ({ "@type": "City", "name": m.name })), { "@type": "Country", "name": "Polska" }],
+	})} />
+</BaseLayout>
+
+<style is:global>
+	.lp-crumbs { display: flex; flex-wrap: wrap; gap: .45rem; font-size: 14px; color: rgba(214,222,255,.7); }
+	.lp-crumbs a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(255,255,255,.25); }
+	.lp-crumbs b { color: #fff; font-weight: 600; }
+	.oa-map { position: relative; margin: 0; padding: 14px; border-radius: 26px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.1); }
+	.oa-map > svg:first-child { display: block; width: 100%; height: auto; }
+	.oa-land { fill: #1d1458; }
+	.oa-border { fill: none; stroke: rgba(143,244,255,.5); stroke-width: .9; stroke-dasharray: 3 2; }
+	.oa-ring { stroke: #2ee59d; stroke-width: .7; stroke-dasharray: 2 2; animation: oa-breathe 4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+	.oa-ring-100 { stroke: #ffc65c; }
+	@keyframes oa-breathe { 0%,100% { opacity: .85; } 50% { opacity: 1; } }
+	.oa-pin { cursor: pointer; }
+	.oa-pin text { font: 700 6.4px Montserrat, sans-serif; fill: #fff; paint-order: stroke; stroke: #120a4a; stroke-width: 2.4px; }
+	.oa-pin.is-main text { font-size: 8.4px; }
+	.oa-dot { fill: #ffc65c; stroke: #fff; stroke-width: 1.2; }
+	.oa-pin.is-free .oa-dot { fill: #2ee59d; }
+	.oa-pulse { fill: none; stroke: #ffc65c; stroke-width: 1; transform-box: fill-box; transform-origin: center; animation: oa-pulse 2.4s calc(var(--i) * .25s) ease-out infinite; }
+	.oa-pin.is-free .oa-pulse { stroke: #2ee59d; }
+	@keyframes oa-pulse { 0% { transform: scale(1); opacity: .9; } 100% { transform: scale(3); opacity: 0; } }
+	.oa-pin:hover text { fill: #ff8aa0; }
+	.oa-legend { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 8px 22px; font-size: 15px; color: #fff; }
+	.oa-legend span { display: flex; align-items: center; gap: 8px; }
+	.oa-legend i { width: 14px; height: 14px; border-radius: 50%; background: #ffc65c; }
+	.oa-legend i.is-free { background: #2ee59d; }
+	.oa-mini { position: absolute; top: 18px; right: 18px; width: clamp(90px, 18%, 150px); height: auto; padding: 6px; border-radius: 12px; background: rgba(10,6,48,.75); }
+	.oa-mini-land { fill: #2a1d6b; stroke: rgba(143,244,255,.5); stroke-width: 4; }
+	.oa-mini-box { fill: rgba(255,90,120,.35); stroke: #ff5a78; stroke-width: 5; }
+	.oa-mini-dot { fill: #c3c0dc; }
+	.oa-mini text { font: 700 34px Montserrat, sans-serif; fill: #c3c0dc; display: none; }
+	.oa-list { padding: 24px; border-radius: 22px; background: rgba(255,255,255,.035); border: 1px solid rgba(255,255,255,.1); }
+	.oa-list h2 { font-size: 20px; font-weight: 800; }
+	.oa-list ul { margin-top: 10px; display: grid; gap: 6px; }
+	.oa-list a { display: flex; justify-content: space-between; gap: 12px; padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.04); font-size: 17px; transition: background .2s; }
+	.oa-list a:hover { background: rgba(255,255,255,.1); }
+	.oa-list a span { font-size: 14px; color: var(--color-sky-mist, #c3c0dc); white-space: nowrap; }
+	.oa-note { margin-top: 16px; font-size: 15px; line-height: 1.55; color: var(--color-sky-mist, #c3c0dc); }
+	.oa-remote-head { display: flex; gap: 22px; align-items: center; }
+	.oa-remote-ico { flex: none; width: 120px; height: 120px; }
+	.oa-remote-ico .iso { width: 100%; height: 100%; }
+	.oa-cards { margin-top: 30px; display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+	.oa-card { display: flex; flex-direction: column; gap: 8px; padding: 22px; border-radius: 18px; transition: transform .25s; }
+	.oa-card:hover { transform: translateY(-3px); }
+	.oa-card b { font-size: 19px; color: #fff; }
+	.oa-card span { font-size: 16px; line-height: 1.5; color: var(--color-sky-mist, #c3c0dc); }
+	.oa-card i { margin-top: auto; padding-top: 6px; font-style: normal; font-weight: 700; color: #ff8aa0; }
+	.oa-all { margin-top: 18px; display: grid; gap: 18px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+	.oa-all b { font-size: 17px; }
+	.oa-all ul { margin-top: 6px; display: grid; gap: 4px; }
+	.oa-all a { font-size: 15px; color: var(--color-sky-mist, #c3c0dc); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(255,255,255,.2); }
+	.oa-all a:hover { color: #fff; }
+	@media (max-width: 767px) { .oa-remote-head { flex-direction: column; align-items: flex-start; } .oa-mini { width: 76px; } }
+	@media (prefers-reduced-motion: reduce) { .oa-pulse, .oa-ring { animation: none; } }
+</style>
