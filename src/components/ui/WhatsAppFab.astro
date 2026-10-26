@@ -21,11 +21,27 @@ const href = `https://wa.me/${String(w.phone).replace(/\D/g, '')}?text=${encodeU
 	.wa-fab:hover { transform: translateY(-2px); }
 	.wa-fab:hover .wa-l { max-width: 200px; margin-right: 6px; }
 	.wa-fab.is-off { opacity: 0; pointer-events: none; transform: translateY(20px); }
-	@media (max-width: 767px) { .wa-fab { right: 14px; bottom: 14px; padding: 11px; } .wa-fab svg { width: 28px; height: 28px; } body:has(.k-mbar) .wa-fab { bottom: 78px; } }
+	/* telefon: mała, nie zasłania treści; chowa się przy przewijaniu w dół, wraca po zatrzymaniu */
+	@media (max-width: 767px) {
+		.wa-fab { right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); padding: 0; width: 48px; height: 48px; justify-content: center; border: 2px solid rgba(255,255,255,.85);
+			box-shadow: 0 6px 18px -6px rgba(0,0,0,.55); transition: transform .3s cubic-bezier(.2,.8,.2,1), opacity .3s; }
+		.wa-fab svg { width: 24px; height: 24px; }
+		.wa-fab .wa-l { display: none; }
+		.wa-fab.is-hide { transform: translateY(80px); opacity: 0; pointer-events: none; }
+		body:has(.k-mbar) .wa-fab { bottom: calc(74px + env(safe-area-inset-bottom)); }
+	}
 	@media print { .wa-fab { display: none; } }
 </style>
 <script>
 	const fab = document.querySelector<HTMLElement>('[data-wa]');
 	const foot = document.querySelector('footer');
 	if (fab && foot) new IntersectionObserver(([e]) => fab.classList.toggle('is-off', e.isIntersecting)).observe(foot);
+	if (fab && matchMedia('(max-width: 767px)').matches) {
+		let last = scrollY, t = 0;
+		addEventListener('scroll', () => {
+			const y = scrollY;
+			if (y > last + 6) fab.classList.add('is-hide'); else if (y < last - 6) fab.classList.remove('is-hide');
+			last = y; clearTimeout(t); t = window.setTimeout(() => fab.classList.remove('is-hide'), 700);
+		}, { passive: true });
+	}
 </script>

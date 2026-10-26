@@ -1,0 +1,177 @@
+---
+/*
+ * Panorama miasta (SVG, wektor) — tło pierwszego ekranu na podstronach miast.
+ * Charakterystyczne budynki narysowane jako sylwetki; światła w oknach migoczą, ptaki przelatują, chmury płyną.
+ * Miasta: Opole, Nysa, Wrocław, Katowice, Kędzierzyn-Koźle. Inne → ogólna panorama.
+ */
+interface Props { miasto?: string; class?: string }
+const { miasto = '', class: cls = '' } = Astro.props;
+const key = miasto.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/ł/g, 'l').replace(/[^a-z]/g, '');
+
+const W = 1600, G = 318; // szerokość i linia gruntu
+type Win = [number, number, number, number];
+const front: string[] = [], back: string[] = [], wins: Win[] = [], stroke: string[] = [], lights: [number, number][] = [], smoke: [number, number][] = [];
+let water = false;
+
+// ── klocki ──
+const f = (n: number) => n.toFixed(1);
+const box = (x: number, w: number, h: number, arr = front, win = true) => {
+	arr.push(`M${f(x)} ${G} V${f(G - h)} H${f(x + w)} V${G} Z`);
+	if (win && arr === front && w >= 26) for (let yy = G - h + 12; yy < G - 14; yy += 18) for (let xx = x + 7; xx < x + w - 9; xx += 14) wins.push([xx, yy, 5, 8]);
+};
+const pitched = (x: number, w: number, h: number, rh: number, arr = front, win = true) => { box(x, w, h, arr, win); arr.push(`M${f(x - 2)} ${f(G - h)} L${f(x + w / 2)} ${f(G - h - rh)} L${f(x + w + 2)} ${f(G - h)} Z`); };
+const spire = (cx: number, y: number, w: number, h: number, arr = front) => arr.push(`M${f(cx - w / 2)} ${f(y)} L${f(cx)} ${f(y - h)} L${f(cx + w / 2)} ${f(y)} Z`);
+const tower = (x: number, w: number, h: number, roof: 'spire' | 'flat' | 'helm' | 'crenel' | 'machi' | 'turrets', rh = 0, arr = front) => {
+	arr.push(`M${f(x)} ${G} V${f(G - h)} H${f(x + w)} V${G} Z`);
+	for (let yy = G - h + 16; yy < G - 30; yy += 34) wins.push([x + w / 2 - 2.5, yy, 5, 10]);
+	const top = G - h, cx = x + w / 2;
+	if (roof === 'spire') spire(cx, top, w + 4, rh, arr);
+	if (roof === 'turrets') { spire(cx, top, w + 2, rh, arr); spire(x + 2, top, 8, rh * 0.32, arr); spire(x + w - 2, top, 8, rh * 0.32, arr); }
+	if (roof === 'crenel' || roof === 'machi') {
+		const e = roof === 'machi' ? 6 : 0, bh = roof === 'machi' ? 16 : 8;
+		arr.push(`M${f(x - e)} ${f(top)} V${f(top - bh)} H${f(x + w + e)} V${f(top)} Z`);
+		for (let k = 0; k < 5; k++) { const mx = x - e + k * ((w + 2 * e) / 4.5); arr.push(`M${f(mx)} ${f(top - bh)} v-7 h${f((w + 2 * e) / 9)} v7 Z`); }
+		if (roof === 'machi') { arr.push(`M${f(cx - 8)} ${f(top - bh - 7)} V${f(top - bh - 34)} H${f(cx + 8)} V${f(top - bh - 7)} Z`); spire(cx, top - bh - 34, 20, rh || 22, arr); }
+	}
+	if (roof === 'helm') {
+		// barokowy hełm: cebula + latarnia + iglica
+		const b = top, r = w / 2 + 3;
+		arr.push(`M${f(cx - r)} ${f(b)} C${f(cx - r)} ${f(b - 16)} ${f(cx - r * 0.2)} ${f(b - 18)} ${f(cx - r * 0.55)} ${f(b - 30)} C${f(cx - r * 0.8)} ${f(b - 40)} ${f(cx - 4)} ${f(b - 44)} ${f(cx - 4)} ${f(b - 50)} V${f(b - 62)} H${f(cx + 4)} V${f(b - 50)} C${f(cx + 4)} ${f(b - 44)} ${f(cx + r * 0.8)} ${f(b - 40)} ${f(cx + r * 0.55)} ${f(b - 30)} C${f(cx + r * 0.2)} ${f(b - 18)} ${f(cx + r)} ${f(b - 16)} ${f(cx + r)} ${f(b)} Z`);
+		spire(cx, b - 62, 4, rh || 22, arr);
+	}
+};
+const stepped = (x: number, w: number, h: number, steps: number, sh: number, arr = front) => {
+	box(x, w, h, arr);
+	let d = `M${f(x)} ${f(G - h)}`; const sw = w / (2 * steps + 1);
+	for (let k = 0; k < steps; k++) d += ` v-${sh} h${f(sw)}`;
+	d += ` v-${sh} h${f(sw)} v${sh}`;
+	for (let k = 0; k < steps; k++) d += ` h${f(sw)} v${sh}`;
+	arr.push(d + ' Z');
+};
+const church = (x: number, w: number, h: number, rh: number) => { box(x, w, h, front, false); front.push(`M${f(x - 3)} ${f(G - h)} L${f(x + w * 0.5)} ${f(G - h - rh)} L${f(x + w + 3)} ${f(G - h)} Z`); for (let xx = x + 16; xx < x + w - 16; xx += 26) wins.push([xx, G - h + 14, 7, Math.min(36, h - 30)]); };
+const dome = (x: number, w: number, h: number, dh: number, tiers = 1) => {
+	box(x, w, h, front);
+	for (let k = 0; k < tiers; k++) { const iw = w * (1 - k * 0.22), ix = x + (w - iw) / 2, by = G - h - k * (dh / tiers) * 0.8; front.push(`M${f(ix)} ${f(by)} Q${f(x + w / 2)} ${f(by - dh * (k === tiers - 1 ? 1 : 0.6))} ${f(ix + iw)} ${f(by)} Z`); }
+};
+const fabric = (seed: number, hmin: number, hmax: number) => {
+	// dalekie miasto: bloki w tle (deterministycznie)
+	let x = -20, s = seed;
+	const rnd = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
+	while (x < W + 20) { const w = 40 + rnd() * 70, h = hmin + rnd() * (hmax - hmin); rnd() > 0.55 ? pitched(x, w, h, 18 + rnd() * 20, back, false) : box(x, w, h, back, false); x += w + rnd() * 10; }
+};
+const houses = (x0: number, x1: number, seed: number, gable = false) => {
+	let x = x0, s = seed; const rnd = () => ((s = (s * 9301 + 49297) % 233280) / 233280);
+	while (x < x1) { const w = 38 + rnd() * 26, h = 50 + rnd() * 44; gable && rnd() > 0.4 ? stepped(x, w, h, 2, 9) : pitched(x, w, h, 18 + rnd() * 18); x += w + 2; }
+};
+const bridge = (x: number, w: number, arches = 1) => {
+	const aw = w / arches; let d = `M${f(x)} ${G - 26} H${f(x + w)} V${G - 20}`;
+	for (let k = arches - 1; k >= 0; k--) d += ` H${f(x + (k + 1) * aw - 4)} Q${f(x + k * aw + aw / 2)} ${G - 4 - 28 * 0.2} ${f(x + k * aw + 4)} ${G - 20}`;
+	front.push(d + ` H${f(x)} Z`);
+	stroke.push(`M${f(x)} ${G - 34} H${f(x + w)}` + Array.from({ length: Math.floor(w / 14) }, (_, k) => ` M${f(x + k * 14)} ${G - 34} V${G - 26}`).join(''));
+};
+
+// ── miasta ──
+if (key.includes('opole')) {
+	water = true; fabric(7, 40, 110);
+	houses(20, 420, 3); // Wenecja Opolska nad Młynówką
+	bridge(424, 92); // Zielony Mostek
+	tower(560, 46, 168, 'spire', 52); // Wieża Piastowska
+	pitched(690, 190, 78, 26); tower(767, 36, 196, 'machi', 26); // Ratusz z wieżą
+	church(960, 170, 92, 48); tower(946, 30, 170, 'spire', 74); tower(984, 30, 170, 'spire', 74); // Katedra — dwie wieże
+	church(1190, 120, 72, 46); tower(1290, 22, 150, 'spire', 52); // Franciszkanie
+	dome(1360, 200, 22, 40); // Amfiteatr
+	houses(1570, 1640, 9);
+} else if (key.includes('nysa')) {
+	fabric(11, 40, 100);
+	houses(10, 300, 5, true);
+	stepped(312, 92, 92, 3, 16); tower(352, 12, 120, 'spire', 22); // Waga Miejska
+	church(450, 270, 96, 128); spire(585, 318 - 96 - 128 + 8, 10, 46); // Bazylika św. Jakuba (wielki dach + sygnaturka)
+	tower(760, 74, 196, 'crenel'); // Dzwonnica — płaski szczyt
+	houses(850, 980, 13, true);
+	tower(1000, 52, 150, 'turrets', 86); // Wieża Ziębicka
+	church(1150, 150, 100, 40); tower(1136, 34, 156, 'helm'); tower(1266, 34, 156, 'helm'); // kościół Piotra i Pawła
+	houses(1330, 1640, 17, true);
+} else if (key.includes('wroclaw')) {
+	water = true; fabric(19, 50, 130);
+	houses(0, 250, 21);
+	bridge(260, 110, 2); // Most Tumski
+	church(420, 170, 100, 50); tower(396, 34, 192, 'spire', 96); tower(440, 34, 192, 'spire', 96); // Katedra na Ostrowie
+	houses(600, 690, 23, true);
+	stepped(700, 190, 92, 3, 15); tower(800, 30, 172, 'helm', 26); // Ratusz
+	houses(900, 1080, 27, true);
+	tower(1100, 48, 300, 'flat'); front.push(`M1104 ${G - 300} V${G - 316} H1144 V${G - 300} Z M1110 ${G - 316} V${G - 328} H1138 V${G - 316} Z`); lights.push([1124, G - 330]); // Sky Tower
+	dome(1220, 240, 44, 64, 3); // Hala Stulecia
+	houses(1470, 1640, 29);
+} else if (key.includes('katowice')) {
+	fabric(31, 60, 170);
+	box(40, 70, 120); box(120, 50, 90); box(180, 60, 150);
+	front.push(`M250 ${G} V${G - 36} L290 ${G - 36} L300 ${G - 58} C330 ${G - 100} 520 ${G - 100} 550 ${G - 58} L560 ${G - 36} L600 ${G - 36} V${G} Z`); // Spodek
+	front.push(`M310 ${G - 58} L340 ${G} M540 ${G - 58} L510 ${G} M380 ${G - 62} L400 ${G} M470 ${G - 62} L450 ${G}`);
+	stroke.push(`M300 ${G - 58} L340 ${G} M550 ${G - 58} L510 ${G} M380 ${G - 64} L400 ${G} M470 ${G - 64} L450 ${G}`);
+	box(640, 210, 74); for (let k = 0; k < 8; k++) stroke.push(`M${650 + k * 26} ${G - 74} V${G}`); // NOSPR
+	box(890, 46, 40); box(944, 46, 40); box(998, 46, 40); // Muzeum Śląskie
+	front.push(`M1060 ${G} L1084 ${G - 150} L1108 ${G} Z`); stroke.push(`M1068 ${G - 50} H1100 M1074 ${G - 100} H1094 M1084 ${G - 150} L1124 ${G - 120} L1124 ${G}`); // szyb górniczy
+	tower(1180, 64, 270, 'flat'); front.push(`M1180 ${G - 270} L1244 ${G - 292} V${G - 270} Z`); lights.push([1240, G - 296]); // Altus
+	tower(1300, 48, 236, 'flat'); tower(1356, 48, 236, 'flat'); lights.push([1324, G - 240], [1380, G - 240]); // KTW
+	box(1420, 70, 140); box(1500, 60, 100); box(1565, 60, 160);
+} else if (key.includes('kedzierzyn') || key.includes('kozle')) {
+	water = true; fabric(37, 40, 100);
+	for (const cx of [90, 220]) { stroke.push(`M${cx} ${G} V${G - 150} M${cx - 70} ${G - 140} L${cx + 40} ${G - 150} M${cx} ${G - 150} L${cx - 70} ${G - 140} V${G - 110}`); front.push(`M${cx - 14} ${G} V${G - 24} H${cx + 14} V${G} Z`); } // dźwigi portowe
+	houses(300, 500, 41);
+	tower(520, 54, 112, 'spire', 44); // Baszta
+	church(640, 140, 82, 40); tower(626, 34, 170, 'helm'); // kościół św. Zygmunta
+	houses(800, 1080, 43);
+	for (const [x, h] of [[1120, 210], [1180, 250], [1250, 190], [1330, 230]]) { box(x, 22, h, front, false); smoke.push([x + 11, G - h]); } // kominy Azotów
+	dome(1380, 90, 50, 26); dome(1480, 90, 50, 26); // zbiorniki
+} else {
+	fabric(43, 50, 150);
+	houses(0, 500, 47); box(520, 80, 150); box(610, 60, 110); tower(700, 28, 250, 'spire', 70); lights.push([714, G - 322]); box(760, 90, 130); houses(860, 1640, 51);
+}
+const birds = [[0, 70, 14], [1, 110, 10], [2, 50, 12]];
+---
+<svg class:list={['cp', cls]} viewBox={`0 0 ${W} 360`} preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+	<defs>
+		<linearGradient id="cp-water" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b0f5a" /><stop offset="1" stop-color="#0a0630" /></linearGradient>
+		<linearGradient id="cp-front" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#150d45" /><stop offset="1" stop-color="#080424" /></linearGradient>
+		<radialGradient id="cp-glow" cx=".5" cy="1" r=".7"><stop offset="0" stop-color="#ed244e" stop-opacity=".38" /><stop offset=".5" stop-color="#6d4dff" stop-opacity=".16" /><stop offset="1" stop-color="#6d4dff" stop-opacity="0" /></radialGradient>
+	</defs>
+	<rect x="0" y="40" width={W} height={G - 40} fill="url(#cp-glow)" class="cp-glowr" />
+	<g class="cp-clouds">
+		<g class="cp-cloud" style="--d:70s;--o:0"><ellipse cx="200" cy="70" rx="90" ry="14" /><ellipse cx="250" cy="60" rx="50" ry="12" /></g>
+		<g class="cp-cloud" style="--d:95s;--o:-40s"><ellipse cx="900" cy="44" rx="120" ry="12" /><ellipse cx="960" cy="36" rx="60" ry="10" /></g>
+	</g>
+	<g class="cp-birds">{birds.map(([k, y, s]) => <path style={`--k:${k}`} d={`M0 ${y} q${s / 2} -${s / 2} ${s} 0 q${s / 2} -${s / 2} ${s} 0`} />)}</g>
+	<path class="cp-back" d={back.join(' ')} />
+	<g class="cp-front-g">
+		<path class="cp-front" d={front.join(' ')} fill="url(#cp-front)" />
+		{stroke.length > 0 && <path class="cp-stroke" d={stroke.join(' ')} />}
+		<g class="cp-wins">{wins.map(([x, y, w, h], i) => ((i * 7919) % 10) < 3 && <rect x={f(x)} y={f(y)} width={w} height={h} rx="1" style={`--k:${(i * 37) % 23}`} />)}</g>
+		{lights.map(([x, y]) => <circle class="cp-light" cx={x} cy={y} r="3.2" />)}
+		{smoke.map(([x, y], i) => <g class="cp-smoke" style={`--k:${i}`}>{[0, 1, 2].map((j) => <circle cx={x} cy={y - 6} r={6 + j * 3} style={`--j:${j}`} />)}</g>)}
+	</g>
+	<rect x="0" y={G} width={W} height={360 - G} fill={water ? 'url(#cp-water)' : '#080424'} />
+	{water && <g class="cp-shine">{Array.from({ length: 22 }, (_, i) => <path style={`--k:${i % 7}`} d={`M${(i * 73) % W} ${G + 10 + (i % 4) * 8} h${30 + (i % 5) * 16}`} />)}</g>}
+</svg>
+
+<style is:global>
+	.cp { display: block; width: 100%; height: 100%; }
+	.cp-back { fill: rgba(109,77,255,.24); }
+	.cp-front { filter: drop-shadow(0 0 1.2px rgba(255,110,140,.95)) drop-shadow(0 -3px 14px rgba(237,36,78,.35)); }
+	.cp-stroke { fill: none; stroke: #120a3e; stroke-width: 3; stroke-linecap: round; }
+	.cp-wins rect { fill: #ffc65c; opacity: .85; animation: cp-twk 6s calc(var(--k) * -.4s) ease-in-out infinite; }
+	@keyframes cp-twk { 0%,100% { opacity: .85; } 45% { opacity: .85; } 50% { opacity: .15; } 60% { opacity: .85; } }
+	.cp-light { fill: #ff5a78; animation: cp-blink 1.6s steps(2, jump-none) infinite; filter: drop-shadow(0 0 6px #ff5a78); }
+	@keyframes cp-blink { to { opacity: .15; } }
+	.cp-clouds ellipse { fill: rgba(195,192,220,.08); }
+	.cp-cloud { animation: cp-drift var(--d) var(--o) linear infinite; }
+	@keyframes cp-drift { from { transform: translateX(-300px); } to { transform: translateX(1700px); } }
+	.cp-birds path { fill: none; stroke: rgba(195,192,220,.55); stroke-width: 2; stroke-linecap: round; animation: cp-bird 26s calc(var(--k) * -8s) linear infinite; }
+	@keyframes cp-bird { from { transform: translate(-60px, 0); } 50% { transform: translate(800px, -18px); } to { transform: translate(1680px, 6px); } }
+	.cp-shine path { stroke: rgba(255,198,92,.35); stroke-width: 2; stroke-linecap: round; animation: cp-shine 4s calc(var(--k) * -.6s) ease-in-out infinite; }
+	@keyframes cp-shine { 0%,100% { opacity: .2; transform: translateX(-6px); } 50% { opacity: .9; transform: translateX(6px); } }
+	.cp-smoke circle { fill: rgba(195,192,220,.18); transform-box: fill-box; transform-origin: center; animation: cp-smoke 5s calc(var(--k) * -1.3s + var(--j) * -1.6s) ease-out infinite; }
+	@keyframes cp-smoke { 0% { transform: translate(0, 0) scale(.5); opacity: 0; } 20% { opacity: 1; } 100% { transform: translate(40px, -70px) scale(2.2); opacity: 0; } }
+	.cp-front-g { animation: cp-rise 1.2s cubic-bezier(.2,.8,.2,1) both; }
+	@keyframes cp-rise { from { transform: translateY(40px); opacity: 0; } to { transform: none; opacity: 1; } }
+	@media (prefers-reduced-motion: reduce) { .cp *, .cp-front-g { animation: none !important; } }
+</style>

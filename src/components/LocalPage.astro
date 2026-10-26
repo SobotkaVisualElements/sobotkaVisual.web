@@ -1,61 +1,154 @@
 ---
+/*
+ * Podstrona usługi w mieście (np. /uslugi/montaz-wideo-opole/).
+ * Zasada: czytelność przede wszystkim (projektujemy też dla osób 40+): duży tekst, wyraźne przyciski, telefon zawsze pod ręką.
+ * Pierwszy ekran: panorama miasta (wektor), ikona usługi, najważniejsze fakty. Niżej: ceny, oferta, proces, realizacje, FAQ.
+ * Treść każdej podstrony jest w jej pliku — ten szablon jest wspólny dla wszystkich miast.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CityPanorama from './ui/CityPanorama.astro';
+import IsoIcon from './iso/IsoIcon.astro';
+import OfferButton from './ui/OfferButton.astro';
+import Carousel3D from './ui/Carousel3D.astro';
+import BookingCta from './ui/BookingCta.astro';
+import Process from './landing/Process.astro';
+import { getPublishedProjects } from '../lib/projects';
+import home from '../data/home.json';
+
 interface Props {
 	h1: string; title: string; description: string; miasto?: string;
 	intro: string; problemy: string[]; zakres: { name: string; price: string }[]; faq: { q: string; a: string }[];
 }
 const { h1, title, description, miasto, intro, problemy, zakres, faq } = Astro.props;
+const here = Astro.url.pathname.replace(/\/$/, '');
+// prawdziwe miasto (a nie np. „YouTube” albo „Kluby sportowe”)
+const isCity = !!miasto && !/youtube|klub/i.test(miasto);
+
+// rodzaj usługi z nagłówka → ikona, gotowa oferta w generatorze i strona usługi
+const t = h1.toLowerCase();
+const S = /transmis/.test(t) ? { icon: 'wykres', gen: 'tryb=jednorazowa&x=trans', svc: '/uslugi/oprawa-transmisyjna/', name: 'oprawę transmisji' }
+	: /animac|motion/.test(t) ? { icon: 'rakieta', gen: 'tryb=jednorazowa&animacja=2&rolkaani=1', svc: '/uslugi/animacja-motion-design/', name: 'animację' }
+	: /rolk|social/.test(t) ? { icon: 'telefon', gen: 'pakiet=start', svc: '/uslugi/rolki-i-krotkie-formy/', name: 'rolki' }
+	: /graf|projektow|miniatur/.test(t) ? { icon: 'tablet', gen: 'tryb=jednorazowa&miniatury=6&grafika=6', svc: '/uslugi/oprawa-graficzna/', name: 'grafikę' }
+	: /film/.test(t) ? { icon: 'kamera', gen: 'tryb=jednorazowa&zdjecia=1&wizerunek=1', svc: '/uslugi/montaz-wideo/', name: 'film' }
+	: { icon: 'monitor', gen: 'tryb=jednorazowa&montaz=1&dzwiek=1', svc: '/uslugi/montaz-wideo/', name: 'montaż' };
+const gen = `/generator?${S.gen}&utm_source=miasto&utm_campaign=${encodeURIComponent(here.split('/').pop() || '')}`;
+
+const fakty = ['Działamy od 2020 roku', 'Dojazd do 40 km w cenie', 'Odpowiedź w 24 h', 'Ceny jawne, bez gwiazdek'];
+
+const projects = (await getPublishedProjects()).slice(0, 8);
+const work = projects.map((p: any) => ({ href: `/work/${p.id}`, title: p.data.title, category: p.data.category, logo: p.data.clientLogo, logoTone: p.data.clientLogoTone,
+	img: p.data.cover || p.data.layers?.find((l: any) => l?.image)?.image || p.data.poster || '' }));
+
+// linki do innych miast i usług (dla Google i dla ludzi)
+const pages: [string, string][] = [
+	['/uslugi/montaz-wideo-opole', 'Montaż wideo Opole'], ['/uslugi/montaz-wideo-nysa', 'Montaż wideo Nysa'], ['/uslugi/montaz-wideo-wroclaw', 'Montaż wideo Wrocław'], ['/uslugi/montaz-wideo-kedzierzyn-kozle', 'Montaż wideo Kędzierzyn-Koźle'],
+	['/uslugi/film-reklamowy-opole', 'Film reklamowy Opole'], ['/uslugi/film-reklamowy-nysa', 'Film reklamowy Nysa'],
+	['/uslugi/animacje-opole', 'Animacje Opole'], ['/uslugi/animacje-nysa', 'Animacje Nysa'], ['/uslugi/animacje-wroclaw', 'Animacje Wrocław'],
+	['/uslugi/motion-design-opole', 'Motion design Opole'], ['/uslugi/motion-design-katowice', 'Motion design Katowice'],
+	['/uslugi/grafika-opole', 'Grafika Opole'], ['/uslugi/grafika-nysa', 'Grafika Nysa'], ['/uslugi/projektowanie-graficzne-nysa', 'Projektowanie graficzne Nysa'],
+	['/uslugi/rolki-social-media-opole', 'Rolki na social media Opole'], ['/uslugi/social-media-nysa', 'Social media Nysa'],
+	['/uslugi/grafika-miniatury-youtube', 'Miniatury YouTube'], ['/uslugi/oprawa-transmisji-klub-sportowy', 'Oprawa transmisji dla klubu'],
+];
+const others = pages.filter(([h]) => h !== here);
 ---
 <BaseLayout title={title} description={description}>
-	<section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
-		<span class="pointer-events-none absolute inset-0 bg-grid opacity-35"></span>
-		<div class="relative z-2 mx-auto max-w-[900px] px-6 pt-24 pb-16 sm:px-8">
-			{miasto && <span class="text-[13px] font-bold tracking-[0.12em] text-orange-glow uppercase">{miasto}</span>}
-			<h1 class="mt-3 text-[34px] leading-[1.06] font-bold tracking-[-0.02em] md:text-[50px]">{h1}</h1>
-			<p class="mt-5 max-w-[640px] text-[18px] leading-[1.6] text-sky-mist">{intro}</p>
-			<div class="mt-8 flex flex-wrap gap-3.5">
-				<a href="/generator" class="btn-saber rounded-full bg-orange px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-y-0.5">Wyceń w 60 sekund</a>
-				<a href="/work" class="btn-saber rounded-full border-2 border-cloud/70 px-7 py-[15px] font-bold text-cloud transition-transform hover:-translate-y-0.5">Zobacz realizacje</a>
+	<!-- 1. PIERWSZY EKRAN: panorama miasta -->
+	<section class="lp-hero relative overflow-hidden text-cloud">
+		<span class="pointer-events-none absolute inset-0 bg-grid opacity-25"></span>
+		<div class="lp-pano" aria-hidden="true"><CityPanorama miasto={miasto} /></div>
+		<div class="relative z-2 mx-auto grid max-w-[1200px] items-center gap-8 px-6 pt-24 sm:px-8 lg:grid-cols-[1.35fr_1fr]">
+			<div>
+				<nav class="lp-crumbs" aria-label="Okruszki"><a href="/">Strona główna</a><span>›</span><a href="/uslugi/">Usługi</a><span>›</span><b>{h1}</b></nav>
+				{miasto && <span class="lp-city">{isCity ? `📍 ${miasto} i okolice` : miasto}</span>}
+				<h1 class="mt-3 text-[38px] leading-[1.05] font-bold tracking-[-0.02em] md:text-[58px]">{h1}</h1>
+				<p class="mt-5 max-w-[620px] text-[19px] leading-[1.65] text-sky-mist">{intro}</p>
+				<ul class="lp-facts">{fakty.map((x) => <li><span aria-hidden="true">✓</span>{x}</li>)}</ul>
+				<div class="mt-8 flex flex-wrap gap-3.5">
+					<a href={gen} class="lp-btn lp-btn-acc btn-saber">Policz cenę w 60 sekund →</a>
+					<a href="tel:+48668472759" class="lp-btn lp-btn-ghost">📞 668 472 759</a>
+				</div>
 			</div>
+			<div class="lp-ico hidden lg:block" aria-hidden="true"><IsoIcon name={S.icon} /></div>
 		</div>
 	</section>
 
 	<section class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
 		<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
-		<div class="relative z-2 mx-auto max-w-[900px] px-6 py-16 sm:px-8">
-			<h2 class="text-[30px] font-bold tracking-[-0.02em]">Z czym najczęściej przychodzą klienci</h2>
+		<div class="relative z-2 mx-auto max-w-[960px] px-6 py-16 sm:px-8">
+			<!-- 2. PROBLEMY -->
+			<h2 class="lp-h2">Z czym najczęściej przychodzą klienci{isCity ? ` z ${miasto === 'Opole' ? 'Opola' : miasto === 'Nysa' ? 'Nysy' : miasto === 'Wrocław' ? 'Wrocławia' : miasto === 'Katowice' ? 'Katowic' : miasto === 'Kędzierzyn-Koźle' ? 'Kędzierzyna-Koźla' : miasto}` : ''}</h2>
 			<div class="mt-7 grid gap-4 sm:grid-cols-2">
 				{problemy.map((p) => (
-					<div class="liquid-card glass rounded-2xl p-5 text-[15px] leading-relaxed text-sky-mist">{p}</div>
+					<div class="lp-prob liquid-card glass"><span class="lp-prob-i" aria-hidden="true">!</span><p>{p}</p></div>
 				))}
 			</div>
+			<p class="lp-answer">Każdy z tych problemów rozwiązujemy w jednym miejscu: nagranie, montaż, animacja i grafika bez szukania podwykonawców.</p>
 
-			<h2 class="mt-14 text-[30px] font-bold tracking-[-0.02em]">Zakres i ceny</h2>
-			<div class="mt-6 glass overflow-hidden rounded-2xl">
+			<!-- 3. CENY -->
+			<h2 class="lp-h2 mt-16" id="ceny">Zakres i ceny</h2>
+			<p class="mt-2 text-[16px] text-sky-mist">Ceny netto. Dokładną kwotę dla swojego zakresu zobaczysz w generatorze — bez dzwonienia i czekania.</p>
+			<div class="lp-table glass mt-6">
 				{zakres.map((z) => (
-					<div class="flex items-center justify-between gap-4 border-b border-white/8 px-5 py-4 text-[15px] last:border-0">
-						<span class="text-cloud">{z.name}</span>
-						<span class="shrink-0 font-semibold text-orange-glow">{z.price}</span>
-					</div>
+					<div class="lp-row"><span>{z.name}</span><b>{z.price}</b></div>
 				))}
 			</div>
-			<a href="/generator" class="liquid-card mt-8 flex flex-col items-center gap-4 rounded-[24px] border-2 border-orange bg-linear-100 from-orange-deep via-orange to-orange-bright px-7 py-8 text-center shadow-[0_18px_50px_-12px_rgba(237,36,78,.65)] sm:flex-row sm:justify-between sm:text-left">
+			<OfferButton href={gen} label="Sprawdź swoją ofertę" lead={`Chcesz zobaczyć cenę za ${S.name} dla siebie?`} note="Generator ustawi się sam — możesz zmienić każdą pozycję. Rabat rośnie do 30%." />
+		</div>
+	</section>
+
+	<!-- 4. JAK PRACUJEMY -->
+	<Process />
+
+	<!-- 5. REALIZACJE -->
+	{work.length > 0 && (
+		<section class="relative overflow-hidden border-t border-white/6 bg-navy-deep py-16 text-cloud">
+			<div class="mx-auto max-w-[960px] px-6 text-center sm:px-8">
+				<h2 class="lp-h2">Zobacz, co ostatnio zrobiliśmy</h2>
+				<p class="mt-2 text-[17px] text-sky-mist">Przewiń albo kliknij strzałki. Każda realizacja ma swój opis.</p>
+			</div>
+			<div class="mt-8"><Carousel3D items={work} orientation="poziom" tone="dark" label="Realizacje" /></div>
+		</section>
+	)}
+
+	<section class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
+		<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
+		<div class="relative z-2 mx-auto max-w-[960px] px-6 py-16 sm:px-8">
+			<!-- 6. DARMOWA PRÓBKA -->
+			<a href="/#probna" class="lp-sample">
+				<span class="lp-sample-ico" aria-hidden="true"><IsoIcon name="telefon" mode="static" /></span>
 				<span>
-					<span class="block font-display text-[24px] leading-tight font-bold text-cloud">Policz swój pakiet</span>
-					<span class="mt-1 block text-[15px] text-white/85">Ustaw zakres suwakami — rabat rośnie do 30%.</span>
+					<b>Nie wiesz, czy to dla Ciebie? Sprawdź nas za darmo.</b>
+					<small>Wyślij do 3 minut nagrania — zmontujemy z niego jedną rolkę bez zobowiązań.</small>
 				</span>
-				<span class="shrink-0 rounded-full bg-cloud px-6 py-3 font-bold text-navy-deep">Otwórz generator →</span>
+				<span class="lp-sample-cta">Chcę darmową rolkę →</span>
 			</a>
 
-			<h2 class="mt-14 text-[30px] font-bold tracking-[-0.02em]">Pytania i odpowiedzi</h2>
+			<!-- 7. FAQ (otwarte — bez klikania) -->
+			<h2 class="lp-h2 mt-16">Pytania i odpowiedzi</h2>
 			<div class="mt-6 flex flex-col gap-3.5">
 				{faq.map((f) => (
-					<div class="glass rounded-2xl p-5">
-						<h3 class="font-display text-[17px] font-semibold text-cloud">{f.q}</h3>
-						<p class="mt-2 text-[15px] leading-relaxed text-sky-mist">{f.a}</p>
+					<div class="lp-faq glass">
+						<h3>{f.q}</h3>
+						<p>{f.a}</p>
 					</div>
 				))}
 			</div>
+
+			<!-- 8. KONTAKT -->
+			<div class="lp-contact">
+				<h2 class="lp-h2">Porozmawiajmy o Twoim projekcie</h2>
+				<p class="mt-3 text-[18px] text-sky-mist">Zadzwoń albo napisz — odpowiadamy w 24 godziny w dni robocze.</p>
+				<a href="tel:+48668472759" class="lp-phone">668 472 759</a>
+				<a href="mailto:kontakt@sobotkavisual.pl" class="lp-mail">kontakt@sobotkavisual.pl</a>
+				{(home as any).booking?.url && <div class="mt-6"><BookingCta /></div>}
+			</div>
+
+			<!-- 9. INNE MIASTA I USŁUGI -->
+			<nav class="lp-links" aria-label="Inne usługi i miasta">
+				<h2>Inne usługi i miasta</h2>
+				<ul>{others.map(([h, l]) => <li><a href={`${h}/`}>{l}</a></li>)}<li><a href={S.svc}>Wszystko o usłudze →</a></li></ul>
+			</nav>
 		</div>
 	</section>
 
@@ -73,15 +166,70 @@ const { h1, title, description, miasto, intro, problemy, zakres, faq } = Astro.p
 			{ "@type": "ListItem", "position": 3, "name": h1 }
 		]
 	})} />
-
 	<script type="application/ld+json" set:html={JSON.stringify({
 		"@context": "https://schema.org",
 		"@type": "Service",
 		"name": h1,
 		"serviceType": h1,
-		"provider": { "@type": "ProfessionalService", "name": "Sobotka Visual Creations", "@id": "https://sobotkavisual.pl/#firma" },
-		"areaServed": miasto,
+		"provider": { "@type": "ProfessionalService", "name": "Sobotka Visual Creations", "@id": "https://sobotkavisual.pl/#firma", "telephone": "+48668472759" },
+		"areaServed": isCity ? { "@type": "City", "name": miasto } : undefined,
 		"description": intro,
 		"offers": zakres.map((z) => ({ "@type": "Offer", "name": z.name, "priceCurrency": "PLN", "description": z.price }))
 	})} />
 </BaseLayout>
+
+<style is:global>
+	.lp-hero { background: linear-gradient(180deg, #120a4a 0%, #1b0545 55%, #0a0630 100%); padding-bottom: clamp(170px, 24vw, 330px); }
+	.lp-pano { position: absolute; left: 0; right: 0; bottom: 0; height: clamp(180px, 26vw, 360px); pointer-events: none; }
+	.lp-crumbs { display: flex; flex-wrap: wrap; gap: .45rem; font-size: 14px; color: rgba(214,222,255,.7); }
+	.lp-crumbs a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(255,255,255,.25); }
+	.lp-crumbs a:hover { color: #fff; }
+	.lp-crumbs b { font-weight: 600; color: #fff; }
+	.lp-city { display: inline-block; margin-top: 18px; padding: 6px 14px; border-radius: 999px; font-size: 14px; font-weight: 700; color: #fff; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); }
+	.lp-facts { margin-top: 22px; display: grid; gap: 10px 18px; grid-template-columns: repeat(2, minmax(0, max-content)); font-size: 16px; font-weight: 600; }
+	.lp-facts li { display: flex; gap: 8px; align-items: center; }
+	.lp-facts span { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: rgba(46,229,157,.18); color: #2ee59d; font-size: 12px; font-weight: 900; }
+	.lp-btn { display: inline-flex; align-items: center; min-height: 56px; padding: 0 1.6rem; border-radius: 999px; font-weight: 800; font-size: 17px; transition: transform .2s; }
+	.lp-btn:hover { transform: translateY(-2px); }
+	.lp-btn-acc { background: var(--color-orange, #ed244e); color: #fff; box-shadow: 0 14px 34px -12px rgba(237,36,78,.8); }
+	.lp-btn-ghost { border: 2px solid rgba(255,255,255,.6); color: #fff; }
+	.lp-ico { width: min(380px, 100%); justify-self: center; }
+	.lp-ico .iso { width: 100%; height: auto; filter: drop-shadow(0 30px 40px rgba(0,0,0,.45)); }
+	.lp-h2 { font-size: clamp(28px, 3.4vw, 36px); font-weight: 800; letter-spacing: -.02em; line-height: 1.15; text-wrap: balance; }
+	.lp-prob { display: flex; gap: 14px; align-items: flex-start; padding: 20px 22px; border-radius: 18px; }
+	.lp-prob p { font-size: 17px; line-height: 1.55; color: #fff; }
+	.lp-prob-i { flex: none; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: rgba(255,90,120,.18); color: #ff8aa0; font-weight: 900; }
+	.lp-answer { margin-top: 20px; padding: 18px 22px; border-left: 4px solid #2ee59d; border-radius: 6px 16px 16px 6px; background: rgba(46,229,157,.07); font-size: 17px; line-height: 1.55; color: #fff; }
+	.lp-table { border-radius: 18px; overflow: hidden; }
+	.lp-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 18px 22px; border-bottom: 1px solid rgba(255,255,255,.08); font-size: 17px; }
+	.lp-row:last-child { border-bottom: 0; }
+	.lp-row:nth-child(2n) { background: rgba(255,255,255,.025); }
+	.lp-row b { flex: none; font-size: 18px; font-weight: 800; color: #ff8aa0; white-space: nowrap; }
+	.lp-sample { display: grid; grid-template-columns: auto 1fr auto; gap: 18px; align-items: center; padding: 22px 26px; border-radius: 22px; color: #fff;
+		background: linear-gradient(150deg, #6d4dff, #b03cff 60%, #ff5fd2); box-shadow: 0 0 50px -14px rgba(176,60,255,.85); transition: transform .25s; }
+	.lp-sample:hover { transform: translateY(-3px); }
+	.lp-sample-ico { width: 84px; height: 84px; margin: -18px 0 -18px -8px; }
+	.lp-sample-ico .iso { width: 100%; height: 100%; }
+	.lp-sample b { display: block; font-size: 20px; line-height: 1.3; }
+	.lp-sample small { display: block; margin-top: 4px; font-size: 16px; color: rgba(255,255,255,.88); }
+	.lp-sample-cta { padding: 13px 20px; border-radius: 999px; background: #fff; color: #3a1d9e; font-weight: 800; white-space: nowrap; }
+	.lp-faq { padding: 22px 24px; border-radius: 18px; }
+	.lp-faq h3 { font-size: 19px; font-weight: 700; color: #fff; }
+	.lp-faq p { margin-top: 8px; font-size: 17px; line-height: 1.65; color: var(--color-sky-mist, #c3c0dc); }
+	.lp-contact { margin-top: 64px; padding: 40px 28px; border-radius: 26px; text-align: center; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); }
+	.lp-phone { display: block; margin-top: 18px; font-size: clamp(36px, 6vw, 56px); font-weight: 900; letter-spacing: -.02em; color: #fff; }
+	.lp-phone:hover { color: #ff8aa0; }
+	.lp-mail { display: inline-block; margin-top: 6px; font-size: 18px; text-decoration: underline; text-underline-offset: 4px; color: var(--color-sky-mist, #c3c0dc); }
+	.lp-links { margin-top: 56px; }
+	.lp-links h2 { font-size: 20px; font-weight: 800; }
+	.lp-links ul { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; }
+	.lp-links a { display: inline-block; padding: 9px 15px; border-radius: 999px; font-size: 15px; border: 1px solid rgba(255,255,255,.16); color: var(--color-sky-mist, #c3c0dc); transition: border-color .2s, color .2s; }
+	.lp-links a:hover { border-color: #ff8aa0; color: #fff; }
+	@media (max-width: 767px) {
+		.lp-facts { grid-template-columns: 1fr; }
+		.lp-btn { width: 100%; justify-content: center; }
+		.lp-sample { grid-template-columns: 1fr; text-align: center; }
+		.lp-sample-ico { margin: -40px auto 0; }
+		.lp-row { flex-direction: column; align-items: flex-start; gap: 4px; }
+	}
+</style>
