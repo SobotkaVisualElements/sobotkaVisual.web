@@ -8,10 +8,10 @@ clientLogoTone: ciemne
 role: Scenariusze, montaż, miniatury
 year: 2025
 date: 2025-10-01
-collab: false
-collabStatus: aktywna
-collabFrom: ''
-collabTo: ''
+collab: true
+collabStatus: zakonczona
+collabFrom: 2025-10-01
+collabTo: 2026-10-01
 tech:
   - Premiere Pro
   - After Effects
