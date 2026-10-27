@@ -41,7 +41,7 @@ const ld = { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Usłu
 				{all.map((s: any, i: number) => (
 					<a href={`/uslugi/${s.slug}/`} class="ul-card svc-anim" style={`--d:${(i % 3) * 0.08}s`}>
 						<span class="ul-ico" aria-hidden="true"><IsoIcon name={iso[s.icon] || 'monitor'} mode="static" /></span>
-						<span class="ul-n">{String(i + 1).padStart(2, '0')}</span>
+						<span class="ul-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
 						<h2 set:html={tx(s.name)} />
 						<p set:html={tx(s.hero?.lead)} />
 						<span class="ul-foot">

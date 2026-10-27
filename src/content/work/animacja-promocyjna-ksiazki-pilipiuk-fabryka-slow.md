@@ -1,5 +1,5 @@
 ---
-title: Booktrailer Jakuba Wędrowycza dla Fabryki Słów | Sobotka Visual Creations
+title: Booktrailer Jakuba Wędrowycza dla Fabryki Słów
 description: 'Animacja promocyjna książki „Łajdactwa zebrane” Andrzeja Pilipiuka dla wydawnictwa Fabryka Słów: motion design, animowana typografia i montaż pod social media. Jak z ilustracji Andrzeja Łaskiego powstał 15-sekundowy animowany booktrailer nowego wydania Pilipiuka. 41 elementów, paralaksa i 40 godzin pracy.'
 category: Animacja
 client: Fabryka Słów
