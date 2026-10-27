@@ -22,6 +22,7 @@ export function collabInfo(d: any) {
 		status: ended ? 'Zakończona' : 'Trwa',
 		range,
 		len,
-		short: ended ? (range || 'zakończona') : (from ? `od ${String(from.getMonth() + 1).padStart(2, '0')}.${from.getFullYear()}` : 'aktywna'),
+		// krótko na kafelek: „2025–2026” zamiast „paź 2025 – paź 2026” (mieści się w jednej linii)
+		short: ended ? (from && to ? (from.getFullYear() === to.getFullYear() ? String(to.getFullYear()) : `${from.getFullYear()}–${to.getFullYear()}`) : 'zakończona') : (from ? `od ${String(from.getMonth() + 1).padStart(2, '0')}.${from.getFullYear()}` : 'aktywna'),
 	};
 }

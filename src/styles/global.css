@@ -280,11 +280,11 @@ h1, h2, h3 { text-wrap: balance; }
 .logo-dark { filter: brightness(0) saturate(100%); opacity: .82; }
 
 /* współpraca stała: pigułka z zieloną pulsującą kropką (trwa) albo szara (zakończona) */
-.collab-pill { display: inline-flex; align-items: center; gap: 6px; margin: 0 8px 4px 0; padding: 2px 9px 2px 7px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; vertical-align: middle; }
+.collab-pill { display: inline-flex; flex: none; white-space: nowrap; align-items: center; gap: 6px; margin: 0; padding: 4px 10px 4px 8px; line-height: 1.2; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; vertical-align: middle; }
 .collab-pill i { width: 8px; height: 8px; border-radius: 99px; background: currentColor; }
 .collab-pill.is-on { color: #0b8f55; background: rgba(46,229,157,.16); }
 .collab-pill.is-on i { box-shadow: 0 0 0 0 rgba(46,229,157,.7); animation: collab-ping 1.8s ease-out infinite; }
-.collab-pill.is-off { color: rgba(10,6,48,.55); background: rgba(10,6,48,.07); }
+.collab-pill.is-off { color: #5b36e6; background: rgba(109,77,255,.1); box-shadow: 0 0 0 1px rgba(109,77,255,.28) inset; }
 @keyframes collab-ping { 0% { box-shadow: 0 0 0 0 rgba(46,229,157,.7); } 100% { box-shadow: 0 0 0 7px rgba(46,229,157,0); } }
 @media (prefers-reduced-motion: reduce) { .collab-pill i { animation: none !important; } }
 
