@@ -262,6 +262,13 @@ content:
           values:
           - {value: srodek, label: Na środku}
           - {value: lewo, label: Do lewej}
+    - name: rolki
+      label: Karuzela rolek — linki z TikToka, Facebooka, Instagrama, YouTube
+      fields:
+      - {name: links, label: 'Linki do rolek (jeden pod drugim) — każdy link = pionowy kafelek', type: text}
+      - {name: title, label: 'Tytuł kafelków (dopisze numer)', type: string}
+      - {name: category, label: Kategoria (mały napis nad tytułem), type: string}
+      - {name: caption, label: Podpis pod karuzelą, type: string}
     - name: karuzela3d
       label: Karuzela 3D (jak na głównej)
       fields:
