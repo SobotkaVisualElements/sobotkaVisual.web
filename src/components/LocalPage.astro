@@ -44,6 +44,12 @@ const work = projects.map((p: any) => ({ href: `/work/${p.id}`, title: p.data.ti
 
 // dojazd do tego miasta + linki do innych miast i usług (wspólne dane: src/data/miasta.ts)
 const others = miasta.flatMap((m) => m.pages.map(([h, l]) => [h, `${l} ${m.name}`] as [string, string])).filter(([h]) => h !== here);
+// na widoku tylko kilka sensownych linków: inne usługi w tym samym mieście + ta sama usługa w najbliższych miastach; reszta pod „Pokaż wszystkie”
+const sameCity = M ? M.pages.filter(([h]) => h !== here).map(([h, l]) => [h, `${l} ${M.name}`] as [string, string]) : [];
+const near = M ? miasta.filter((m) => m !== M).map((m) => ({ m, d: Math.hypot((m.lon - M.lon) * 0.62, m.lat - M.lat) })).sort((a, b) => a.d - b.d).slice(0, 3)
+	.map(({ m }) => { const p = m.pages.find(([, l]) => l.toLowerCase().startsWith(S.name.slice(0, 4))) ?? m.pages[0]; return [p[0], `${p[1]} ${m.name}`] as [string, string]; }) : [];
+const shown = [...sameCity, ...near].slice(0, 7);
+const rest = others.filter(([h]) => !shown.some(([x]) => x === h));
 ---
 <BaseLayout title={title} description={description}>
 	<!-- 1. PIERWSZY EKRAN: panorama miasta -->
@@ -149,8 +155,12 @@ const others = miasta.flatMap((m) => m.pages.map(([h, l]) => [h, `${l} ${m.name}
 
 			<!-- 9. INNE MIASTA I USŁUGI -->
 			<nav class="lp-links" aria-label="Inne usługi i miasta">
-				<h2>Inne usługi i miasta</h2>
-				<ul>{others.map(([h, l]) => <li><a href={`${h}/`}>{l}</a></li>)}{zdalnie.slice(0, 4).map(([h, l]) => <li><a href={h}>{l} — cała Polska</a></li>)}<li><a href="/obszar-dzialania/">Obszar działania →</a></li></ul>
+				<h2>{M ? `Też w okolicy ${M.gen}` : 'Inne usługi i miasta'}</h2>
+				<ul>{shown.map(([h, l]) => <li><a href={`${h}/`}>{l}</a></li>)}<li><a href="/obszar-dzialania/" class="is-acc">Mapa: gdzie działamy →</a></li></ul>
+				<details class="lp-more">
+					<summary>Pokaż wszystkie miasta i usługi ({rest.length + zdalnie.length})</summary>
+					<ul>{rest.map(([h, l]) => <li><a href={`${h}/`}>{l}</a></li>)}{zdalnie.map(([h, l]) => <li><a href={h}>{l} — cała Polska</a></li>)}</ul>
+				</details>
 			</nav>
 		</div>
 	</section>
@@ -235,6 +245,13 @@ const others = miasta.flatMap((m) => m.pages.map(([h, l]) => [h, `${l} ${m.name}
 	.lp-links ul { margin-top: 14px; display: flex; flex-wrap: wrap; gap: 10px; }
 	.lp-links a { display: inline-block; padding: 9px 15px; border-radius: 999px; font-size: 15px; border: 1px solid rgba(255,255,255,.16); color: var(--color-sky-mist, #c3c0dc); transition: border-color .2s, color .2s; }
 	.lp-links a:hover { border-color: #ff8aa0; color: #fff; }
+	.lp-links a.is-acc { border-color: rgba(46,229,157,.5); color: #fff; }
+	.lp-more { margin-top: 14px; }
+	.lp-more summary { display: inline-flex; cursor: pointer; font-size: 15px; font-weight: 700; color: var(--color-sky-mist, #c3c0dc); text-decoration: underline; text-underline-offset: 4px; list-style: none; }
+	.lp-more summary::-webkit-details-marker { display: none; }
+	.lp-more summary::after { content: ' ▾'; }
+	.lp-more[open] summary::after { content: ' ▴'; }
+	.lp-more ul a { padding: 6px 12px; font-size: 14px; }
 	@media (max-width: 767px) {
 		.lp-facts { grid-template-columns: 1fr; }
 		.lp-btn { width: 100%; justify-content: center; }

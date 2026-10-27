@@ -3,7 +3,7 @@
  * Obsługiwane: YouTube (też Shorts), TikTok, Facebook (rolki i filmy), Instagram (rolki i posty), plik MP4.
  * Pliki nie trafiają na nasz serwer — film gra z platformy, na której już jest.
  */
-export type Embed = { kind: 'yt' | 'tt' | 'fb' | 'ig'; id: string; src: string; url: string; vertical: boolean; label: string };
+export type Embed = { kind: 'yt' | 'tt' | 'fb' | 'ig'; id: string; src: string; url: string; vertical: boolean; label: string; /** podgląd w kafelku: bez dźwięku, w pętli, bez przycisków */ live?: string };
 
 export function parseEmbed(raw = ''): Embed | null {
 	const url = String(raw || '').trim();
@@ -11,11 +11,13 @@ export function parseEmbed(raw = ''): Embed | null {
 	let m: RegExpMatchArray | null;
 	if ((m = url.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/))) {
 		const short = /shorts\//.test(url);
-		return { kind: 'yt', id: m[1], url, vertical: short, label: 'YouTube', src: `https://www.youtube-nocookie.com/embed/${m[1]}?autoplay=1&rel=0&playsinline=1` };
+		return { kind: 'yt', id: m[1], url, vertical: short, label: 'YouTube', src: `https://www.youtube-nocookie.com/embed/${m[1]}?autoplay=1&rel=0&playsinline=1`,
+			live: short ? `https://www.youtube-nocookie.com/embed/${m[1]}?autoplay=1&mute=1&loop=1&playlist=${m[1]}&controls=0&playsinline=1&rel=0&modestbranding=1` : undefined };
 	}
 	if (/tiktok\.com/.test(url) && (m = url.match(/\/video\/(\d+)/))) {
 		return { kind: 'tt', id: m[1], url, vertical: true, label: 'TikTok',
-			src: `https://www.tiktok.com/player/v1/${m[1]}?autoplay=1&loop=1&music_info=0&description=0&rel=0&native_context_menu=0&closed_caption=0` };
+			src: `https://www.tiktok.com/player/v1/${m[1]}?autoplay=1&loop=1&music_info=0&description=0&rel=0&native_context_menu=0&closed_caption=0`,
+			live: `https://www.tiktok.com/player/v1/${m[1]}?autoplay=1&loop=1&muted=1&controls=0&progress_bar=0&play_button=0&volume_control=0&fullscreen_button=0&timestamp=0&music_info=0&description=0&rel=0&native_context_menu=0&closed_caption=0` };
 	}
 	if (/instagram\.com/.test(url) && (m = url.match(/\/(?:reel|reels|p|tv)\/([\w-]+)/))) {
 		return { kind: 'ig', id: m[1], url, vertical: true, label: 'Instagram', src: `https://www.instagram.com/reel/${m[1]}/embed/` };

@@ -84,6 +84,7 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 							: it.img ? <img src={it.img} alt="" loading={k < 6 ? 'eager' : 'lazy'} decoding="async" draggable="false" />
 							: it.ext ? <span class:list={['c3d-ph', 'c3d-ext', `is-${it.ext.kind}`]}>{it.logo && <img class="c3d-ext-logo" src={it.logo} alt="" loading="lazy" />}<small>{it.category || it.ext.label}</small><b set:html={tx(it.title || 'Zobacz rolkę')} /></span>
 							: <span class="c3d-ph"><small>{it.category}</small><b set:html={tx(it.title)} /></span>}
+						{it.ext?.live && variant !== 'tlo' && <iframe class="c3d-live" data-live={it.ext.live} title={it.title || 'Rolka'} tabindex="-1" allow="autoplay; encrypted-media" loading="lazy"></iframe>}
 						{it.ext && variant !== 'tlo' && <span class:list={['c3d-badge', `is-${it.ext.kind}`]}>{it.ext.label}</span>}
 						<span class="c3d-shade"></span>
 						{(it.yt || it.ext) && variant !== 'tlo' && <span class="c3d-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg></span>}
@@ -162,7 +163,10 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 	.c3d-ext.is-tt { background: radial-gradient(120% 90% at 85% 100%, rgba(37,244,238,.35), transparent 60%), radial-gradient(90% 70% at 10% 0%, rgba(254,44,85,.35), transparent 60%), linear-gradient(160deg, #0b0b1a, #1b0545); }
 	.c3d-ext.is-ig { background: radial-gradient(120% 90% at 85% 100%, rgba(225,48,108,.5), transparent 60%), radial-gradient(90% 70% at 10% 0%, rgba(252,175,69,.35), transparent 60%), linear-gradient(160deg, #120a4a, #1b0545); }
 	.c3d-ext-logo { position: absolute; top: 9%; left: 8%; width: auto !important; height: 26px !important; max-width: 60%; object-fit: contain; filter: brightness(0) invert(1); opacity: .9; }
-	.c3d-badge { position: absolute; top: 10px; right: 10px; padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 800; letter-spacing: .04em; color: #fff; background: rgba(10,6,48,.7); backdrop-filter: blur(6px); pointer-events: none; }
+	.c3d-live { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; pointer-events: none; opacity: 0; transition: opacity .6s .4s; background: #000; }
+	.c3d-card.is-live .c3d-live { opacity: 1; }
+	.c3d-card.is-live .c3d-play { opacity: .9; transform: scale(.7); top: auto; bottom: 14px; left: auto; right: 14px; margin: 0; }
+	.c3d-badge { position: absolute; z-index: 2; top: 10px; right: 10px; padding: 3px 9px; border-radius: 999px; font-size: 10.5px; font-weight: 800; letter-spacing: .04em; color: #fff; background: rgba(10,6,48,.7); backdrop-filter: blur(6px); pointer-events: none; }
 	.c3d-badge.is-tt { background: #000; } .c3d-badge.is-fb { background: #1877f2; } .c3d-badge.is-ig { background: linear-gradient(90deg, #f58529, #dd2a7b, #8134af); } .c3d-badge.is-yt { background: #ff0000; }
 	.c3d-modal button { position: absolute; top: 16px; right: 16px; width: 44px; height: 44px; border-radius: 999px; background: #fff; color: #0a0630; font-weight: 800; font-size: 18px; }
 </style>
@@ -218,6 +222,12 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 				c.style.setProperty('--sh', Math.min(1, a).toFixed(2));
 				c.classList.toggle('is-active', a < 0.5);
 				// filmy: wczytujemy tylko te blisko środka, gra tylko środkowy (oszczędza łącze i baterię)
+				// rolki z TikToka / Shorts: odtwarzacz platformy wczytuje się tylko w środkowym kafelku (bez dźwięku, w pętli)
+				const f = c.querySelector<HTMLIFrameElement>('iframe.c3d-live');
+				if (f) {
+					if (a < 0.08 && visibleNow && !f.getAttribute('src')) { f.src = f.dataset.live!; c.classList.add('is-live'); }
+					else if (a > 0.6 && f.getAttribute('src')) { f.removeAttribute('src'); c.classList.remove('is-live'); }
+				}
 				const v = c.querySelector<HTMLVideoElement>('video.c3d-vid');
 				if (v) {
 					if (a < 1.6 && !v.src && v.dataset.src) { v.src = v.dataset.src; v.preload = 'auto'; }
