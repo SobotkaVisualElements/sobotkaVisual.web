@@ -11,7 +11,8 @@ async function collect(dir, base = '') {
 	for (const entry of await readdir(dir, { withFileTypes: true })) {
 		const full = join(dir, entry.name);
 		if (entry.isDirectory()) out.push(...(await collect(full, `${base}/${entry.name}`)));
-		else if (entry.name === 'index.html') out.push(`https://${HOST}${base || '/'}`);
+		// tylko strony do indeksowania (pomija noindex: /linki, landingi sezonowe, wzory)
+		else if (entry.name === 'index.html' && !(await readFile(full, 'utf8')).includes('content="noindex')) out.push(`https://${HOST}${base || '/'}`);
 	}
 	return out;
 }

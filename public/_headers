@@ -1,0 +1,6 @@
+# Propozycje ofertowe (PDF) — dostępne z linku, ale nie w wynikach Google
+/oferty/*
+  X-Robots-Tag: noindex
+
+/og-default.jpg
+  Cache-Control: public, max-age=604800
