@@ -8,29 +8,35 @@
   "seoTitle": "Halloweenowe rolki i animacje dla firm w 48 h | Straszna oferta do 31.10",
   "seoDesc": "Animowana halloweenowa rolka z Twoim logo w 48 h, zestaw rolek i postów oraz PRO z bonusem. Oferta tylko do 31 października. Od 790 zł netto.",
   "service": "Halloweenowe rolki i animacje dla firm",
-  "pdf": "",
   "pkg": "pro",
   "marquee": "Upiorne rolki / Animowane posty / Halloween w 48 h / Straszne ceny",
+  "deadline": {
+    "date": "2026-10-31T23:59:59+01:00",
+    "eyebrow": "Tik-tak, tik-tak",
+    "title": "Oferta do",
+    "titleBold": "31 października",
+    "lead": "Rolki robimy w 48 godzin — zamów do 29 października, a opublikujesz je przed Halloween. Bonus do PRO: tylko do 31.10.",
+    "expiredTitle": "Oferta zniknęła.",
+    "expiredLead": "Jak duch o północy.",
+    "expiredHo": "Buuu!",
+    "expiredNote": "Halloween minęło, ale stała oferta działa cały rok. Zajrzyj albo napisz — zaplanujemy coś na święta."
+  },
   "hero": {
     "eyebrow": "Straszna oferta · tylko do 31 października",
     "title": "Halloween,",
     "titleBold": "którego klienci się nie przestraszą.",
     "lead": "Animowana rolka z Twoim logo — dynie, nietoperze i mgła w kolorach Twojej marki. Gotowa w 48 h, żebyś zdążył przed 31 października.",
-    "bgImage": "",
-    "bgVideo": "",
     "bgOpacity": 20,
-    "sideImage": "",
-    "sideAlt": "",
-    "thumbs": false,
-    "align": "lewo",
     "chipValue": "31.10",
-    "chipLabel": "ostatni dzień oferty"
+    "chipLabel": "ostatni dzień oferty",
+    "thumbs": false,
+    "align": "lewo"
   },
   "intro": {
     "eyebrow": "Zanim zaczniemy",
     "title": "Halloween to jeden dzień,",
     "titleLight": "w którym wszyscy przewijają szybciej.",
-    "text": "31 października każda marka wrzuca dynię. Zdjęcie z banku, ten sam filtr, trzy emotki. Klient przewija i nie pamięta, od kogo to było.\n\nTa oferta jest o tym, żeby Twój post ktoś obejrzał do końca. Krótka animacja z Twoim logo, która wygląda jak z reklamy telewizyjnej, a nie z darmowego szablonu — i którą zrobimy na czas.",
+    "text": "31 października każda marka wrzuca dynię. Zdjęcie ze stocka, ten sam filtr, trzy emotki. Klient przewija i nie pamięta, od kogo to było.\n\nTa oferta jest o tym, żeby Twój post ktoś obejrzał do końca. Krótka animacja z Twoim logo, która wygląda jak z reklamy telewizyjnej, a nie z darmowego szablonu — i którą zrobimy na czas.",
     "signature": "Krzysztof Sobotka",
     "signatureRole": "Sobotka Visual Creations · Opole",
     "align": "lewo"
@@ -38,8 +44,7 @@
   "become": {
     "eyebrow": "Jak to wygląda",
     "title": "Od zamówienia",
-    "titleLight": "do publikacji w 48 godzin.",
-    "lead": "",
+    "titleLight": "do publikacji w 24h.",
     "items": [
       {
         "t": "Dzień 1 — brief",
@@ -54,7 +59,7 @@
         "d": "Pliki w pionie na rolki i stories oraz w kwadracie na posty. Publikujesz, kiedy chcesz."
       }
     ],
-    "punch": "Ty wysyłasz logo. Resztę straszymy my.",
+    "punch": "Ty wysyłasz logo. Resztę straszymy... projektujemy my.",
     "align": "lewo"
   },
   "stats": {
@@ -98,13 +103,13 @@
       {
         "title": "Ile materiałów z jednego zamówienia",
         "sub": "Ile razy klient zobaczy Twoją markę w sezonie i później.",
-        "unit": "",
         "max": 125,
         "source": "zakres pakietów SVC 2026",
         "bars": [
           {
             "label": "Upiorna rolka",
-            "value": 1
+            "value": 1,
+            "highlight": false
           },
           {
             "label": "Straszny zestaw",
@@ -121,8 +126,22 @@
         ]
       }
     ],
-    "deltaLine": false,
-    "align": "lewo",
+    "chips": [
+      {
+        "value": 48,
+        "suffix": " h",
+        "label": "od briefu do gotowej rolki"
+      },
+      {
+        "value": 6,
+        "label": "materiałów w Strasznym zestawie"
+      },
+      {
+        "value": 21,
+        "suffix": "%",
+        "label": "do 21% CTR miniatur w 1. godzinie (kanał klienta)"
+      }
+    ],
     "ctr": {
       "show": true,
       "eyebrow": "Klikalność miniatur (CTR)",
@@ -159,23 +178,8 @@
         }
       ]
     },
-    "chips": [
-      {
-        "value": 48,
-        "suffix": " h",
-        "label": "od briefu do gotowej rolki"
-      },
-      {
-        "value": 6,
-        "suffix": "",
-        "label": "materiałów w Strasznym zestawie"
-      },
-      {
-        "value": 21,
-        "suffix": "%",
-        "label": "do 21% CTR miniatur w 1. godzinie (kanał klienta)"
-      }
-    ]
+    "deltaLine": false,
+    "align": "lewo"
   },
   "inside": {
     "eyebrow": "Co dostajesz",
@@ -207,11 +211,10 @@
     "align": "lewo"
   },
   "special": {
-    "kind": "",
     "eyebrow": "Dlaczego teraz",
-    "title": "",
-    "titleLight": "",
-    "lead": "",
+    "scale": {
+      "show": false
+    },
     "title2": "Dlaczego dziś,",
     "title2Light": "a nie 31 października.",
     "cards2": [
@@ -248,7 +251,6 @@
     "eyebrow": "Pytania",
     "title": "Odpowiadamy,",
     "titleLight": "zanim zapytasz.",
-    "align": "lewo",
     "items": [
       {
         "q": "Czy musimy coś nagrywać?",
@@ -266,14 +268,13 @@
         "q": "Do kogo należą materiały?",
         "a": "Do Was, po zapłacie. Możecie wrzucić je też za rok."
       }
-    ]
+    ],
+    "align": "lewo"
   },
   "doubts": {
     "eyebrow": "Wątpliwości",
     "title": "Każde „ale”",
     "titleLight": "zasługuje na odpowiedź.",
-    "items": [],
-    "callText": "",
     "phone": "668 472 759",
     "align": "lewo"
   },
@@ -281,15 +282,14 @@
     "eyebrow": "Inwestycja",
     "title": "Wybierz",
     "titleLight": "swój poziom strachu.",
-    "saveLabel": "Zyskujesz",
     "cards": [
       {
         "tag": "Szybko i na czas",
         "name": "Upiorna rolka",
         "price": "790",
-        "per": "zł netto",
         "value": 1275,
         "valueLabel": "normalnie w trybie 48 h",
+        "per": "zł netto",
         "note": "Jednorazowo. Gotowa w 48 godzin.",
         "items": [
           "animowana rolka 8–15 s z Twoim logo",
@@ -305,9 +305,9 @@
         "tag": "Najczęściej wybierany",
         "name": "Straszny zestaw",
         "price": "2 790",
-        "per": "zł netto",
         "value": 5085,
         "valueLabel": "normalnie w trybie ekspresowym",
+        "per": "zł netto",
         "note": "Jednorazowo. Zamówienia do 29.10 — gotowe przed Halloween.",
         "items": [
           "3 animowane rolki z logo",
@@ -346,16 +346,5 @@
     "lead": "10 minut rozmowy albo jedna wiadomość wystarczy. Logo i kolory masz — resztę zrobimy w 48 godzin.",
     "cta": "Rezerwuję termin",
     "align": "lewo"
-  },
-  "deadline": {
-    "date": "2026-10-31T23:59:59+01:00",
-    "eyebrow": "Tik-tak, tik-tak",
-    "title": "Oferta do",
-    "titleBold": "31 października",
-    "lead": "Rolki robimy w 48 godzin — zamów do 29 października, a opublikujesz je przed Halloween. Bonus do PRO: tylko do 31.10.",
-    "expiredTitle": "Oferta zniknęła.",
-    "expiredLead": "Jak duch o północy.",
-    "expiredHo": "Buuu!",
-    "expiredNote": "Halloween minęło, ale stała oferta działa cały rok. Zajrzyj albo napisz — zaplanujemy coś na święta."
   }
 }
