@@ -1,0 +1,159 @@
+---
+/*
+ * Nowy wykres liniowy (styl jak „wykres przewagi”): prawdziwe dane w czasie, do 3 linii.
+ * Główna linia (zaznaczona) świeci na zielono z wypełnieniem, pozostałe są szare / fioletowe.
+ * Rysuje się przy wejściu w ekran. Najechanie (albo dotknięcie) pokazuje wartości w danym punkcie.
+ */
+import { tx } from '../../lib/typo';
+
+interface Series { label?: string; values?: string | number[]; main?: boolean }
+interface Props { eyebrow?: string; title?: string; sub?: string; watermark?: string; unit?: string; labels?: string; series?: Series[]; source?: string; tone?: 'dark' | 'light' }
+const p = Astro.props;
+const unit = p.unit ?? '';
+const nums = (v: any) => (Array.isArray(v) ? v : String(v ?? '').split(/[;,\s]+/)).map((x: any) => Number(String(x).replace(',', '.'))).filter((x: number) => Number.isFinite(x));
+const raw = (p.series ?? []).map((s) => ({ ...s, v: nums(s.values) })).filter((s) => s.v.length >= 2).slice(0, 3);
+// gdy żadna nie jest zaznaczona — główna jest pierwsza
+const mainIdx = Math.max(0, raw.findIndex((s) => s.main));
+const series = [raw[mainIdx], ...raw.filter((_, i) => i !== mainIdx)].filter(Boolean).map((s, i) => ({ ...s, main: i === 0 })); // główna zawsze pierwsza
+const n = Math.max(2, ...series.map((s) => s.v.length));
+const xl = String(p.labels ?? '').split(',').map((x) => x.trim());
+const all = series.flatMap((s) => s.v);
+const lo = Math.min(0, ...all), hi = Math.max(...all, 1);
+const span = (hi - lo) * 1.12 || 1;
+const COL = ['#2ee59d', '#9aa0bd', '#b48bff'];
+const fx = (k: number) => k.toFixed(1);
+function geo(W: number, H: number, R: number) {
+	const L = 14, T = 24, B = 30;
+	const X = (i: number) => L + (i / (n - 1)) * (W - L - R);
+	const Y = (v: number) => H - B - ((v - lo) / span) * (H - T - B);
+	const path = (v: number[]) => {
+		const pts = v.map((y, i) => [X(i), Y(y)]);
+		// gładka krzywa (Catmull-Rom → Bezier)
+		let d = `M${fx(pts[0][0])} ${fx(pts[0][1])}`;
+		for (let i = 0; i < pts.length - 1; i++) {
+			const p0 = pts[i - 1] ?? pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] ?? p2;
+			d += ` C${fx(p1[0] + (p2[0] - p0[0]) / 6)} ${fx(p1[1] + (p2[1] - p0[1]) / 6)} ${fx(p2[0] - (p3[0] - p1[0]) / 6)} ${fx(p2[1] - (p3[1] - p1[1]) / 6)} ${fx(p2[0])} ${fx(p2[1])}`;
+		}
+		return { d, pts, area: `${d} L${fx(pts[pts.length - 1][0])} ${H - B} L${fx(pts[0][0])} ${H - B} Z` };
+	};
+	const grid = [0.25, 0.5, 0.75, 1].map((k) => Y(lo + (span / 1.12) * k));
+	return { W, H, L, B, R, X, Y, grid, s: series.map((s) => path(s.v)) };
+}
+const G = [{ g: geo(800, 340, 110), cls: 'lc-svg-d' }, { g: geo(400, 280, 70), cls: 'lc-svg-m' }];
+const fmt = (v: number) => `${v.toLocaleString('pl-PL')}${unit}`;
+const u = 'lc' + Math.random().toString(36).slice(2, 7);
+const dataJson = JSON.stringify({ n, labels: xl, series: series.map((s) => ({ label: s.label || '', v: s.v })), unit });
+---
+{series.length > 0 && (
+<figure class:list={['lc', `lc--${p.tone ?? 'dark'}`]}>
+	<div class="lc-panel svc-anim" data-float="16">
+		<div class="lc-head">
+			{p.eyebrow && <p class="lc-eyebrow" set:html={tx(p.eyebrow)} />}
+			{p.title && <h3 set:html={tx(p.title)} />}
+			{p.sub && <p class="lc-sub" set:html={tx(p.sub)} />}
+		</div>
+		<div class="lc-plot" data-lc={dataJson}>
+			{p.watermark && <span class="lc-wm" aria-hidden="true" set:html={tx(p.watermark)} />}
+			{G.map(({ g, cls }) => (
+				<svg viewBox={`0 0 ${g.W} ${g.H}`} class={cls} role="img" aria-label={series.map((s) => `${s.label}: ${s.v.map(fmt).join(', ')}`).join('; ')}>
+					<defs><linearGradient id={`${u}${cls}`} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2ee59d" stop-opacity=".38" /><stop offset="1" stop-color="#2ee59d" stop-opacity="0" /></linearGradient>
+						<clipPath id={`${u}${cls}-c`}><rect class="lc-reveal" x="0" y="0" width={g.W} height={g.H} /></clipPath></defs>
+					{g.grid.map((y) => <line class="lc-grid" x1={g.L} x2={g.W - g.R + 10} y1={y} y2={y} />)}
+					<line class="lc-axis" x1={g.L} x2={g.W - g.R + 10} y1={g.H - g.B} y2={g.H - g.B} />
+					{series.map((s, i) => s.main && <g clip-path={`url(#${u}${cls}-c)`}><path d={g.s[i].area} fill={`url(#${u}${cls})`} /></g>)}
+					{series.map((s, i) => !s.main && <path class="lc-l" pathLength="1" d={g.s[i].d} style={`stroke:${COL[i === 0 ? 1 : i]};--dl:${i * 0.15}s`} />)}
+					{series.map((s, i) => s.main && <path class="lc-l lc-l-main" pathLength="1" d={g.s[i].d} />)}
+					{series.map((s, i) => g.s[i].pts.map(([x, y], k) => <circle class:list={['lc-dot', s.main && 'is-main']} cx={x} cy={y} r={s.main ? 5 : 4} style={`--k:${k};fill:${s.main ? '#2ee59d' : COL[i === 0 ? 1 : i]}`} />))}
+					<line class="lc-hair" x1="0" x2="0" y1="18" y2={g.H - g.B} />
+				</svg>
+			))}
+			{series.map((s, i) => { const last = s.v[s.v.length - 1]; return (
+				<div class:list={['lc-end', s.main && 'is-main']} style={`--td:${((G[0].g.s[i].pts.at(-1)![1] / G[0].g.H) * 100).toFixed(2)}%;--tm:${((G[1].g.s[i].pts.at(-1)![1] / G[1].g.H) * 100).toFixed(2)}%`}>
+					<b><span data-count={last} data-dec={Number.isInteger(last) ? 0 : 1}>0</span>{unit}</b>
+				</div>
+			); })}
+			<div class="lc-tip" aria-hidden="true"></div>
+		</div>
+		<div class="lc-x">{Array.from({ length: n }, (_, i) => <span class:list={[i > 0 && i < n - 1 && n > 6 && i % 2 && 'lc-xm']} style={`--xd:${((G[0].g.X(i) / G[0].g.W) * 100).toFixed(2)}%;--xm:${((G[1].g.X(i) / G[1].g.W) * 100).toFixed(2)}%`}>{xl[i] ?? ''}</span>)}</div>
+		<div class="lc-legend">{series.map((s, i) => <span><i style={`background:${s.main ? '#2ee59d' : COL[i === 0 ? 1 : i]}`} class:list={[s.main && 'is-main']}></i><span set:html={tx(s.label || '')} /></span>)}</div>
+		{p.source && <figcaption class="lc-src" set:html={tx(p.source)} />}
+	</div>
+</figure>
+)}
+
+<style is:global>
+	.lc { margin: 0; }
+	.lc-panel { position: relative; border-radius: 26px; padding: clamp(20px, 3.4vw, 40px); overflow: hidden; color: #fff;
+		background: linear-gradient(160deg, rgba(20,12,70,.82), rgba(12,8,48,.88)); border: 1px solid rgba(255,255,255,.12);
+		box-shadow: 0 40px 90px -40px rgba(0,0,0,.85), inset 0 1px 0 rgba(255,255,255,.08); }
+	.lc-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #2ee59d; }
+	.lc-head h3 { margin-top: 6px; font-size: clamp(24px, 3.2vw, 34px); line-height: 1.1; font-weight: 800; letter-spacing: -.02em; text-wrap: balance; }
+	.lc-sub { margin-top: 8px; max-width: 560px; font-size: 15px; line-height: 1.55; color: rgba(214,222,255,.78); }
+	.lc-plot { position: relative; margin-top: 22px; container-type: inline-size; touch-action: pan-y; }
+	.lc-plot svg { display: block; width: 100%; height: auto; overflow: visible; position: relative; z-index: 1; }
+	.lc-svg-m { display: none !important; }
+	.lc-wm { position: absolute; inset: 6% 14% 16% 0; display: flex; align-items: center; justify-content: center; text-align: center; font-family: Montserrat, sans-serif; font-weight: 900; font-style: italic;
+		text-transform: uppercase; line-height: .92; font-size: clamp(22px, 8.4cqw, 78px); color: rgba(255,255,255,.08); pointer-events: none; opacity: 0; transition: opacity 1s .9s; }
+	.lc-grid { stroke: rgba(255,255,255,.07); stroke-dasharray: 4 6; }
+	.lc-axis { stroke: rgba(255,255,255,.22); stroke-width: 1.5; }
+	.lc-l { fill: none; stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset 1.6s var(--dl, 0s) cubic-bezier(.65,0,.35,1); }
+	.lc-l-main { stroke: #2ee59d; stroke-width: 4.5; filter: drop-shadow(0 0 8px rgba(46,229,157,.55)); transition-delay: .25s; }
+	.lc-reveal { transform-box: fill-box; transform-origin: left; transform: scaleX(0); transition: transform 1.6s .35s cubic-bezier(.65,0,.35,1); }
+	.lc-dot { opacity: 0; transform-box: fill-box; transform-origin: center; transform: scale(0); transition: opacity .3s, transform .4s cubic-bezier(.3,1.6,.5,1); transition-delay: calc(.4s + var(--k) * .09s); }
+	.lc-dot.is-main { stroke: #0c0830; stroke-width: 2.5; }
+	.lc-dot.is-hot { transform: scale(1.6) !important; }
+	.lc-hair { stroke: rgba(255,255,255,.35); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0; transition: opacity .2s; }
+	.lc-end { position: absolute; right: 0; top: var(--td); width: 12%; transform: translateY(-50%); opacity: 0; transition: opacity .5s 1.7s; z-index: 2; }
+	.lc-end b { font-size: clamp(16px, 2.6vw, 28px); font-weight: 900; color: #c3c7da; }
+	.lc-end.is-main b { font-size: clamp(22px, 4vw, 40px); color: #2ee59d; text-shadow: 0 0 22px rgba(46,229,157,.45); }
+	.lc-tip { position: absolute; z-index: 3; top: 0; left: 0; padding: 8px 12px; border-radius: 12px; background: rgba(10,6,48,.92); border: 1px solid rgba(255,255,255,.18); font-size: 13px; line-height: 1.45;
+		pointer-events: none; opacity: 0; transform: translate(-50%, -110%); transition: opacity .15s; white-space: nowrap; }
+	.lc-tip b { display: block; font-size: 12px; color: rgba(214,222,255,.7); }
+	.lc-tip i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+	.lc-x { position: relative; height: 18px; margin-top: 6px; font-size: 12px; font-weight: 600; color: rgba(214,222,255,.6); }
+	.lc-x span { position: absolute; left: var(--xd); transform: translateX(-50%); white-space: nowrap; }
+	.lc-legend { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 16px; font-size: 14px; font-weight: 600; color: rgba(255,255,255,.88); }
+	.lc-legend > span { display: inline-flex; align-items: center; gap: 8px; }
+	.lc-legend i { width: 22px; height: 4px; border-radius: 4px; }
+	.lc-legend i.is-main { box-shadow: 0 0 10px rgba(46,229,157,.7); }
+	.lc .lc-src { margin-top: 12px; text-align: left !important; font-size: 12px; line-height: 1.5; color: rgba(214,222,255,.62) !important; }
+	.lc-panel.is-in .lc-l { stroke-dashoffset: 0; }
+	.lc-panel.is-in .lc-reveal { transform: none; }
+	.lc-panel.is-in .lc-dot { opacity: 1; transform: none; }
+	.lc-panel.is-in .lc-end, .lc-panel.is-in .lc-wm { opacity: 1; }
+	@media (max-width: 640px) {
+		.lc-svg-d { display: none !important; } .lc-svg-m { display: block !important; }
+		.lc-end { top: var(--tm); width: 16%; } .lc-x span { left: var(--xm); } .lc-xm { visibility: hidden; }
+	}
+	@media (prefers-reduced-motion: reduce) { .lc * { transition: none !important; } }
+</style>
+<script>
+	import '../../scripts/parallax.ts';
+	// podpowiedź z wartościami w najbliższym punkcie (mysz albo palec)
+	document.querySelectorAll<HTMLElement>('[data-lc]').forEach((plot) => {
+		const D = JSON.parse(plot.dataset.lc!);
+		const tip = plot.querySelector<HTMLElement>('.lc-tip')!;
+		const COL = ['#2ee59d', '#9aa0bd', '#b48bff'];
+		const show = (cx: number) => {
+			const svg = [...plot.querySelectorAll<SVGSVGElement>('svg')].find((s) => s.getBoundingClientRect().width > 0);
+			if (!svg) return;
+			const r = svg.getBoundingClientRect(), vb = svg.viewBox.baseVal;
+			const dots = [...svg.querySelectorAll<SVGCircleElement>('.lc-dot')];
+			const xs = dots.slice(0, D.n).map((c) => +c.getAttribute('cx')!);
+			const vx = ((cx - r.left) / r.width) * vb.width;
+			let k = 0; xs.forEach((x, i) => { if (Math.abs(x - vx) < Math.abs(xs[k] - vx)) k = i; });
+			dots.forEach((c) => c.classList.toggle('is-hot', +c.getAttribute('cx')! === xs[k]));
+			const hair = svg.querySelector<SVGLineElement>('.lc-hair')!;
+			hair.setAttribute('x1', String(xs[k])); hair.setAttribute('x2', String(xs[k])); hair.style.opacity = '1';
+			const pr = plot.getBoundingClientRect();
+			tip.innerHTML = `<b>${D.labels[k] || ''}</b>` + D.series.map((s: any, i: number) => s.v[k] === undefined ? '' : `<div><i style="background:${i === 0 ? COL[0] : COL[i]}"></i>${s.label ? s.label + ': ' : ''}<strong>${Number(s.v[k]).toLocaleString('pl-PL')}${D.unit}</strong></div>`).join('');
+			tip.style.left = `${Math.min(pr.width - 70, Math.max(70, r.left - pr.left + (xs[k] / vb.width) * r.width))}px`;
+			tip.style.top = `${r.top - pr.top + 30}px`;
+			tip.style.opacity = '1';
+		};
+		const hide = () => { tip.style.opacity = '0'; plot.querySelectorAll('.lc-hair').forEach((h) => ((h as SVGElement).style.opacity = '0')); plot.querySelectorAll('.lc-dot.is-hot').forEach((c) => c.classList.remove('is-hot')); };
+		plot.addEventListener('pointermove', (e) => show(e.clientX));
+		plot.addEventListener('pointerdown', (e) => show(e.clientX));
+		plot.addEventListener('pointerleave', hide);
+	});
+</script>

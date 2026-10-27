@@ -7,6 +7,7 @@
 import LayerTile from '../ui/LayerTile.astro';
 import VideoLoop from '../ui/VideoLoop.astro';
 import Carousel3D from '../ui/Carousel3D.astro';
+import LineChart from '../ui/LineChart.astro';
 import { splitLinks, parseEmbed } from '../../lib/embed';
 import OfferButton from '../ui/OfferButton.astro';
 import GapChart from '../ui/GapChart.astro';
@@ -114,6 +115,17 @@ function linePath(b: any) {
 				return <div class="svc-b"><OfferButton href={`/generator?${q.toString()}`} label={b.label || 'Sprawdź ofertę'} lead={b.lead} note={b.note} align={b.align || 'srodek'} /></div>;
 			}
 
+			case 'rolki': {
+				// karuzela rolek z platform: zawsze pionowa, bez samoczynnego przewijania
+				const its = splitLinks(b.links).map((l: string, k: number) => ({ link: l, title: b.title ? `${b.title} ${k + 1}` : '', category: b.category }));
+				return its.length > 0 && (
+					<figure class="svc-b svc-wide">
+						<Carousel3D items={its} orientation="pion" autoplay={false} tone={theme} label={b.caption || 'Rolki'} />
+						{b.caption && <figcaption>{b.caption}</figcaption>}
+					</figure>
+				);
+			}
+
 			case 'karuzela3d': {
 				// linki z platform (jeden pod drugim) — każdy staje się kafelkiem; film gra z TikToka / Facebooka / Instagrama / YouTube
 				const fromLinks = splitLinks(b.links).map((l: string, k: number) => ({ link: l, title: b.linksTitle ? `${b.linksTitle} ${k + 1}` : '', logo: b.linksLogo, category: b.linksCategory }));
@@ -164,6 +176,11 @@ function linePath(b: any) {
 						{b.caption && <figcaption>{b.caption}</figcaption>}
 					</figure>
 				);
+
+			case 'wykres_linia': {
+				// nowy wykres liniowy: prawdziwe dane w czasie (do 3 linii), styl jak wykres przewagi
+				return <div class="svc-b svc-gap"><LineChart {...b} tone={theme} />{b.caption && <figcaption>{b.caption}</figcaption>}</div>;
+			}
 
 			case 'wykres_liniowy': {
 				const L = linePath(b);

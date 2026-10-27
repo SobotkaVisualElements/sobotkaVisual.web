@@ -1,55 +1,140 @@
 ---
-/* Lista usług (/uslugi/) — kafelki prowadzą do podstron usług. */
+/*
+ * Lista usług (/uslugi/) — samodzielna strona (nie korzysta ze stylów podstron).
+ * Kafelki z animowanymi ikonami izometrycznymi, cena „od” liczona z cennika (src/lib/pricing.ts),
+ * pod spodem: dla kogo / obszar działania i wyraźne wezwanie do działania.
+ */
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import SvcIcon from '../../components/ui/SvcIcon.astro';
-import BookingCta from '../../components/ui/BookingCta.astro';
+import IsoIcon from '../../components/iso/IsoIcon.astro';
+import OfferButton from '../../components/ui/OfferButton.astro';
+import { groups, zl } from '../../lib/pricing';
 import { tx } from '../../lib/typo';
 const files = import.meta.glob('../../data/uslugi/*.json', { eager: true }) as Record<string, any>;
 const all = Object.entries(files)
 	.map(([path, m]) => ({ slug: path.split('/').pop()!.replace('.json', ''), ...(m.default ?? m) }))
 	.filter((s: any) => !s.draft)
 	.sort((a: any, b: any) => (a.order ?? 99) - (b.order ?? 99));
+const price: Record<string, number> = Object.fromEntries(groups.flatMap((g) => g.items.map((i) => [i.id, i.price])));
+// cena „od” = pierwsza (główna) pozycja usługi w cenniku, nie najtańszy dodatek
+const from = (s: any) => price[(s.prices?.items ?? [])[0]] ?? 0;
+const iso: Record<string, string> = { montaz: 'monitor', motion: 'rakieta', rolki: 'telefon', grafika: 'tablet', transmisja: 'wykres', dzwiek: 'kamera' };
 const site = 'https://sobotkavisual.pl';
 const ld = { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Usługi Sobotka Visual Creations',
 	itemListElement: all.map((s: any, i: number) => ({ '@type': 'ListItem', position: i + 1, name: s.name, url: `${site}/uslugi/${s.slug}/` })) };
 ---
-<BaseLayout title="Usługi — montaż, animacja, rolki, grafika, transmisje | SVC" description="Montaż wideo, animacja i motion design, rolki, oprawa graficzna, oprawa transmisyjna oraz dźwięk i produkcja. Zobacz, co robimy i jak pracujemy.">
-	<div class="us">
-		<section class="us-hero">
-			<span class="us-grid" aria-hidden="true"></span>
-			<div class="us-wrap">
-				<p class="us-eyebrow">Usługi</p>
-				<h1 class="us-h1">Wszystko, czego potrzebują <b>Twoje media.</b></h1>
-				<p class="us-lead">Od pojedynczej rolki po pełne zaplecze produkcyjne. Wybierz usługę, żeby zobaczyć zakres, sposób pracy, ceny i realizacje.</p>
-				<div class="usi-grid">
-					{all.map((s: any, i: number) => (
-						<a href={`/uslugi/${s.slug}/`} class="usi svc-anim" style={`--d:${(i % 3) * 0.08}s`}>
-							<span class="usi-ico"><SvcIcon name={s.icon || 'montaz'} /></span>
-							<h2 set:html={tx(s.name)} />
-							<p set:html={tx(s.hero?.lead)} />
-							<span class="usi-more">Zobacz usługę →</span>
-						</a>
-					))}
+<BaseLayout title="Usługi — montaż, animacja, rolki, grafika, transmisje | SVC" description="Montaż wideo, animacja i motion design, rolki, oprawa graficzna, oprawa transmisyjna oraz dźwięk i produkcja. Zobacz, co robimy, jak pracujemy i ile to kosztuje.">
+	<section class="ul-hero relative overflow-hidden text-cloud">
+		<span class="pointer-events-none absolute inset-0 bg-grid opacity-30"></span>
+		<span class="ul-glow" aria-hidden="true"></span>
+		<div class="relative z-2 mx-auto max-w-[1200px] px-6 pt-24 pb-20 sm:px-8">
+			<nav class="ul-crumbs" aria-label="Okruszki"><a href="/">Strona główna</a><span>›</span><b>Usługi</b></nav>
+			<div class="ul-top">
+				<div>
+					<p class="ul-eyebrow">Usługi</p>
+					<h1 class="ul-h1">Wszystko, czego potrzebują <span>Twoje media.</span></h1>
+					<p class="ul-lead">Od pojedynczej rolki po pełne zaplecze produkcyjne. Kliknij usługę — zobaczysz, co dokładnie dostajesz, jak pracujemy, ile to kosztuje i nasze realizacje.</p>
 				</div>
+				<div class="ul-top-ico" aria-hidden="true"><IsoIcon name="rakieta" /></div>
 			</div>
-		</section>
-		<section class="us-final"><div class="us-wrap us-center"><h2 class="us-h2">Nie wiesz, od czego <span class="us-light">zacząć?</span></h2><div class="us-final-cta"><BookingCta /></div></div></section>
-	</div>
+
+			<div class="ul-grid">
+				{all.map((s: any, i: number) => (
+					<a href={`/uslugi/${s.slug}/`} class="ul-card svc-anim" style={`--d:${(i % 3) * 0.08}s`}>
+						<span class="ul-ico" aria-hidden="true"><IsoIcon name={iso[s.icon] || 'monitor'} mode="static" /></span>
+						<span class="ul-n">{String(i + 1).padStart(2, '0')}</span>
+						<h2 set:html={tx(s.name)} />
+						<p set:html={tx(s.hero?.lead)} />
+						<span class="ul-foot">
+							{from(s) > 0 && <span class="ul-price">od <b>{zl(from(s))}</b></span>}
+							<span class="ul-more">Zobacz usługę <i aria-hidden="true">→</i></span>
+						</span>
+					</a>
+				))}
+			</div>
+		</div>
+	</section>
+
+	<section class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
+		<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
+		<div class="relative z-2 mx-auto max-w-[1200px] px-6 py-16 sm:px-8">
+			<div class="ul-extra">
+				<a href="/oferta/wydawnictwa/" class="ul-tile">
+					<span class="ul-tile-ico" aria-hidden="true"><IsoIcon name="ksiazka" mode="static" /></span>
+					<span><b>Dla wydawnictw</b><small>Booktrailery, animowane okładki i rolki z ilustracji.</small></span>
+				</a>
+				<a href="/obszar-dzialania/" class="ul-tile">
+					<span class="ul-tile-ico" aria-hidden="true"><IsoIcon name="kalendarz" mode="static" /></span>
+					<span><b>Gdzie działamy</b><small>Nagrania w promieniu ok. 100 km od Opola, reszta zdalnie w całej Polsce.</small></span>
+				</a>
+				<a href="/#probna" class="ul-tile is-acc">
+					<span class="ul-tile-ico" aria-hidden="true"><IsoIcon name="telefon" mode="static" /></span>
+					<span><b>Darmowa rolka próbna</b><small>Wyślij nagranie — sprawdź nas, zanim zapłacisz.</small></span>
+				</a>
+			</div>
+
+			<div class="ul-final">
+				<h2>Nie wiesz, od czego zacząć?</h2>
+				<p>Ustaw w generatorze, czego potrzebujesz — od razu zobaczysz cenę. Albo po prostu zadzwoń, doradzimy w 15 minut.</p>
+				<OfferButton href="/generator?utm_source=uslugi" label="Policz swoją cenę" />
+				<a href="tel:+48668472759" class="ul-phone">📞 668 472 759</a>
+				<a href="mailto:kontakt@sobotkavisual.pl" class="ul-mail">kontakt@sobotkavisual.pl</a>
+			</div>
+		</div>
+	</section>
 	<script type="application/ld+json" set:html={JSON.stringify(ld)} />
 </BaseLayout>
+
 <style is:global>
-	.usi-grid { margin-top: 3rem; display: grid; gap: 1.2rem; }
-	@media (min-width: 700px) { .usi-grid { grid-template-columns: 1fr 1fr; } }
-	@media (min-width: 1024px) { .usi-grid { grid-template-columns: repeat(3, 1fr); } }
-	.usi { display: flex; flex-direction: column; padding: 1.7rem; border-radius: 24px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1);
-		opacity: 0; transform: translateY(24px); transition: opacity .6s var(--d), transform .8s var(--d) cubic-bezier(.2,.8,.2,1), border-color .3s, background .3s; }
-	.usi.is-in { opacity: 1; transform: none; }
-	.usi:hover { border-color: rgba(237,36,78,.6); background: rgba(237,36,78,.07); }
-	.usi-ico { width: 58px; height: 58px; padding: 12px; border-radius: 16px; border: 1px solid rgba(255,255,255,.18); color: #fff; }
-	.usi h2 { margin-top: 1.1rem; font-size: 22px; font-weight: 800; letter-spacing: -.02em; }
-	.usi p { margin-top: .5rem; font-size: 15px; line-height: 1.55; color: var(--color-sky-mist); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
-	.usi-more { margin-top: auto; padding-top: 1.1rem; font-weight: 700; color: var(--color-orange-glow); }
-	@media (prefers-reduced-motion: reduce) { .usi { opacity: 1; transform: none; } }
+	.ul-hero { background: linear-gradient(180deg, #120a4a 0%, #0d0838 60%, #0a0630 100%); }
+	.ul-glow { position: absolute; width: 70vw; height: 70vw; right: -20vw; top: -30vw; border-radius: 50%; background: radial-gradient(closest-side, rgba(109,77,255,.35), transparent); pointer-events: none; }
+	.ul-crumbs { display: flex; flex-wrap: wrap; gap: .45rem; font-size: 14px; color: rgba(214,222,255,.7); }
+	.ul-crumbs a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgba(255,255,255,.25); }
+	.ul-crumbs b { color: #fff; font-weight: 600; }
+	.ul-top { display: grid; gap: 24px; align-items: center; margin-top: 18px; }
+	@media (min-width: 1024px) { .ul-top { grid-template-columns: 1fr 280px; } }
+	.ul-eyebrow { font-size: 13px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--color-orange-glow, #ff8a5c); }
+	.ul-h1 { margin-top: 10px; font-size: clamp(38px, 6vw, 68px); line-height: 1.02; font-weight: 800; letter-spacing: -.03em; text-wrap: balance; }
+	.ul-h1 span { background: linear-gradient(90deg, #ff8aa0, #ed244e 60%, #b03cff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+	.ul-lead { margin-top: 18px; max-width: 640px; font-size: 19px; line-height: 1.6; color: var(--color-sky-mist, #c3c0dc); }
+	.ul-top-ico { display: none; width: 260px; justify-self: end; }
+	@media (min-width: 1024px) { .ul-top-ico { display: block; } }
+	.ul-top-ico .iso { width: 100%; height: auto; filter: drop-shadow(0 30px 40px rgba(0,0,0,.45)); }
+	.ul-grid { margin-top: 48px; display: grid; gap: 20px; }
+	@media (min-width: 700px) { .ul-grid { grid-template-columns: 1fr 1fr; } }
+	@media (min-width: 1080px) { .ul-grid { grid-template-columns: repeat(3, 1fr); } }
+	.ul-card { position: relative; display: flex; flex-direction: column; padding: 26px 26px 22px; border-radius: 24px; overflow: hidden;
+		background: linear-gradient(160deg, rgba(36,25,96,.75), rgba(18,12,60,.85)); border: 1px solid rgba(255,255,255,.1); box-shadow: 0 24px 50px -30px rgba(0,0,0,.8);
+		opacity: 0; transform: translateY(24px); transition: opacity .6s var(--d), transform .8s var(--d) cubic-bezier(.2,.8,.2,1), border-color .3s, box-shadow .3s; }
+	.ul-card.is-in { opacity: 1; transform: none; }
+	.ul-card:hover { border-color: rgba(176,60,255,.6); box-shadow: 0 0 40px -12px rgba(176,60,255,.6), 0 24px 50px -30px rgba(0,0,0,.8); transform: translateY(-4px); }
+	.ul-ico { width: 112px; height: 112px; margin: -18px 0 -6px -16px; transition: transform .35s cubic-bezier(.2,.8,.2,1); }
+	.ul-card:hover .ul-ico { transform: translateY(-4px) scale(1.05); }
+	.ul-ico .iso { width: 100%; height: 100%; }
+	.ul-n { position: absolute; top: 18px; right: 22px; font-size: 44px; font-weight: 900; line-height: 1; letter-spacing: -.04em; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.18); }
+	.ul-card h2 { font-size: 23px; font-weight: 800; letter-spacing: -.02em; color: #fff; }
+	.ul-card p { margin-top: 8px; font-size: 16px; line-height: 1.6; color: var(--color-sky-mist, #c3c0dc); }
+	.ul-foot { margin-top: auto; padding-top: 18px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+	.ul-price { padding: 5px 12px; border-radius: 999px; font-size: 14px; color: #fff; background: rgba(46,229,157,.12); border: 1px solid rgba(46,229,157,.35); }
+	.ul-price b { color: #2ee59d; }
+	.ul-more { font-weight: 800; color: #ff8aa0; }
+	.ul-more i { display: inline-block; font-style: normal; transition: transform .25s; }
+	.ul-card:hover .ul-more i { transform: translateX(4px); }
+	.ul-extra { display: grid; gap: 16px; }
+	@media (min-width: 900px) { .ul-extra { grid-template-columns: repeat(3, 1fr); } }
+	.ul-tile { display: flex; gap: 14px; align-items: center; padding: 16px 20px; border-radius: 20px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); transition: transform .25s, border-color .25s; }
+	.ul-tile:hover { transform: translateY(-3px); border-color: rgba(255,138,160,.5); }
+	.ul-tile.is-acc { background: linear-gradient(150deg, #6d4dff, #b03cff 60%, #ff5fd2); border: 0; box-shadow: 0 0 40px -14px rgba(176,60,255,.8); }
+	.ul-tile-ico { flex: none; width: 76px; height: 76px; margin: -10px 0; }
+	.ul-tile-ico .iso { width: 100%; height: 100%; }
+	.ul-tile b { display: block; font-size: 18px; color: #fff; }
+	.ul-tile small { display: block; margin-top: 3px; font-size: 15px; line-height: 1.45; color: rgba(255,255,255,.78); }
+	.ul-final { margin-top: 64px; text-align: center; }
+	.ul-final h2 { font-size: clamp(30px, 4vw, 44px); font-weight: 800; letter-spacing: -.02em; }
+	.ul-final p { margin: 12px auto 0; max-width: 560px; font-size: 18px; line-height: 1.6; color: var(--color-sky-mist, #c3c0dc); }
+	.ul-final .ob-wrap { margin: 1.8rem 0 1rem; }
+	.ul-phone { display: inline-block; font-size: clamp(26px, 4vw, 36px); font-weight: 900; color: #fff; }
+	.ul-mail { display: block; margin-top: 6px; font-size: 16px; text-decoration: underline; text-underline-offset: 4px; color: var(--color-sky-mist, #c3c0dc); }
+	@media (prefers-reduced-motion: reduce) { .ul-card { opacity: 1; transform: none; } }
 </style>
 <script>
 	import '../../scripts/parallax.ts';
