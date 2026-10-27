@@ -8,11 +8,15 @@ clientLogoTone: ciemne
 role: Scenariusze, montaż, miniatury
 year: 2025
 date: 2025-10-01
+collab: true
+collabStatus: zakonczona
+collabFrom: 2025-10-01
+collabTo: 2026-10-01
 tech:
   - Premiere Pro
   - After Effects
   - Photoshop
-cover: https://media.sobotkavisual.pl/obrazy/DeltaHR_Pion.jpg
+cover: https://media.sobotkavisual.pl/obrazy/DeltaHR_Poziom.jpg
 poster: https://media.sobotkavisual.pl/obrazy/DeltaHR_Pion.jpg
 youtube: ''
 video: ''
@@ -22,6 +26,51 @@ parallaxStrength: 100
 featured: true
 order: 1
 blocks:
+  - type: karuzela3d
+    caption: ''
+    orientation: poziom
+    items:
+      - image: ''
+        video: ''
+        youtube: https://www.tiktok.com/@deltahr.pl/video/7688668080142175510?is_from_webapp=1&sender_device=pc&web_id=7650978628343301634
+        title: ''
+        link: ''
+        logo: ''
+      - image: ''
+        video: ''
+        youtube: https://www.tiktok.com/@deltahr.pl/video/7686392806784421142?is_from_webapp=1&sender_device=pc&web_id=7650978628343301634
+        title: ''
+        link: ''
+        logo: ''
+      - image: ''
+        video: ''
+        youtube: https://www.tiktok.com/@deltahr.pl/video/7686389168590605590?is_from_webapp=1&sender_device=pc&web_id=7650978628343301634
+        title: ''
+        link: ''
+        logo: ''
+      - image: ''
+        video: ''
+        youtube: https://www.tiktok.com/@deltahr.pl/video/7683436879202536726?is_from_webapp=1&sender_device=pc&web_id=7650978628343301634
+        title: ''
+        link: ''
+        logo: ''
+      - image: ''
+        video: ''
+        youtube: https://www.tiktok.com/@deltahr.pl/video/7659694202409749782?is_from_webapp=1&sender_device=pc&web_id=7650978628343301634
+        title: ''
+        link: ''
+        logo: ''
+      - image: ''
+        video: ''
+        youtube: https://www.tiktok.com/@deltahr.pl/video/7659695204659760406?is_from_webapp=1&sender_device=pc&web_id=7650978628343301634
+        title: ''
+        link: ''
+        logo: ''
+    links: ''
+    linksTitle: ''
+    linksCategory: ''
+    linksLogo: ''
+    showLogos: false
   - type: oferta
     label: Sprawdź ofertę
     lead: Potrzebujesz regularnych materiałów rekrutacyjnych lub sprzedażowych?
