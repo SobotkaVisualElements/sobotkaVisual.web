@@ -28,6 +28,13 @@ export const site = {
     twitter: '',
     github: '',
   },
+  /** Profile firmy — nagłówek, stopka i dane strukturalne (sameAs) */
+  profiles: {
+    youtube: 'https://www.youtube.com/@SobotkaVisualCreations',
+    instagram: 'https://www.instagram.com/sobotkavisualcreations/',
+    tiktok: 'https://www.tiktok.com/@sobotkavisualcreations',
+    facebook: 'https://www.facebook.com/profile.php?id=100087789733469',
+  },
   /** ブログ一覧の1ページあたり記事数 */
   postsPerPage: 6,
 };

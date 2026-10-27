@@ -82,9 +82,9 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 						{it.video
 							? <video class="c3d-vid" data-src={it.video} poster={it.img || undefined} muted loop playsinline preload="none" draggable="false" controlslist="nodownload" disablepictureinpicture></video>
 							: it.img ? <img src={it.img} alt="" loading={k < 6 ? 'eager' : 'lazy'} decoding="async" draggable="false" />
-							: it.ext ? <span class:list={['c3d-ph', 'c3d-ext', `is-${it.ext.kind}`]}>{it.logo && <img class="c3d-ext-logo" src={it.logo} alt="" loading="lazy" />}<small>{it.category || it.ext.label}</small><b set:html={tx(it.title || 'Zobacz rolkę')} /></span>
-							: <span class="c3d-ph"><small>{it.category}</small><b set:html={tx(it.title)} /></span>}
-						{it.ext?.live && variant !== 'tlo' && <iframe class="c3d-live" data-live={it.ext.live} title={it.title || 'Rolka'} tabindex="-1" allow="autoplay; encrypted-media" loading="lazy"></iframe>}
+							: it.ext ? <span class:list={['c3d-ph', 'c3d-ext', `is-${it.ext.kind}`]}>{it.logo && <img class="c3d-ext-logo" src={it.logo} alt="" loading="lazy" />}<small>{it.category || it.ext.label}</small>{" "}<b set:html={tx(it.title || 'Zobacz rolkę')} /></span>
+							: <span class="c3d-ph"><small>{it.category}</small>{" "}<b set:html={tx(it.title)} /></span>}
+						{it.ext?.live && variant !== 'tlo' && <iframe class="c3d-live" data-live={it.ext.live} title={it.title || 'Rolka'} tabindex="-1" allow="autoplay; encrypted-media"></iframe>}
 						{it.ext && variant !== 'tlo' && <span class:list={['c3d-badge', `is-${it.ext.kind}`]}>{it.ext.label}</span>}
 						<span class="c3d-shade"></span>
 						{(it.yt || it.ext) && variant !== 'tlo' && <span class="c3d-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg></span>}
@@ -186,7 +186,7 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 		const cat = root.querySelector<HTMLElement>('.c3d-cat');
 		const ttl = root.querySelector<HTMLAnchorElement>('.c3d-title');
 		const dots = root.querySelector<HTMLElement>('.c3d-dots');
-		let pos = 0, target = 0, drag = 0, shown = -1, visibleNow = false;
+		let pos = 0, target = 0, drag = 0, shown = -1, visibleNow = false, pageReady = document.readyState === "complete";
 		const mod = (a: number, m: number) => ((a % m) + m) % m;
 
 		if (dots) for (let j = 0; j < n; j++) {
@@ -225,7 +225,8 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 				// rolki z TikToka / Shorts: odtwarzacz platformy wczytuje się tylko w środkowym kafelku (bez dźwięku, w pętli)
 				const f = c.querySelector<HTMLIFrameElement>('iframe.c3d-live');
 				if (f) {
-					if (a < 0.08 && visibleNow && !f.getAttribute('src')) { f.src = f.dataset.live!; c.classList.add('is-live'); }
+					// start dopiero po pełnym wczytaniu strony — odtwarzacz TikToka startowany w trakcie ładowania potrafi pokazać błąd
+					if (a < 0.08 && visibleNow && pageReady && !f.getAttribute('src')) { f.src = f.dataset.live!; f.dataset.retry = '0'; c.classList.add('is-live'); }
 					else if (a > 0.6 && f.getAttribute('src')) { f.removeAttribute('src'); c.classList.remove('is-live'); }
 				}
 				const v = c.querySelector<HTMLVideoElement>('video.c3d-vid');
@@ -300,6 +301,17 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 		root.addEventListener('pointerenter', () => { hover = true; restart(); });
 		root.addEventListener('pointerleave', () => { hover = false; restart(); });
 		new IntersectionObserver(([en]) => { visible = en.isIntersecting; visibleNow = visible; restart(); render(); }, { threshold: 0.15 }).observe(root);
+		if (!pageReady) window.addEventListener('load', () => setTimeout(() => { pageReady = true; render(); }, 300), { once: true });
+		// błąd odtwarzacza TikToka → jedno ciche ponowienie
+		window.addEventListener('message', (e) => {
+			if (!/tiktok\.com$/.test(new URL(e.origin).hostname)) return;
+			let d: any = e.data; try { if (typeof d === 'string') d = JSON.parse(d); } catch { return; }
+			if (!d || !/error/i.test(String(d.type || d.event || ''))) return;
+			root.querySelectorAll<HTMLIFrameElement>('iframe.c3d-live').forEach((f) => {
+				if (f.contentWindow !== e.source || f.dataset.retry === '1') return;
+				f.dataset.retry = '1'; const src = f.src; f.removeAttribute('src'); setTimeout(() => { f.src = src; }, 400);
+			});
+		});
 		window.addEventListener('resize', render, { passive: true });
 		render();
 	});
