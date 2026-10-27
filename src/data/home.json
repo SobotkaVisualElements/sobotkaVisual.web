@@ -125,6 +125,32 @@
     "titleLine2": "którzy chcą się wyróżnić",
     "tabs": [
       {
+        "label": "Twórcy",
+        "icon": "tworca",
+        "title": "Montaż, miniatury i rolki, które odzyskują Twój czas",
+        "body": "Nagrywasz — my montujemy odcinki, robimy miniatury i tniemy rolki. Ty masz czas na kolejny materiał, a kanał rośnie.",
+        "points": [
+          "montaż odcinków i podcastów",
+          "miniatury, które podbijają klikalność",
+          "rolki i shorty z każdego odcinka"
+        ],
+        "cta": "Zobacz ofertę dla kanału",
+        "href": "/oferta/kanal-youtube"
+      },
+      {
+        "label": "Marki i firmy",
+        "icon": "firma",
+        "title": "Materiały produktowe i wizerunkowe na najwyższym poziomie",
+        "body": "Wy decydujecie, co pokazać — produkcję bierzemy na siebie: od nagrania po gotowy film na stronę, LinkedIn i targi.",
+        "points": [
+          "film wizerunkowy i produktowy",
+          "dzień nagrań w firmie",
+          "materiały na targi i prezentacje"
+        ],
+        "cta": "Zobacz dzień contentowy",
+        "href": "#dzien"
+      },
+      {
         "label": "Marketing",
         "title": "Stała obecność w social mediach — bez zatrudniania",
         "body": "Co tydzień nowe rolki, grafiki i animacje w jednym stylu. Ty zatwierdzasz, my produkujemy.",
@@ -134,7 +160,8 @@
           "animowane logo i oprawa marki"
         ],
         "cta": "Zobacz pakiet PRO",
-        "href": "/generator?pakiet=pro"
+        "href": "/generator?pakiet=pro",
+        "icon": "marketing"
       },
       {
         "label": "HR i rekrutacja",
@@ -146,7 +173,8 @@
           "napisy pod oglądanie bez dźwięku"
         ],
         "cta": "Zobacz dzień contentowy",
-        "href": "#dzien"
+        "href": "#dzien",
+        "icon": "hr"
       },
       {
         "label": "Sprzedaż",
@@ -158,7 +186,8 @@
           "krótka prezentacja produktu"
         ],
         "cta": "Wyceń w generatorze",
-        "href": "/generator?tryb=jednorazowa&rolkaani=2&postani=4"
+        "href": "/generator?tryb=jednorazowa&rolkaani=2&postani=4",
+        "icon": "sprzedaz"
       },
       {
         "label": "Kluby i sport",
@@ -170,7 +199,8 @@
           "animowane statystyki i skład"
         ],
         "cta": "Zobacz oprawę transmisyjną",
-        "href": "/uslugi/oprawa-transmisyjna/"
+        "href": "/uslugi/oprawa-transmisyjna/",
+        "icon": "sportowiec"
       }
     ]
   },

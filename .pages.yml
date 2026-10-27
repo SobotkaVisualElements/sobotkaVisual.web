@@ -1688,6 +1688,11 @@ content:
       list: {max: 5, collapsible: {collapsed: true, summary: '{label}'}}
       fields:
       - {name: label, label: Napis na zakładce, type: string}
+      - name: icon
+        label: Animowana ikona
+        type: select
+        options:
+          values: [tworca, firma, marketing, hr, sprzedaz, sportowiec, rakieta, kamera, ksiazka]
       - {name: title, label: Nagłówek, type: string}
       - {name: body, label: Opis, type: text}
       - {name: points, label: Co dostajesz (punkty), type: string, list: true}

@@ -99,7 +99,7 @@ const flakes = Array.from({ length: 46 }, (_, i) => ({
 <style is:global>
 	.bd { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
 	.bd-it { position: absolute; will-change: transform; }
-	.bd-3d { filter: blur(var(--blur)) drop-shadow(0 18px 24px rgba(60,30,20,.18)); opacity: var(--op); transform-style: preserve-3d; animation: bd-float var(--fd) var(--fl) ease-in-out infinite; }
+	.bd-3d { will-change: transform; filter: blur(var(--blur)) drop-shadow(0 18px 24px rgba(60,30,20,.18)); opacity: var(--op); transform-style: preserve-3d; animation: bd-float var(--fd) var(--fl) ease-in-out infinite; }
 	.bd-3d svg { width: 100%; height: auto; display: block; }
 	@keyframes bd-float { 0%,100% { transform: perspective(600px) rotateY(-14deg) rotateX(6deg) translateY(0); } 50% { transform: perspective(600px) rotateY(16deg) rotateX(-4deg) translateY(-14px); } }
 	.bd-blob { aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle at 40% 40%, var(--c), transparent 68%); filter: blur(30px); }
@@ -111,7 +111,7 @@ const flakes = Array.from({ length: 46 }, (_, i) => ({
 	.bd-isogrid { position: absolute; left: -20%; right: -20%; bottom: -10%; height: 70%; opacity: .5;
 		background-image: linear-gradient(30deg, rgba(143,244,255,.09) 1px, transparent 1px), linear-gradient(150deg, rgba(143,244,255,.09) 1px, transparent 1px);
 		background-size: 64px 37px; mask-image: linear-gradient(to top, #000 10%, transparent 85%); -webkit-mask-image: linear-gradient(to top, #000 10%, transparent 85%); }
-	.bd-cube { width: 100%; display: block; animation: bd-bob 7s ease-in-out infinite; }
+	.bd-cube { width: 100%; display: block; animation: bd-bob 7s ease-in-out infinite; will-change: transform; }
 	@keyframes bd-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
 	.bd-streaks i { position: absolute; bottom: -40px; width: 2px; border-radius: 2px; background: linear-gradient(to top, transparent, #b48bff, #8ff4ff); animation: bd-streak linear infinite; }
 	@keyframes bd-streak { to { transform: translateY(-115vh); } }
@@ -134,3 +134,31 @@ const flakes = Array.from({ length: 46 }, (_, i) => ({
 	@media (max-width: 767px) { .bd-it { width: calc(var(--mw, 1) * 22vw) !important; } .bd-snow i:nth-child(2n) { display: none; } }
 	@media (prefers-reduced-motion: reduce) { .bd-3d, .bd-snow i, .bd-cube, .bd-streaks i { animation: none; } }
 </style>
+<style is:global>
+	/* TRYB LEKKI (html.k-lite): włącza się sam, gdy komputer nie nadąża (mniej niż ~45 klatek/s przy przewijaniu).
+	   Wyłącza najcięższe efekty: rozmycie pod szklanymi panelami, rozmyte elementy tła, cienie ikon. Treść i animacje ikon zostają. */
+	html.k-lite .k-panel, html.k-lite .k-stat, html.k-lite .k-zchip, html.k-lite .glass, html.k-lite .liquid-card { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+	html.k-lite .k-panel, html.k-lite .k-stat { background: var(--panel2, #1d1750) !important; }
+	html.k-lite .bd-it > *, html.k-lite .bd-3d, html.k-lite .bd-blob { filter: none !important; }
+	html.k-lite .bd-it:nth-of-type(n+4), html.k-lite .bd-streaks, html.k-lite .bd-fog, html.k-lite .bd-embers i:nth-child(2n), html.k-lite .bd-snow i:nth-child(2n) { display: none !important; }
+	html.k-lite .ki, html.k-lite .kz, html.k-lite .iso, html.k-lite .dk-ico .iso, html.k-lite .ul-top-ico .iso { filter: none !important; }
+	html.k-lite .bd-bats svg { filter: none !important; }
+</style>
+<script>
+	// mierzy płynność przez pierwsze sekundy (i przy pierwszym przewijaniu); słaby komputer → tryb lekki
+	if (!(window as any).__kLite) {
+		(window as any).__kLite = true;
+		const html = document.documentElement;
+		if (matchMedia('(prefers-reduced-motion: reduce)').matches) html.classList.add('k-lite');
+		const measure = (ms: number) => new Promise<number>((res) => {
+			let n = 0, t0 = 0, slow = 0, last = 0;
+			const f = (t: number) => { if (!t0) { t0 = last = t; } else { if (t - last > 34) slow++; n++; last = t; } if (t - t0 < ms) requestAnimationFrame(f); else res(n ? slow / n : 0); };
+			requestAnimationFrame(f);
+		});
+		const check = async () => { if (html.classList.contains('k-lite')) return; const r = await measure(1600); if (r > 0.18) html.classList.add('k-lite'); };
+		addEventListener('load', () => setTimeout(check, 400), { once: true });
+		addEventListener('scroll', () => setTimeout(check, 50), { once: true, passive: true });
+		// ręczne wymuszenie do testów: ?lite=1
+		if (/[?&]lite=1/.test(location.search)) html.classList.add('k-lite');
+	}
+</script>

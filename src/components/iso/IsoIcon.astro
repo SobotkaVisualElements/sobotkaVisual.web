@@ -100,6 +100,24 @@ const bkCover = box(-40, -30, 9, 80, 60, 4);
 const bkL = box(-37, -27, 13, 36, 54, 5), bkR = box(1, -27, 13, 36, 54, 5);
 const pageLine = (x1: number, x2: number, y: number) => { const a = P(x1, y, 18), b = P(x2, y, 18); return `M${a[0].toFixed(1)} ${a[1].toFixed(1)} L${b[0].toFixed(1)} ${b[1].toFixed(1)}`; };
 const spineC = P(0, 0, 18);
+// „dla kogo”: twórca, firma, marketing, sport, HR, sprzedaż
+const qd = (a: number[], b: number[], c2: number[], d: number[]) => [a, b, c2, d].map((q) => q.map((n) => n.toFixed(1)).join(',')).join(' ');
+const bld = box(-24, -20, 9, 40, 34, 74);
+const winR = Array.from({ length: 12 }, (_, i) => { const col = i % 3, row = Math.floor(i / 3); const y = -16 + col * 10, z = 20 + row * 15; return qd(P(16, y, z), P(16, y + 6, z), P(16, y + 6, z + 9), P(16, y, z + 9)); });
+const winL = Array.from({ length: 12 }, (_, i) => { const col = i % 3, row = Math.floor(i / 3); const x = -20 + col * 12, z = 20 + row * 15; return qd(P(x, 14, z), P(x + 7, 14, z), P(x + 7, 14, z + 9), P(x, 14, z + 9)); });
+const flagBase = P(-4, -3, 83);
+const phT = box(2, -4, 40, 16, 4, 30); // telefon na statywie
+const legs = [[-10, 8], [12, 10], [2, -12]].map(([x, y]) => `M${P(10, -2, 40).map(fx1).join(' ')} L${P(x, y, 9).map(fx1).join(' ')}`).join(' ');
+const ringC = P(-14, 10, 62);
+const bag = box(-22, -14, 9, 40, 26, 42);
+const bagH = `M${P(-12, -1, 51).map(fx1).join(' ')} C${P(-12, -1, 72).map(fx1).join(' ')} ${P(8, -1, 72).map(fx1).join(' ')} ${P(8, -1, 51).map(fx1).join(' ')}`;
+const desk = box(-36, -20, 9, 72, 40, 4);
+const person = (x: number, y: number) => { const b = P(x, y, 13); return { body: `M${fx1(b[0] - 17)} ${fx1(b[1])} C${fx1(b[0] - 17)} ${fx1(b[1] - 30)} ${fx1(b[0] + 17)} ${fx1(b[1] - 30)} ${fx1(b[0] + 17)} ${fx1(b[1])} A17 6 0 0 1 ${fx1(b[0] - 17)} ${fx1(b[1])} Z`, head: [b[0], b[1] - 40] }; };
+const hrA = person(-14, 6), hrB = person(16, -10);
+const mega = { h: P(-10, 6, 30), m: P(14, -10, 52) };
+const ballC = P(0, 0, 9);
+const goal = `M${P(-36, -30, 9).map(fx1).join(' ')} L${P(-36, -30, 46).map(fx1).join(' ')} L${P(30, -30, 46).map(fx1).join(' ')} L${P(30, -30, 9).map(fx1).join(' ')} M${P(-36, -30, 46).map(fx1).join(' ')} L${P(-36, -42, 40).map(fx1).join(' ')} M${P(30, -30, 46).map(fx1).join(' ')} L${P(30, -42, 40).map(fx1).join(' ')}`;
+const net = Array.from({ length: 6 }, (_, k) => `M${P(-36 + k * 13, -30, 9).map(fx1).join(' ')} L${P(-36 + k * 13, -30, 46).map(fx1).join(' ')}`).join(' ') + Array.from({ length: 3 }, (_, k) => ` M${P(-36, -30, 18 + k * 10).map(fx1).join(' ')} L${P(30, -30, 18 + k * 10).map(fx1).join(' ')}`).join('');
 // kalendarz grudniowy: tekst na przedniej ścianie (skos jak ściana izometryczna)
 const calM = (x: number, z: number) => { const q = calFace(x, z); return `matrix(0.866 0.5 0 1 ${q[0].toFixed(1)} ${q[1].toFixed(1)})`; };
 // żarówka: kopuła + szyjka z eliptycznym dołem
@@ -436,6 +454,69 @@ const sigD = `M${P(-24, -22, 17)[0].toFixed(1)} ${P(-24, -22, 17)[1].toFixed(1)}
 			<g class="iso-sparks">{[[-40, -96], [40, -100]].map(([dx, dy], k) => <path d={star(c[0] + dx, c[1] + dy, 5, 2)} fill={k ? '#3dff8f' : '#ff8a1e'} style={`--k:${k}`} />)}</g>
 		</>)}
 
+		{name === 'tworca' && (<>
+			<circle cx={ringC[0]} cy={ringC[1]} r="36" fill={g('glowG')} class="iso-pulse" />
+			<circle cx={ringC[0]} cy={ringC[1]} r="25" fill="none" stroke="#fff3b0" stroke-width="7" class="iso-ringlight" />
+			<circle cx={ringC[0]} cy={ringC[1]} r="25" fill="none" stroke="#ffc65c" stroke-width="2" opacity=".8" />
+			<path d={`M${ringC[0]} ${ringC[1] + 25} L${P(-14, 10, 9).map(fx1).join(' ')}`} stroke="#3a2399" stroke-width="3" />
+			<path d={legs} stroke="#2b1979" stroke-width="3" stroke-linecap="round" fill="none" />
+			<polygon points={phT.left} fill="#1b1150" /><polygon points={phT.right} fill="#2a1873" /><polygon points={phT.top} fill="#3a2399" />
+			<polygon points={qd(P(4, 0, 43), P(16, 0, 43), P(16, 0, 67), P(4, 0, 67))} fill={g('cy')} opacity=".95" />
+			<path d={`M${P(8, 0, 50).map(fx1).join(' ')} L${P(8, 0, 60).map(fx1).join(' ')} L${P(14, 0, 55).map(fx1).join(' ')} Z`} fill="#fff" class="iso-play" />
+			<circle cx={P(15, 0, 64)[0]} cy={P(15, 0, 64)[1]} r="2.2" fill="#ff4f6d" class="iso-rec" />
+			<g class="iso-likes">{[0, 1, 2, 3].map((k) => <path style={`--k:${k}`} transform={`translate(${126 + (k % 2) * 9} ${74 - k * 2}) scale(${.5 + (k % 2) * .15})`} d="M0 4 C0 -2 8 -2 8 4 C8 -2 16 -2 16 4 C16 10 8 14 8 16 C8 14 0 10 0 4 Z" fill="#ff5fd2" />)}</g>
+		</>)}
+
+		{name === 'firma' && (<>
+			<polygon points={bld.left} fill={g('magD')} /><polygon points={bld.right} fill={g('magR')} /><polygon points={bld.top} fill={g('mag')} />
+			<g class="iso-wins">{winR.map((w, k) => <polygon points={w} style={`--k:${(k * 5) % 12}`} />)}{winL.map((w, k) => <polygon points={w} style={`--k:${(k * 7) % 12}`} />)}</g>
+			<polygon points={qd(P(-8, 14, 9), P(2, 14, 9), P(2, 14, 19), P(-8, 14, 19))} fill="#1a0f52" />
+			<path d={`M${flagBase.map(fx1).join(' ')} V${fx1(flagBase[1] - 26)}`} stroke="#ffc65c" stroke-width="2.4" />
+			<path class="iso-flag" d={`M${fx1(flagBase[0])} ${fx1(flagBase[1] - 26)} q8 -3 16 0 q8 3 16 0 v12 q-8 3 -16 0 q-8 -3 -16 0 Z`} fill={g('cy')} />
+		</>)}
+
+		{name === 'marketing' && (<>
+			<circle cx={c[0] + 6} cy={c[1] - 56} r="40" fill={g('glowM')} class="iso-pulse" />
+			<path d={`M${fx1(mega.h[0] - 4)} ${fx1(mega.h[1] + 4)} L${fx1(mega.h[0] + 2)} ${fx1(mega.h[1] + 22)} L${fx1(mega.h[0] + 10)} ${fx1(mega.h[1] + 20)} L${fx1(mega.h[0] + 6)} ${fx1(mega.h[1] + 2)} Z`} fill="#3a2399" />
+			<g class="iso-mega">
+				<path d={`M${fx1(mega.h[0] - 10)} ${fx1(mega.h[1] - 4)} L${fx1(mega.m[0] - 8)} ${fx1(mega.m[1] - 28)} L${fx1(mega.m[0] + 16)} ${fx1(mega.m[1] + 14)} L${fx1(mega.h[0] + 8)} ${fx1(mega.h[1] + 8)} Z`} fill={g('mag')} />
+				<path d={`M${fx1(mega.h[0] - 4)} ${fx1(mega.h[1] + 4)} L${fx1(mega.m[0] + 4)} ${fx1(mega.m[1] - 6)} L${fx1(mega.m[0] + 16)} ${fx1(mega.m[1] + 14)} L${fx1(mega.h[0] + 8)} ${fx1(mega.h[1] + 8)} Z`} fill="#000" opacity=".18" />
+				<ellipse cx={mega.m[0] + 4} cy={mega.m[1] - 7} rx="9" ry="23" transform={`rotate(-38 ${mega.m[0] + 4} ${mega.m[1] - 7})`} fill="#ffb3ea" />
+				<ellipse cx={mega.m[0] + 4} cy={mega.m[1] - 7} rx="5" ry="15" transform={`rotate(-38 ${mega.m[0] + 4} ${mega.m[1] - 7})`} fill="#7a24c9" />
+				<ellipse cx={mega.h[0] - 1} cy={mega.h[1] + 2} rx="7" ry="10" transform={`rotate(-38 ${mega.h[0] - 1} ${mega.h[1] + 2})`} fill="#c94bd6" />
+			</g>
+			<g class="iso-waves iso-waves-m">{[0, 1, 2].map((k) => <path style={`--k:${k}`} d={`M${fx1(mega.m[0] + 22 + k * 9)} ${fx1(mega.m[1] - 38 - k * 5)} q${12 + k * 4} ${18 + k * 4} ${2 + k * 3} ${40 + k * 8}`} />)}</g>
+			<g class="iso-sparks">{[[-40, -96], [44, -100], [-30, -40]].map(([dx, dy], k) => <text x={c[0] + dx} y={c[1] + dy} font-family="Montserrat, sans-serif" font-weight="900" font-size="15" fill={k % 2 ? '#8ff4ff' : '#ff9be6'} style={`--k:${k}`}>{['%', '+', '★'][k]}</text>)}</g>
+		</>)}
+
+		{name === 'sportowiec' && (<>
+			<path d={net} stroke="rgba(255,255,255,.22)" stroke-width="1" />
+			<path d={goal} stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" />
+			<ellipse cx={ballC[0] + 6} cy={ballC[1] + 6} rx="17" ry="7" fill="#0b0730" opacity=".5" class="iso-gshadow iso-ballsh" />
+			<g class="iso-ball">
+				<circle cx={ballC[0] + 6} cy={ballC[1] - 18} r="17" fill="#fff" />
+				<path d={`M${ballC[0] + 6} ${ballC[1] - 25} l6 4 l-2 7 h-8 l-2 -7 Z`} fill="#1a0f52" />
+				<path d={`M${ballC[0] - 9} ${ballC[1] - 20} l5 -2 l3 6 l-3 5 l-5 -2 Z M${ballC[0] + 21} ${ballC[1] - 20} l-5 -2 l-3 6 l3 5 l5 -2 Z M${ballC[0] + 1} ${ballC[1] - 4} l4 -5 h6 l3 5 Z`} fill="#1a0f52" />
+				<circle cx={ballC[0] + 1} cy={ballC[1] - 25} r="4" fill="#fff" opacity=".5" />
+			</g>
+			<g class="iso-sparks">{[[-40, -70], [44, -76], [30, -100]].map(([dx, dy], k) => <path d={star(c[0] + dx, c[1] + dy, 5, 2)} fill={k % 2 ? '#2ee59d' : '#ffc65c'} style={`--k:${k}`} />)}</g>
+		</>)}
+
+		{name === 'hr' && (<>
+			<path d={hrB.body} fill={g('cy')} /><circle cx={hrB.head[0]} cy={hrB.head[1]} r="11" fill={g('cy')} />
+			<path d={hrA.body} fill={g('mag')} /><circle cx={hrA.head[0]} cy={hrA.head[1]} r="12" fill="#ffb3ea" />
+			<g class="iso-badge"><circle cx={hrA.head[0] + 18} cy={hrA.head[1] - 18} r="11" fill="#2ee59d" /><path d={`M${hrA.head[0] + 12} ${hrA.head[1] - 18} l4 4 l8 -8`} stroke="#04261a" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round" /></g>
+			<g class="iso-loupe"><circle cx={c[0] + 30} cy={c[1] - 74} r="13" fill="rgba(143,244,255,.18)" stroke="#fff" stroke-width="3.5" /><path d={`M${c[0] + 39} ${c[1] - 65} l12 12`} stroke="#fff" stroke-width="5" stroke-linecap="round" /></g>
+		</>)}
+
+		{name === 'sprzedaz' && (<>
+			<g class="iso-coins">{[0, 1, 2].map((k) => <g style={`--k:${k}`}><ellipse cx={c[0] - 4 + k * 8} cy={c[1] - 52} rx="9" ry="9" fill={g('gold')} stroke="#d98b1c" stroke-width="1.5" /><text x={c[0] - 4 + k * 8} y={c[1] - 48.5} text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="8" fill="#8a4a00">zł</text></g>)}</g>
+			<polygon points={bag.left} fill={g('magD')} /><polygon points={bag.right} fill={g('magR')} /><polygon points={bag.top} fill="#3a1470" />
+			<path d={bagH} stroke="#ffb3ea" stroke-width="3.5" fill="none" stroke-linecap="round" />
+			<path class="iso-trend" pathLength="1" d={`M${P(-22, 12, 22).map(fx1).join(' ')} L${P(-12, 12, 32).map(fx1).join(' ')} L${P(-2, 12, 27).map(fx1).join(' ')} L${P(10, 12, 42).map(fx1).join(' ')}`} />
+			<path d={`M${P(10, 12, 42)[0] - 6} ${P(10, 12, 42)[1] - 1} L${P(10, 12, 42)[0] + 1} ${P(10, 12, 42)[1] - 5} L${P(10, 12, 42)[0] + 1} ${P(10, 12, 42)[1] + 3}`} class="iso-arrow" />
+		</>)}
+
 		{name === 'ksiazka' && (<>
 			<polygon points={bkCover.left} fill={g('magD')} /><polygon points={bkCover.right} fill={g('magR')} /><polygon points={bkCover.top} fill={g('mag')} />
 			<polygon points={bkL.left} fill="#d8ccf5" /><polygon points={bkL.right} fill="#c7b8ef" /><polygon points={bkL.top} fill={g('page')} />
@@ -461,6 +542,7 @@ const sigD = `M${P(-24, -22, 17)[0].toFixed(1)} ${P(-24, -22, 17)[1].toFixed(1)}
 
 <style is:global>
 	.iso { overflow: visible; }
+	.iso.is-paused, .iso.is-paused * { animation-play-state: paused !important; }
 	.iso-edge { fill: none; stroke: #8ff4ff; stroke-width: 1.4; opacity: .8; stroke-dasharray: 1; stroke-dashoffset: 0; }
 	.iso-parts circle { fill: #8ff4ff; animation: iso-rise 3.4s calc(var(--k) * .8s) ease-in infinite; }
 	@keyframes iso-rise { 0% { transform: translateY(0); opacity: 0; } 20% { opacity: 1; } 100% { transform: translateY(-40px); opacity: 0; } }
@@ -596,7 +678,7 @@ const sigD = `M${P(-24, -22, 17)[0].toFixed(1)} ${P(-24, -22, 17)[1].toFixed(1)}
 	/* książka */
 	.iso-text path { stroke: #9c8ad6; stroke-width: 1.8; stroke-linecap: round; fill: none; stroke-dasharray: 40; stroke-dashoffset: 40; animation: iso-write 4.8s calc(var(--k) * .22s) ease-out infinite; }
 	@keyframes iso-write { 0% { stroke-dashoffset: 40; } 30%,85% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; opacity: 0; } }
-	.iso-page { fill: #fbf8ff; stroke: #d8ccf5; stroke-width: .8; stroke-linejoin: round; filter: drop-shadow(0 2px 3px rgba(40,10,120,.25)); }
+	.iso-page { fill: #fbf8ff; stroke: #c9bbf0; stroke-width: 1; stroke-linejoin: round; }
 	.iso-page:nth-of-type(2) { fill: #f1ebff; }
 	.iso-film { animation: iso-hover 3s ease-in-out infinite; }
 	/* aparat: błysk lampy co kilka sekund */
@@ -606,10 +688,43 @@ const sigD = `M${P(-24, -22, 17)[0].toFixed(1)} ${P(-24, -22, 17)[1].toFixed(1)}
 	.iso-shutter { animation: iso-press 3.6s ease-in-out infinite; }
 	@keyframes iso-press { 0%,74%,86%,100% { transform: none; } 79% { transform: translateY(2px); } }
 
+	/* dla kogo */
+	.iso-ringlight { filter: drop-shadow(0 0 6px #ffc65c); animation: iso-holo 2.4s ease-in-out infinite; }
+	.iso-wins polygon { fill: #3a1470; animation: iso-win 4.8s calc(var(--k) * .4s) steps(1) infinite; }
+	@keyframes iso-win { 0%,100% { fill: #3a1470; } 30%,70% { fill: #ffc65c; } }
+	.iso-flag { transform-box: fill-box; transform-origin: left center; animation: iso-flagw 1.6s ease-in-out infinite; }
+	@keyframes iso-flagw { 0%,100% { transform: skewY(0); } 50% { transform: skewY(-8deg) scaleX(.92); } }
+	.iso-mega { transform-box: fill-box; transform-origin: 20% 80%; animation: iso-shout 1.8s ease-in-out infinite; }
+	@keyframes iso-shout { 0%,100% { transform: rotate(0); } 20% { transform: rotate(-5deg) scale(1.04); } 40% { transform: rotate(2deg); } }
+	.iso-waves-m path { stroke: #8ff4ff; }
+	.iso-ball { transform-box: fill-box; transform-origin: 50% 100%; animation: iso-bounce 1.2s cubic-bezier(.5,0,.5,1) infinite; }
+	@keyframes iso-bounce { 0%,100% { transform: translateY(0) scale(1.08, .9); } 12% { transform: translateY(-4px) scale(1); } 50% { transform: translateY(-44px) rotate(160deg); } 88% { transform: translateY(-4px) rotate(330deg); } }
+	.iso-ballsh { animation: iso-bsh 1.2s cubic-bezier(.5,0,.5,1) infinite; }
+	@keyframes iso-bsh { 0%,100% { transform: scale(1); opacity: .55; } 50% { transform: scale(.55); opacity: .25; } }
+	.iso-badge { transform-box: fill-box; transform-origin: center; animation: iso-pop 3s ease-out infinite; }
+	@keyframes iso-pop { 0%,45%,100% { transform: scale(0); } 55% { transform: scale(1.25); } 62%,90% { transform: scale(1); } }
+	.iso-loupe { animation: iso-scanx 3s ease-in-out infinite; }
+	@keyframes iso-scanx { 0%,100% { transform: translate(0, 0); } 50% { transform: translate(-42px, 16px); } }
+	.iso-coins g { transform-box: fill-box; transform-origin: center; animation: iso-coinup 2.4s calc(var(--k) * .35s) ease-out infinite; }
+	@keyframes iso-coinup { 0% { transform: translateY(20px) scale(.6); opacity: 0; } 25% { opacity: 1; } 70% { transform: translateY(-38px) scale(1); opacity: 1; } 100% { transform: translateY(-50px) scale(.9); opacity: 0; } }
+	.iso-n-sprzedaz .iso-trend { stroke: #2ee59d; stroke-width: 3; }
+	.iso-n-sprzedaz .iso-arrow { stroke: #2ee59d; }
+
 	@media (prefers-reduced-motion: reduce) {
 		.iso *, .iso-draw .iso-obj, .iso-draw .iso-plat polygon, .iso-draw .iso-bar { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }
 	}
 </style>
 <script>
 	import '../../scripts/parallax.ts';
+	// wydajność: ikony poza ekranem zatrzymują wszystkie animacje (CSS i SVG) — słabsze komputery nie liczą tego, czego nie widać
+	if (!(window as any).__isoPause) {
+		(window as any).__isoPause = true;
+		const io = new IntersectionObserver((es) => es.forEach((e) => {
+			const svg = e.target as SVGSVGElement;
+			svg.classList.toggle('is-paused', !e.isIntersecting);
+			try { e.isIntersecting ? svg.unpauseAnimations() : svg.pauseAnimations(); } catch {}
+		}), { rootMargin: '120px' });
+		const watch = () => document.querySelectorAll<SVGSVGElement>('svg.iso:not([data-iso-w])').forEach((el) => { el.dataset.isoW = '1'; io.observe(el); });
+		watch(); addEventListener('load', watch);
+	}
 </script>

@@ -1,51 +1,47 @@
 ---
+/*
+ * „Dla kogo” — jeden pasek zakładek (Twórcy, Marki i firmy, Marketing, HR, Sprzedaż, Sport).
+ * Kliknięcie zakładki pokazuje okienko z animowaną ikoną izometryczną, opisem, punktami i przyciskiem.
+ * Panel: Strona główna → Sekcja: Dla kogo → Zakładki (pole „Ikona” — puste = dobierana z nazwy).
+ */
 import home from '../../data/home.json';
-import LayerTile from '../ui/LayerTile.astro';
-const tiles = home.tiles;
-// zakładki „ta sama oferta, język Twojego działu” (panel: Sekcja: Dla kogo → Zakładki)
+import IsoIcon from '../iso/IsoIcon.astro';
+import { tx } from '../../lib/typo';
 const tabsFallback = [
-	{ label: 'Marketing', title: 'Stała obecność w social mediach — bez zatrudniania', body: 'Co tydzień nowe rolki, grafiki i animacje w jednym stylu. Ty zatwierdzasz, my produkujemy.', points: ['rolki i shorty co tydzień', 'miniatury i grafiki w spójnym systemie', 'animowane logo i oprawa marki'], cta: 'Zobacz pakiet PRO', href: '/generator?pakiet=pro' },
-	{ label: 'HR i rekrutacja', title: 'Rolki rekrutacyjne, które przyciągają kandydatów', body: 'Krótkie filmy z ofertami pracy i „dniem z życia” zespołu. Robimy to stale dla agencji Delta HR — ponad 150 rolek rocznie.', points: ['oferty pracy w formie rolek', 'zespół i miejsce pracy od kuchni', 'napisy pod oglądanie bez dźwięku'], cta: 'Zobacz dzień contentowy', href: '#dzien' },
-	{ label: 'Sprzedaż', title: 'Produkt w ruchu sprzedaje lepiej niż zdjęcie', body: 'Animowane prezentacje produktu, promocje i posty, które zatrzymują kciuk w trakcie przewijania.', points: ['animowane rolki z ofertą', 'animowane posty promocyjne', 'krótka prezentacja produktu'], cta: 'Wyceń w generatorze', href: '/generator?tryb=jednorazowa&rolkaani=2&postani=4' },
-	{ label: 'Kluby i sport', title: 'Pełna oprawa meczowa i skróty po spotkaniu', body: 'Intro transmisji, belki z wynikiem, statystyki i skład — plus skróty, które kibice udostępniają.', points: ['oprawa transmisji', 'skróty meczowe', 'animowane statystyki i skład'], cta: 'Zobacz oprawę transmisyjną', href: '/uslugi/oprawa-transmisyjna/' },
+	{ label: 'Twórcy', icon: 'tworca', title: 'Montaż, miniatury i rolki, które odzyskują Twój czas', body: 'Nagrywasz — my montujemy odcinki, robimy miniatury i tniemy rolki. Ty masz czas na kolejny materiał, a kanał rośnie.', points: ['montaż odcinków i podcastów', 'miniatury, które podbijają klikalność', 'rolki i shorty z każdego odcinka'], cta: 'Zobacz kanał na YouTube', href: '/oferta/kanal-youtube' },
+	{ label: 'Marki i firmy', icon: 'firma', title: 'Materiały produktowe i wizerunkowe na najwyższym poziomie', body: 'Wy decydujecie, co pokazać — produkcję bierzemy na siebie: od nagrania po gotowy film na stronę, LinkedIn i targi.', points: ['film wizerunkowy i produktowy', 'dzień nagrań w firmie', 'materiały na targi i prezentacje'], cta: 'Zobacz dzień contentowy', href: '#dzien' },
+	{ label: 'Marketing', icon: 'marketing', title: 'Stała obecność w social mediach — bez zatrudniania', body: 'Co tydzień nowe rolki, grafiki i animacje w jednym stylu. Ty zatwierdzasz, my produkujemy.', points: ['rolki i shorty co tydzień', 'miniatury i grafiki w spójnym systemie', 'animowane logo i oprawa marki'], cta: 'Zobacz pakiet PRO', href: '/generator?pakiet=pro' },
+	{ label: 'HR i rekrutacja', icon: 'hr', title: 'Rolki rekrutacyjne, które przyciągają kandydatów', body: 'Krótkie filmy z ofertami pracy i „dniem z życia” zespołu. Robimy to stale dla agencji Delta HR — ponad 150 rolek rocznie.', points: ['oferty pracy w formie rolek', 'zespół i miejsce pracy od kuchni', 'napisy pod oglądanie bez dźwięku'], cta: 'Zobacz dzień contentowy', href: '#dzien' },
+	{ label: 'Sprzedaż', icon: 'sprzedaz', title: 'Produkt w ruchu sprzedaje lepiej niż zdjęcie', body: 'Animowane prezentacje produktu, promocje i posty, które zatrzymują kciuk w trakcie przewijania.', points: ['animowane rolki z ofertą', 'animowane posty promocyjne', 'krótka prezentacja produktu'], cta: 'Wyceń w generatorze', href: '/generator?tryb=jednorazowa&rolkaani=2&postani=4' },
+	{ label: 'Kluby i sport', icon: 'sportowiec', title: 'Pełna oprawa meczowa i skróty po spotkaniu', body: 'Intro transmisji, belki z wynikiem, statystyki i skład — plus skróty, które kibice udostępniają.', points: ['oprawa transmisji', 'skróty meczowe', 'animowane statystyki i skład'], cta: 'Zobacz oprawę transmisyjną', href: '/uslugi/oprawa-transmisyjna/' },
 ];
 const tabs: any[] = (home as any).dlaKogo?.tabs?.length ? (home as any).dlaKogo.tabs : tabsFallback;
+// ikona z panelu, a gdy pusta — dobrana z nazwy zakładki
+const guess = (l = '') => { const s = l.toLowerCase(); return /twórc|tworc|youtub/.test(s) ? 'tworca' : /mark|firm/.test(s) && !/marketing/.test(s) ? 'firma' : /marketing/.test(s) ? 'marketing' : /hr|rekrut/.test(s) ? 'hr' : /sprzeda|sales/.test(s) ? 'sprzedaz' : /sport|klub/.test(s) ? 'sportowiec' : 'rakieta'; };
 const t = { eyebrow: 'Dla kogo', titleLine1: 'Media dla tych,', titleLine2: 'którzy chcą się wyróżnić', ...(home as any).dlaKogo };
 ---
 <section id="dla-kogo" class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
 	<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
 	<span data-speed="0.03" class="pointer-events-none absolute top-10 right-[8%] text-[34px] text-orange">✦</span>
-	<div class="relative z-2 mx-auto max-w-[1200px] px-8 py-20">
-		<div class="mx-auto mb-13 max-w-[720px] text-center">
+	<div class="relative z-2 mx-auto max-w-[1100px] px-6 py-20 sm:px-8">
+		<div class="mx-auto mb-10 max-w-[720px] text-center">
 			<span class="text-[13px] font-bold tracking-[0.12em] text-orange-glow uppercase">{t.eyebrow}</span>
-			<h2 class="mt-3 text-[44px] leading-tight font-bold tracking-[-0.02em] text-cloud">
+			<h2 class="mt-3 text-[36px] leading-tight font-bold tracking-[-0.02em] text-cloud md:text-[44px]">
 				{t.titleLine1}<br />{t.titleLine2}
 			</h2>
-		</div>
-		<div class="mx-auto grid max-w-[900px] gap-7 md:grid-cols-2">
-			{tiles.map((tile: any) => (
-				<div class="liquid-card glass group rounded-tile p-5">
-					<div class="overflow-hidden rounded-xl">
-						<LayerTile layers={(tile as any).layers} image={tile.image} strength={(tile as any).strength ?? 100} alt={tile.title} />
-					</div>
-					<h3 class="mt-5 font-display text-[22px] font-semibold text-cloud">{tile.title}</h3>
-					<p class="mt-2 text-[15px] leading-normal text-sky-mist">{tile.body}</p>
-					{tile.note && <p class="mt-2 text-[15px] leading-normal text-sky-mist">{tile.note}</p>}
-				</div>
-			))}
+			<p class="mt-3 text-[17px] text-sky-mist">Wybierz, kim jesteś — pokażemy, co dla Ciebie robimy.</p>
 		</div>
 		<div class="dk-tabs" data-dk>
 			<div class="dk-bar" role="tablist" aria-label="Dla kogo">
-				{tabs.map((tb, i) => <button type="button" role="tab" class:list={['dk-btn', i === 0 && 'is-on']} aria-selected={i === 0 ? 'true' : 'false'} data-i={i}>{tb.label}</button>)}
+				{tabs.map((tb, i) => <button type="button" role="tab" id={`dk-t${i}`} aria-controls={`dk-p${i}`} class:list={['dk-btn', i === 0 && 'is-on']} aria-selected={i === 0 ? 'true' : 'false'} data-i={i}>{tb.label}</button>)}
 			</div>
 			{tabs.map((tb, i) => (
-				<div role="tabpanel" class:list={['dk-panel', i === 0 && 'is-on']} data-i={i}>
-					<div>
-						<h3 class="text-[24px] leading-tight font-bold text-cloud md:text-[28px]">{tb.title}</h3>
-						<p class="mt-3 text-[16px] leading-relaxed text-sky-mist">{tb.body}</p>
-					</div>
-					<div>
-						<ul class="grid gap-2.5 text-[15px] text-cloud">{(tb.points ?? []).map((pt: string) => <li class="flex gap-2.5"><span class="font-extrabold text-[#2ee59d]">✓</span>{pt}</li>)}</ul>
+				<div role="tabpanel" id={`dk-p${i}`} aria-labelledby={`dk-t${i}`} class:list={['dk-panel', i === 0 && 'is-on']} data-i={i}>
+					<div class="dk-ico" aria-hidden="true"><IsoIcon name={tb.icon || guess(tb.label)} mode="static" /></div>
+					<div class="dk-txt">
+						<h3 set:html={tx(tb.title)} />
+						<p set:html={tx(tb.body)} />
+						<ul>{(tb.points ?? []).map((pt: string) => <li><span aria-hidden="true">✓</span><span set:html={tx(pt)} /></li>)}</ul>
 						{tb.href && <a href={tb.href} class="dk-cta btn-saber">{tb.cta || 'Sprawdź'} →</a>}
 					</div>
 				</div>
@@ -54,27 +50,47 @@ const t = { eyebrow: 'Dla kogo', titleLine1: 'Media dla tych,', titleLine2: 'kt�
 	</div>
 </section>
 <style is:global>
-	.dk-tabs { margin: 56px auto 0; max-width: 900px; }
-	.dk-bar { display: flex; gap: 8px; padding: 6px; border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); overflow-x: auto; scrollbar-width: none; }
+	.dk-tabs { margin: 0 auto; }
+	.dk-bar { display: flex; gap: 6px; padding: 6px; border-radius: 999px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.1); overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; }
 	.dk-bar::-webkit-scrollbar { display: none; }
-	.dk-btn { flex: 1 0 auto; padding: 11px 18px; border-radius: 999px; font-weight: 700; font-size: 15px; color: var(--color-sky-mist, #c3c0dc); white-space: nowrap; cursor: pointer; transition: background .25s, color .25s; }
-	.dk-btn:hover { color: #fff; }
+	.dk-btn { flex: 1 0 auto; scroll-snap-align: center; padding: 12px 18px; border-radius: 999px; font-weight: 700; font-size: 15px; color: var(--color-sky-mist, #c3c0dc); white-space: nowrap; cursor: pointer; transition: background .25s, color .25s, box-shadow .25s; }
+	.dk-btn:hover { color: #fff; background: rgba(255,255,255,.06); }
 	.dk-btn.is-on { color: #fff; background: linear-gradient(150deg, #6d4dff, #b03cff 60%, #ff5fd2); box-shadow: 0 8px 22px -8px rgba(176,60,255,.8); }
-	.dk-panel { display: none; margin-top: 18px; padding: 28px; border-radius: 22px; background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.1); gap: 28px; grid-template-columns: 1.2fr 1fr; align-items: start; }
-	.dk-panel.is-on { display: grid; animation: dk-in .45s cubic-bezier(.2,.8,.2,1); }
-	@keyframes dk-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
-	.dk-cta { display: inline-block; margin-top: 18px; padding: 12px 22px; border-radius: 999px; font-weight: 800; background: #fff; color: #3a1d9e; transition: transform .2s; }
+	.dk-panel { display: none; margin-top: 18px; padding: 28px 32px; border-radius: 26px; gap: 26px; grid-template-columns: minmax(0, 300px) 1fr; align-items: center;
+		background: linear-gradient(160deg, rgba(36,25,96,.7), rgba(18,12,60,.85)); border: 1px solid rgba(255,255,255,.1); box-shadow: 0 30px 60px -36px rgba(0,0,0,.8); }
+	.dk-panel.is-on { display: grid; animation: dk-in .5s cubic-bezier(.2,.8,.2,1); }
+	@keyframes dk-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+	.dk-ico { width: 100%; max-width: 300px; aspect-ratio: 1; justify-self: center; }
+	.dk-ico .iso { width: 100%; height: 100%; filter: drop-shadow(0 26px 30px rgba(0,0,0,.45)); }
+	.dk-panel.is-on .dk-ico { animation: dk-ico .7s cubic-bezier(.3,1.4,.5,1); }
+	@keyframes dk-ico { from { opacity: 0; transform: translateY(24px) scale(.9); } to { opacity: 1; transform: none; } }
+	.dk-txt h3 { font-size: clamp(24px, 3vw, 30px); line-height: 1.15; font-weight: 800; color: #fff; text-wrap: balance; }
+	.dk-txt p { margin-top: 10px; font-size: 17px; line-height: 1.6; color: var(--color-sky-mist, #c3c0dc); }
+	.dk-txt ul { margin-top: 16px; display: grid; gap: 9px; font-size: 16px; color: #fff; }
+	.dk-txt li { display: flex; gap: 10px; }
+	.dk-txt li > span:first-child { font-weight: 900; color: #2ee59d; }
+	.dk-cta { display: inline-block; margin-top: 20px; padding: 13px 24px; border-radius: 999px; font-weight: 800; background: #fff; color: #3a1d9e; transition: transform .2s; }
 	.dk-cta:hover { transform: translateY(-2px); }
-	@media (max-width: 767px) { .dk-panel { grid-template-columns: 1fr; padding: 22px; gap: 18px; } .dk-btn { flex: 0 0 auto; font-size: 14px; padding: 10px 14px; } }
+	@media (max-width: 767px) {
+		.dk-bar { border-radius: 18px; -webkit-mask-image: linear-gradient(90deg, transparent, #000 18px, #000 calc(100% - 28px), transparent); mask-image: linear-gradient(90deg, transparent, #000 18px, #000 calc(100% - 28px), transparent); }
+		.dk-btn { flex: 0 0 auto; font-size: 14px; padding: 11px 15px; }
+		.dk-panel { grid-template-columns: 1fr; padding: 20px; gap: 6px; text-align: left; }
+		.dk-ico { max-width: 210px; margin: -6px auto -10px; }
+	}
+	@media (prefers-reduced-motion: reduce) { .dk-panel.is-on, .dk-panel.is-on .dk-ico { animation: none; } }
 </style>
 <script>
 	document.querySelectorAll<HTMLElement>('[data-dk]').forEach((box) => {
-		const btns = box.querySelectorAll<HTMLElement>('.dk-btn');
+		const btns = [...box.querySelectorAll<HTMLElement>('.dk-btn')];
 		const panels = box.querySelectorAll<HTMLElement>('.dk-panel');
-		btns.forEach((b) => b.addEventListener('click', () => {
+		const go = (b: HTMLElement) => {
 			btns.forEach((x) => { const on = x === b; x.classList.toggle('is-on', on); x.setAttribute('aria-selected', String(on)); });
 			panels.forEach((p) => p.classList.toggle('is-on', p.dataset.i === b.dataset.i));
-			b.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' });
-		}));
+			const bar = b.parentElement!; bar.scrollTo({ left: b.offsetLeft - (bar.clientWidth - b.offsetWidth) / 2, behavior: 'smooth' });
+		};
+		btns.forEach((b, i) => {
+			b.addEventListener('click', () => go(b));
+			b.addEventListener('keydown', (e) => { const k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (k) { const n = btns[(i + k + btns.length) % btns.length]; n.focus(); go(n); } });
+		});
 	});
 </script>

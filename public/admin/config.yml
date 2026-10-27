@@ -307,7 +307,7 @@ collections:
               - { name: titleLine1, label: "Tytuł — linia 1", widget: string }
               - { name: titleLine2, label: "Tytuł — linia 2", widget: string }
               - name: tabs
-                label: "Zakładki (Marketing / HR / Sprzedaż / Sport) — puste = domyślne"
+                label: "Zakładki (Twórcy / Marki / Marketing / HR / Sprzedaż / Sport) — puste = domyślne"
                 label_singular: Zakładka
                 widget: list
                 required: false
@@ -315,6 +315,7 @@ collections:
                 summary: "{{fields.label}}"
                 fields:
                   - { name: label, label: "Napis na zakładce", widget: string }
+                  - { name: icon, label: "Animowana ikona", widget: select, required: false, options: [{ label: "Twórca / YouTuber", value: tworca }, { label: "Firma (budynek)", value: firma }, { label: "Marketing (megafon)", value: marketing }, { label: "HR (ludzie)", value: hr }, { label: "Sprzedaż (torba, monety)", value: sprzedaz }, { label: "Sport (piłka, bramka)", value: sportowiec }, { label: "Rakieta", value: rakieta }, { label: "Kamera", value: kamera }, { label: "Książka", value: ksiazka }] }
                   - { name: title, label: "Nagłówek", widget: string }
                   - { name: body, label: "Opis", widget: text }
                   - { name: points, label: "Co dostajesz (punkty)", widget: list, field: { name: point, label: Punkt, widget: string } }
@@ -395,7 +396,7 @@ collections:
               - { name: note, label: "Zielony dopisek (np. Odpowiadamy w 24 h…) — puste = ukryty", widget: string, required: false }
 
       - name: kafelki
-        label: "Kafelki „Dla kogo”"
+        label: "Kafelki „Dla kogo” (już nieużywane — treść jest w zakładkach sekcji Dla kogo)"
         file: "src/data/home.json"
         fields:
           - name: tiles
