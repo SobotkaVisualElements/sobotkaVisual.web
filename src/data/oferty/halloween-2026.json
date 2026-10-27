@@ -2,14 +2,16 @@
   "name": "Halloween 2026 — straszna oferta",
   "layout": "kinetyczny",
   "theme": "halloween",
+  "marquee": "Upiorne rolki / Animowane posty / Halloween w 48 h / Straszne ceny",
   "draft": false,
   "noindex": true,
   "order": 5,
   "seoTitle": "Halloweenowe rolki i animacje dla firm w 48 h | Straszna oferta do 31.10",
   "seoDesc": "Animowana halloweenowa rolka z Twoim logo w 48 h, zestaw rolek i postów oraz PRO z bonusem. Oferta tylko do 31 października. Od 790 zł netto.",
   "service": "Halloweenowe rolki i animacje dla firm",
+  "pdf": "",
   "pkg": "pro",
-  "marquee": "Upiorne rolki / Animowane posty / Halloween w 48 h / Straszne ceny",
+  "ui": null,
   "deadline": {
     "date": "2026-10-31T23:59:59+01:00",
     "eyebrow": "Tik-tak, tik-tak",
@@ -26,7 +28,12 @@
     "title": "Halloween,",
     "titleBold": "którego klienci się nie przestraszą.",
     "lead": "Animowana rolka z Twoim logo — dynie, nietoperze i mgła w kolorach Twojej marki. Gotowa w 48 h, żebyś zdążył przed 31 października.",
+    "bgImage": "",
+    "bgVideo": "",
+    "bgVideoUrl": "",
     "bgOpacity": 20,
+    "sideImage": "",
+    "sideAlt": "",
     "chipValue": "31.10",
     "chipLabel": "ostatni dzień oferty",
     "thumbs": false,
@@ -36,7 +43,7 @@
     "eyebrow": "Zanim zaczniemy",
     "title": "Halloween to jeden dzień,",
     "titleLight": "w którym wszyscy przewijają szybciej.",
-    "text": "31 października każda marka wrzuca dynię. Zdjęcie ze stocka, ten sam filtr, trzy emotki. Klient przewija i nie pamięta, od kogo to było.\n\nTa oferta jest o tym, żeby Twój post ktoś obejrzał do końca. Krótka animacja z Twoim logo, która wygląda jak z reklamy telewizyjnej, a nie z darmowego szablonu — i którą zrobimy na czas.",
+    "text": "31 października każda marka wrzuca dynię. Zdjęcie ze stocka, ten sam filtr, trzy emotki. Klient przewija i nie pamięta, od kogo to było.\n\nPokażmy światu twoją firmę!",
     "signature": "Krzysztof Sobotka",
     "signatureRole": "Sobotka Visual Creations · Opole",
     "align": "lewo"
@@ -44,7 +51,8 @@
   "become": {
     "eyebrow": "Jak to wygląda",
     "title": "Od zamówienia",
-    "titleLight": "do publikacji w 24h.",
+    "titleLight": "do publikacji w 48h.",
+    "lead": "",
     "items": [
       {
         "t": "Dzień 1 — brief",
@@ -88,7 +96,7 @@
       },
       {
         "v": 29,
-        "suf": " mln",
+        "suf": "mln",
         "d": "użytkowników YouTube w Polsce. Twoi klienci już tam są.",
         "src": "DataReportal, „Digital 2025: Poland”, za: Radio Kielce"
       }
@@ -103,24 +111,35 @@
       {
         "title": "Ile materiałów z jednego zamówienia",
         "sub": "Ile razy klient zobaczy Twoją markę w sezonie i później.",
+        "unit": "",
         "max": 125,
         "source": "zakres pakietów SVC 2026",
         "bars": [
           {
             "label": "Upiorna rolka",
             "value": 1,
-            "highlight": false
+            "highlight": false,
+            "from": null,
+            "to": null,
+            "display": "",
+            "note": ""
           },
           {
             "label": "Straszny zestaw",
             "value": 6,
             "highlight": true,
+            "from": null,
+            "to": null,
+            "display": "",
             "note": "3 animowane rolki + 3 animowane posty"
           },
           {
             "label": "PRO przez 6 miesięcy + bonus",
             "value": 121,
             "highlight": true,
+            "from": null,
+            "to": null,
+            "display": "",
             "note": "Upiorna rolka gratis + 24 wideo, 48 rolek, 48 grafik"
           }
         ]
@@ -129,17 +148,21 @@
     "chips": [
       {
         "value": 48,
-        "suffix": " h",
-        "label": "od briefu do gotowej rolki"
+        "suffix": "h",
+        "label": "od briefu do gotowej rolki",
+        "display": ""
       },
       {
         "value": 6,
-        "label": "materiałów w Strasznym zestawie"
+        "suffix": "",
+        "label": "materiałów w Strasznym zestawie",
+        "display": ""
       },
       {
         "value": 21,
         "suffix": "%",
-        "label": "do 21% CTR miniatur w 1. godzinie (kanał klienta)"
+        "label": "do 21% CTR miniatur w 1. godzinie (kanał klienta)",
+        "display": ""
       }
     ],
     "ctr": {
@@ -158,27 +181,33 @@
       },
       "ours": {
         "label": "Kanał, z którym pracujemy",
-        "value": 21
+        "value": 21,
+        "display": ""
       },
       "delta": "ponad 2× więcej kliknięć",
       "source": "Typowy kanał: YouTube Help „Wyświetlenia i CTR” — połowa kanałów ma CTR 2–10%. Z nami: YouTube Studio kanału klienta, 1. godzina po publikacji.",
       "quoteFrom": "Przemysław Langier",
       "thumbs": [
         {
-          "image": "/uploads/realizacje/maxresdefault.jpg"
+          "image": "/uploads/realizacje/maxresdefault.jpg",
+          "youtube": ""
         },
         {
-          "image": "/uploads/realizacje/maxresdefault (1).jpg"
+          "image": "/uploads/realizacje/maxresdefault (1).jpg",
+          "youtube": ""
         },
         {
-          "image": "/uploads/realizacje/maxresdefault (2).jpg"
+          "image": "/uploads/realizacje/maxresdefault (2).jpg",
+          "youtube": ""
         },
         {
-          "image": "/uploads/realizacje/maxresdefault (3).jpg"
+          "image": "/uploads/realizacje/maxresdefault (3).jpg",
+          "youtube": ""
         }
       ]
     },
     "deltaLine": false,
+    "delta": null,
     "align": "lewo"
   },
   "inside": {
@@ -208,13 +237,45 @@
         "d": "Pion 9:16 na rolki i stories, kwadrat 1:1 na posty. Bez przycinania."
       }
     ],
+    "cardEyebrow": "",
+    "cardTitle": "",
+    "cardTitleLight": "",
+    "cardText": "",
+    "listEyebrow": "",
     "align": "lewo"
   },
   "special": {
+    "kind": "",
     "eyebrow": "Dlaczego teraz",
+    "title": "",
+    "titleLight": "",
+    "lead": "",
     "scale": {
-      "show": false
+      "show": false,
+      "eyebrow": "",
+      "title": "",
+      "sub": "",
+      "watermark": "",
+      "unit": "",
+      "xStart": "",
+      "xEnd": "",
+      "base": {
+        "label": "",
+        "value": 1,
+        "display": ""
+      },
+      "ours": {
+        "label": "",
+        "value": 1,
+        "display": ""
+      },
+      "delta": "",
+      "source": ""
     },
+    "table": [],
+    "timeline": [],
+    "steps": [],
+    "cards": [],
     "title2": "Dlaczego dziś,",
     "title2Light": "a nie 31 października.",
     "cards2": [
@@ -234,6 +295,7 @@
         "d": "Podpisz PRO od listopada do 31 października, a halloweenową rolkę dostajesz w prezencie."
       }
     ],
+    "note": "",
     "align": "lewo"
   },
   "opinie": {
@@ -245,7 +307,9 @@
     "show": true,
     "eyebrow": "Realizacje",
     "title": "Zobacz,",
-    "titleLight": "jak to wygląda w praktyce."
+    "titleLight": "jak to wygląda w praktyce.",
+    "client": "",
+    "limit": null
   },
   "faq": {
     "eyebrow": "Pytania",
@@ -275,6 +339,13 @@
     "eyebrow": "Wątpliwości",
     "title": "Każde „ale”",
     "titleLight": "zasługuje na odpowiedź.",
+    "items": [
+      {
+        "q": "",
+        "a": ""
+      }
+    ],
+    "callText": "",
     "phone": "668 472 759",
     "align": "lewo"
   },
@@ -324,6 +395,8 @@
         "tag": "Najlepsza wartość",
         "name": "PRO",
         "price": "7 200",
+        "value": null,
+        "valueLabel": "",
         "per": "zł netto / mies.",
         "note": "Min. 6 miesięcy od listopada. Upiorna rolka gratis przy podpisaniu do 31.10.",
         "items": [
@@ -337,7 +410,9 @@
         "ctaHref": "/generator?pakiet=pro"
       }
     ],
-    "footnote": "Oferta do 31 października 2026. Rolki i zestawy zamówione do 29.10 dostarczamy przed Halloween."
+    "footnote": "Oferta do 31 października 2026. Rolki i zestawy zamówione do 29.10 dostarczamy przed Halloween.",
+    "saveLabel": "",
+    "compareLabel": ""
   },
   "final": {
     "eyebrow": "Następny krok",
