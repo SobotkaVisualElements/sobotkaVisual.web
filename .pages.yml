@@ -447,6 +447,25 @@ content:
         type: select
         options:
           values: [Przemysław Langier, Adam Przebinda]
+    - name: wykres_linia
+      label: Wykres liniowy — dane w czasie (nowy)
+      fields:
+      - {name: eyebrow, label: Nadtytuł, type: string}
+      - {name: title, label: Tytuł, type: string}
+      - {name: sub, label: Opis pod tytułem, type: text}
+      - {name: watermark, label: Wielki półprzezroczysty napis, type: string}
+      - {name: unit, label: 'Jednostka (np. %, zł)', type: string}
+      - {name: labels, label: 'Oś pozioma — podpisy po przecinku (np. sty, lut, mar)', type: string}
+      - name: series
+        label: Linie (do 3, tylko prawdziwe dane)
+        type: object
+        list: {max: 3, collapsible: {collapsed: true, summary: '{label}'}}
+        fields:
+        - {name: label, label: Nazwa linii, type: string}
+        - {name: values, label: 'Wartości po przecinku (tyle, ile podpisów na osi)', type: string}
+        - {name: main, label: 'Główna (zielona, świecąca)', type: boolean}
+      - {name: source, label: Źródło danych, type: string}
+      - {name: caption, label: Podpis, type: string}
     - name: wykres_liniowy
       label: (stary) Wykres liniowy
       fields:

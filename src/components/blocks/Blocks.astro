@@ -7,6 +7,7 @@
 import LayerTile from '../ui/LayerTile.astro';
 import VideoLoop from '../ui/VideoLoop.astro';
 import Carousel3D from '../ui/Carousel3D.astro';
+import LineChart from '../ui/LineChart.astro';
 import { splitLinks, parseEmbed } from '../../lib/embed';
 import OfferButton from '../ui/OfferButton.astro';
 import GapChart from '../ui/GapChart.astro';
@@ -175,6 +176,11 @@ function linePath(b: any) {
 						{b.caption && <figcaption>{b.caption}</figcaption>}
 					</figure>
 				);
+
+			case 'wykres_linia': {
+				// nowy wykres liniowy: prawdziwe dane w czasie (do 3 linii), styl jak wykres przewagi
+				return <div class="svc-b svc-gap"><LineChart {...b} tone={theme} />{b.caption && <figcaption>{b.caption}</figcaption>}</div>;
+			}
 
 			case 'wykres_liniowy': {
 				const L = linePath(b);

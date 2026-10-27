@@ -206,6 +206,29 @@ collections:
               - { name: delta, label: "Napis na zielonym obszarze różnicy", widget: string, required: false }
               - { name: source, label: "Źródło danych", widget: text, required: false }
               - { name: quoteFrom, label: "Cytat klienta pod wykresem", widget: select, required: false, options: ["", "Przemysław Langier", "Adam Przebinda"] }
+          - name: wykres_linia
+            label: "Wykres liniowy — dane w czasie (nowy)"
+            widget: object
+            summary: "{{fields.title}}"
+            fields:
+              - { name: eyebrow, label: "Nadtytuł", widget: string, required: false }
+              - { name: title, label: "Tytuł", widget: string, required: false }
+              - { name: sub, label: "Opis pod tytułem", widget: text, required: false }
+              - { name: watermark, label: "Wielki półprzezroczysty napis", widget: string, required: false }
+              - { name: unit, label: "Jednostka (np. %, zł, tys.)", widget: string, required: false }
+              - { name: labels, label: "Oś pozioma — podpisy po przecinku", widget: string, hint: "Np. „sty, lut, mar, kwi, maj, cze” albo „tydz. 1, tydz. 2, tydz. 3”" }
+              - name: series
+                label: "Linie (do 3, tylko prawdziwe dane)"
+                label_singular: Linia
+                widget: list
+                max: 3
+                summary: "{{fields.label}}"
+                fields:
+                  - { name: label, label: "Nazwa linii", widget: string, hint: "Np. „Z nami” albo „Wyświetlenia”" }
+                  - { name: values, label: "Wartości po przecinku", widget: string, hint: "Tyle liczb, ile podpisów na osi, np. „1200, 1800, 2600, 4100”" }
+                  - { name: main, label: "Główna (zielona, świecąca)", widget: boolean, default: false, required: false }
+              - { name: source, label: "Źródło danych", widget: string, required: false }
+              - { name: caption, label: "Podpis", widget: string, required: false }
           - name: wykres_liniowy
             label: "(stary) Wykres liniowy (animowany)"
             widget: object
