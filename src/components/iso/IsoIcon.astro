@@ -39,9 +39,27 @@ const wavePts: number[][] = [];
 for (let o = -72; o <= 48; o += 24) WAVE.forEach(([x, z], j) => { if (o > -72 && j === 0) return; wavePts.push(onScreen(o + x, 38 + z)); });
 const waveD = 'M' + wavePts.map((p) => p.map((n) => n.toFixed(1)).join(' ')).join(' L');
 const waveFill = waveD + ` L${onScreen(72, 10).map((n) => n.toFixed(1)).join(' ')} L${onScreen(-72, 10).map((n) => n.toFixed(1)).join(' ')} Z`;
-// kamera
-const cam = box(-30, -18, 9, 50, 32, 34);
-const lensC = P(20, -2, 26);
+// aparat (lustrzanka): korpus, pryzmat na górze, spust, obiektyw wysunięty z przedniej ściany
+const cam = box(-30, -16, 9, 52, 30, 34);
+const prism = box(-20, -9, 43, 22, 18, 8), prismTop = box(-16, -6, 51, 14, 12, 5);
+const ringPts = (x: number, r: number, y0 = -1, z0 = 26) => Array.from({ length: 28 }, (_, i) => { const t = (i / 28) * Math.PI * 2; return P(x, y0 + r * Math.cos(t), z0 + r * Math.sin(t)); });
+const ringD = (x: number, r: number) => 'M' + ringPts(x, r).map((q) => q.map((n) => n.toFixed(1)).join(' ')).join(' L') + ' Z';
+const barrel = [22, 24, 26, 28, 30, 32, 34];
+const shutter = P(10, -9, 43), flashP = P(-24, -12, 52);
+const lensFront = P(34, -1, 26);
+const grip = [-26, -22, -18].map((x) => `M${P(x, 14, 13).map((n) => n.toFixed(1)).join(' ')} L${P(x, 14, 38).map((n) => n.toFixed(1)).join(' ')}`).join(' ');
+// książka: kartka obracana wokół grzbietu (oś Y w x=0, z=18), z lekkim zawinięciem — klatki do animacji SMIL
+const PAGE_W = 36;
+const pageAt = (th: number) => {
+	const us = [0, 6, 12, 18, 24, 30, PAGE_W];
+	const pt = (u: number, y: number) => { const a = th - 0.55 * Math.sin(th) * Math.pow(u / PAGE_W, 1.3); return P(u * Math.cos(a), y, 18.2 + u * Math.sin(a)); };
+	const top = us.map((u) => pt(u, -26)), bot = us.map((u) => pt(u, 26)).reverse();
+	return 'M' + [...top, ...bot].map((q) => q.map((n) => n.toFixed(1)).join(' ')).join(' L') + ' Z';
+};
+const FLIP = Array.from({ length: 19 }, (_, i) => { const t = i / 18; const e = t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; return pageAt(e * Math.PI); });
+// pauza na początku i na końcu, przewracanie w środku
+const flipValues = [FLIP[0], ...FLIP, FLIP[18]].join(';');
+const flipTimes = [0, ...FLIP.map((_, i) => (0.25 + (i / 18) * 0.5).toFixed(3)), 1].join(';');
 // telefon
 const ph = box(-18, -5, 9, 36, 7, 70);
 const phFace = (x: number, z: number) => P(x, 2, z);
@@ -190,12 +208,18 @@ const sigD = `M${P(-24, -22, 17)[0].toFixed(1)} ${P(-24, -22, 17)[1].toFixed(1)}
 		{name === 'kamera' && (<>
 			<g class="iso-cam">
 				<polygon points={cam.left} fill={g('magD')} /><polygon points={cam.right} fill={g('magR')} /><polygon points={cam.top} fill={g('mag')} />
-				<ellipse cx={lensC[0] + 6} cy={lensC[1] + 2} rx="15" ry="17" fill="#1a0f52" stroke={g('cy')} stroke-width="3" />
-				<ellipse cx={lensC[0] + 6} cy={lensC[1] + 2} rx="11.5" ry="13" class="iso-ring" pathLength="1" />
-				<ellipse cx={lensC[0] + 6} cy={lensC[1] + 2} rx="7" ry="8" fill={g('cy')} class="iso-lens" />
-				<circle cx={lensC[0] + 3} cy={lensC[1] - 2} r="2" fill="#fff" opacity=".8" />
-				<circle cx={P(-22, -10, 45)[0]} cy={P(-22, -10, 45)[1]} r="4" fill="#ff4f6d" class="iso-rec" />
+				<path d={grip} stroke="#5a1a9e" stroke-width="2.4" stroke-linecap="round" opacity=".7" />
+				<polygon points={prism.left} fill={g('magD')} /><polygon points={prism.right} fill={g('magR')} /><polygon points={prism.top} fill="#ff9be6" />
+				<polygon points={prismTop.left} fill="#7a24c9" /><polygon points={prismTop.right} fill="#5a1a9e" /><polygon points={prismTop.top} fill="#ffb3ea" />
+				<ellipse cx={shutter[0]} cy={shutter[1] - 3} rx="6" ry="3.5" fill="#3a2399" /><ellipse cx={shutter[0]} cy={shutter[1] - 5} rx="6" ry="3.5" fill="#8ff4ff" class="iso-shutter" />
+				{barrel.map((x, k) => <path d={ringD(x, k === barrel.length - 1 ? 14 : 13)} fill={k === barrel.length - 1 ? '#1a0f52' : k % 2 ? '#2b1979' : '#3a2399'} />)}
+				<path d={ringD(34, 14)} fill="none" stroke={g('cy')} stroke-width="2.6" />
+				<path d={ringD(34.2, 10.5)} pathLength="1" class="iso-ring" />
+				<path d={ringD(34.4, 6.5)} fill={g('cy')} class="iso-glass" />
+				<circle cx={lensFront[0] - 3} cy={lensFront[1] - 4} r="2.2" fill="#fff" opacity=".85" />
+				<circle cx={P(-26, -14, 43)[0]} cy={P(-26, -14, 43)[1]} r="3.5" fill="#ff4f6d" class="iso-rec" />
 			</g>
+			<g class="iso-flash" aria-hidden="true"><circle cx={flashP[0]} cy={flashP[1]} r="7" fill="#fff" /><path d={star(flashP[0], flashP[1], 16, 2.6)} fill="#fff" opacity=".9" /></g>
 		</>)}
 
 		{name === 'telefon' && (<>
@@ -417,8 +441,12 @@ const sigD = `M${P(-24, -22, 17)[0].toFixed(1)} ${P(-24, -22, 17)[1].toFixed(1)}
 			<polygon points={bkL.left} fill="#d8ccf5" /><polygon points={bkL.right} fill="#c7b8ef" /><polygon points={bkL.top} fill={g('page')} />
 			<polygon points={bkR.left} fill="#d8ccf5" /><polygon points={bkR.right} fill="#c7b8ef" /><polygon points={bkR.top} fill={g('page')} />
 			<g class="iso-text">{[-20, -12, -4, 4, 12].map((y, k) => <path style={`--k:${k}`} d={pageLine(-33, -6 - (k % 2) * 6, y)} />)}{[-20, -12, -4].map((y, k) => <path style={`--k:${k + 5}`} d={pageLine(6, 32 - (k % 2) * 8, y)} />)}</g>
-			<polygon points={bkR.top} fill="#fff" class="iso-pageflip" style={`transform-origin:${spineC[0].toFixed(1)}px ${spineC[1].toFixed(1)}px`} />
-			<path d={`M${spineC[0] - 30} ${spineC[1] - 4} L${spineC[0] - 34} ${spineC[1] - 92} L${spineC[0] + 34} ${spineC[1] - 92} L${spineC[0] + 30} ${spineC[1] - 4} Z`} fill={g('holo')} class="iso-holo" />
+			{[0, 1].map((k) => (
+				<path class="iso-page" d={FLIP[0]} style={`--k:${k}`}>
+					<animate attributeName="d" dur="5.2s" begin={`${k * 0.45}s`} repeatCount="indefinite" values={flipValues} keyTimes={flipTimes} calcMode="linear" />
+				</path>
+			))}
+			<path d={`M${spineC[0] - 30} ${spineC[1] - 6} L${spineC[0] - 34} ${spineC[1] - 92} A34 11 0 0 1 ${spineC[0] + 34} ${spineC[1] - 92} L${spineC[0] + 30} ${spineC[1] - 6} A30 13 0 0 1 ${spineC[0] - 30} ${spineC[1] - 6} Z`} fill={g('holo')} class="iso-holo" />
 			<g class="iso-film">
 				<rect x={spineC[0] - 24} y={spineC[1] - 86} width="48" height="32" rx="5" fill="#1a0f52" stroke={g('cy')} stroke-width="2" />
 				{[0, 1, 2, 3].map((k) => <><rect x={spineC[0] - 20 + k * 11.5} y={spineC[1] - 83} width="5" height="3" rx="1" fill="#8ff4ff" opacity=".7" /><rect x={spineC[0] - 20 + k * 11.5} y={spineC[1] - 60} width="5" height="3" rx="1" fill="#8ff4ff" opacity=".7" /></>)}
@@ -568,9 +596,15 @@ const sigD = `M${P(-24, -22, 17)[0].toFixed(1)} ${P(-24, -22, 17)[1].toFixed(1)}
 	/* książka */
 	.iso-text path { stroke: #9c8ad6; stroke-width: 1.8; stroke-linecap: round; fill: none; stroke-dasharray: 40; stroke-dashoffset: 40; animation: iso-write 4.8s calc(var(--k) * .22s) ease-out infinite; }
 	@keyframes iso-write { 0% { stroke-dashoffset: 40; } 30%,85% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; opacity: 0; } }
-	.iso-pageflip { transform-box: view-box; animation: iso-flip 4.8s cubic-bezier(.6,0,.3,1) infinite; opacity: .95; }
-	@keyframes iso-flip { 0%,40% { transform: scaleX(1); opacity: 0; } 42% { opacity: .95; } 60% { transform: scaleX(.05) translateY(-14px); } 78% { transform: scaleX(-1); opacity: .95; } 80%,100% { transform: scaleX(-1); opacity: 0; } }
+	.iso-page { fill: #fbf8ff; stroke: #d8ccf5; stroke-width: .8; stroke-linejoin: round; filter: drop-shadow(0 2px 3px rgba(40,10,120,.25)); }
+	.iso-page:nth-of-type(2) { fill: #f1ebff; }
 	.iso-film { animation: iso-hover 3s ease-in-out infinite; }
+	/* aparat: błysk lampy co kilka sekund */
+	.iso-flash { opacity: 0; transform-box: fill-box; transform-origin: center; animation: iso-flash 3.6s ease-out infinite; filter: drop-shadow(0 0 8px #fff); }
+	@keyframes iso-flash { 0%,78%,100% { opacity: 0; transform: scale(.3); } 82% { opacity: .85; transform: scale(1); } 90% { opacity: 0; transform: scale(1.3); } }
+	.iso-glass { animation: iso-holo 2.2s ease-in-out infinite; }
+	.iso-shutter { animation: iso-press 3.6s ease-in-out infinite; }
+	@keyframes iso-press { 0%,74%,86%,100% { transform: none; } 79% { transform: translateY(2px); } }
 
 	@media (prefers-reduced-motion: reduce) {
 		.iso *, .iso-draw .iso-obj, .iso-draw .iso-plat polygon, .iso-draw .iso-bar { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }

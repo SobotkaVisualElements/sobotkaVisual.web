@@ -1005,6 +1005,7 @@ collections:
               - { name: tag, label: "Etykieta (np. Najczęściej wybierany)", widget: string, required: false }
               - { name: name, label: "Nazwa", widget: string, required: false }
               - { name: price, label: "Cena (np. 7 200 albo od 3 500)", widget: string, required: false }
+              - { name: oldPrice, label: "Stara cena — przekreślona (np. 7 200)", widget: string, required: false, hint: "Wpisz, a nad kartą pojawi się „Przecena −X%” liczona automatycznie." }
               - { name: value, label: "Wartość do porównania (zł) — zielone „Zyskujesz”", widget: number, value_type: int, required: false, hint: "Ile ta sama zawartość kosztuje osobno albo u konkurencji. Puste przy START/PRO/STUDIO = liczone z cennika usług." }
               - { name: valueLabel, label: "Z czym porównujemy (np. średnio u agencji)", widget: string, required: false }
               - { name: per, label: "Po cenie (np. zł netto / mies.)", widget: string, required: false }

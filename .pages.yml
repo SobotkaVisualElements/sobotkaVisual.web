@@ -1404,6 +1404,7 @@ content:
       - name: price
         label: Cena
         type: string
+      - {name: oldPrice, label: "Stara cena — przekreślona (np. 7 200), pokaże „Przecena −X%”", type: string}
       - name: value
         label: Wartość do porównania (zł) — zielone „Zyskujesz”; puste przy START/PRO/STUDIO = z cennika
         type: number
