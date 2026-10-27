@@ -14,7 +14,7 @@ import Backdrop from './Backdrop.astro';
 import Carousel3D from '../ui/Carousel3D.astro';
 import Deadline from './Deadline.astro';
 import SaveBadge from '../ui/SaveBadge.astro';
-import { cardValue, cardDeal, zl } from '../../lib/pricing';
+import { cardValue, cardDeal, zl, toNum } from '../../lib/pricing';
 import GapChart from '../ui/GapChart.astro';
 import Blocks from '../blocks/Blocks.astro';
 import { tx } from '../../lib/typo';
@@ -328,8 +328,9 @@ const iPrice = ['tablet', 'rakieta', 'moneta'];
 						<span class="k-price-tag">{c.tag}</span>
 						<h3 set:html={tx(c.name)} />
 						{cardDeal(c) && <span class="deal-ribbon">Przecena <b>−{cardDeal(c)!.disc}%</b></span>}
+						{!cardDeal(c) && toNum(c.oldPrice) > toNum(c.price) && <span class="deal-ribbon">Przecena <b>−{Math.round((1 - toNum(c.price) / toNum(c.oldPrice)) * 100)}%</b></span>}
 						<SaveBadge price={cardDeal(c)?.final ?? c.price} value={cardValue(c)} per={/mies/.test(c.per || '') ? '/ mies.' : ''} label={o.invest?.saveLabel || 'Zyskujesz'} compare={c.valueLabel || o.invest?.compareLabel || undefined} tone={theme === 'kt-light' && !c.featured ? 'light' : 'dark'} />
-						<div class="k-price-val">{cardDeal(c) && <s class="k-price-old">{zl(cardDeal(c)!.list)}</s>}<b set:html={cardDeal(c) ? zl(cardDeal(c)!.final).replace(/\u00a0zł$/, '') : tx(c.price)} /><span set:html={tx(c.per)} /></div>
+						<div class="k-price-val">{cardDeal(c) ? <s class="k-price-old">{zl(cardDeal(c)!.list)}</s> : c.oldPrice && <s class="k-price-old" set:html={tx(`${c.oldPrice} zł`)} />}<b set:html={cardDeal(c) ? zl(cardDeal(c)!.final).replace(/\u00a0zł$/, '') : tx(c.price)} /><span set:html={tx(c.per)} /></div>
 						<p class="k-price-note" set:html={tx(c.note)} />
 						<ul>{(c.items ?? []).map((it: string) => <li set:html={tx(it)} />)}</ul>
 						{c.ctaLabel && <a href={withUtm(c.ctaHref)} class:list={['k-btn', c.featured ? 'k-btn-acc' : 'k-btn-ghost']}>{c.ctaLabel} →</a>}

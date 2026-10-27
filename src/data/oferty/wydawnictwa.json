@@ -6,7 +6,7 @@
   "noindex": false,
   "order": 3,
   "seoTitle": "Booktrailer, animowana okładka i rolki dla wydawnictw | Sobotka Visual",
-  "seoDesc": "Animowane booktrailery, okładki w ruchu i rolki z ilustracji do premier książek. Robimy je m.in. dla Fabryki Słów. Booktrailer od 4 300 zł, animowana okładka od 1 150 zł.",
+  "seoDesc": "Animowane booktrailery, okładki w ruchu i rolki z ilustracji do premier książek. Robimy je m.in. dla Fabryki Słów. Animowana rolka od 790 zł, booktrailer z rolkami od 3 490 zł.",
   "service": "Booktrailery i animacje dla wydawnictw",
   "pdf": "",
   "pkg": "pro",
@@ -99,7 +99,7 @@
         "title": "Ile materiałów z jednego tytułu",
         "sub": "Ile razy czytelnik zobaczy książkę w okresie premiery.",
         "unit": "",
-        "max": 30,
+        "max": 20,
         "source": "zakres pakietów SVC 2026",
         "bars": [
           {
@@ -107,16 +107,16 @@
             "value": 1
           },
           {
-            "label": "Premiera tytułu",
-            "value": 6,
+            "label": "Booktrailer + rolki",
+            "value": 4,
             "highlight": true,
-            "note": "booktrailer + animowana okładka + 4 rolki"
+            "note": "booktrailer + 3 rolki z tej samej sceny"
           },
           {
             "label": "Seria wydawnicza przez 3 miesiące",
-            "value": 27,
+            "value": 18,
             "highlight": true,
-            "note": "co miesiąc: booktrailer, 2 okładki, 6 rolek"
+            "note": "co miesiąc: booktrailer, 4 rolki, okładka"
           }
         ]
       }
@@ -171,9 +171,9 @@
         "label": "booktrailer z jednej ilustracji okładki"
       },
       {
-        "value": 6,
+        "value": 4,
         "suffix": "",
-        "label": "materiałów w pakiecie Premiera"
+        "label": "materiały w pakiecie Booktrailer + rolki"
       }
     ]
   },
@@ -287,56 +287,53 @@
     "cards": [
       {
         "tag": "Na start",
-        "name": "Animowana okładka",
-        "price": "1 150",
-        "per": "zł netto / tytuł",
-        "note": "Jednorazowo. Gotowa w 5–7 dni roboczych.",
+        "name": "Animowana rolka",
+        "price": "790–1 150",
+        "per": "zł netto / rolka",
+        "note": "790 zł za 15 s, 1 150 zł za 45 s. Gotowa w 5–7 dni roboczych.",
         "items": [
-          "okładka w ruchu 8–15 s, w pętli",
-          "paralaksa z ilustracji",
-          "pion, kwadrat i poziom",
+          "rolka 15–45 s z ilustracji okładki",
+          "paralaksa, liternictwo i dźwięk",
+          "pion 9:16 i kwadrat 1:1",
           "1 runda poprawek"
         ],
         "featured": false,
-        "ctaLabel": "Zamawiam okładkę",
-        "ctaHref": "/generator?tryb=jednorazowa&okladka=1"
+        "ctaLabel": "Zamawiam rolkę",
+        "ctaHref": "/generator?tryb=jednorazowa&rolkaani=1"
       },
       {
         "tag": "Najczęściej wybierany",
-        "name": "Premiera tytułu",
-        "price": "6 490",
+        "name": "Booktrailer + rolki",
+        "price": "3 490",
         "per": "zł netto / tytuł",
-        "value": 8850,
-        "valueLabel": "przy zamawianiu osobno",
-        "note": "Jednorazowo. Komplet na premierę w 2–3 tygodnie.",
+        "note": "Jednorazowo. Rolki powstają z tej samej animowanej sceny — dlatego taniej niż osobno.",
         "items": [
-          "booktrailer 15–45 s",
-          "animowana okładka",
-          "4 rolki z cytatami i ilustracjami",
+          "booktrailer do 30 s",
+          "3 rolki z cytatami (15 s)",
           "dźwięk i liternictwo",
-          "formaty pod sklep i social media"
+          "formaty pod YouTube, sklep i social media",
+          "komplet w 2–3 tygodnie"
         ],
         "featured": true,
         "ctaLabel": "Planuję premierę",
-        "ctaHref": "/generator?tryb=jednorazowa&trailer=1&okladka=1&rolkaani=4"
+        "ctaHref": "/generator?tryb=jednorazowa&trailer=1&rolkaani=3"
       },
       {
         "tag": "Dla wydawnictw z planem",
         "name": "Seria wydawnicza",
-        "price": "7 900",
+        "oldPrice": "7 200",
+        "price": "5 760",
         "per": "zł netto / mies.",
-        "value": 11700,
-        "valueLabel": "przy zamawianiu osobno",
-        "note": "Min. 3 miesiące. Stały termin i standard dla każdej premiery.",
+        "note": "Min. 3 miesiące. Stały termin i ten sam standard dla każdej premiery.",
         "items": [
-          "1 booktrailer co miesiąc",
-          "2 animowane okładki",
-          "6 rolek z cytatami",
+          "1 booktrailer do 30 s co miesiąc",
+          "4 animowane rolki z cytatami",
+          "1 animowana okładka",
           "harmonogram premier i raport"
         ],
         "featured": false,
         "ctaLabel": "Porozmawiajmy o serii",
-        "ctaHref": "/generator?tryb=jednorazowa&trailer=1&okladka=2&rolkaani=6"
+        "ctaHref": "/generator?tryb=jednorazowa&trailer=1&okladka=1&rolkaani=4"
       }
     ],
     "footnote": "Ceny netto. Do pracy potrzebujemy okładki w warstwach (PSD) albo ilustracji w wysokiej rozdzielczości."
