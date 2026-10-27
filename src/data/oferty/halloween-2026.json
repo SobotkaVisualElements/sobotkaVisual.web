@@ -2,6 +2,7 @@
   "name": "Halloween 2026 — straszna oferta",
   "layout": "kinetyczny",
   "theme": "halloween",
+  "marquee": "Upiorne rolki / Animowane posty / Halloween w 48 h / Straszne ceny",
   "draft": false,
   "noindex": true,
   "order": 5,
@@ -10,7 +11,18 @@
   "service": "Halloweenowe rolki i animacje dla firm",
   "pdf": "",
   "pkg": "pro",
-  "marquee": "Upiorne rolki / Animowane posty / Halloween w 48 h / Straszne ceny",
+  "ui": null,
+  "deadline": {
+    "date": "2026-10-31T23:59:59+01:00",
+    "eyebrow": "Tik-tak, tik-tak",
+    "title": "Oferta do",
+    "titleBold": "31 października",
+    "lead": "Rolki robimy w 48 godzin — zamów do 29 października, a opublikujesz je przed Halloween. Bonus do PRO: tylko do 31.10.",
+    "expiredTitle": "Oferta zniknęła.",
+    "expiredLead": "Jak duch o północy.",
+    "expiredHo": "Buuu!",
+    "expiredNote": "Halloween minęło, ale stała oferta działa cały rok. Zajrzyj albo napisz — zaplanujemy coś na święta."
+  },
   "hero": {
     "eyebrow": "Straszna oferta · tylko do 31 października",
     "title": "Halloween,",
@@ -18,19 +30,20 @@
     "lead": "Animowana rolka z Twoim logo — dynie, nietoperze i mgła w kolorach Twojej marki. Gotowa w 48 h, żebyś zdążył przed 31 października.",
     "bgImage": "",
     "bgVideo": "",
+    "bgVideoUrl": "",
     "bgOpacity": 20,
     "sideImage": "",
     "sideAlt": "",
-    "thumbs": false,
-    "align": "lewo",
     "chipValue": "31.10",
-    "chipLabel": "ostatni dzień oferty"
+    "chipLabel": "ostatni dzień oferty",
+    "thumbs": false,
+    "align": "lewo"
   },
   "intro": {
     "eyebrow": "Zanim zaczniemy",
     "title": "Halloween to jeden dzień,",
     "titleLight": "w którym wszyscy przewijają szybciej.",
-    "text": "31 października każda marka wrzuca dynię. Zdjęcie z banku, ten sam filtr, trzy emotki. Klient przewija i nie pamięta, od kogo to było.\n\nTa oferta jest o tym, żeby Twój post ktoś obejrzał do końca. Krótka animacja z Twoim logo, która wygląda jak z reklamy telewizyjnej, a nie z darmowego szablonu — i którą zrobimy na czas.",
+    "text": "31 października każda marka wrzuca dynię. Zdjęcie ze stocka, ten sam filtr, trzy emotki. Klient przewija i nie pamięta, od kogo to było.\n\nPokażmy światu twoją firmę!",
     "signature": "Krzysztof Sobotka",
     "signatureRole": "Sobotka Visual Creations · Opole",
     "align": "lewo"
@@ -38,7 +51,7 @@
   "become": {
     "eyebrow": "Jak to wygląda",
     "title": "Od zamówienia",
-    "titleLight": "do publikacji w 48 godzin.",
+    "titleLight": "do publikacji w 48h.",
     "lead": "",
     "items": [
       {
@@ -54,7 +67,7 @@
         "d": "Pliki w pionie na rolki i stories oraz w kwadracie na posty. Publikujesz, kiedy chcesz."
       }
     ],
-    "punch": "Ty wysyłasz logo. Resztę straszymy my.",
+    "punch": "Ty wysyłasz logo. Resztę straszymy... projektujemy my.",
     "align": "lewo"
   },
   "stats": {
@@ -83,7 +96,7 @@
       },
       {
         "v": 29,
-        "suf": " mln",
+        "suf": "mln",
         "d": "użytkowników YouTube w Polsce. Twoi klienci już tam są.",
         "src": "DataReportal, „Digital 2025: Poland”, za: Radio Kielce"
       }
@@ -104,25 +117,54 @@
         "bars": [
           {
             "label": "Upiorna rolka",
-            "value": 1
+            "value": 1,
+            "highlight": false,
+            "from": null,
+            "to": null,
+            "display": "",
+            "note": ""
           },
           {
             "label": "Straszny zestaw",
             "value": 6,
             "highlight": true,
+            "from": null,
+            "to": null,
+            "display": "",
             "note": "3 animowane rolki + 3 animowane posty"
           },
           {
             "label": "PRO przez 6 miesięcy + bonus",
             "value": 121,
             "highlight": true,
+            "from": null,
+            "to": null,
+            "display": "",
             "note": "Upiorna rolka gratis + 24 wideo, 48 rolek, 48 grafik"
           }
         ]
       }
     ],
-    "deltaLine": false,
-    "align": "lewo",
+    "chips": [
+      {
+        "value": 48,
+        "suffix": "h",
+        "label": "od briefu do gotowej rolki",
+        "display": ""
+      },
+      {
+        "value": 6,
+        "suffix": "",
+        "label": "materiałów w Strasznym zestawie",
+        "display": ""
+      },
+      {
+        "value": 21,
+        "suffix": "%",
+        "label": "do 21% CTR miniatur w 1. godzinie (kanał klienta)",
+        "display": ""
+      }
+    ],
     "ctr": {
       "show": true,
       "eyebrow": "Klikalność miniatur (CTR)",
@@ -139,43 +181,34 @@
       },
       "ours": {
         "label": "Kanał, z którym pracujemy",
-        "value": 21
+        "value": 21,
+        "display": ""
       },
       "delta": "ponad 2× więcej kliknięć",
       "source": "Typowy kanał: YouTube Help „Wyświetlenia i CTR” — połowa kanałów ma CTR 2–10%. Z nami: YouTube Studio kanału klienta, 1. godzina po publikacji.",
       "quoteFrom": "Przemysław Langier",
       "thumbs": [
         {
-          "image": "/uploads/realizacje/maxresdefault.jpg"
+          "image": "/uploads/realizacje/maxresdefault.jpg",
+          "youtube": ""
         },
         {
-          "image": "/uploads/realizacje/maxresdefault (1).jpg"
+          "image": "/uploads/realizacje/maxresdefault (1).jpg",
+          "youtube": ""
         },
         {
-          "image": "/uploads/realizacje/maxresdefault (2).jpg"
+          "image": "/uploads/realizacje/maxresdefault (2).jpg",
+          "youtube": ""
         },
         {
-          "image": "/uploads/realizacje/maxresdefault (3).jpg"
+          "image": "/uploads/realizacje/maxresdefault (3).jpg",
+          "youtube": ""
         }
       ]
     },
-    "chips": [
-      {
-        "value": 48,
-        "suffix": " h",
-        "label": "od briefu do gotowej rolki"
-      },
-      {
-        "value": 6,
-        "suffix": "",
-        "label": "materiałów w Strasznym zestawie"
-      },
-      {
-        "value": 21,
-        "suffix": "%",
-        "label": "do 21% CTR miniatur w 1. godzinie (kanał klienta)"
-      }
-    ]
+    "deltaLine": false,
+    "delta": null,
+    "align": "lewo"
   },
   "inside": {
     "eyebrow": "Co dostajesz",
@@ -204,6 +237,11 @@
         "d": "Pion 9:16 na rolki i stories, kwadrat 1:1 na posty. Bez przycinania."
       }
     ],
+    "cardEyebrow": "",
+    "cardTitle": "",
+    "cardTitleLight": "",
+    "cardText": "",
+    "listEyebrow": "",
     "align": "lewo"
   },
   "special": {
@@ -212,6 +250,32 @@
     "title": "",
     "titleLight": "",
     "lead": "",
+    "scale": {
+      "show": false,
+      "eyebrow": "",
+      "title": "",
+      "sub": "",
+      "watermark": "",
+      "unit": "",
+      "xStart": "",
+      "xEnd": "",
+      "base": {
+        "label": "",
+        "value": 1,
+        "display": ""
+      },
+      "ours": {
+        "label": "",
+        "value": 1,
+        "display": ""
+      },
+      "delta": "",
+      "source": ""
+    },
+    "table": [],
+    "timeline": [],
+    "steps": [],
+    "cards": [],
     "title2": "Dlaczego dziś,",
     "title2Light": "a nie 31 października.",
     "cards2": [
@@ -231,6 +295,7 @@
         "d": "Podpisz PRO od listopada do 31 października, a halloweenową rolkę dostajesz w prezencie."
       }
     ],
+    "note": "",
     "align": "lewo"
   },
   "opinie": {
@@ -242,13 +307,14 @@
     "show": true,
     "eyebrow": "Realizacje",
     "title": "Zobacz,",
-    "titleLight": "jak to wygląda w praktyce."
+    "titleLight": "jak to wygląda w praktyce.",
+    "client": "",
+    "limit": null
   },
   "faq": {
     "eyebrow": "Pytania",
     "title": "Odpowiadamy,",
     "titleLight": "zanim zapytasz.",
-    "align": "lewo",
     "items": [
       {
         "q": "Czy musimy coś nagrywać?",
@@ -266,13 +332,19 @@
         "q": "Do kogo należą materiały?",
         "a": "Do Was, po zapłacie. Możecie wrzucić je też za rok."
       }
-    ]
+    ],
+    "align": "lewo"
   },
   "doubts": {
     "eyebrow": "Wątpliwości",
     "title": "Każde „ale”",
     "titleLight": "zasługuje na odpowiedź.",
-    "items": [],
+    "items": [
+      {
+        "q": "",
+        "a": ""
+      }
+    ],
     "callText": "",
     "phone": "668 472 759",
     "align": "lewo"
@@ -281,15 +353,14 @@
     "eyebrow": "Inwestycja",
     "title": "Wybierz",
     "titleLight": "swój poziom strachu.",
-    "saveLabel": "Zyskujesz",
     "cards": [
       {
         "tag": "Szybko i na czas",
         "name": "Upiorna rolka",
         "price": "790",
-        "per": "zł netto",
         "value": 1275,
         "valueLabel": "normalnie w trybie 48 h",
+        "per": "zł netto",
         "note": "Jednorazowo. Gotowa w 48 godzin.",
         "items": [
           "animowana rolka 8–15 s z Twoim logo",
@@ -305,9 +376,9 @@
         "tag": "Najczęściej wybierany",
         "name": "Straszny zestaw",
         "price": "2 790",
-        "per": "zł netto",
         "value": 5085,
         "valueLabel": "normalnie w trybie ekspresowym",
+        "per": "zł netto",
         "note": "Jednorazowo. Zamówienia do 29.10 — gotowe przed Halloween.",
         "items": [
           "3 animowane rolki z logo",
@@ -324,6 +395,8 @@
         "tag": "Najlepsza wartość",
         "name": "PRO",
         "price": "7 200",
+        "value": null,
+        "valueLabel": "",
         "per": "zł netto / mies.",
         "note": "Min. 6 miesięcy od listopada. Upiorna rolka gratis przy podpisaniu do 31.10.",
         "items": [
@@ -337,7 +410,9 @@
         "ctaHref": "/generator?pakiet=pro"
       }
     ],
-    "footnote": "Oferta do 31 października 2026. Rolki i zestawy zamówione do 29.10 dostarczamy przed Halloween."
+    "footnote": "Oferta do 31 października 2026. Rolki i zestawy zamówione do 29.10 dostarczamy przed Halloween.",
+    "saveLabel": "",
+    "compareLabel": ""
   },
   "final": {
     "eyebrow": "Następny krok",
@@ -346,16 +421,5 @@
     "lead": "10 minut rozmowy albo jedna wiadomość wystarczy. Logo i kolory masz — resztę zrobimy w 48 godzin.",
     "cta": "Rezerwuję termin",
     "align": "lewo"
-  },
-  "deadline": {
-    "date": "2026-10-31T23:59:59+01:00",
-    "eyebrow": "Tik-tak, tik-tak",
-    "title": "Oferta do",
-    "titleBold": "31 października",
-    "lead": "Rolki robimy w 48 godzin — zamów do 29 października, a opublikujesz je przed Halloween. Bonus do PRO: tylko do 31.10.",
-    "expiredTitle": "Oferta zniknęła.",
-    "expiredLead": "Jak duch o północy.",
-    "expiredHo": "Buuu!",
-    "expiredNote": "Halloween minęło, ale stała oferta działa cały rok. Zajrzyj albo napisz — zaplanujemy coś na święta."
   }
 }
