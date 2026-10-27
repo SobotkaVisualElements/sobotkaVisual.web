@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><meta name="robots" content="noindex, nofollow">
+<title>Stopka e-mail — Sobotka Visual</title>
+<style>
+body{margin:0;font-family:system-ui,sans-serif;background:#f4f2fb;color:#1a1150}
+.w{max-width:680px;margin:40px auto;padding:0 16px}
+h1{font-size:22px}ol{line-height:1.7;font-size:15px}
+.box{background:#fff;border-radius:14px;padding:24px;box-shadow:0 10px 30px -18px rgba(26,17,80,.4);margin:18px 0}
+button{font:inherit;font-weight:700;border:0;border-radius:999px;padding:12px 22px;background:#e41f49;color:#fff;cursor:pointer}
+#ok{margin-left:10px;color:#178a55;font-weight:700}
+</style></head><body><div class="w">
+<h1>Stopka do Gmaila</h1>
+<ol><li>Kliknij <b>Kopiuj stopkę</b>.</li><li>Gmail → ⚙️ <b>Zobacz wszystkie ustawienia</b> → <b>Ogólne</b> → <b>Podpis</b> → <b>Utwórz nowy</b>.</li><li>Wklej (Ctrl+V) i na dole kliknij <b>Zapisz zmiany</b>.</li></ol>
+<button id="cp" type="button">Kopiuj stopkę</button><span id="ok"></span>
+<div class="box"><div id="sig">
+<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,Helvetica,sans-serif;color:#1a1150;border-collapse:collapse">
+<tr><td style="padding:0 0 2px 0;font-size:16px;font-weight:bold;color:#1a1150">Krzysztof Sobotka</td></tr>
+<tr><td style="padding:0 0 10px 0;font-size:13px;color:#5b5585">3D Visual &amp; Motion Artist · <b style="color:#e41f49">Sobotka Visual Creations</b></td></tr>
+<tr><td style="padding:0 0 3px 0;font-size:13px;color:#1a1150">tel. <a href="tel:+48668472759" style="color:#1a1150;text-decoration:none">668 472 759</a> · <a href="mailto:kontakt@sobotkavisual.pl" style="color:#1a1150;text-decoration:none">kontakt@sobotkavisual.pl</a></td></tr>
+<tr><td style="padding:0 0 12px 0;font-size:13px"><a href="https://sobotkavisual.pl/?utm_source=email&amp;utm_medium=stopka" style="color:#e41f49;font-weight:bold;text-decoration:none">sobotkavisual.pl</a> <span style="color:#b9b5d6">|</span> <a href="https://www.youtube.com/@SobotkaVisualCreations" style="color:#5b5585;text-decoration:none">YouTube</a> · <a href="https://www.instagram.com/sobotkavisualcreations/" style="color:#5b5585;text-decoration:none">Instagram</a> · <a href="https://www.facebook.com/profile.php?id=100087789733469" style="color:#5b5585;text-decoration:none">Facebook</a> · <a href="https://www.tiktok.com/@sobotkavisualcreations" style="color:#5b5585;text-decoration:none">TikTok</a></td></tr>
+<tr><td><a href="https://sobotkavisual.pl/?utm_source=email&amp;utm_medium=stopka"><img src="https://sobotkavisual.pl/podpis/svc-stopka.png" width="450" height="113" alt="Sobotka Visual Creations — montaż, animacja i motion design dla firm" style="display:block;border:0;border-radius:10px;width:450px;height:113px"></a></td></tr>
+</table></div></div>
+<script>
+document.getElementById('cp').onclick=async()=>{const el=document.getElementById('sig');const ok=document.getElementById('ok');
+try{await navigator.clipboard.write([new ClipboardItem({'text/html':new Blob([el.innerHTML],{type:'text/html'}),'text/plain':new Blob([el.innerText],{type:'text/plain'})})]);ok.textContent='Skopiowano ✓';}
+catch(e){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');ok.textContent='Skopiowano ✓';}};
+</script></div></body></html>
