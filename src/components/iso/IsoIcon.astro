@@ -110,14 +110,41 @@ const phT = box(2, -4, 40, 16, 4, 30); // telefon na statywie
 const legs = [[-10, 8], [12, 10], [2, -12]].map(([x, y]) => `M${P(10, -2, 40).map(fx1).join(' ')} L${P(x, y, 9).map(fx1).join(' ')}`).join(' ');
 const ringC = P(-14, 10, 62);
 const bag = box(-22, -14, 9, 40, 26, 42);
-const bagH = `M${P(-12, -1, 51).map(fx1).join(' ')} C${P(-12, -1, 72).map(fx1).join(' ')} ${P(8, -1, 72).map(fx1).join(' ')} ${P(8, -1, 51).map(fx1).join(' ')}`;
+const bagHandle = (y: number) => `M${P(-12, y, 47).map(fx1).join(' ')} C${P(-12, y, 70).map(fx1).join(' ')} ${P(8, y, 70).map(fx1).join(' ')} ${P(8, y, 47).map(fx1).join(' ')}`;
+const bagHF = bagHandle(12), bagHB = bagHandle(-14);
+const bagO = P(-2, -1, 51); // środek otworu torby
 const desk = box(-36, -20, 9, 72, 40, 4);
 const person = (x: number, y: number) => { const b = P(x, y, 13); return { body: `M${fx1(b[0] - 17)} ${fx1(b[1])} C${fx1(b[0] - 17)} ${fx1(b[1] - 30)} ${fx1(b[0] + 17)} ${fx1(b[1] - 30)} ${fx1(b[0] + 17)} ${fx1(b[1])} A17 6 0 0 1 ${fx1(b[0] - 17)} ${fx1(b[1])} Z`, head: [b[0], b[1] - 40] }; };
 const hrA = person(-14, 6), hrB = person(16, -10);
 const mega = { h: P(-10, 6, 30), m: P(14, -10, 52) };
-const ballC = P(0, 0, 9);
-const goal = `M${P(-36, -30, 9).map(fx1).join(' ')} L${P(-36, -30, 46).map(fx1).join(' ')} L${P(30, -30, 46).map(fx1).join(' ')} L${P(30, -30, 9).map(fx1).join(' ')} M${P(-36, -30, 46).map(fx1).join(' ')} L${P(-36, -42, 40).map(fx1).join(' ')} M${P(30, -30, 46).map(fx1).join(' ')} L${P(30, -42, 40).map(fx1).join(' ')}`;
-const net = Array.from({ length: 6 }, (_, k) => `M${P(-36 + k * 13, -30, 9).map(fx1).join(' ')} L${P(-36 + k * 13, -30, 46).map(fx1).join(' ')}`).join(' ') + Array.from({ length: 3 }, (_, k) => ` M${P(-36, -30, 18 + k * 10).map(fx1).join(' ')} L${P(30, -30, 18 + k * 10).map(fx1).join(' ')}`).join('');
+// tuba: stożek styczny do elips (wylot i tył), oś h → m
+const mAx = [mega.m[0] - mega.h[0], mega.m[1] - mega.h[1]], mLen = Math.hypot(mAx[0], mAx[1]);
+const mA = [mAx[0] / mLen, mAx[1] / mLen], mN = [-mA[1], mA[0]], mDeg = (Math.atan2(mA[1], mA[0]) * 180) / Math.PI;
+const mOff = (o: number[], t: number, n: number) => [o[0] + mA[0] * t + mN[0] * n, o[1] + mA[1] * t + mN[1] * n];
+const MR = 21, Mr = 8, HR = 6;
+const megaCone = `M${mOff(mega.h, 0, -HR).map(fx1).join(' ')} L${mOff(mega.m, 0, -MR).map(fx1).join(' ')} L${mOff(mega.m, 0, MR).map(fx1).join(' ')} L${mOff(mega.h, 0, HR).map(fx1).join(' ')} Z`;
+const megaShade = `M${mOff(mega.h, 0, HR * .1).map(fx1).join(' ')} L${mOff(mega.m, 0, MR * .1).map(fx1).join(' ')} L${mOff(mega.m, 0, MR).map(fx1).join(' ')} L${mOff(mega.h, 0, HR).map(fx1).join(' ')} Z`;
+const megaGrip = mOff(mega.h, 12, HR);
+const megaBack = mOff(mega.h, -6, 0);
+// piłka: leci z przodu, odbija się dwa razy i wpada w siatkę (pozycje liczone w rzucie izo, animacja SMIL)
+const GF = -24, GB = -40, GX0 = -34, GX1 = 28, GZf = 49, GZb = 39; // bramka: przód / tył / szerokość / wysokość
+const goalFront = `M${P(GX0, GF, 9).map(fx1).join(' ')} L${P(GX0, GF, GZf).map(fx1).join(' ')} L${P(GX1, GF, GZf).map(fx1).join(' ')} L${P(GX1, GF, 9).map(fx1).join(' ')}`;
+const goalBack = [GX0, GX1].map((x) => `M${P(x, GF, GZf).map(fx1).join(' ')} L${P(x, GB, GZb).map(fx1).join(' ')} L${P(x, GB, 9).map(fx1).join(' ')} M${P(x, GF, 9).map(fx1).join(' ')} L${P(x, GB, 9).map(fx1).join(' ')}`).join(' ') + ` M${P(GX0, GB, GZb).map(fx1).join(' ')} L${P(GX1, GB, GZb).map(fx1).join(' ')}`;
+const L2 = (a: number[], b: number[]) => `M${a.map(fx1).join(' ')} L${b.map(fx1).join(' ')}`;
+const netBack = [...Array.from({ length: 7 }, (_, k) => GX0 + k * (GX1 - GX0) / 6).map((x) => L2(P(x, GB, 9), P(x, GB, GZb))), ...[19, 29].map((z) => L2(P(GX0, GB, z), P(GX1, GB, z)))].join(' ');
+const netRoof = [...Array.from({ length: 5 }, (_, k) => GX0 + (k + 1) * (GX1 - GX0) / 6).map((x) => L2(P(x, GF, GZf), P(x, GB, GZb))), L2(P(GX0, (GF + GB) / 2, (GZf + GZb) / 2), P(GX1, (GF + GB) / 2, (GZf + GZb) / 2))].join(' ');
+const netSide = [GX0, GX1].map((x) => [19, 29, 39].map((z) => L2(P(x, GF, Math.min(z, GZf)), P(x, GB, Math.min(z, GZb)))).join(' ') + ' ' + L2(P(x, (GF + GB) / 2, 9), P(x, (GF + GB) / 2, (GZf + GZb) / 2))).join(' ');
+const BR = 13; // promień piłki na ekranie
+const ballZ = (u: number) => u < .45 ? 17 * Math.sin(Math.PI * u / .45) : u < .78 ? 8 * Math.sin(Math.PI * (u - .45) / .33) : 3 * Math.sin(Math.PI * (u - .78) / .22);
+const BN = 36, bT0 = .06, bT1 = .74;
+const bU = Array.from({ length: BN + 1 }, (_, i) => i / BN);
+const bXY = (u: number) => { const d = 1 - Math.pow(1 - u, 1.5); return [-6 + d * 4, 32 + d * (-36 - 32)]; };
+const ballPos = bU.map((u) => { const [x, y] = bXY(u); return P(x, y, 9 + BR + ballZ(u)); });
+const shPos = bU.map((u) => { const [x, y] = bXY(u); return P(x, y, 9); });
+const ballKT = ['0', ...bU.map((u) => (bT0 + u * (bT1 - bT0)).toFixed(3)), '1'].join(';');
+const tv = (a: number[][]) => [a[0], ...a, a[a.length - 1]].map((q) => q.map(fx1).join(' ')).join(';');
+const ballVals = tv(ballPos), shVals = tv(shPos);
+const shScale = ['1', ...bU.map((u) => (1 - ballZ(u) / 40).toFixed(2)), '1'].map((v) => `${v} ${v}`).join(';');
 // kalendarz grudniowy: tekst na przedniej ścianie (skos jak ściana izometryczna)
 const calM = (x: number, z: number) => { const q = calFace(x, z); return `matrix(0.866 0.5 0 1 ${q[0].toFixed(1)} ${q[1].toFixed(1)})`; };
 // żarówka: kopuła + szyjka z eliptycznym dołem
@@ -456,9 +483,9 @@ const sigD = `M${P(-24, -22, 17)[0].toFixed(1)} ${P(-24, -22, 17)[1].toFixed(1)}
 
 		{name === 'tworca' && (<>
 			<circle cx={ringC[0]} cy={ringC[1]} r="36" fill={g('glowG')} class="iso-pulse" />
+			<path d={`M${ringC[0]} ${ringC[1] + 22} L${P(-14, 10, 9).map(fx1).join(' ')}`} stroke="#3a2399" stroke-width="3" />
 			<circle cx={ringC[0]} cy={ringC[1]} r="25" fill="none" stroke="#fff3b0" stroke-width="7" class="iso-ringlight" />
 			<circle cx={ringC[0]} cy={ringC[1]} r="25" fill="none" stroke="#ffc65c" stroke-width="2" opacity=".8" />
-			<path d={`M${ringC[0]} ${ringC[1] + 25} L${P(-14, 10, 9).map(fx1).join(' ')}`} stroke="#3a2399" stroke-width="3" />
 			<path d={legs} stroke="#2b1979" stroke-width="3" stroke-linecap="round" fill="none" />
 			<polygon points={phT.left} fill="#1b1150" /><polygon points={phT.right} fill="#2a1873" /><polygon points={phT.top} fill="#3a2399" />
 			<polygon points={qd(P(4, 0, 43), P(16, 0, 43), P(16, 0, 67), P(4, 0, 67))} fill={g('cy')} opacity=".95" />
@@ -477,28 +504,44 @@ const sigD = `M${P(-24, -22, 17)[0].toFixed(1)} ${P(-24, -22, 17)[1].toFixed(1)}
 
 		{name === 'marketing' && (<>
 			<circle cx={c[0] + 6} cy={c[1] - 56} r="40" fill={g('glowM')} class="iso-pulse" />
-			<path d={`M${fx1(mega.h[0] - 4)} ${fx1(mega.h[1] + 4)} L${fx1(mega.h[0] + 2)} ${fx1(mega.h[1] + 22)} L${fx1(mega.h[0] + 10)} ${fx1(mega.h[1] + 20)} L${fx1(mega.h[0] + 6)} ${fx1(mega.h[1] + 2)} Z`} fill="#3a2399" />
 			<g class="iso-mega">
-				<path d={`M${fx1(mega.h[0] - 10)} ${fx1(mega.h[1] - 4)} L${fx1(mega.m[0] - 8)} ${fx1(mega.m[1] - 28)} L${fx1(mega.m[0] + 16)} ${fx1(mega.m[1] + 14)} L${fx1(mega.h[0] + 8)} ${fx1(mega.h[1] + 8)} Z`} fill={g('mag')} />
-				<path d={`M${fx1(mega.h[0] - 4)} ${fx1(mega.h[1] + 4)} L${fx1(mega.m[0] + 4)} ${fx1(mega.m[1] - 6)} L${fx1(mega.m[0] + 16)} ${fx1(mega.m[1] + 14)} L${fx1(mega.h[0] + 8)} ${fx1(mega.h[1] + 8)} Z`} fill="#000" opacity=".18" />
-				<ellipse cx={mega.m[0] + 4} cy={mega.m[1] - 7} rx="9" ry="23" transform={`rotate(-38 ${mega.m[0] + 4} ${mega.m[1] - 7})`} fill="#ffb3ea" />
-				<ellipse cx={mega.m[0] + 4} cy={mega.m[1] - 7} rx="5" ry="15" transform={`rotate(-38 ${mega.m[0] + 4} ${mega.m[1] - 7})`} fill="#7a24c9" />
-				<ellipse cx={mega.h[0] - 1} cy={mega.h[1] + 2} rx="7" ry="10" transform={`rotate(-38 ${mega.h[0] - 1} ${mega.h[1] + 2})`} fill="#c94bd6" />
+				<path d={`M${fx1(megaGrip[0] - 3)} ${fx1(megaGrip[1] - 2)} l3 15 l7 -2 l-3 -14 Z`} fill="#3a2399" />
+				<ellipse cx={megaBack[0]} cy={megaBack[1]} rx="4" ry="7" transform={`rotate(${mDeg.toFixed(1)} ${fx1(megaBack[0])} ${fx1(megaBack[1])})`} fill="#7a24c9" />
+				<path d={`M${mOff(mega.h, -6, -HR * .7).map(fx1).join(' ')} L${mOff(mega.h, 0, -HR).map(fx1).join(' ')} L${mOff(mega.h, 0, HR).map(fx1).join(' ')} L${mOff(mega.h, -6, HR * .7).map(fx1).join(' ')} Z`} fill="#9a35d6" />
+				<path d={megaCone} fill={g('mag')} />
+				<path d={megaShade} fill="#000" opacity=".16" />
+				<ellipse cx={mega.m[0]} cy={mega.m[1]} rx={Mr} ry={MR} transform={`rotate(${mDeg.toFixed(1)} ${fx1(mega.m[0])} ${fx1(mega.m[1])})`} fill="#ffb3ea" />
+				<ellipse cx={mega.m[0] - mA[0] * 1.2} cy={mega.m[1] - mA[1] * 1.2} rx={Mr - 3} ry={MR - 4} transform={`rotate(${mDeg.toFixed(1)} ${fx1(mega.m[0] - mA[0] * 1.2)} ${fx1(mega.m[1] - mA[1] * 1.2)})`} fill="#5a1aa8" />
+				<ellipse cx={mega.m[0] - mA[0] * 2.4} cy={mega.m[1] - mA[1] * 2.4} rx={Mr - 6} ry={MR - 11} transform={`rotate(${mDeg.toFixed(1)} ${fx1(mega.m[0] - mA[0] * 2.4)} ${fx1(mega.m[1] - mA[1] * 2.4)})`} fill="#3a0f7a" />
 			</g>
 			<g class="iso-waves iso-waves-m">{[0, 1, 2].map((k) => <path style={`--k:${k}`} d={`M${fx1(mega.m[0] + 22 + k * 9)} ${fx1(mega.m[1] - 38 - k * 5)} q${12 + k * 4} ${18 + k * 4} ${2 + k * 3} ${40 + k * 8}`} />)}</g>
 			<g class="iso-sparks">{[[-40, -96], [44, -100], [-30, -40]].map(([dx, dy], k) => <text x={c[0] + dx} y={c[1] + dy} font-family="Montserrat, sans-serif" font-weight="900" font-size="15" fill={k % 2 ? '#8ff4ff' : '#ff9be6'} style={`--k:${k}`}>{['%', '+', '★'][k]}</text>)}</g>
 		</>)}
 
 		{name === 'sportowiec' && (<>
-			<path d={net} stroke="rgba(255,255,255,.22)" stroke-width="1" />
-			<path d={goal} stroke="#fff" stroke-width="3" stroke-linecap="round" fill="none" />
-			<ellipse cx={ballC[0] + 6} cy={ballC[1] + 6} rx="17" ry="7" fill="#0b0730" opacity=".5" class="iso-gshadow iso-ballsh" />
-			<g class="iso-ball">
-				<circle cx={ballC[0] + 6} cy={ballC[1] - 18} r="17" fill="#fff" />
-				<path d={`M${ballC[0] + 6} ${ballC[1] - 25} l6 4 l-2 7 h-8 l-2 -7 Z`} fill="#1a0f52" />
-				<path d={`M${ballC[0] - 9} ${ballC[1] - 20} l5 -2 l3 6 l-3 5 l-5 -2 Z M${ballC[0] + 21} ${ballC[1] - 20} l-5 -2 l-3 6 l3 5 l5 -2 Z M${ballC[0] + 1} ${ballC[1] - 4} l4 -5 h6 l3 5 Z`} fill="#1a0f52" />
-				<circle cx={ballC[0] + 1} cy={ballC[1] - 25} r="4" fill="#fff" opacity=".5" />
+			<g class="iso-net"><path d={netBack} stroke="rgba(255,190,240,.42)" stroke-width="1" fill="none" />
+				<animateTransform attributeName="transform" type="translate" dur="2.6s" repeatCount="indefinite" values="0 0;0 0;-2.2 -1.4;.6 .4;0 0;0 0" keyTimes={`0;${(bT1 - .02).toFixed(2)};${(bT1 + .03).toFixed(2)};${(bT1 + .08).toFixed(2)};${(bT1 + .13).toFixed(2)};1`} /></g>
+			<path d={netRoof + ' ' + netSide} stroke="rgba(255,190,240,.32)" stroke-width="1" fill="none" />
+			<path d={goalBack} stroke="#d8d2ff" stroke-width="1.6" stroke-linecap="round" fill="none" opacity=".75" />
+			<g class="iso-ballgo">
+				<animate attributeName="opacity" dur="2.6s" repeatCount="indefinite" values="0;1;1;0;0" keyTimes="0;.05;.86;.94;1" />
+				<ellipse cx="0" cy="0" rx="13" ry="5.5" fill="#0b0730" opacity=".5">
+					<animateTransform attributeName="transform" type="translate" dur="2.6s" repeatCount="indefinite" values={shVals} keyTimes={ballKT} />
+					<animateTransform attributeName="transform" type="scale" additive="sum" dur="2.6s" repeatCount="indefinite" values={shScale} keyTimes={ballKT} />
+				</ellipse>
+				<g>
+					<animateTransform attributeName="transform" type="translate" dur="2.6s" repeatCount="indefinite" values={ballVals} keyTimes={ballKT} />
+					<g transform="scale(.765)">
+						<g><animateTransform attributeName="transform" type="rotate" dur="2.6s" repeatCount="indefinite" values="0;0;420;420" keyTimes={`0;${bT0};${bT1};1`} />
+							<circle r="17" fill="#fff" />
+							<path d="M0 -7 l6 4 l-2 7 h-8 l-2 -7 Z" fill="#1a0f52" />
+							<path d="M-15 -2 l5 -2 l3 6 l-3 5 l-5 -2 Z M15 -2 l-5 -2 l-3 6 l3 5 l5 -2 Z M-5 14 l4 -5 h6 l3 5 Z M-4 -16 l4 3 l4 -3 Z" fill="#1a0f52" />
+						</g>
+						<circle cx="-5" cy="-7" r="4" fill="#fff" opacity=".5" />
+					</g>
+				</g>
 			</g>
+			<path d={goalFront} stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" />
 			<g class="iso-sparks">{[[-40, -70], [44, -76], [30, -100]].map(([dx, dy], k) => <path d={star(c[0] + dx, c[1] + dy, 5, 2)} fill={k % 2 ? '#2ee59d' : '#ffc65c'} style={`--k:${k}`} />)}</g>
 		</>)}
 
@@ -510,9 +553,11 @@ const sigD = `M${P(-24, -22, 17)[0].toFixed(1)} ${P(-24, -22, 17)[1].toFixed(1)}
 		</>)}
 
 		{name === 'sprzedaz' && (<>
-			<g class="iso-coins">{[0, 1, 2].map((k) => <g style={`--k:${k}`}><ellipse cx={c[0] - 4 + k * 8} cy={c[1] - 52} rx="9" ry="9" fill={g('gold')} stroke="#d98b1c" stroke-width="1.5" /><text x={c[0] - 4 + k * 8} y={c[1] - 48.5} text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="8" fill="#8a4a00">zł</text></g>)}</g>
-			<polygon points={bag.left} fill={g('magD')} /><polygon points={bag.right} fill={g('magR')} /><polygon points={bag.top} fill="#3a1470" />
-			<path d={bagH} stroke="#ffb3ea" stroke-width="3.5" fill="none" stroke-linecap="round" />
+			<path d={bagHB} stroke="#c77ad8" stroke-width="3.2" fill="none" stroke-linecap="round" />
+			<polygon points={bag.top} fill="#2a0e57" />
+			<g class="iso-coins">{[0, 1, 2].map((k) => <g style={`--k:${k};--dx:${[-10, 2, 12][k]}px`}><ellipse cx={bagO[0] - 2 + k * 3} cy={bagO[1] + 14} rx="8.5" ry="8.5" fill={g('gold')} stroke="#d98b1c" stroke-width="1.5" /><text x={bagO[0] - 2 + k * 3} y={bagO[1] + 17.5} text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="900" font-size="7.5" fill="#8a4a00">zł</text></g>)}</g>
+			<polygon points={bag.left} fill={g('magD')} /><polygon points={bag.right} fill={g('magR')} />
+			<path d={bagHF} stroke="#ffb3ea" stroke-width="3.5" fill="none" stroke-linecap="round" />
 			<path class="iso-trend" pathLength="1" d={`M${P(-22, 12, 22).map(fx1).join(' ')} L${P(-12, 12, 32).map(fx1).join(' ')} L${P(-2, 12, 27).map(fx1).join(' ')} L${P(10, 12, 42).map(fx1).join(' ')}`} />
 			<path d={`M${P(10, 12, 42)[0] - 6} ${P(10, 12, 42)[1] - 1} L${P(10, 12, 42)[0] + 1} ${P(10, 12, 42)[1] - 5} L${P(10, 12, 42)[0] + 1} ${P(10, 12, 42)[1] + 3}`} class="iso-arrow" />
 		</>)}
@@ -697,16 +742,12 @@ const sigD = `M${P(-24, -22, 17)[0].toFixed(1)} ${P(-24, -22, 17)[1].toFixed(1)}
 	.iso-mega { transform-box: fill-box; transform-origin: 20% 80%; animation: iso-shout 1.8s ease-in-out infinite; }
 	@keyframes iso-shout { 0%,100% { transform: rotate(0); } 20% { transform: rotate(-5deg) scale(1.04); } 40% { transform: rotate(2deg); } }
 	.iso-waves-m path { stroke: #8ff4ff; }
-	.iso-ball { transform-box: fill-box; transform-origin: 50% 100%; animation: iso-bounce 1.2s cubic-bezier(.5,0,.5,1) infinite; }
-	@keyframes iso-bounce { 0%,100% { transform: translateY(0) scale(1.08, .9); } 12% { transform: translateY(-4px) scale(1); } 50% { transform: translateY(-44px) rotate(160deg); } 88% { transform: translateY(-4px) rotate(330deg); } }
-	.iso-ballsh { animation: iso-bsh 1.2s cubic-bezier(.5,0,.5,1) infinite; }
-	@keyframes iso-bsh { 0%,100% { transform: scale(1); opacity: .55; } 50% { transform: scale(.55); opacity: .25; } }
 	.iso-badge { transform-box: fill-box; transform-origin: center; animation: iso-pop 3s ease-out infinite; }
 	@keyframes iso-pop { 0%,45%,100% { transform: scale(0); } 55% { transform: scale(1.25); } 62%,90% { transform: scale(1); } }
 	.iso-loupe { animation: iso-scanx 3s ease-in-out infinite; }
 	@keyframes iso-scanx { 0%,100% { transform: translate(0, 0); } 50% { transform: translate(-42px, 16px); } }
 	.iso-coins g { transform-box: fill-box; transform-origin: center; animation: iso-coinup 2.4s calc(var(--k) * .35s) ease-out infinite; }
-	@keyframes iso-coinup { 0% { transform: translateY(20px) scale(.6); opacity: 0; } 25% { opacity: 1; } 70% { transform: translateY(-38px) scale(1); opacity: 1; } 100% { transform: translateY(-50px) scale(.9); opacity: 0; } }
+	@keyframes iso-coinup { 0% { transform: translate(0, 8px) scale(.8); opacity: 1; } 55% { transform: translate(calc(var(--dx) * .7), -40px) scale(1); opacity: 1; } 100% { transform: translate(var(--dx), -58px) scale(.9); opacity: 0; } }
 	.iso-n-sprzedaz .iso-trend { stroke: #2ee59d; stroke-width: 3; }
 	.iso-n-sprzedaz .iso-arrow { stroke: #2ee59d; }
 

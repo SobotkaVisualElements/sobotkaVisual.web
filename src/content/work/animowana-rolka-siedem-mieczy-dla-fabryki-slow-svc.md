@@ -1,5 +1,5 @@
 ---
-title: Animowana rolka „Siedem Mieczy” dla Fabryki Słów | SVC
+title: Animowana rolka „Siedem Mieczy” dla Fabryki Słów
 description: Pionowa rolka do książki Anthony’ego Ryana, zrobiona z ilustracji okładki. Złote liternictwo, malarska paralaksa i 16 sekund narracji, która ma zostać w głowie.
 category: Animacja
 client: Fabryka Słów

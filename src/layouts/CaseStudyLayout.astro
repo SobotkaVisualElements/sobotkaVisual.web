@@ -25,9 +25,50 @@ const facts = [
 		: [{ label: 'Rok', value: String(year) }]),
 	{ label: 'Kategoria', value: category },
 ].filter(Boolean) as { label: string; value: string; status?: any }[];
+
+// data realizacji (pole „Data realizacji” w panelu); bez niej tylko rok
+const d: any = project.data;
+const made: Date | undefined = d.date instanceof Date && !isNaN(+d.date) ? d.date : undefined;
+const madeISO = made ? made.toISOString().slice(0, 10) : String(year);
+const madeLabel = made ? made.toLocaleDateString('pl-PL', { month: 'long', year: 'numeric' }) : String(year);
+const site = 'https://sobotkavisual.pl';
+const pageUrl = `${site}/work/${project.id}/`;
+const abs = (u?: string) => (u ? (u.startsWith('http') ? u : site + u) : undefined);
+const img = abs(cover || d.poster || d.layers?.find((l: any) => l?.image)?.image);
+// dane strukturalne: realizacja jako CreativeWork autorstwa studia + okruszki
+const ld = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'CreativeWork',
+			'@id': `${pageUrl}#realizacja`,
+			name: title,
+			headline: title,
+			description,
+			url: pageUrl,
+			...(img ? { image: img } : {}),
+			dateCreated: madeISO,
+			genre: category,
+			inLanguage: 'pl',
+			...(role ? { keywords: role } : {}),
+			creator: { '@type': 'Organization', '@id': `${site}/#firma`, name: 'Sobotka Visual Creations' },
+			...(client ? { mentions: { '@type': 'Organization', name: client } } : {}),
+			...(/^[\w-]{11}$/.test(d.youtube || '') ? { video: { '@type': 'VideoObject', name: title, description, embedUrl: `https://www.youtube.com/embed/${d.youtube}`, ...(img ? { thumbnailUrl: img } : {}), uploadDate: madeISO } } : {}),
+		},
+		{
+			'@type': 'BreadcrumbList',
+			itemListElement: [
+				{ '@type': 'ListItem', position: 1, name: 'Strona główna', item: `${site}/` },
+				{ '@type': 'ListItem', position: 2, name: 'Realizacje', item: `${site}/work/` },
+				{ '@type': 'ListItem', position: 3, name: title, item: pageUrl },
+			],
+		},
+	],
+};
 ---
 
-<BaseLayout title={title} description={description} type="article">
+<BaseLayout title={title} description={description} type="article" image={img}>
+	<script type="application/ld+json" set:html={JSON.stringify(ld)} />
 	<article data-pagefind-body data-pagefind-filter="type:Work">
 		<header class="border-b-2 border-line bg-paper">
 			<div class="mx-auto max-w-[860px] px-6 pt-16 pb-10">
@@ -41,7 +82,7 @@ const facts = [
 				<div class="mt-6 flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.1em] text-orange-deep">
 					<span>{category}</span>
 					<span class="text-ink/30" aria-hidden="true">·</span>
-					<span class="text-ink/45">{year}</span>
+					<time class="text-ink/60" datetime={madeISO}>{madeLabel}</time>
 					{(project.data as any).clientLogo && (
 						<img src={(project.data as any).clientLogo} alt={client ? `Logo: ${client}` : 'Logo klienta'} class:list={['ml-auto h-11 w-auto max-w-[170px] object-contain', (project.data as any).clientLogoTone !== 'oryginalne' && 'logo-dark']} />
 					)}
@@ -97,7 +138,7 @@ const facts = [
 				{
 					facts.map((fact) => (
 						<div>
-							<dt class="text-xs font-bold uppercase tracking-wider text-ink/45">
+							<dt class="text-xs font-bold uppercase tracking-wider text-ink/60">
 								{fact.label}
 							</dt>
 							<dd class="mt-1 font-semibold text-ink">
@@ -134,7 +175,7 @@ const facts = [
 					class="group flex items-center justify-between gap-4 rounded-card border-2 border-ink bg-cloud p-6 shadow-pop-sm transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-pop"
 				>
 					<span>
-						<span class="text-xs font-bold uppercase tracking-wider text-ink/45">
+						<span class="text-xs font-bold uppercase tracking-wider text-ink/60">
 							Następna realizacja
 						</span>
 						<span class="mt-1 block text-xl font-bold text-ink group-hover:text-navy">

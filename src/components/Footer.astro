@@ -1,8 +1,9 @@
 ---
 import Logo from './Logo.astro';
+import { site } from '../site.config';
 const columns = [
 	{ heading: 'Nawigacja', links: [
-		{ href: '/#oferta', label: 'Oferta' }, { href: '/work', label: 'Realizacje' }, { href: '/manifest', label: 'Manifest' },
+		{ href: '/#oferta', label: 'Oferta' }, { href: '/work', label: 'Realizacje' }, { href: '/o-nas/', label: 'O nas' }, { href: '/manifest', label: 'Manifest' },
 		{ href: '/#faq', label: 'FAQ' }, { href: '/#kontakt', label: 'Kontakt' },
 	]},
 	{ heading: 'Kontakt', links: [
@@ -20,7 +21,7 @@ const columns = [
 		{ href: '/obszar-dzialania/', label: 'Obszar działania — miasta' },
 	]},
 	{ heading: 'Social media', links: [
-		{ href: '#', label: 'YouTube' }, { href: '#', label: 'Facebook' }, { href: '#', label: 'TikTok' },
+		{ href: site.profiles.youtube, label: 'YouTube' }, { href: site.profiles.instagram, label: 'Instagram' }, { href: site.profiles.facebook, label: 'Facebook' }, { href: site.profiles.tiktok, label: 'TikTok' },
 	]},
 ];
 ---
@@ -35,7 +36,7 @@ const columns = [
 			<div>
 				<div class="mb-3.5 text-sm font-bold text-cloud">{col.heading}</div>
 				<div class="flex flex-col gap-2.5 text-sm">
-					{col.links.map((link) => <a href={link.href} class="text-sky-mist hover:text-orange">{link.label}</a>)}
+					{col.links.map((link) => <a href={link.href} {...(link.href.startsWith("http") ? { target: "_blank", rel: "noopener me" } : {})} class="text-sky-mist hover:text-orange">{link.label}</a>)}
 				</div>
 			</div>
 		))}

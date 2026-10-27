@@ -34,7 +34,8 @@ const {
 } = Astro.props;
 
 // タイトル: 指定があればテンプレートを適用、なければサイトのフルタイトル
-const fullTitle = title ? site.titleTemplate.replace('%s', title) : site.title;
+// Marka doklejana tylko, gdy tytuł jej jeszcze nie ma (np. „… | SVC”) — krótsze tytuły w Google
+const fullTitle = !title ? site.title : /Sobotka Visual|\|\s*SVC\s*$/.test(title) ? title : site.titleTemplate.replace('%s', title);
 
 // canonical / OGP 用の絶対 URL。Astro.site が未設定でも壊れないようフォールバック
 const baseUrl = Astro.site ?? new URL(site.url);
@@ -64,6 +65,7 @@ const ogImage = image ? new URL(image, baseUrl).href : undefined;
 <meta property="og:url" content={canonical} />
 <meta property="og:locale" content={site.locale} />
 {ogImage && <meta property="og:image" content={ogImage} />}
+{ogImage && image === site.defaultOgImage && <><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /><meta property="og:image:alt" content="Sobotka Visual Creations — montaż, animacja i motion design dla firm" /></>}
 
 {/* article メタ */}
 {
