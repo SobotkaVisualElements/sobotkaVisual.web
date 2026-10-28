@@ -67,7 +67,7 @@
   },
   "prices": {
     "title": "Ile to kosztuje",
-    "note": "Ceny netto, orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
+    "note": "Ceny orientacyjne i końcowe — nie doliczamy VAT (zwolnienie z VAT). Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
     "items": [
       "scenariusz",
       "zdjecia",
@@ -90,11 +90,11 @@
   "faq": [
     {
       "q": "Ile kosztuje dzień zdjęciowy?",
-      "a": "Dzień zdjęciowy zaczyna się od 1 150 zł netto. Dojazd do 40 km jest w cenie."
+      "a": "Dzień zdjęciowy zaczyna się od 1 150 zł. Dojazd do 40 km jest w cenie."
     },
     {
       "q": "Czy macie lektora?",
-      "a": "Tak. Współpracujemy z profesjonalnymi lektorami. Nagranie lektorskie to od 900 zł netto."
+      "a": "Tak. Współpracujemy z profesjonalnymi lektorami. Nagranie lektorskie to od 900 zł."
     },
     {
       "q": "Czy muzyka jest legalna?",

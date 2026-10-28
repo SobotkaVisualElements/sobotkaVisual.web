@@ -7,7 +7,7 @@
   "noindex": true,
   "order": 5,
   "seoTitle": "Halloweenowe rolki i animacje dla firm w 48 h | Straszna oferta do 31.10",
-  "seoDesc": "Animowana halloweenowa rolka z Twoim logo w 48 h, zestaw rolek i postów oraz PRO z bonusem. Oferta tylko do 31 października. Od 790 zł netto.",
+  "seoDesc": "Animowana halloweenowa rolka z Twoim logo w 48 h, zestaw rolek i postów oraz PRO z bonusem. Oferta tylko do 31 października. Od 790 zł.",
   "service": "Halloweenowe rolki i animacje dla firm",
   "pdf": "",
   "pkg": "pro",
@@ -360,7 +360,7 @@
         "price": "790",
         "value": 1275,
         "valueLabel": "normalnie w trybie 48 h",
-        "per": "zł netto",
+        "per": "zł",
         "note": "Jednorazowo. Gotowa w 48 godzin.",
         "items": [
           "animowana rolka 8–15 s z Twoim logo",
@@ -378,7 +378,7 @@
         "price": "2 790",
         "value": 5085,
         "valueLabel": "normalnie w trybie ekspresowym",
-        "per": "zł netto",
+        "per": "zł",
         "note": "Jednorazowo. Zamówienia do 29.10 — gotowe przed Halloween.",
         "items": [
           "3 animowane rolki z logo",
@@ -397,7 +397,7 @@
         "price": "7 200",
         "value": null,
         "valueLabel": "",
-        "per": "zł netto / mies.",
+        "per": "zł / mies.",
         "note": "Min. 6 miesięcy od listopada. Upiorna rolka gratis przy podpisaniu do 31.10.",
         "items": [
           "Upiorna rolka w prezencie",

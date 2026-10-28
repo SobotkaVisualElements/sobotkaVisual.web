@@ -93,6 +93,8 @@ const pages = defineCollection({
 		eyebrow: z.string().optional(),
 		draft: z.boolean().default(false),
 		noindex: z.boolean().default(false),
+		/** artykuł/poradnik: data aktualizacji → widoczna na stronie + dane Article dla Google i AI */
+		updated: z.preprocess((v) => (v === '' || v == null ? undefined : v), z.coerce.date().optional()),
 		blocks,
 	}),
 });

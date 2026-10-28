@@ -67,7 +67,7 @@
   },
   "prices": {
     "title": "Ile to kosztuje",
-    "note": "Ceny netto, orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
+    "note": "Ceny orientacyjne i końcowe — nie doliczamy VAT (zwolnienie z VAT). Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
     "items": [
       "animacja",
       "trailer",
@@ -93,7 +93,7 @@
   "faq": [
     {
       "q": "Ile kosztuje animacja?",
-      "a": "Animacja na zamówienie to 2 500–4 000 zł netto za minutę. Animowane logo zaczyna się od 900 zł, element oprawy od 675 zł."
+      "a": "Animacja na zamówienie to 2 500–4 000 zł za minutę. Animowane logo zaczyna się od 900 zł, element oprawy od 675 zł."
     },
     {
       "q": "Czy animujecie gotowe grafiki?",

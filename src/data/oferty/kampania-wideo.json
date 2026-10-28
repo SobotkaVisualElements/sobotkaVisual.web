@@ -2,7 +2,7 @@
   "order": 2,
   "name": "Kampania wideo",
   "seoTitle": "Kampania wideo: klip reklamowy + seria rolek | Opole",
-  "seoDesc": "Klip reklamowy 30–45 s i seria 12 rolek, które niosą go przez kolejne tygodnie. Scenariusz i storyboard przed produkcją. Kampania premierowa od 7 400 zł netto.",
+  "seoDesc": "Klip reklamowy 30–45 s i seria 12 rolek, które niosą go przez kolejne tygodnie. Scenariusz i storyboard przed produkcją. Kampania premierowa od 7 400 zł.",
   "service": "Produkcja klipu reklamowego i serii rolek",
   "pdf": "/oferty/SVC_Propozycja_Kampania_Wideo.pdf",
   "pkg": "pro",
@@ -353,7 +353,7 @@
         "tag": "Opcja 1 · jednorazowo",
         "name": "Kampania premierowa",
         "price": "od 7 400",
-        "per": "zł netto",
+        "per": "zł",
         "note": "Dokładna wycena po briefie.",
         "items": [
           "klip główny 30–45 s (od 3 800 zł)",
@@ -368,7 +368,7 @@
         "tag": "Opcja 2 · najczęściej wybierany",
         "name": "Kampania w PRO",
         "price": "7 200",
-        "per": "zł netto / mies.",
+        "per": "zł / mies.",
         "note": "Min. 6 miesięcy · klip główny w 1. miesiącu zamiast 2 z 4 materiałów wideo.",
         "items": [
           "4 materiały wideo",

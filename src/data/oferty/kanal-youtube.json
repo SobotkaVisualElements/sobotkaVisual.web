@@ -2,7 +2,7 @@
   "order": 3,
   "name": "Kanał na YouTube",
   "seoTitle": "Kanał na YouTube pod klucz: oprawa, montaż, algorytm | Opole",
-  "seoDesc": "Identyfikacja kanału, montaż odcinków, shorty, miniatury i opieka nad algorytmem. Od rozmowy do premiery w miesiąc. Fundament od 3 500 zł netto, produkcja w pakiecie PRO.",
+  "seoDesc": "Identyfikacja kanału, montaż odcinków, shorty, miniatury i opieka nad algorytmem. Od rozmowy do premiery w miesiąc. Fundament od 3 500 zł, produkcja w pakiecie PRO.",
   "service": "Prowadzenie i produkcja kanału YouTube",
   "pdf": "/oferty/SVC_Propozycja_Kanal.pdf",
   "pkg": "pro",
@@ -338,7 +338,7 @@
         "tag": "Etap 1 · jednorazowo",
         "name": "Fundament — identyfikacja kanału",
         "price": "od 3 500",
-        "per": "zł netto",
+        "per": "zł",
         "note": "Dokładna wycena po briefie.",
         "items": [
           "ident, czołówka, intro i outro",
@@ -353,7 +353,7 @@
         "tag": "Etap 2 · najczęściej wybierany",
         "name": "Produkcja i opieka nad kanałami",
         "price": "7 200",
-        "per": "zł netto / mies.",
+        "per": "zł / mies.",
         "note": "Minimum 6 miesięcy · zakres opieki doprecyzowujemy w umowie.",
         "items": [
           "4 materiały wideo",

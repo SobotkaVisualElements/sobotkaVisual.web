@@ -1010,7 +1010,7 @@ collections:
               - { name: oldPrice, label: "Stara cena — przekreślona (np. 7 200)", widget: string, required: false, hint: "Wpisz, a nad kartą pojawi się „Przecena −X%” liczona automatycznie." }
               - { name: value, label: "Wartość do porównania (zł) — zielone „Zyskujesz”", widget: number, value_type: int, required: false, hint: "Ile ta sama zawartość kosztuje osobno albo u konkurencji. Puste przy START/PRO/STUDIO = liczone z cennika usług." }
               - { name: valueLabel, label: "Z czym porównujemy (np. średnio u agencji)", widget: string, required: false }
-              - { name: per, label: "Po cenie (np. zł netto / mies.)", widget: string, required: false }
+              - { name: per, label: "Po cenie (np. zł / mies.)", widget: string, required: false }
               - { name: note, label: "Dopisek pod ceną", widget: text, required: false }
               - { name: items, label: "Co zawiera", widget: list, field: { name: item, label: "Pozycja", widget: string } }
               - { name: featured, label: "Wyróżniona", widget: boolean, default: false, required: false }
@@ -1047,6 +1047,7 @@ collections:
       - { name: heading, label: "Nagłówek na stronie", widget: string, required: false, hint: "Jeśli pusty, użyjemy tytułu." }
       - { name: draft, label: "Szkic (niewidoczna na stronie)", widget: boolean, default: true }
       - { name: noindex, label: "Ukryj przed Google", widget: boolean, default: false }
+      - { name: updated, label: "Data aktualizacji (artykuły i poradniki)", widget: datetime, time_format: false, date_format: "DD.MM.YYYY", format: "YYYY-MM-DD", required: false, hint: "Wypełnij przy artykułach — pokaże się na stronie i pomoże Google oraz AI ocenić aktualność." }
       - { name: body, label: "Treść", widget: markdown }
       - name: blocks
         label: "Klocki treści (+)"

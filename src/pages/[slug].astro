@@ -23,6 +23,7 @@ const { Content } = await render(page);
 				{page.data.heading || page.data.title}
 			</h1>
 			<p class="mt-5 max-w-[620px] text-[18px] leading-[1.6] text-sky-mist">{page.data.description}</p>
+			{page.data.updated && <p class="mt-4 text-[14px] text-sky-mist/80">Aktualizacja: <time datetime={page.data.updated.toISOString().slice(0, 10)}>{page.data.updated.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })}</time> · Krzysztof Sobotka</p>}
 		</div>
 	</section>
 
@@ -40,6 +41,19 @@ const { Content } = await render(page);
 			</a>}
 		</div>
 	</section>
+	{page.data.updated && <script type="application/ld+json" set:html={JSON.stringify({
+		"@context": "https://schema.org",
+		"@type": "Article",
+		"headline": page.data.heading || page.data.title,
+		"description": page.data.description,
+		"url": `https://sobotkavisual.pl/${page.id}/`,
+		"inLanguage": "pl",
+		"datePublished": page.data.updated.toISOString().slice(0, 10),
+		"dateModified": page.data.updated.toISOString().slice(0, 10),
+		"image": "https://sobotkavisual.pl/og-default.jpg",
+		"author": { "@type": "Person", "name": "Krzysztof Sobotka", "jobTitle": "3D Visual & Motion Artist", "url": "https://sobotkavisual.pl/o-nas/" },
+		"publisher": { "@type": "Organization", "@id": "https://sobotkavisual.pl/#firma", "name": "Sobotka Visual Creations", "logo": "https://sobotkavisual.pl/logo.svg" }
+	})} />}
 	<script type="application/ld+json" set:html={JSON.stringify({
 		"@context": "https://schema.org",
 		"@type": "BreadcrumbList",
@@ -57,7 +71,13 @@ const { Content } = await render(page);
 	.prose-svc p { margin-bottom: 1rem; hyphens: auto; -webkit-hyphens: auto; text-wrap: pretty; }
 	@media (min-width: 560px) { .prose-svc p { text-align: justify; text-align-last: left; } }
 	.prose-svc ul, .prose-svc ol { margin: 0 0 1rem 1.25rem; list-style: disc; }
+	.prose-svc ol { list-style: decimal; }
 	.prose-svc li { margin-bottom: .4rem; }
 	.prose-svc a { color: var(--color-orange); text-decoration: underline; }
 	.prose-svc strong { color: var(--color-cloud); }
+	.prose-svc table { width: 100%; margin: 0 0 1.25rem; border-collapse: collapse; font-size: 15px; line-height: 1.5; display: block; overflow-x: auto; }
+	.prose-svc th, .prose-svc td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.12); text-align: left; vertical-align: top; }
+	.prose-svc th { color: var(--color-cloud); font-weight: 700; background: rgba(255,255,255,.05); }
+	.prose-svc blockquote { margin: 0 0 1.25rem; padding: 16px 20px; border-left: 3px solid var(--color-orange); background: rgba(255,255,255,.05); border-radius: 0 14px 14px 0; color: var(--color-cloud); }
+	.prose-svc blockquote p { margin: 0; text-align: left; }
 </style>

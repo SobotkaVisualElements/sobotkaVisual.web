@@ -2,7 +2,7 @@
   "order": 9,
   "name": "Wzór — landing kinetyczny",
   "seoTitle": "Dział wideo dla firmy w abonamencie — Pakiet PRO | Opole",
-  "seoDesc": "Wideo, rolki, grafika i animacja co miesiąc, w stałym rytmie — bez rekrutacji, sprzętu i szukania ludzi. Pakiet PRO od 7 200 zł netto / mies. Opole i cała Polska.",
+  "seoDesc": "Wideo, rolki, grafika i animacja co miesiąc, w stałym rytmie — bez rekrutacji, sprzętu i szukania ludzi. Pakiet PRO od 7 200 zł / mies. Opole i cała Polska.",
   "service": "Abonamentowa produkcja wideo i social media dla firm",
   "pdf": "/oferty/SVC_Propozycja_Pakiet_PRO.pdf",
   "pkg": "pro",
@@ -416,7 +416,7 @@
         "tag": "Start",
         "name": "START",
         "price": "2 500",
-        "per": "zł netto / mies.",
+        "per": "zł / mies.",
         "note": "Stała obecność, bez wideo.",
         "items": [
           "6 krótkich form pionowych",
@@ -433,7 +433,7 @@
         "tag": "Najczęściej wybierany",
         "name": "PRO",
         "price": "7 200",
-        "per": "zł netto / mies.",
+        "per": "zł / mies.",
         "note": "Pełne zaplecze produkcji wideo i grafiki.",
         "items": [
           "4 materiały wideo",
@@ -451,7 +451,7 @@
         "tag": "Priorytet",
         "name": "STUDIO",
         "price": "12 900",
-        "per": "zł netto / mies.",
+        "per": "zł / mies.",
         "note": "Najwyższy poziom, priorytet i strategia.",
         "items": [
           "6 materiałów wideo",

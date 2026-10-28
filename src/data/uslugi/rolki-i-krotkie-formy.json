@@ -67,7 +67,7 @@
   },
   "prices": {
     "title": "Ile to kosztuje",
-    "note": "Ceny netto, orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
+    "note": "Ceny orientacyjne i końcowe — nie doliczamy VAT (zwolnienie z VAT). Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
     "items": [
       "rolki",
       "rolkaani",
@@ -91,7 +91,7 @@
   "faq": [
     {
       "q": "Ile kosztuje rolka?",
-      "a": "Rolka zmontowana z Twoich materiałów (z napisami) zaczyna się od 390 zł netto, rolka z nagraniem u Ciebie od 550 zł, a animowana rolka od 850 zł. W pakietach miesięcznych pojedyncza rolka wychodzi taniej."
+      "a": "Rolka zmontowana z Twoich materiałów (z napisami) zaczyna się od 390 zł, rolka z nagraniem u Ciebie od 550 zł, a animowana rolka od 850 zł. W pakietach miesięcznych pojedyncza rolka wychodzi taniej."
     },
     {
       "q": "Ile rolek publikować?",

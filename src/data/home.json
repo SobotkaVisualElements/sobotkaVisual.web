@@ -292,7 +292,7 @@
   "warunki": [
     {
       "t": "Bez ukrytych dopłat",
-      "d": "Cena z generatora to cena na fakturze."
+      "d": "Cena z generatora to kwota na fakturze. Nie doliczamy 23% VAT — jesteśmy zwolnieni z VAT."
     },
     {
       "t": "Gotowe pliki są Twoje",

@@ -6,7 +6,7 @@
   "noindex": true,
   "order": 4,
   "seoTitle": "Świąteczne wideo dla firm: życzenia, rolki, podsumowanie roku | Opole",
-  "seoDesc": "Animowane życzenia z logo, 6 świątecznych rolek i podsumowanie roku w jednym pakiecie. Oferta do 6 grudnia, premiera przed świętami. Od 1 490 zł netto.",
+  "seoDesc": "Animowane życzenia z logo, 6 świątecznych rolek i podsumowanie roku w jednym pakiecie. Oferta do 6 grudnia, premiera przed świętami. Od 1 490 zł.",
   "service": "Świąteczne wideo dla firm",
   "pdf": "",
   "pkg": "pro",
@@ -290,7 +290,7 @@
         "tag": "Szybko i elegancko",
         "name": "Kartka wideo",
         "price": "1 490",
-        "per": "zł netto",
+        "per": "zł",
         "note": "Jednorazowo. Gotowe w 7 dni roboczych.",
         "items": [
           "animowane życzenia 15–20 s z logo",
@@ -305,7 +305,7 @@
         "tag": "Najczęściej wybierany",
         "name": "Pakiet Święta",
         "price": "4 900",
-        "per": "zł netto",
+        "per": "zł",
         "note": "Jednorazowo. Osobno te elementy kosztują ok. 6 000 zł.",
         "items": [
           "animowane życzenia 15–20 s",
@@ -322,7 +322,7 @@
         "tag": "Najlepsza wartość",
         "name": "Święta + PRO od stycznia",
         "price": "7 200",
-        "per": "zł netto / mies.",
+        "per": "zł / mies.",
         "note": "Min. 6 miesięcy od stycznia. Pakiet Święta w prezencie (wartość 4 900 zł).",
         "items": [
           "Pakiet Święta gratis w grudniu",
