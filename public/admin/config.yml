@@ -384,7 +384,8 @@ collections:
             required: false
             hint: "Wpisz tylko prawdziwe dane z wizytówki Google. Pusty link = odznaka ukryta."
             fields:
-              - { name: url, label: "Link do opinii w Google", widget: string, required: false }
+              - { name: url, label: "Link do wizytówki w Mapach Google", widget: string, required: false }
+              - { name: review, label: "Link do wystawienia opinii (g.page/r/…/review)", widget: string, required: false }
               - { name: rating, label: "Ocena (np. 5,0)", widget: string, required: false }
               - { name: count, label: "Liczba opinii", widget: string, required: false }
           - name: kontakt

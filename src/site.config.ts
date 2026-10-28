@@ -34,6 +34,7 @@ export const site = {
     instagram: 'https://www.instagram.com/sobotkavisualcreations/',
     tiktok: 'https://www.tiktok.com/@sobotkavisualcreations',
     facebook: 'https://www.facebook.com/profile.php?id=100087789733469',
+    google: 'https://maps.app.goo.gl/en8FZ9tCZeGwYP7a6',
   },
   /** ブログ一覧の1ページあたり記事数 */
   postsPerPage: 6,

@@ -1608,7 +1608,8 @@ content:
     label: Opinie Google — tylko prawdziwe dane, pusty link = ukryte
     type: object
     fields:
-    - {name: url, label: Link do opinii w Google, type: string}
+    - {name: url, label: Link do wizytówki w Mapach Google, type: string}
+    - {name: review, label: 'Link do wystawienia opinii (g.page/r/…/review)', type: string}
     - {name: rating, label: 'Ocena (np. 5,0)', type: string}
     - {name: count, label: Liczba opinii, type: string}
   - name: oferta
