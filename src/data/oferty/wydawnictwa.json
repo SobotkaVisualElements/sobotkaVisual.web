@@ -289,7 +289,7 @@
         "tag": "Na start",
         "name": "Animowana rolka",
         "price": "790–1 150",
-        "per": "zł netto / rolka",
+        "per": "zł / rolka",
         "note": "790 zł za 15 s, 1 150 zł za 45 s. Gotowa w 5–7 dni roboczych.",
         "items": [
           "rolka 15–45 s z ilustracji okładki",
@@ -305,7 +305,7 @@
         "tag": "Najczęściej wybierany",
         "name": "Booktrailer + rolki",
         "price": "3 490",
-        "per": "zł netto / tytuł",
+        "per": "zł / tytuł",
         "note": "Jednorazowo. Rolki powstają z tej samej animowanej sceny — dlatego taniej niż osobno.",
         "items": [
           "booktrailer do 30 s",
@@ -323,7 +323,7 @@
         "name": "Seria wydawnicza",
         "oldPrice": "7 200",
         "price": "5 760",
-        "per": "zł netto / mies.",
+        "per": "zł / mies.",
         "note": "Min. 3 miesiące. Stały termin i ten sam standard dla każdej premiery.",
         "items": [
           "1 booktrailer do 30 s co miesiąc",
@@ -336,7 +336,7 @@
         "ctaHref": "/generator?tryb=jednorazowa&trailer=1&okladka=1&rolkaani=4"
       }
     ],
-    "footnote": "Ceny netto. Do pracy potrzebujemy okładki w warstwach (PSD) albo ilustracji w wysokiej rozdzielczości."
+    "footnote": "Do pracy potrzebujemy okładki w warstwach (PSD) albo ilustracji w wysokiej rozdzielczości."
   },
   "final": {
     "eyebrow": "Następny krok",

@@ -87,6 +87,26 @@ collections:
               - { name: caption, label: "Podpis", widget: string, required: false }
               - { name: alt, label: "Opis dla Google (alt)", widget: string, required: false }
               - { name: width, label: "Szerokość", widget: select, default: pelna, options: [{ label: "Pełna", value: pelna }, { label: "Wąska", value: waska }] }
+              - { name: stock, label: "Propozycja zdjęcia ze stocka (dla Ciebie)", widget: string, required: false, hint: "Fraza do wyszukania np. na Unsplash/Pexels. Dopóki nie wgrasz zdjęcia, w tym miejscu widać kafelek z ikoną." }
+              - { name: icon, label: "Ikona zastępcza (gdy brak zdjęcia)", widget: select, required: false, options: [{ label: "Kamera", value: kamera }, { label: "Monitor (montaż)", value: monitor }, { label: "Telefon (rolki)", value: telefon }, { label: "Rakieta (animacja)", value: rakieta }, { label: "Tablet (grafika)", value: tablet }, { label: "Wykres", value: wykres }, { label: "Megafon (marketing)", value: marketing }, { label: "Twórca (ring)", value: tworca }, { label: "Firma", value: firma }, { label: "HR", value: hr }, { label: "Torba (sprzedaż)", value: sprzedaz }, { label: "Książka", value: ksiazka }] }
+          - name: realizacje
+            label: "Karuzela 3D z naszymi realizacjami (pionowa)"
+            widget: object
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: "Nagłówek nad karuzelą", widget: string, required: false }
+              - { name: categories, label: "Tylko kategorie (opcjonalnie, po przecinku)", widget: string, required: false, hint: "Np. Animacja, Montaż. Puste = wszystkie realizacje." }
+              - { name: limit, label: "Ile realizacji", widget: number, value_type: int, default: 9, required: false }
+          - name: przycisk
+            label: "Przycisk „Zobacz ofertę” (link do oferty lub usługi)"
+            widget: object
+            summary: "{{fields.label}} → {{fields.href}}"
+            fields:
+              - { name: label, label: "Napis na przycisku", widget: string, default: "Zobacz ofertę" }
+              - { name: href, label: "Link", widget: string, hint: "Np. /oferta/dzial-wideo/ albo /uslugi/rolki-i-krotkie-formy/" }
+              - { name: lead, label: "Zdanie nad przyciskiem", widget: string, required: false }
+              - { name: note, label: "Dopisek pod przyciskiem", widget: string, required: false }
+              - { name: align, label: "Położenie", widget: select, default: srodek, options: [{ label: "Na środku", value: srodek }, { label: "Do lewej", value: lewo }] }
           - name: karuzela
             label: "Karuzela zdjęć"
             widget: object
@@ -1010,7 +1030,7 @@ collections:
               - { name: oldPrice, label: "Stara cena — przekreślona (np. 7 200)", widget: string, required: false, hint: "Wpisz, a nad kartą pojawi się „Przecena −X%” liczona automatycznie." }
               - { name: value, label: "Wartość do porównania (zł) — zielone „Zyskujesz”", widget: number, value_type: int, required: false, hint: "Ile ta sama zawartość kosztuje osobno albo u konkurencji. Puste przy START/PRO/STUDIO = liczone z cennika usług." }
               - { name: valueLabel, label: "Z czym porównujemy (np. średnio u agencji)", widget: string, required: false }
-              - { name: per, label: "Po cenie (np. zł netto / mies.)", widget: string, required: false }
+              - { name: per, label: "Po cenie (np. zł / mies.)", widget: string, required: false }
               - { name: note, label: "Dopisek pod ceną", widget: text, required: false }
               - { name: items, label: "Co zawiera", widget: list, field: { name: item, label: "Pozycja", widget: string } }
               - { name: featured, label: "Wyróżniona", widget: boolean, default: false, required: false }
@@ -1047,6 +1067,16 @@ collections:
       - { name: heading, label: "Nagłówek na stronie", widget: string, required: false, hint: "Jeśli pusty, użyjemy tytułu." }
       - { name: draft, label: "Szkic (niewidoczna na stronie)", widget: boolean, default: true }
       - { name: noindex, label: "Ukryj przed Google", widget: boolean, default: false }
+      - { name: updated, label: "Data aktualizacji (artykuły i poradniki)", widget: datetime, time_format: false, date_format: "DD.MM.YYYY", format: "YYYY-MM-DD", required: false, hint: "Wypełnij przy artykułach — pokaże się na stronie i pomoże Google oraz AI ocenić aktualność." }
+      - name: faq
+        label: "Pytania i odpowiedzi (pod artykułem)"
+        label_singular: Pytanie
+        widget: list
+        required: false
+        summary: "{{fields.q}}"
+        fields:
+          - { name: q, label: "Pytanie", widget: string }
+          - { name: a, label: "Odpowiedź", widget: text }
       - { name: body, label: "Treść", widget: markdown }
       - name: blocks
         label: "Klocki treści (+)"

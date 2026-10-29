@@ -67,7 +67,7 @@
   },
   "prices": {
     "title": "Ile to kosztuje",
-    "note": "Ceny netto, orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
+    "note": "Ceny orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
     "items": [
       "miniatury",
       "grafika",
@@ -94,7 +94,7 @@
   "faq": [
     {
       "q": "Ile kosztuje miniatura YouTube?",
-      "a": "Miniatura zaczyna się od 220 zł netto. Przy stałej współpracy taniej, bo pracujemy na gotowym systemie."
+      "a": "Miniatura zaczyna się od 220 zł. Przy stałej współpracy taniej, bo pracujemy na gotowym systemie."
     },
     {
       "q": "Co to jest system graficzny?",

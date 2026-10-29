@@ -12,12 +12,13 @@ const files = import.meta.glob('../data/uslugi/*.json', { eager: true }) as Reco
 
 export const GET: APIRoute = async () => {
 	const S = site.url;
-	const pln = (n: number) => zl(n).replace(/ /g, ' ') + ' netto';
+	const pln = (n: number) => zl(n).replace(/ /g, ' ');
 	const price: Record<string, number> = Object.fromEntries(groups.flatMap((g) => g.items.map((i) => [i.id, i.price])));
 	const uslugi = Object.entries(files)
 		.map(([p, m]) => ({ slug: p.split('/').pop()!.replace('.json', ''), ...(m.default ?? m) }))
 		.filter((s: any) => !s.draft)
 		.sort((a: any, b: any) => (a.order ?? 99) - (b.order ?? 99));
+	const poradniki = (await getCollection('pages', ({ data }) => !data.draft && !!data.updated)).sort((a, b) => +b.data.updated! - +a.data.updated!);
 	const work = (await getCollection('work', ({ data }) => !data.draft)).sort((a, b) => (+(b.data.date ?? 0)) - (+(a.data.date ?? 0)));
 
 	const lines = [
@@ -44,6 +45,9 @@ export const GET: APIRoute = async () => {
 		'',
 		'## Realizacje',
 		...work.map((w) => `- [${w.data.title}](${S}/work/${w.id}/)${w.data.client ? ` — klient: ${w.data.client}` : ''}`),
+		'',
+		'## Poradniki',
+		...poradniki.map((p) => `- [${p.data.heading || p.data.title}](${S}/${p.id}/) — ${p.data.description}`),
 		'',
 		'## Więcej',
 		`- [O nas — historia studia](${S}/o-nas/)`,

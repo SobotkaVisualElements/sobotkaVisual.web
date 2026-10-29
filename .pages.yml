@@ -174,6 +174,21 @@ content:
             label: Pełna
           - name: waska
             label: Wąska
+      - {name: stock, label: 'Propozycja zdjęcia ze stocka (fraza do wyszukania)', type: string}
+      - {name: icon, label: 'Ikona zastępcza, gdy brak zdjęcia (kamera, monitor, telefon, rakieta, tablet, wykres, marketing, tworca, firma, hr, sprzedaz, ksiazka)', type: string}
+    - name: realizacje
+      label: Karuzela 3D z naszymi realizacjami (pionowa)
+      fields:
+      - {name: title, label: Nagłówek nad karuzelą, type: string}
+      - {name: categories, label: 'Tylko kategorie (po przecinku, puste = wszystkie)', type: string}
+      - {name: limit, label: Ile realizacji, type: number}
+    - name: przycisk
+      label: Przycisk „Zobacz ofertę” (link do oferty lub usługi)
+      fields:
+      - {name: label, label: Napis na przycisku, type: string}
+      - {name: href, label: 'Link (np. /oferta/dzial-wideo/)', type: string}
+      - {name: lead, label: Zdanie nad przyciskiem, type: string}
+      - {name: note, label: Dopisek pod przyciskiem, type: string}
     - name: karuzela
       label: Karuzela zdjęć
       fields:
@@ -1795,6 +1810,16 @@ content:
   - name: heading
     label: Nagłówek na stronie
     type: string
+  - name: updated
+    label: Data aktualizacji (artykuły)
+    type: date
+  - name: faq
+    label: Pytania i odpowiedzi (pod artykułem)
+    type: object
+    list: true
+    fields:
+    - {name: q, label: Pytanie, type: string}
+    - {name: a, label: Odpowiedź, type: text}
   - name: draft
     label: Szkic
     type: boolean

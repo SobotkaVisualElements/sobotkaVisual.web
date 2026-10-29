@@ -44,17 +44,19 @@ const items = raw
 	.filter((it) => it.img || it.video || it.title || it.ext);
 const n = items.length;
 // tyle kopii, żeby zawsze było ≥ 14 kart (zawinięcie poza ekranem)
-const reps = n ? Math.max(1, Math.ceil(14 / n)) : 0;
+// 1–3 realizacje: tyle kafelków, ile jest (bez powielania i pętli)
+const few = variant !== 'tlo' && n <= 3;
+const reps = n ? (few ? 1 : Math.max(1, Math.ceil(14 / n))) : 0;
 const cards = Array.from({ length: n * reps }, (_, k) => ({ ...items[k % n], real: k % n, clone: k >= n }));
 const ar = ratio || (orientation === 'pion' ? '10/16' : '16/10');
 const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 ---
 {n > 0 && (
 	<div
-		class:list={['c3d', `c3d--${orientation}`, `c3d--${variant}`, `c3d--${tone}`, cls]}
+		class:list={['c3d', `c3d--${orientation}`, `c3d--${variant}`, `c3d--${tone}`, few && 'c3d--few', few && n === 1 && 'c3d--one', cls]}
 		data-c3d={u}
 		data-n={n}
-		data-auto={autoplay ? '1' : '0'}
+		data-auto={autoplay && !few ? '1' : '0'}
 		tabindex={variant === 'tlo' ? undefined : '0'}
 		aria-roledescription={variant === 'tlo' ? undefined : 'karuzela'}
 		aria-label={variant === 'tlo' ? undefined : label}
@@ -136,6 +138,7 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 		box-shadow: 0 6px 20px -8px rgba(0,0,0,.5); opacity: 0; transition: opacity .3s; }
 	.c3d-logo img { height: 100%; width: auto; max-width: 100%; object-fit: contain; }
 	.c3d-card.is-active .c3d-logo { opacity: 1; }
+	.c3d--one .c3d-btn, .c3d--one .c3d-dots { display: none; }
 	.c3d-bar { margin: 24px auto 0; display: flex; max-width: 640px; align-items: center; justify-content: space-between; gap: 16px; padding: 0 24px; }
 	.c3d-info { min-width: 0; flex: 1; text-align: center; }
 	.c3d-cat { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--color-orange-glow, #ff8a5c); min-height: 1em; }
@@ -192,6 +195,8 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 		const dots = root.querySelector<HTMLElement>('.c3d-dots');
 		let pos = 0, target = 0, drag = 0, shown = -1, visibleNow = false, pageReady = document.readyState === "complete";
 		const mod = (a: number, m: number) => ((a % m) + m) % m;
+		const few = root.classList.contains('c3d--few');
+		const clamp = (v: number) => (few ? Math.max(0, Math.min(n - 1, v)) : v);
 
 		if (dots) for (let j = 0; j < n; j++) {
 			const b = document.createElement('button');
@@ -200,17 +205,17 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 			dots.appendChild(b);
 		}
 
-		const offset = (k: number, p: number) => { let d = mod(k - p, N); if (d >= N / 2) d -= N; return d; };
+		const offset = (k: number, p: number) => { if (few) return k - p; let d = mod(k - p, N); if (d >= N / 2) d -= N; return d; };
 		const toReal = (j: number) => {
 			let best = 0, bd = Infinity;
 			cards.forEach((c, k) => { if (Number(c.dataset.real) !== j) return; const d = offset(k, target); if (Math.abs(d) < Math.abs(bd)) { bd = d; best = k; } });
-			target = Math.round(target + bd); kick(); restart();
+			target = clamp(Math.round(target + bd)); kick(); restart();
 		};
 
 		const render = () => {
 			const w = cards[0].offsetWidth || 200;
 			const spread = vertical ? 0.98 : 1.03;
-			const vis = Math.min((N / 2) - 1.2, (root.clientWidth / 2) / (w * spread) + 0.6);
+			const vis = few ? n : Math.min((N / 2) - 1.2, (root.clientWidth / 2) / (w * spread) + 0.6);
 			const p = pos + drag;
 			cards.forEach((c, k) => {
 				const d = offset(k, p);
@@ -267,8 +272,8 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 		let running = false;
 
 		if (!bg) {
-			root.querySelectorAll<HTMLButtonElement>('.c3d-btn').forEach((b) => b.addEventListener('click', () => { target = Math.round(target) + Number(b.dataset.dir); kick(); restart(); }));
-			root.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { target = Math.round(target) + (e.key === 'ArrowLeft' ? -1 : 1); kick(); restart(); } });
+			root.querySelectorAll<HTMLButtonElement>('.c3d-btn').forEach((b) => b.addEventListener('click', () => { target = clamp(Math.round(target) + Number(b.dataset.dir)); kick(); restart(); }));
+			root.addEventListener('keydown', (e) => { if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { target = clamp(Math.round(target) + (e.key === 'ArrowLeft' ? -1 : 1)); kick(); restart(); } });
 			cards.forEach((c, k) => c.addEventListener('click', (e) => {
 				if (moved) { e.preventDefault(); return; }
 				const d = Math.round(offset(k, pos));
@@ -290,7 +295,7 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 			window.addEventListener('pointerup', () => {
 				if (!down) return;
 				down = false; stage.classList.remove('is-drag');
-				pos = pos + drag; target = Math.round(pos); drag = 0; kick(); restart();
+				pos = pos + drag; target = clamp(Math.round(pos)); drag = 0; kick(); restart();
 				setTimeout(() => (moved = false), 0);
 			});
 		}

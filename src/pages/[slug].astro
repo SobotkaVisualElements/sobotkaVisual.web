@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Blocks from '../components/blocks/Blocks.astro';
+import Article from '../components/article/Article.astro';
 
 export async function getStaticPaths() {
 	const pages = await getCollection('pages', ({ data }) => !data.draft);
@@ -10,9 +11,11 @@ export async function getStaticPaths() {
 
 const { page } = Astro.props;
 const { Content } = await render(page);
+const isArticle = !!page.data.updated;
 ---
 
-<BaseLayout title={page.data.title} description={page.data.description} noindex={page.data.noindex}>
+<BaseLayout title={page.data.title} description={page.data.description} noindex={page.data.noindex} type={isArticle ? 'article' : 'website'} image={isArticle ? page.data.blocks?.find((b: any) => b?.type === 'zdjecie' && b.image)?.image : undefined}>
+	{isArticle ? <Article page={page} /> : <>
 	<section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
 		<span class="pointer-events-none absolute inset-0 bg-grid opacity-35"></span>
 		<div class="relative z-2 mx-auto max-w-[860px] px-6 pt-24 pb-14 sm:px-8">
@@ -45,9 +48,10 @@ const { Content } = await render(page);
 		"@type": "BreadcrumbList",
 		"itemListElement": [
 			{ "@type": "ListItem", "position": 1, "name": "Strona główna", "item": "https://sobotkavisual.pl/" },
-			{ "@type": "ListItem", "position": 2, "name": page.data.title, "item": `https://sobotkavisual.pl/${page.id}` }
+			{ "@type": "ListItem", "position": 2, "name": page.data.heading || page.data.title, "item": `https://sobotkavisual.pl/${page.id}/` }
 		]
 	})} />
+	</>}
 </BaseLayout>
 
 <style is:global>
@@ -57,7 +61,13 @@ const { Content } = await render(page);
 	.prose-svc p { margin-bottom: 1rem; hyphens: auto; -webkit-hyphens: auto; text-wrap: pretty; }
 	@media (min-width: 560px) { .prose-svc p { text-align: justify; text-align-last: left; } }
 	.prose-svc ul, .prose-svc ol { margin: 0 0 1rem 1.25rem; list-style: disc; }
+	.prose-svc ol { list-style: decimal; }
 	.prose-svc li { margin-bottom: .4rem; }
 	.prose-svc a { color: var(--color-orange); text-decoration: underline; }
 	.prose-svc strong { color: var(--color-cloud); }
+	.prose-svc table { width: 100%; margin: 0 0 1.25rem; border-collapse: collapse; font-size: 15px; line-height: 1.5; display: block; overflow-x: auto; }
+	.prose-svc th, .prose-svc td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,.12); text-align: left; vertical-align: top; }
+	.prose-svc th { color: var(--color-cloud); font-weight: 700; background: rgba(255,255,255,.05); }
+	.prose-svc blockquote { margin: 0 0 1.25rem; padding: 16px 20px; border-left: 3px solid var(--color-orange); background: rgba(255,255,255,.05); border-radius: 0 14px 14px 0; color: var(--color-cloud); }
+	.prose-svc blockquote p { margin: 0; text-align: left; }
 </style>

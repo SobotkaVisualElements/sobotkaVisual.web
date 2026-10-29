@@ -67,7 +67,7 @@
   },
   "prices": {
     "title": "Ile to kosztuje",
-    "note": "Ceny netto, orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
+    "note": "Ceny orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
     "items": [
       "animacja",
       "skrot",
@@ -91,7 +91,7 @@
   "faq": [
     {
       "q": "Ile kosztuje oprawa transmisji?",
-      "a": "Kompletny pakiet oprawy transmisyjnej zaczyna się od 6 000 zł netto. Pojedyncze elementy (belka, plansza) od 675 zł."
+      "a": "Kompletny pakiet oprawy transmisyjnej zaczyna się od 6 000 zł. Pojedyncze elementy (belka, plansza) od 675 zł."
     },
     {
       "q": "Czy oprawa zadziała w naszym programie?",
