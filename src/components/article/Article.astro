@@ -35,7 +35,7 @@ const ld = [
 	{
 		'@context': 'https://schema.org', '@type': 'Article', headline: d.heading || d.title, description: d.description, url, inLanguage: 'pl',
 		datePublished: dateISO, dateModified: dateISO, image: relImg(d) ? site + relImg(d) : `${site}/og-default.jpg`, wordCount: words,
-		author: { '@type': 'Person', name: 'Krzysztof Sobotka', jobTitle: '3D Visual & Motion Artist', url: `${site}/o-nas/` },
+		author: { '@type': 'Person', name: 'Krzysztof Sobotka', jobTitle: '3D Visual & Motion Artist', url: `${site}/o-nas/`, image: `${site}/autor/krzysztof-sobotka.jpg`, alumniOf: 'Akademia Sztuk Pięknych we Wrocławiu' },
 		publisher: { '@type': 'Organization', '@id': `${site}/#firma`, name: 'Sobotka Visual Creations', logo: { '@type': 'ImageObject', url: `${site}/logo.svg` } },
 	},
 	{
@@ -56,7 +56,7 @@ const ld = [
 			<h1>{d.heading || d.title}</h1>
 			<p class="ar-lead">{d.description}</p>
 			<div class="ar-meta">
-				<span class="ar-ava" aria-hidden="true">KS</span>
+				<img class="ar-ava" src="/autor/krzysztof-sobotka.jpg" alt="Krzysztof Sobotka" width="40" height="40" />
 				<span class="ar-by"><a href="/o-nas/">Krzysztof Sobotka</a><small>3D Visual & Motion Artist</small></span>
 				<span class="ar-dot" aria-hidden="true"></span>
 				<span><time datetime={dateISO}>{dateTxt}</time></span>
@@ -92,7 +92,7 @@ const ld = [
 			</div>
 
 			<aside class="ar-author">
-				<span class="ar-ava ar-ava-l" aria-hidden="true">KS</span>
+				<img class="ar-ava ar-ava-l" src="/autor/krzysztof-sobotka.jpg" alt="Krzysztof Sobotka" width="64" height="64" loading="lazy" />
 				<div>
 					<p class="ar-author-n"><a href="/o-nas/">Krzysztof Sobotka</a></p>
 					<p class="ar-author-r">3D Visual & Motion Artist · założyciel Sobotka Visual Creations</p>
@@ -148,7 +148,7 @@ const ld = [
 	.ar-head h1 { margin-top: 14px; font-size: clamp(30px, 4.6vw, 46px); line-height: 1.12; font-weight: 800; letter-spacing: -.02em; color: #120d33; text-wrap: balance; }
 	.ar-lead { margin-top: 14px; font-size: 19px; line-height: 1.6; color: #4a4470; max-width: 720px; }
 	.ar-meta { margin-top: 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; font-size: 14px; color: #6b6590; }
-	.ar-ava { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; font-size: 14px; font-weight: 800; color: #fff; background: linear-gradient(150deg, #6d4dff, #b03cff 60%, #ff5fd2); flex: none; }
+	.ar-ava { object-fit: cover; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; font-size: 14px; font-weight: 800; color: #fff; background: linear-gradient(150deg, #6d4dff, #b03cff 60%, #ff5fd2); flex: none; }
 	.ar-ava-l { width: 64px; height: 64px; font-size: 20px; }
 	.ar-by { display: flex; flex-direction: column; line-height: 1.25; } .ar-by a { font-weight: 700; color: #1b1640; } .ar-by small { font-size: 12px; }
 	.ar-dot { width: 4px; height: 4px; border-radius: 99px; background: #c9c3e3; }
