@@ -6,6 +6,13 @@ heading: Ile kosztuje rolka dla firmy w 2026?
 updated: '2026-10-29'
 draft: false
 noindex: false
+faq:
+- q: Ile kosztuje jedna rolka na Instagram dla firmy?
+  a: Sam montaż z Twoich nagrań to na rynku zwykle 150–300 zł, rolka z nagraniem w pakiecie ok. 250–400 zł. U nas rolka z Twoich materiałów kosztuje 390 zł, a z nagraniem 550 zł.
+- q: Czy taniej jest zamówić rolki w abonamencie?
+  a: Zwykle tak — przy stałej współpracy cena za sztukę spada, bo rolki powstają seriami, z jednego nagrania i w jednym stylu. U nas rabat przy kilku pozycjach rośnie do 30%.
+- q: Ile trwa zrobienie rolki?
+  a: Montaż jednej rolki z gotowego materiału trwa zwykle 1–3 dni robocze. Przy nagraniu u klienta dochodzi termin dnia zdjęciowego.
 blocks:
 - type: tekst
   text: |
@@ -45,6 +52,8 @@ blocks:
     - **Seria czy pojedyncza rolka.** Rolki robione seriami — z jednego nagrania, w jednym stylu — są tańsze w przeliczeniu na sztukę.
     - **Dojazd.** U nas do 40 km od Opola lub Nysy jest w cenie, dalej 150 zł albo 1,20 zł za km.
     - **Prawa do muzyki i plików.** Licencja na muzykę do reklamy i prawa do materiałów powinny być jasno zapisane.
+
+    > **Ważne:** porównuj oferty na tym samym zakresie. Zapytaj każdą firmę o to samo: ile rolek, czy z nagraniem, ile poprawek, czy napisy i muzyka są w cenie.
 - type: realizacje
   title: Rolki i animacje, które zrobiliśmy
   limit: 9

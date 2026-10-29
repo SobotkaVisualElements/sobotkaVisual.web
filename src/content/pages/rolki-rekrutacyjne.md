@@ -6,6 +6,13 @@ heading: 'Rolki rekrutacyjne: jak przyciągnąć kandydatów wideo'
 updated: '2026-10-29'
 draft: false
 noindex: false
+faq:
+- q: Czy rolki rekrutacyjne działają?
+  a: 'Działają najlepiej w serii: stały format, kilka publikacji tygodniowo i napisy. Dla Delta HR zrobiliśmy w ten sposób ponad 150 rolek w rok.'
+- q: Gdzie publikować rolki rekrutacyjne?
+  a: 'Tam, gdzie są Twoi kandydaci: najczęściej Facebook, TikTok i Instagram. Dla zawodów fizycznych i kierowców bardzo dobrze działa Facebook.'
+- q: Ile kosztuje rolka rekrutacyjna?
+  a: U nas rolka z Twoich materiałów kosztuje 390 zł, z nagraniem 550 zł. Przy stałej współpracy cena za sztukę spada.
 blocks:
 - type: tekst
   text: |
@@ -30,6 +37,8 @@ blocks:
     4. **Człowiek** — pracownik, rekruter albo prowadząca, która mówi wprost do kandydata.
     5. **Jasne wezwanie** — jak aplikować: link, numer, „napisz w komentarzu”.
     6. **Napisy** — duże, czytelne, z wyróżnionymi kluczowymi słowami.
+
+    > **Ważne:** w rolce nie obiecuj więcej niż w ofercie pracy. Kandydat, który przyjdzie na rozmowę z innymi oczekiwaniami, to strata czasu po obu stronach.
 
     ## Format seryjny: klucz do efektu
 

@@ -1068,6 +1068,15 @@ collections:
       - { name: draft, label: "Szkic (niewidoczna na stronie)", widget: boolean, default: true }
       - { name: noindex, label: "Ukryj przed Google", widget: boolean, default: false }
       - { name: updated, label: "Data aktualizacji (artykuły i poradniki)", widget: datetime, time_format: false, date_format: "DD.MM.YYYY", format: "YYYY-MM-DD", required: false, hint: "Wypełnij przy artykułach — pokaże się na stronie i pomoże Google oraz AI ocenić aktualność." }
+      - name: faq
+        label: "Pytania i odpowiedzi (pod artykułem)"
+        label_singular: Pytanie
+        widget: list
+        required: false
+        summary: "{{fields.q}}"
+        fields:
+          - { name: q, label: "Pytanie", widget: string }
+          - { name: a, label: "Odpowiedź", widget: text }
       - { name: body, label: "Treść", widget: markdown }
       - name: blocks
         label: "Klocki treści (+)"

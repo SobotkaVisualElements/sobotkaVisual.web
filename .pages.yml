@@ -1813,6 +1813,13 @@ content:
   - name: updated
     label: Data aktualizacji (artykuły)
     type: date
+  - name: faq
+    label: Pytania i odpowiedzi (pod artykułem)
+    type: object
+    list: true
+    fields:
+    - {name: q, label: Pytanie, type: string}
+    - {name: a, label: Odpowiedź, type: text}
   - name: draft
     label: Szkic
     type: boolean

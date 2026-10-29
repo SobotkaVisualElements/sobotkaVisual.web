@@ -6,6 +6,13 @@ heading: Ile kosztuje animacja i motion design dla firmy?
 updated: '2026-10-29'
 draft: false
 noindex: false
+faq:
+- q: Ile kosztuje animowane logo?
+  a: Na rynku zwykle 800–3 500 zł, zależnie od długości i stylu. U nas animowane logo zaczyna się od 900 zł.
+- q: 'Co jest tańsze: animacja czy film nagrywany?'
+  a: Proste animacje (logo, napisy, plansze) są tańsze niż dzień zdjęciowy. Długi explainer z ilustracjami od zera bywa droższy niż film nagrywany.
+- q: Czy możecie ożywić grafiki, które już mam?
+  a: 'Tak — to często najszybsza i najtańsza droga. Tak powstają nasze booktrailery dla Fabryki Słów: z gotowych ilustracji okładek.'
 blocks:
 - type: tekst
   text: |
@@ -37,6 +44,8 @@ blocks:
     3. **Materiały wyjściowe.** Jeśli masz ilustracje, okładki czy grafiki w warstwach, animator może je ożywić zamiast rysować nowe. Tak robimy booktrailery dla Fabryki Słów — z gotowych okładek.
     4. **Lektor i dźwięk.** Profesjonalny lektor i sound design to osobne pozycje.
     5. **Liczba wersji.** Format pionowy, poziomy, kwadrat, wersje językowe — każda wymaga pracy.
+
+    > **Wskazówka:** zanim zamówisz animację od zera, sprawdź, co już masz — logo w wektorach, ilustracje, grafiki z kampanii. Ożywienie gotowych materiałów jest szybsze i tańsze.
 - type: realizacje
   title: Nasze animacje i motion design
   limit: 9

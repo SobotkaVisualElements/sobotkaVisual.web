@@ -6,6 +6,13 @@ heading: 25 pomysłów na rolki dla firmy
 updated: '2026-10-29'
 draft: false
 noindex: false
+faq:
+- q: Co nagrywać na rolki firmowe?
+  a: Najlepiej działają kulisy pracy, ludzie z zespołu, proces powstawania produktu, efekty przed i po oraz odpowiedzi na pytania klientów.
+- q: Czy muszę występować przed kamerą?
+  a: Nie. Rolka może pokazywać produkt, proces albo zespół przy pracy z napisami na ekranie.
+- q: Jak często publikować rolki?
+  a: Na start wystarczy jedna rolka tygodniowo. Ważniejsza od liczby jest regularność przez kilka miesięcy.
 blocks:
 - type: tekst
   text: |
@@ -68,6 +75,8 @@ blocks:
     - **Pion 9:16** i bohater w środku kadru.
     - **Jedna rolka = jedna myśl.** Nie upychaj trzech tematów.
     - **Regularność ponad perfekcję** — 1 rolka tygodniowo przez pół roku da więcej niż 10 rolek w jeden miesiąc.
+
+    > **Wskazówka:** nagraj 4–5 rolek jednego dnia. Jedno ustawienie światła, jedna stylizacja, a materiału masz na cały miesiąc.
 
     Nie masz czasu nagrywać i montować? Wyślij nam nagranie — [pierwszą rolkę zmontujemy za darmo](/#probna).
 - type: przycisk

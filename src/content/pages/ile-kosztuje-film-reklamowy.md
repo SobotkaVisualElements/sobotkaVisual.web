@@ -6,6 +6,13 @@ heading: Ile kosztuje film reklamowy w 2026?
 updated: '2026-10-29'
 draft: false
 noindex: false
+faq:
+- q: Ile kosztuje film reklamowy dla małej firmy?
+  a: Prosty spot do social mediów to zwykle 1 500–3 000 zł, a film wizerunkowy 1–2 minuty ok. 4 000–10 000 zł. U nas film wizerunkowy zaczyna się od 4 500 zł.
+- q: Ile kosztuje dzień zdjęciowy?
+  a: Na rynku zwykle 1 900–3 000 zł za operatora ze sprzętem. U nas dzień zdjęciowy kosztuje od 1 150 zł, a dojazd do 40 km od Opola lub Nysy jest w cenie.
+- q: Czy z jednego dnia nagrań da się zrobić kilka materiałów?
+  a: Tak. Z jednego dnia zdjęciowego możemy zrobić film wizerunkowy i serię rolek do social mediów. To najtańszy sposób na dużo materiału.
 blocks:
 - type: tekst
   text: |
@@ -29,6 +36,8 @@ blocks:
     3. **Montaż i postprodukcja** — cięcie, kolor, dźwięk, napisy. Przy filmie 1–2 minuty to zwykle 1 000–2 000 zł.
     4. **Animacja i grafika** — logo, plansze, infografiki. Podnoszą cenę, ale robią z filmu materiał markowy, a nie „nagranie z firmy”.
     5. **Dodatki** — dron, lektor, aktorzy, licencja na muzykę, wersje językowe, dojazd.
+
+    > **Wskazówka:** zaplanuj jeden dzień zdjęciowy pod kilka materiałów naraz — film wizerunkowy i serię rolek. Dzień zdjęciowy kosztuje tyle samo, a materiału masz na kilka miesięcy.
 
     ## Typowe widełki
 

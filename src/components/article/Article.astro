@@ -1,0 +1,220 @@
+---
+/*
+ * Poradnik (podstrona z „Datą aktualizacji”) — układ czytelniczy w stylu blogów eksperckich:
+ * jasne tło, wąska kolumna tekstu, spis treści (na komputerze przyklejony z boku), przycisk oferty w panelu bocznym,
+ * udostępnianie, autor, FAQ i „Polecamy”.
+ */
+import { getCollection } from 'astro:content';
+import Blocks from '../blocks/Blocks.astro';
+import IsoIcon from '../iso/IsoIcon.astro';
+import { slugId } from '../../lib/md';
+import { cat, readMin as rm, firstImg as relImg, firstIcon as relIco0 } from '../../lib/articles';
+
+interface Props { page: any }
+const { page } = Astro.props;
+const d = page.data;
+const site = 'https://sobotkavisual.pl';
+const url = `${site}/${page.id}/`;
+const blocks: any[] = d.blocks ?? [];
+const texts = blocks.filter((b) => b?.type === 'tekst').map((b) => String(b.text || ''));
+const toc = texts.flatMap((t) => t.split(/\n/).filter((l) => /^##\s+/.test(l)).map((l) => l.replace(/^##\s+/, '').replace(/\*\*/g, '').trim()));
+if (d.faq?.length) toc.push('Najczęstsze pytania');
+const words = texts.join(' ').split(/\s+/).length + (d.faq ?? []).reduce((n: number, f: any) => n + `${f.q} ${f.a}`.split(/\s+/).length, 0);
+const readMin = Math.max(2, Math.round(words / 200));
+const category = cat(d.eyebrow);
+const dateISO = d.updated.toISOString().slice(0, 10);
+const dateTxt = d.updated.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' });
+const cta = blocks.find((b) => b?.type === 'przycisk') ?? { label: 'Policz swój pakiet', href: '/generator/' };
+const icon = blocks.find((b) => b?.type === 'zdjecie' && b.icon)?.icon || 'kamera';
+const all = (await getCollection('pages', ({ data }: any) => !data.draft && !!data.updated)).filter((p: any) => p.id !== page.id);
+const same = all.filter((p: any) => cat(p.data.eyebrow) === category);
+const related = [...same, ...all.filter((p: any) => !same.includes(p))].slice(0, 3);
+const relIco = (p: any) => relIco0(p.data);
+const enc = encodeURIComponent;
+const ld = [
+	{
+		'@context': 'https://schema.org', '@type': 'Article', headline: d.heading || d.title, description: d.description, url, inLanguage: 'pl',
+		datePublished: dateISO, dateModified: dateISO, image: relImg(d) ? site + relImg(d) : `${site}/og-default.jpg`, wordCount: words,
+		author: { '@type': 'Person', name: 'Krzysztof Sobotka', jobTitle: '3D Visual & Motion Artist', url: `${site}/o-nas/` },
+		publisher: { '@type': 'Organization', '@id': `${site}/#firma`, name: 'Sobotka Visual Creations', logo: { '@type': 'ImageObject', url: `${site}/logo.svg` } },
+	},
+	{
+		'@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+			{ '@type': 'ListItem', position: 1, name: 'Strona główna', item: `${site}/` },
+			{ '@type': 'ListItem', position: 2, name: 'Poradniki', item: `${site}/poradniki/` },
+			{ '@type': 'ListItem', position: 3, name: d.heading || d.title, item: url },
+		],
+	},
+	...(d.faq?.length ? [{ '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: d.faq.map((f: any) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })) }] : []),
+];
+---
+<article class="ar">
+	<header class="ar-head">
+		<div class="ar-wrap">
+			<nav class="ar-crumbs" aria-label="Okruszki"><a href="/">Strona główna</a><span>›</span><a href="/poradniki/">Poradniki</a><span>›</span><a href={`/poradniki/#${slugId(category)}`}>{category}</a></nav>
+			<a href={`/poradniki/#${slugId(category)}`} class="ar-cat">{category}</a>
+			<h1>{d.heading || d.title}</h1>
+			<p class="ar-lead">{d.description}</p>
+			<div class="ar-meta">
+				<span class="ar-ava" aria-hidden="true">KS</span>
+				<span class="ar-by"><a href="/o-nas/">Krzysztof Sobotka</a><small>3D Visual & Motion Artist</small></span>
+				<span class="ar-dot" aria-hidden="true"></span>
+				<span><time datetime={dateISO}>{dateTxt}</time></span>
+				<span class="ar-dot" aria-hidden="true"></span>
+				<span>{readMin} min czytania</span>
+			</div>
+		</div>
+	</header>
+
+	<div class="ar-wrap ar-grid">
+		<div class="ar-main">
+			{toc.length > 2 && (
+				<details class="ar-toc-m">
+					<summary>Spis treści</summary>
+					<ol>{toc.map((h) => <li><a href={`#${slugId(h)}`}>{h}</a></li>)}</ol>
+				</details>
+			)}
+			<Blocks blocks={blocks} theme="light" />
+
+			{d.faq?.length > 0 && (
+				<section class="ar-faq" aria-labelledby={slugId('Najczęstsze pytania')}>
+					<h2 id={slugId('Najczęstsze pytania')}>Najczęstsze pytania</h2>
+					{d.faq.map((f: any) => <details><summary>{f.q}</summary><p>{f.a}</p></details>)}
+				</section>
+			)}
+
+			<div class="ar-share">
+				<span>Przydał się ten poradnik? Podeślij go dalej:</span>
+				<a href={`https://www.facebook.com/sharer/sharer.php?u=${enc(url)}`} target="_blank" rel="noopener" aria-label="Udostępnij na Facebooku">Facebook</a>
+				<a href={`https://www.linkedin.com/sharing/share-offsite/?url=${enc(url)}`} target="_blank" rel="noopener" aria-label="Udostępnij na LinkedIn">LinkedIn</a>
+				<a href={`mailto:?subject=${enc(d.heading || d.title)}&body=${enc(url)}`} aria-label="Wyślij e-mailem">E-mail</a>
+				<button type="button" data-copy={url}>Kopiuj link</button>
+			</div>
+
+			<aside class="ar-author">
+				<span class="ar-ava ar-ava-l" aria-hidden="true">KS</span>
+				<div>
+					<p class="ar-author-n"><a href="/o-nas/">Krzysztof Sobotka</a></p>
+					<p class="ar-author-r">3D Visual & Motion Artist · założyciel Sobotka Visual Creations</p>
+					<p>Absolwent Sztuki Mediów na ASP we Wrocławiu. Od 2020 roku robi montaż, animacje i rolki dla firm, twórców, wydawnictw i klubów sportowych — m.in. ponad 150 rolek rekrutacyjnych dla Delta HR i booktrailery dla Fabryki Słów.</p>
+				</div>
+			</aside>
+		</div>
+
+		<aside class="ar-side">
+			<div class="ar-sticky">
+				{toc.length > 2 && (
+					<nav class="ar-toc" aria-label="Spis treści">
+						<p>Spis treści</p>
+						<ol>{toc.map((h) => <li><a href={`#${slugId(h)}`}>{h}</a></li>)}</ol>
+					</nav>
+				)}
+				<div class="ar-cta">
+					<span class="ar-cta-ico" aria-hidden="true"><IsoIcon name={icon} mode="static" /></span>
+					<p class="ar-cta-t">{cta.lead || 'Potrzebujesz wideo dla firmy?'}</p>
+					<a href={cta.href} class="ar-cta-b">{cta.label} →</a>
+					<a href="/#probna" class="ar-cta-s">albo darmowa rolka próbna</a>
+				</div>
+			</div>
+		</aside>
+	</div>
+
+	{related.length > 0 && (
+		<section class="ar-rel">
+			<div class="ar-wrap">
+				<h2>Polecamy</h2>
+				<div class="ar-rel-g">
+					{related.map((p: any) => (
+						<a href={`/${p.id}/`} class="ar-card">
+							<span class="ar-card-img">{relImg(p.data) ? <img src={relImg(p.data)} alt="" loading="lazy" /> : <span class="ar-card-ico" aria-hidden="true"><IsoIcon name={relIco(p)} mode="static" /></span>}</span>
+							<span class="ar-card-b"><small>{cat(p.data.eyebrow)}</small><b>{p.data.heading || p.data.title}</b></span>
+						</a>
+					))}
+				</div>
+			</div>
+		</section>
+	)}
+	{ld.map((x) => <script type="application/ld+json" set:html={JSON.stringify(x)} />)}
+</article>
+
+<style is:global>
+	.ar { background: #fbfaff; color: #1b1640; }
+	.ar-wrap { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+	.ar-head { background: linear-gradient(180deg, #f1eeff, #fbfaff); border-bottom: 1px solid #e7e3f7; padding: 34px 0 34px; }
+	.ar-head .ar-wrap { max-width: 860px; }
+	.ar-crumbs { display: flex; flex-wrap: wrap; gap: 8px; font-size: 13px; color: #6b6590; }
+	.ar-crumbs a { color: #6b6590; } .ar-crumbs a:last-child, .ar-cat { text-transform: capitalize; } .ar-crumbs a:hover { color: var(--color-orange); }
+	.ar-cat { display: inline-block; margin-top: 22px; padding: 5px 12px; border-radius: 999px; background: #ffe4ea; color: #c41339; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+	.ar-head h1 { margin-top: 14px; font-size: clamp(30px, 4.6vw, 46px); line-height: 1.12; font-weight: 800; letter-spacing: -.02em; color: #120d33; text-wrap: balance; }
+	.ar-lead { margin-top: 14px; font-size: 19px; line-height: 1.6; color: #4a4470; max-width: 720px; }
+	.ar-meta { margin-top: 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 12px; font-size: 14px; color: #6b6590; }
+	.ar-ava { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 999px; font-size: 14px; font-weight: 800; color: #fff; background: linear-gradient(150deg, #6d4dff, #b03cff 60%, #ff5fd2); flex: none; }
+	.ar-ava-l { width: 64px; height: 64px; font-size: 20px; }
+	.ar-by { display: flex; flex-direction: column; line-height: 1.25; } .ar-by a { font-weight: 700; color: #1b1640; } .ar-by small { font-size: 12px; }
+	.ar-dot { width: 4px; height: 4px; border-radius: 99px; background: #c9c3e3; }
+	.ar-grid { display: grid; grid-template-columns: minmax(0, 720px) 300px; gap: 56px; justify-content: center; padding-top: 40px; padding-bottom: 56px; }
+	.ar-main { min-width: 0; }
+	.ar-main .svc-blocks { margin-top: 0; gap: 2rem; }
+	.ar-main .svc-text { font-size: 18px; line-height: 1.75; color: #2e2858; }
+	.ar-main .svc-text p, .ar-main .svc-text li { text-align: left !important; }
+	.ar-main .svc-text h2 { font-size: 28px; margin-top: .5rem; scroll-margin-top: 96px; color: #120d33; }
+	.ar-main .svc-text strong { color: #120d33; }
+	.ar-main .svc-text blockquote.md-lead { background: #fff; border: 1px solid #e7e3f7; border-left: 4px solid var(--color-orange); box-shadow: 0 10px 30px -22px rgba(30,20,80,.5); }
+	.ar-main .svc-text blockquote.md-warn { background: #fff6e6; border-left-color: #f59e0b; }
+	.ar-main .svc-text blockquote.md-tip { background: #e9fbf3; border-left-color: #10b981; }
+	.ar-main .svc-text table { background: #fff; border: 1px solid #e7e3f7; border-radius: 12px; overflow: hidden; }
+	.ar-main .svc-text th { background: #f3f0ff; }
+	.ar-toc-m { display: none; margin-bottom: 28px; border: 1px solid #e7e3f7; border-radius: 14px; background: #fff; padding: 14px 18px; }
+	.ar-toc-m summary { font-weight: 800; cursor: pointer; }
+	.ar-toc-m ol, .ar-toc ol { margin: 10px 0 0 1.1rem; list-style: decimal; display: grid; gap: 6px; font-size: 15px; }
+	.ar-toc-m a, .ar-toc a { color: #3a3466; } .ar-toc a:hover, .ar-toc a.on { color: var(--color-orange); }
+	.ar-sticky { position: sticky; top: 96px; display: grid; gap: 20px; }
+	.ar-toc { border: 1px solid #e7e3f7; border-radius: 16px; background: #fff; padding: 18px 20px; }
+	.ar-toc p { font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: #6b6590; }
+	.ar-cta { border-radius: 18px; padding: 20px; text-align: center; color: #fff; background: radial-gradient(70% 80% at 80% 0%, rgba(176,60,255,.55), transparent 70%), linear-gradient(150deg, #1a1150, #0d0930); }
+	.ar-cta-ico { display: block; width: 120px; margin: -6px auto 2px; }
+	.ar-cta-t { font-weight: 800; font-size: 17px; line-height: 1.3; }
+	.ar-cta-b { display: block; margin-top: 14px; padding: 12px 16px; border-radius: 999px; background: #2ee59d; color: #04261a; font-weight: 800; }
+	.ar-cta-s { display: block; margin-top: 10px; font-size: 13px; color: #c3c0dc; text-decoration: underline; }
+	.ar-faq { margin-top: 2.5rem; }
+	.ar-faq h2 { font-size: 28px; font-weight: 700; color: #120d33; margin-bottom: .75rem; scroll-margin-top: 96px; }
+	.ar-faq details { border: 1px solid #e7e3f7; border-radius: 14px; background: #fff; padding: 14px 18px; margin-bottom: 10px; }
+	.ar-faq summary { font-weight: 700; cursor: pointer; color: #1b1640; }
+	.ar-faq details p { margin-top: 8px; color: #2e2858; line-height: 1.7; }
+	.ar-share { margin-top: 2.5rem; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 16px 0; border-top: 1px solid #e7e3f7; border-bottom: 1px solid #e7e3f7; font-size: 14px; color: #4a4470; }
+	.ar-share span { margin-right: 6px; font-weight: 600; }
+	.ar-share a, .ar-share button { padding: 7px 14px; border-radius: 999px; border: 1px solid #ddd8f2; background: #fff; color: #1b1640; font-weight: 700; font-size: 13px; cursor: pointer; }
+	.ar-share a:hover, .ar-share button:hover { border-color: var(--color-orange); color: var(--color-orange); }
+	.ar-author { margin-top: 2rem; display: flex; gap: 18px; padding: 22px; border-radius: 18px; background: #fff; border: 1px solid #e7e3f7; }
+	.ar-author-n a { font-weight: 800; font-size: 17px; color: #120d33; }
+	.ar-author-r { font-size: 13px; color: #6b6590; margin-bottom: 6px; }
+	.ar-author p:last-child { font-size: 15px; line-height: 1.6; color: #3a3466; }
+	.ar-rel { background: #f3f0ff; padding: 48px 0 56px; border-top: 1px solid #e7e3f7; }
+	.ar-rel h2 { font-size: 26px; font-weight: 800; color: #120d33; }
+	.ar-rel-g { margin-top: 18px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+	.ar-card { display: flex; flex-direction: column; border-radius: 18px; overflow: hidden; background: #fff; border: 1px solid #e7e3f7; transition: transform .2s, box-shadow .2s; }
+	.ar-card:hover { transform: translateY(-3px); box-shadow: 0 18px 40px -26px rgba(30,20,80,.6); }
+	.ar-card-img { display: grid; place-items: center; aspect-ratio: 16 / 9; background: radial-gradient(60% 80% at 80% 10%, rgba(176,60,255,.35), transparent 70%), linear-gradient(150deg, #1a1150, #0d0930); }
+	.ar-card-img img { width: 100%; height: 100%; object-fit: cover; }
+	.ar-card-ico { width: 40%; }
+	.ar-card-b { padding: 16px 18px 20px; display: grid; gap: 6px; }
+	.ar-card-b small { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: #c41339; }
+	.ar-card-b b { font-size: 17px; line-height: 1.35; color: #120d33; }
+	@media (max-width: 1020px) {
+		.ar-grid { grid-template-columns: minmax(0, 1fr); gap: 0; max-width: 768px; }
+		.ar-side { display: none; }
+		.ar-toc-m { display: block; }
+	}
+	@media (max-width: 760px) { .ar-dot { display: none; } .ar-meta { gap: 6px 14px; } .ar-rel-g { grid-template-columns: 1fr; } .ar-author { flex-direction: column; } .ar-main .svc-text { font-size: 17px; } }
+</style>
+<script>
+	document.querySelectorAll<HTMLButtonElement>('.ar-share [data-copy]').forEach((b) => b.addEventListener('click', async () => {
+		try { await navigator.clipboard.writeText(b.dataset.copy!); b.textContent = 'Skopiowano ✓'; } catch { /* brak dostępu do schowka */ }
+	}));
+	// podświetlenie bieżącej sekcji w spisie treści
+	const links = [...document.querySelectorAll<HTMLAnchorElement>('.ar-toc a')];
+	if (links.length) {
+		const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) links.forEach((a) => a.classList.toggle('on', a.hash === '#' + e.target.id)); }), { rootMargin: '-20% 0px -70% 0px' });
+		links.forEach((a) => { const t = document.getElementById(decodeURIComponent(a.hash.slice(1))); if (t) io.observe(t); });
+	}
+</script>

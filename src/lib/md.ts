@@ -12,6 +12,9 @@ const inline = (s: string) =>
 		.replace(/(^|[^*])\*(?!\s)(.+?)\*/g, '$1<em>$2</em>')
 		.replace(/\[([^\]]+)\]\(((?:https?:\/\/|\/|#|mailto:)[^)\s]*)\)/g, '<a href="$2">$1</a>');
 
+/** id nagłówka do spisu treści: „Ile to kosztuje?” → „ile-to-kosztuje” */
+export const slugId = (t: string) => t.toLowerCase().replace(/\*\*/g, '').replace(/ł/g, 'l').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+
 export function md(src: string = ''): string {
 	const out: string[] = [];
 	const blocks = String(src).replace(/\r\n/g, '\n').split(/\n{2,}/);
@@ -25,7 +28,9 @@ export function md(src: string = ''): string {
 			out.push('<div class="md-table"><table><thead><tr>' + cells(head).map((c) => `<th>${c}</th>`).join('') + '</tr></thead><tbody>' +
 				rows.map((r) => '<tr>' + cells(r).map((c) => `<td>${c}</td>`).join('') + '</tr>').join('') + '</tbody></table></div>');
 		} else if (lines.every((l) => /^\s*>/.test(l))) {
-			out.push(`<blockquote><p>${lines.map((l) => inline(l.replace(/^\s*>\s?/, ''))).join('<br />')}</p></blockquote>`);
+			const q = lines.map((l) => l.replace(/^\s*>\s?/, ''));
+			const kind = /^\*\*(Ważne|Uwaga)/i.test(q[0]) ? 'md-warn' : /^\*\*(Wskazówka|Tip|Porada)/i.test(q[0]) ? 'md-tip' : 'md-lead';
+			out.push(`<blockquote class="${kind}"><p>${q.map(inline).join('<br />')}</p></blockquote>`);
 		} else if (lines.every((l) => /^\s*\d+[.)]\s+/.test(l))) {
 			out.push('<ol>' + lines.map((l) => `<li>${inline(l.replace(/^\s*\d+[.)]\s+/, ''))}</li>`).join('') + '</ol>');
 		} else if (lines.every((l) => /^\s*[-*]\s+/.test(l))) {
@@ -33,7 +38,8 @@ export function md(src: string = ''): string {
 		} else if (/^###\s+/.test(b)) {
 			out.push(`<h3>${inline(b.replace(/^###\s+/, ''))}</h3>`);
 		} else if (/^##?\s+/.test(b)) {
-			out.push(`<h2>${inline(b.replace(/^##?\s+/, ''))}</h2>`);
+			const h = b.replace(/^##?\s+/, '');
+			out.push(`<h2 id="${slugId(h)}">${inline(h)}</h2>`);
 		} else {
 			out.push(`<p>${lines.map(inline).join('<br />')}</p>`);
 		}

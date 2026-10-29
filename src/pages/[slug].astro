@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Blocks from '../components/blocks/Blocks.astro';
+import Article from '../components/article/Article.astro';
 
 export async function getStaticPaths() {
 	const pages = await getCollection('pages', ({ data }) => !data.draft);
@@ -10,12 +11,11 @@ export async function getStaticPaths() {
 
 const { page } = Astro.props;
 const { Content } = await render(page);
-// poradniki (podstrony z datą aktualizacji): „Czytaj też” i okruszek „Poradniki”
 const isArticle = !!page.data.updated;
-const more = isArticle ? (await getCollection('pages', ({ data }) => !data.draft && !!data.updated)).filter((p) => p.id !== page.id).sort((a, b) => +b.data.updated! - +a.data.updated!).slice(0, 4) : [];
 ---
 
-<BaseLayout title={page.data.title} description={page.data.description} noindex={page.data.noindex}>
+<BaseLayout title={page.data.title} description={page.data.description} noindex={page.data.noindex} type={isArticle ? 'article' : 'website'} image={isArticle ? page.data.blocks?.find((b: any) => b?.type === 'zdjecie' && b.image)?.image : undefined}>
+	{isArticle ? <Article page={page} /> : <>
 	<section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
 		<span class="pointer-events-none absolute inset-0 bg-grid opacity-35"></span>
 		<div class="relative z-2 mx-auto max-w-[860px] px-6 pt-24 pb-14 sm:px-8">
@@ -26,7 +26,6 @@ const more = isArticle ? (await getCollection('pages', ({ data }) => !data.draft
 				{page.data.heading || page.data.title}
 			</h1>
 			<p class="mt-5 max-w-[620px] text-[18px] leading-[1.6] text-sky-mist">{page.data.description}</p>
-			{page.data.updated && <p class="mt-4 text-[14px] text-sky-mist/80">Aktualizacja: <time datetime={page.data.updated.toISOString().slice(0, 10)}>{page.data.updated.toLocaleDateString('pl-PL', { day: 'numeric', month: 'long', year: 'numeric' })}</time> · Krzysztof Sobotka</p>}
 		</div>
 	</section>
 
@@ -35,15 +34,6 @@ const more = isArticle ? (await getCollection('pages', ({ data }) => !data.draft
 		<div class="relative z-2 mx-auto max-w-[860px] px-6 py-16 sm:px-8">
 			<article class="prose-svc"><Content /></article>
 			{page.data.blocks?.length ? <Blocks blocks={page.data.blocks} theme="dark" /> : null}
-			{more.length > 0 && (
-				<nav class="mt-14" aria-label="Czytaj też">
-					<h2 class="text-[24px] font-bold text-cloud">Czytaj też</h2>
-					<div class="mt-4 grid gap-3 sm:grid-cols-2">
-						{more.map((m) => <a href={`/${m.id}/`} class="rounded-2xl border border-white/12 bg-white/5 p-5 transition-colors hover:border-orange/60"><span class="block text-[12px] font-bold tracking-[0.1em] text-orange-glow uppercase">{m.data.eyebrow}</span><span class="mt-1 block font-bold text-cloud">{m.data.heading || m.data.title}</span></a>)}
-					</div>
-					<a href="/poradniki/" class="mt-4 inline-block font-bold text-orange">Wszystkie poradniki →</a>
-				</nav>
-			)}
 			{page.id !== 'polityka-prywatnosci' && <a href="/generator" class="liquid-card mt-12 flex flex-col items-center gap-4 rounded-[24px] border-2 border-orange bg-linear-100 from-orange-deep via-orange to-orange-bright px-7 py-8 text-center shadow-[0_18px_50px_-12px_rgba(237,36,78,.65)] sm:flex-row sm:justify-between sm:text-left">
 				<span>
 					<span class="block font-display text-[24px] leading-tight font-bold text-cloud">Policz swój pakiet</span>
@@ -53,28 +43,15 @@ const more = isArticle ? (await getCollection('pages', ({ data }) => !data.draft
 			</a>}
 		</div>
 	</section>
-	{page.data.updated && <script type="application/ld+json" set:html={JSON.stringify({
-		"@context": "https://schema.org",
-		"@type": "Article",
-		"headline": page.data.heading || page.data.title,
-		"description": page.data.description,
-		"url": `https://sobotkavisual.pl/${page.id}/`,
-		"inLanguage": "pl",
-		"datePublished": page.data.updated.toISOString().slice(0, 10),
-		"dateModified": page.data.updated.toISOString().slice(0, 10),
-		"image": "https://sobotkavisual.pl/og-default.jpg",
-		"author": { "@type": "Person", "name": "Krzysztof Sobotka", "jobTitle": "3D Visual & Motion Artist", "url": "https://sobotkavisual.pl/o-nas/" },
-		"publisher": { "@type": "Organization", "@id": "https://sobotkavisual.pl/#firma", "name": "Sobotka Visual Creations", "logo": "https://sobotkavisual.pl/logo.svg" }
-	})} />}
 	<script type="application/ld+json" set:html={JSON.stringify({
 		"@context": "https://schema.org",
 		"@type": "BreadcrumbList",
 		"itemListElement": [
 			{ "@type": "ListItem", "position": 1, "name": "Strona główna", "item": "https://sobotkavisual.pl/" },
-			...(isArticle ? [{ "@type": "ListItem", "position": 2, "name": "Poradniki", "item": "https://sobotkavisual.pl/poradniki/" }] : []),
-			{ "@type": "ListItem", "position": isArticle ? 3 : 2, "name": page.data.heading || page.data.title, "item": `https://sobotkavisual.pl/${page.id}/` }
+			{ "@type": "ListItem", "position": 2, "name": page.data.heading || page.data.title, "item": `https://sobotkavisual.pl/${page.id}/` }
 		]
 	})} />
+	</>}
 </BaseLayout>
 
 <style is:global>

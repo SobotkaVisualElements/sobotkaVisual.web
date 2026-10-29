@@ -6,6 +6,13 @@ heading: 'Booktrailer: co to jest, ile kosztuje i jak powstaje'
 updated: '2026-10-29'
 draft: false
 noindex: false
+faq:
+- q: Co to jest booktrailer?
+  a: To krótki film promujący książkę, podobny do zwiastuna filmowego. Najczęściej powstaje z okładki i ilustracji ożywionych animacją, muzyką i napisami.
+- q: Ile kosztuje booktrailer?
+  a: Animowana rolka z okładki kosztuje u nas 790–1 150 zł, a pakiet booktrailer i seria rolek na premierę 3 490 zł.
+- q: Jakie materiały są potrzebne do booktrailera?
+  a: Okładka najlepiej w warstwach (PSD) albo ilustracja w wysokiej rozdzielczości, tytuł, autor, data premiery i ewentualnie cytat z książki.
 blocks:
 - type: tekst
   text: |
@@ -29,6 +36,8 @@ blocks:
     3. **Animacja i typografia** — ruch warstw, efekty (dym, iskry, mgła), animowany tytuł.
     4. **Dźwięk** — muzyka i sound design, które budują nastrój gatunku.
     5. **Formaty** — pion 9:16 na rolki i TikToka, poziom na YouTube i stronę.
+
+    > **Wskazówka:** poproś grafika okładki o plik w warstwach (PSD). Postać, tło i tytuł na osobnych warstwach to najszybsza droga do efektownej paralaksy.
 
     Tak powstały nasze rolki dla Fabryki Słów, m.in. do „Siedem Mieczy” Anthony'ego Ryana i do książki o Jakubie Wędrowyczu — w całości z ilustracji okładki.
 - type: realizacje
