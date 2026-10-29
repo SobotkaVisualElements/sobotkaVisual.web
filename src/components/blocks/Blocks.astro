@@ -14,6 +14,8 @@ import GapChart from '../ui/GapChart.astro';
 import { opinie } from '../../data/opinie';
 import { md } from '../../lib/md';
 import { tx } from '../../lib/typo';
+import IsoIcon from '../iso/IsoIcon.astro';
+import { getPublishedProjects } from '../../lib/projects';
 
 interface Props { blocks?: any[]; theme?: 'light' | 'dark' }
 const { blocks = [], theme = 'light' } = Astro.props;
@@ -22,6 +24,9 @@ const ytId = (u = '') => {
 	const m = u.match(/(?:youtu\.be\/|v=|shorts\/|embed\/)([\w-]{11})/);
 	return m ? m[1] : '';
 };
+// realizacje do karuzeli w artykułach (pionowe okładki, najnowsze na początku)
+const needWork = blocks.some((b: any) => b?.type === 'realizacje');
+const allWork = needWork ? (await getPublishedProjects()).map((p) => { const d: any = p.data; return { href: `/work/${p.id}/`, title: d.title, category: d.category, img: d.poster || d.cover || d.layers?.find((l: any) => l?.image)?.image || '', logo: d.clientLogo, logoTone: d.clientLogoTone }; }).filter((x) => x.img) : [];
 const num = (v: any, d = 0) => (Number.isFinite(parseFloat(v)) ? parseFloat(v) : d);
 
 // wykres liniowy: albo punkty z panelu („21, 15, 9”), albo krzywa wzrostu do podanej wartości
@@ -62,6 +67,13 @@ function linePath(b: any) {
 				return <div class="svc-b svc-text" set:html={md(b.text)} />;
 
 			case 'zdjecie':
+				// brak zdjęcia (np. czeka na wybór ze stocka) → elegancki kafelek z ikoną zamiast dziury
+				if (!b.image && (b.stock || b.icon)) return (
+					<figure class:list={['svc-b svc-ph', b.width === 'waska' && 'svc-narrow']} data-stock={b.stock || undefined}>
+						<span class="svc-ph-ico" aria-hidden="true"><IsoIcon name={b.icon || 'kamera'} mode="static" /></span>
+						{b.caption && <figcaption>{b.caption}</figcaption>}
+					</figure>
+				);
 				return b.image && (
 					<figure class:list={['svc-b', b.width === 'waska' && 'svc-narrow']}>
 						<img src={b.image} alt={b.alt || b.caption || ''} loading="lazy" decoding="async" class="svc-media" />
@@ -102,6 +114,23 @@ function linePath(b: any) {
 					</div>
 				);
 			}
+
+			case 'realizacje': {
+				// karuzela 3D z naszymi realizacjami (pionowa); opcjonalnie tylko wybrane kategorie, np. „Animacja, Montaż”
+				const cats = String(b.categories || '').split(',').map((c: string) => c.trim().toLowerCase()).filter(Boolean);
+				const its = (cats.length ? allWork.filter((w) => cats.some((c) => String(w.category).toLowerCase().includes(c))) : allWork).slice(0, Number(b.limit) || 9);
+				return its.length > 0 && (
+					<figure class="svc-b svc-wide svc-work">
+						{b.title && <p class="svc-work-t" set:html={tx(b.title)} />}
+						<Carousel3D items={its} orientation="pion" autoplay={true} tone={theme} label={b.title || 'Realizacje'} showLogos />
+						<a href="/work/" class="svc-work-all">Wszystkie realizacje →</a>
+					</figure>
+				);
+			}
+
+			case 'przycisk':
+				// przycisk do oferty / usługi (np. „Zobacz ofertę” → /oferta/dzial-wideo/)
+				return b.href && <div class="svc-b"><OfferButton href={b.href} label={b.label || 'Zobacz ofertę'} lead={b.lead} note={b.note} align={b.align || 'srodek'} /></div>;
 
 			case 'oferta': {
 				// link do generatora z gotowo ustawioną ofertą
@@ -245,6 +274,14 @@ function linePath(b: any) {
 	.svc-b figcaption, .svc-slide-cap { margin-top: .6rem; font-size: 14px; color: var(--muted); text-align: center; }
 	.svc-media { display: block; width: 100%; border-radius: 16px; border: 1px solid var(--line); object-fit: cover; }
 	.svc-narrow { max-width: 560px; margin-inline: auto; width: 100%; }
+	.svc-ph { position: relative; aspect-ratio: 16 / 9; border-radius: 16px; border: 1px solid var(--line); overflow: hidden; display: grid; place-items: center;
+		background: radial-gradient(60% 80% at 80% 10%, rgba(176,60,255,.35), transparent 70%), radial-gradient(50% 70% at 0% 100%, rgba(237,36,78,.22), transparent 70%), linear-gradient(150deg, #1a1150, #0d0930); }
+	.svc-ph::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 28px 28px; }
+	.svc-ph-ico { position: relative; width: min(46%, 260px); aspect-ratio: 1; }
+	.svc-ph-ico .iso { width: 100%; height: 100%; }
+	.svc-ph figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 16px; background: linear-gradient(transparent, rgba(0,0,0,.55)); color: #fff; }
+	.svc-work-t { text-align: center; font-weight: 800; font-size: 22px; margin-bottom: .5rem; color: inherit; }
+	.svc-work-all { display: block; width: max-content; margin: .4rem auto 0; font-weight: 700; color: var(--color-orange); }
 	.svc-gap { margin-block: 1.5rem; }
 	.svc-blocks--light .gap-quote { color: var(--color-ink, #0a0630); }
 	.svc-blocks--light .gap-quote cite { color: rgba(10,6,48,.6); }
@@ -258,6 +295,13 @@ function linePath(b: any) {
 	.svc-text p { margin-bottom: 1rem; } .svc-text p:last-child { margin-bottom: 0; }
 	.svc-text ul { list-style: disc; margin: 0 0 1rem 1.25rem; } .svc-text li { margin-bottom: .35rem; }
 	.svc-text strong { color: var(--fg); } .svc-text a { color: var(--color-orange); text-decoration: underline; }
+	.svc-text ol { list-style: decimal; margin: 0 0 1rem 1.25rem; }
+	.svc-text blockquote { margin: 0 0 1rem; padding: 16px 20px; border-left: 3px solid var(--color-orange); background: color-mix(in srgb, var(--fg) 6%, transparent); border-radius: 0 14px 14px 0; color: var(--fg); }
+	.svc-text blockquote p { margin: 0; text-align: left; }
+	.md-table { overflow-x: auto; margin: 0 0 1.25rem; }
+	.svc-text table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.5; }
+	.svc-text th, .svc-text td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+	.svc-text th { color: var(--fg); font-weight: 700; background: color-mix(in srgb, var(--fg) 5%, transparent); }
 
 	/* karuzela */
 	.svc-track { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; border-radius: 16px; }

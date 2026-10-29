@@ -6,7 +6,7 @@ import IsoIcon from '../iso/IsoIcon.astro';
 const iPrice = ['tablet', 'rakieta', 'moneta'];
 // jasne warunki pod cennikiem (panel: Strona główna → Warunki pod cennikiem)
 const warunki: any[] = (home as any).warunki?.length ? (home as any).warunki : [
-	{ t: 'Bez ukrytych dopłat', d: 'Cena z generatora to kwota na fakturze. Nie doliczamy 23% VAT — jesteśmy zwolnieni z VAT.' },
+	{ t: 'Bez ukrytych dopłat', d: 'Cena z generatora to cena na fakturze.' },
 	{ t: 'Gotowe pliki są Twoje', d: 'Używasz ich gdzie chcesz, bez limitu czasu.' },
 	{ t: 'Możesz bez abonamentu', d: 'Pojedyncze zlecenia i dzień contentowy też.' },
 	{ t: 'Odpowiedź w 24 h', d: 'W dni robocze, bez spamu i nachodzenia.' },

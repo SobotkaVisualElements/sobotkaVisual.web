@@ -1,0 +1,40 @@
+---
+/*
+ * Poradniki — lista artykułów (podstrony z polem „Data aktualizacji”).
+ * Nowy poradnik: Panel → Podstrony → Utwórz → wypełnij „Data aktualizacji”.
+ */
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import IsoIcon from '../components/iso/IsoIcon.astro';
+const list = (await getCollection('pages', ({ data }) => !data.draft && !!data.updated)).sort((a, b) => +b.data.updated! - +a.data.updated!);
+const ico = (p: any) => p.data.blocks?.find((b: any) => b?.type === 'zdjecie' && b.icon)?.icon || 'kamera';
+const site = 'https://sobotkavisual.pl';
+const ld = { '@context': 'https://schema.org', '@type': 'ItemList', name: 'Poradniki Sobotka Visual', itemListElement: list.map((p, i) => ({ '@type': 'ListItem', position: i + 1, name: p.data.heading || p.data.title, url: `${site}/${p.id}/` })) };
+---
+<BaseLayout title="Poradniki o wideo, rolkach i animacji" description="Ile kosztuje rolka, film reklamowy i animacja? Pomysły na rolki dla firmy, rolki rekrutacyjne, booktrailery. Praktyczne poradniki od studia Sobotka Visual.">
+	<section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
+		<span class="pointer-events-none absolute inset-0 bg-grid opacity-35"></span>
+		<div class="relative z-2 mx-auto max-w-[1100px] px-6 pt-24 pb-14 sm:px-8">
+			<span class="text-[13px] font-bold tracking-[0.12em] text-orange-glow uppercase">Poradniki</span>
+			<h1 class="mt-3 text-[38px] leading-[1.06] font-bold tracking-[-0.02em] md:text-[54px]">Wideo dla firm — bez tajemnic</h1>
+			<p class="mt-5 max-w-[640px] text-[18px] leading-[1.6] text-sky-mist">Ceny, pomysły i sprawdzone formaty z naszej codziennej pracy przy rolkach, filmach i animacjach.</p>
+		</div>
+	</section>
+	<section class="relative overflow-hidden border-t border-white/6 bg-navy-deep text-cloud">
+		<span class="pointer-events-none absolute inset-0 bg-grid opacity-40"></span>
+		<div class="relative z-2 mx-auto grid max-w-[1100px] gap-6 px-6 py-16 sm:grid-cols-2 sm:px-8 lg:grid-cols-3">
+			{list.map((p) => (
+				<a href={`/${p.id}/`} class="group flex flex-col overflow-hidden rounded-[22px] border border-white/10 bg-white/5 transition-transform hover:-translate-y-1">
+					<span class="grid aspect-[16/10] place-items-center bg-[radial-gradient(60%_80%_at_80%_10%,rgba(176,60,255,.35),transparent_70%),linear-gradient(150deg,#1a1150,#0d0930)]" aria-hidden="true"><span class="block w-[48%]"><IsoIcon name={ico(p)} mode="static" /></span></span>
+					<span class="flex flex-1 flex-col p-6">
+						<span class="text-[12px] font-bold tracking-[0.1em] text-orange-glow uppercase">{p.data.eyebrow}</span>
+						<span class="mt-2 text-[20px] leading-snug font-bold text-cloud">{p.data.heading || p.data.title}</span>
+						<span class="mt-2 text-[15px] text-sky-mist">{p.data.description}</span>
+						<span class="mt-auto pt-4 font-bold text-orange">Czytaj →</span>
+					</span>
+				</a>
+			))}
+		</div>
+	</section>
+	<script type="application/ld+json" set:html={JSON.stringify(ld)} />
+</BaseLayout>

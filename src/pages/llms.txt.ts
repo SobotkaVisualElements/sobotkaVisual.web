@@ -18,14 +18,13 @@ export const GET: APIRoute = async () => {
 		.map(([p, m]) => ({ slug: p.split('/').pop()!.replace('.json', ''), ...(m.default ?? m) }))
 		.filter((s: any) => !s.draft)
 		.sort((a: any, b: any) => (a.order ?? 99) - (b.order ?? 99));
+	const poradniki = (await getCollection('pages', ({ data }) => !data.draft && !!data.updated)).sort((a, b) => +b.data.updated! - +a.data.updated!);
 	const work = (await getCollection('work', ({ data }) => !data.draft)).sort((a, b) => (+(b.data.date ?? 0)) - (+(a.data.date ?? 0)));
 
 	const lines = [
 		'# Sobotka Visual Creations (SVC)',
 		'',
 		'> Studio montażu wideo, animacji i motion designu z Opola (firma zarejestrowana w Nysie). Robimy rolki, filmy reklamowe i wizerunkowe, animacje, oprawę graficzną i transmisyjną dla firm, twórców internetowych, wydawnictw i klubów sportowych. Działamy od 2020 roku: Opolszczyzna, Śląsk, Dolny Śląsk, a zdalnie cała Polska.',
-		'',
-		'Ceny są końcowe: firma jest zwolniona z VAT, więc nie doliczamy 23% VAT.',
 		'',
 		'Kontakt: kontakt@sobotkavisual.pl, tel. +48 668 472 759. Założyciel: Krzysztof Sobotka (3D Visual & Motion Artist, absolwent ASP we Wrocławiu).',
 		'',
@@ -47,8 +46,10 @@ export const GET: APIRoute = async () => {
 		'## Realizacje',
 		...work.map((w) => `- [${w.data.title}](${S}/work/${w.id}/)${w.data.client ? ` — klient: ${w.data.client}` : ''}`),
 		'',
+		'## Poradniki',
+		...poradniki.map((p) => `- [${p.data.heading || p.data.title}](${S}/${p.id}/) — ${p.data.description}`),
+		'',
 		'## Więcej',
-		`- [Ile kosztuje rolka dla firmy w 2026 — cennik i modele](${S}/ile-kosztuje-rolka-dla-firmy/)`,
 		`- [O nas — historia studia](${S}/o-nas/)`,
 		`- [Manifest — jak pracujemy](${S}/manifest/)`,
 		`- [Obszar działania i miasta](${S}/obszar-dzialania/)`,

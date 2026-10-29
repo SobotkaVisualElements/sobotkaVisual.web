@@ -67,7 +67,7 @@
   },
   "prices": {
     "title": "Ile to kosztuje",
-    "note": "Ceny orientacyjne i końcowe — nie doliczamy VAT (zwolnienie z VAT). Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
+    "note": "Ceny orientacyjne. Dokładną wycenę zestawu policzysz w generatorze — im więcej elementów, tym większy rabat (do 30%).",
     "items": [
       "rolki",
       "rolkaani",

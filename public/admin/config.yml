@@ -87,6 +87,26 @@ collections:
               - { name: caption, label: "Podpis", widget: string, required: false }
               - { name: alt, label: "Opis dla Google (alt)", widget: string, required: false }
               - { name: width, label: "Szerokość", widget: select, default: pelna, options: [{ label: "Pełna", value: pelna }, { label: "Wąska", value: waska }] }
+              - { name: stock, label: "Propozycja zdjęcia ze stocka (dla Ciebie)", widget: string, required: false, hint: "Fraza do wyszukania np. na Unsplash/Pexels. Dopóki nie wgrasz zdjęcia, w tym miejscu widać kafelek z ikoną." }
+              - { name: icon, label: "Ikona zastępcza (gdy brak zdjęcia)", widget: select, required: false, options: [{ label: "Kamera", value: kamera }, { label: "Monitor (montaż)", value: monitor }, { label: "Telefon (rolki)", value: telefon }, { label: "Rakieta (animacja)", value: rakieta }, { label: "Tablet (grafika)", value: tablet }, { label: "Wykres", value: wykres }, { label: "Megafon (marketing)", value: marketing }, { label: "Twórca (ring)", value: tworca }, { label: "Firma", value: firma }, { label: "HR", value: hr }, { label: "Torba (sprzedaż)", value: sprzedaz }, { label: "Książka", value: ksiazka }] }
+          - name: realizacje
+            label: "Karuzela 3D z naszymi realizacjami (pionowa)"
+            widget: object
+            summary: "{{fields.title}}"
+            fields:
+              - { name: title, label: "Nagłówek nad karuzelą", widget: string, required: false }
+              - { name: categories, label: "Tylko kategorie (opcjonalnie, po przecinku)", widget: string, required: false, hint: "Np. Animacja, Montaż. Puste = wszystkie realizacje." }
+              - { name: limit, label: "Ile realizacji", widget: number, value_type: int, default: 9, required: false }
+          - name: przycisk
+            label: "Przycisk „Zobacz ofertę” (link do oferty lub usługi)"
+            widget: object
+            summary: "{{fields.label}} → {{fields.href}}"
+            fields:
+              - { name: label, label: "Napis na przycisku", widget: string, default: "Zobacz ofertę" }
+              - { name: href, label: "Link", widget: string, hint: "Np. /oferta/dzial-wideo/ albo /uslugi/rolki-i-krotkie-formy/" }
+              - { name: lead, label: "Zdanie nad przyciskiem", widget: string, required: false }
+              - { name: note, label: "Dopisek pod przyciskiem", widget: string, required: false }
+              - { name: align, label: "Położenie", widget: select, default: srodek, options: [{ label: "Na środku", value: srodek }, { label: "Do lewej", value: lewo }] }
           - name: karuzela
             label: "Karuzela zdjęć"
             widget: object
