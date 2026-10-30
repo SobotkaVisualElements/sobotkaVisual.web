@@ -1,0 +1,18 @@
+# Po wdrożeniu na main: czeka, aż Cloudflare opublikuje stronę, i zgłasza adresy do IndexNow (Bing).
+name: IndexNow
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  indexnow:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/indexnow.mjs --live
