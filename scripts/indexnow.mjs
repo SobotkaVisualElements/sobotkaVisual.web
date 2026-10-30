@@ -4,7 +4,7 @@ import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const HOST = 'sobotkavisual.pl';
-const KEY = 'fe3deacc50f01008b5edffa6d52a0531';
+const KEY = '5cd1e4fb34174428a4d5b1ba8787dbc6'; // klucz z Bing Webmaster Tools (plik /<klucz>.txt w public/)
 
 async function collect(dir, base = '') {
 	const out = [];
@@ -16,6 +16,9 @@ async function collect(dir, base = '') {
 	}
 	return out;
 }
+
+// tylko wdrożenie produkcyjne (gałąź main) — podglądy z PR-ów nie zgłaszają adresów
+if (process.env.CF_PAGES && process.env.CF_PAGES_BRANCH !== 'main') { console.log('IndexNow: podgląd, pomijam'); process.exit(0); }
 
 try {
 	const urls = (await collect('dist')).filter((u) => !u.includes('/admin'));
