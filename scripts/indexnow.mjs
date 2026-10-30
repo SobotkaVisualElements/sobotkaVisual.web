@@ -22,7 +22,7 @@ if (!process.argv.includes('--live')) {
 // komunikaty widoczne w GitHubie jako adnotacje (Actions → podsumowanie przebiegu)
 const note = (m, bad = false) => console.log(`::${bad ? 'error' : 'notice'}::${m}`);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-const want = process.env.GITHUB_SHA;
+const want = process.env.GITHUB_EVENT_NAME === 'push' ? process.env.GITHUB_SHA : ''; // ręczne uruchomienie = bez czekania
 
 // 1) czekamy, aż Cloudflare opublikuje tę wersję (maks. 15 min)
 if (want) {
