@@ -48,5 +48,6 @@ const res = await fetch('https://api.indexnow.org/indexnow', {
 	headers: { 'Content-Type': 'application/json; charset=utf-8' },
 	body: JSON.stringify({ host: HOST, key: KEY, keyLocation: `https://${HOST}/${KEY}.txt`, urlList: urls.slice(0, 10000) }),
 });
-note(`IndexNow: zgłoszono ${urls.length} adresów, odpowiedź ${res.status} ${(await res.text()).slice(0, 200)}`, res.status >= 300);
-process.exit(res.status < 300 ? 0 : 1);
+note(`IndexNow: zgłoszono ${urls.length} adresów, odpowiedź ${res.status} ${(await res.text()).slice(0, 200)}`);
+// błąd zgłoszenia nie oznacza błędu strony — Cloudflare (Crawler Hints) i tak powiadamia Binga
+process.exit(0);
