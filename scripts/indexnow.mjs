@@ -1,40 +1,50 @@
-// Po każdym wdrożeniu zgłasza nowe/zmienione adresy do IndexNow (Bing, Yandex, Seznam, Naver).
+// IndexNow (Bing, Yandex, Seznam, Naver) — zgłasza adresy strony po wdrożeniu.
 // Dzięki temu Bing — a przez to Copilot i ChatGPT — widzi zmiany w minutach, nie w tygodniach.
-import { readFile, readdir } from 'node:fs/promises';
-import { join } from 'node:path';
+//
+// Dwa tryby:
+//  • przy budowaniu (Cloudflare Pages): tylko zapisuje dist/build.txt z numerem commita.
+//    Nie zgłaszamy z builda, bo strona (i plik z kluczem) nie jest jeszcze wtedy na żywo
+//    — Bing sprawdza klucz od razu i odrzuca zgłoszenie (403).
+//  • `node scripts/indexnow.mjs --live` (GitHub Action po wdrożeniu): czeka, aż na stronie
+//    jest nowa wersja, bierze adresy z mapy strony i zgłasza je do IndexNow.
+import { writeFile } from 'node:fs/promises';
 
 const HOST = 'sobotkavisual.pl';
 const KEY = '5cd1e4fb34174428a4d5b1ba8787dbc6'; // klucz z Bing Webmaster Tools (plik /<klucz>.txt w public/)
 
-async function collect(dir, base = '') {
-	const out = [];
-	for (const entry of await readdir(dir, { withFileTypes: true })) {
-		const full = join(dir, entry.name);
-		if (entry.isDirectory()) out.push(...(await collect(full, `${base}/${entry.name}`)));
-		// tylko strony do indeksowania (pomija noindex: /linki, landingi sezonowe, wzory)
-		else if (entry.name === 'index.html' && !(await readFile(full, 'utf8')).includes('content="noindex')) out.push(`https://${HOST}${base || '/'}`);
+if (!process.argv.includes('--live')) {
+	const sha = process.env.CF_PAGES_COMMIT_SHA || 'local';
+	await writeFile('dist/build.txt', sha).catch(() => {});
+	console.log(`IndexNow: zapisano build.txt (${sha.slice(0, 7)}); zgłoszenie po wdrożeniu robi GitHub Action`);
+	process.exit(0);
+}
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const want = process.env.GITHUB_SHA;
+
+// 1) czekamy, aż Cloudflare opublikuje tę wersję (maks. 15 min)
+if (want) {
+	for (let i = 0; ; i++) {
+		const live = await fetch(`https://${HOST}/build.txt?t=${Date.now()}`).then((r) => (r.ok ? r.text() : '')).catch(() => '');
+		if (live.trim() === want) { console.log('Nowa wersja jest na żywo.'); break; }
+		if (i >= 45) { console.log('Nie doczekałem się nowej wersji — zgłaszam to, co jest.'); break; }
+		await sleep(20000);
 	}
-	return out;
 }
 
-// tylko wdrożenie produkcyjne (gałąź main) — podglądy z PR-ów nie zgłaszają adresów
-if (process.env.CF_PAGES && process.env.CF_PAGES_BRANCH !== 'main') { console.log('IndexNow: podgląd, pomijam'); process.exit(0); }
+// 2) klucz musi być dostępny publicznie
+const key = await fetch(`https://${HOST}/${KEY}.txt`).then((r) => r.text()).catch(() => '');
+if (key.trim() !== KEY) { console.log('Plik z kluczem nie odpowiada — przerywam.'); process.exit(1); }
 
-try {
-	const urls = (await collect('dist')).filter((u) => !u.includes('/admin'));
-	if (!urls.length) process.exit(0);
-	const res = await fetch('https://api.indexnow.org/indexnow', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json; charset=utf-8' },
-		body: JSON.stringify({
-			host: HOST,
-			key: KEY,
-			keyLocation: `https://${HOST}/${KEY}.txt`,
-			urlList: urls.slice(0, 10000),
-		}),
-	});
-	console.log(`IndexNow: zgłoszono ${urls.length} adresów, odpowiedź ${res.status}`);
-} catch (e) {
-	console.log('IndexNow: pominięto —', e.message);
-}
-process.exit(0);
+// 3) adresy z mapy strony (tylko strony do indeksowania)
+const xml = await fetch(`https://${HOST}/sitemap-0.xml`).then((r) => r.text());
+const urls = [...xml.matchAll(/<loc>(.*?)<\/loc>/g)].map((m) => m[1]);
+if (!urls.length) { console.log('Pusta mapa strony.'); process.exit(0); }
+
+const res = await fetch('https://api.indexnow.org/indexnow', {
+	method: 'POST',
+	headers: { 'Content-Type': 'application/json; charset=utf-8' },
+	body: JSON.stringify({ host: HOST, key: KEY, keyLocation: `https://${HOST}/${KEY}.txt`, urlList: urls.slice(0, 10000) }),
+});
+console.log(`IndexNow: zgłoszono ${urls.length} adresów, odpowiedź ${res.status} ${await res.text()}`);
+process.exit(res.status < 300 ? 0 : 1);
