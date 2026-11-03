@@ -9,7 +9,7 @@ noindex: false
 
 ## 1. Administrator danych
 
-Administratorem danych osobowych jest **Sobotka Visual Creations Krzysztof Sobotka**, [adres siedziby — uzupełnij], Nysa, NIP: [uzupełnij]. Kontakt w sprawie danych: **kontakt@sobotkavisual.pl**, tel. 668 472 759.
+Administratorem danych osobowych jest **Krzysztof Sobotka**, prowadzący działalność gospodarczą pod firmą **Sobotka Visual Creations Krzysztof Sobotka** (Nysa, woj. opolskie), NIP: **7532467050**, wpisaną do CEIDG. Kontakt w sprawie danych: **kontakt@sobotkavisual.pl**, tel. 668 472 759.
 
 ## 2. Jakie dane zbieramy i po co
 
@@ -25,7 +25,7 @@ Korzystamy z usług zaufanych dostawców, którzy przetwarzają dane w naszym im
 
 - **Cloudflare** — hosting strony i ochrona przed atakami (dzienniki techniczne, m.in. adres IP),
 - **Resend** — wysyłka wiadomości z formularza generatora,
-- **Google** — czcionki strony (Google Fonts) oraz odtwarzacz YouTube w trybie rozszerzonej prywatności, ładowany dopiero po kliknięciu filmu.
+- **Google** — statystyki odwiedzin (Google Analytics, tylko po Twojej zgodzie), czcionki strony (Google Fonts) oraz odtwarzacz YouTube w trybie rozszerzonej prywatności, ładowany dopiero po kliknięciu filmu.
 
 Część z tych firm ma siedzibę w USA. Przekazanie danych odbywa się na podstawie decyzji Komisji Europejskiej (EU-US Data Privacy Framework) lub standardowych klauzul umownych.
 
@@ -39,8 +39,14 @@ Masz prawo do dostępu do danych, ich sprostowania, usunięcia, ograniczenia prz
 
 ## 6. Pliki cookies
 
-Strona **nie używa ciasteczek reklamowych ani analitycznych**. Mogą pojawić się wyłącznie pliki niezbędne do działania i bezpieczeństwa strony (Cloudflare) oraz pliki YouTube — dopiero wtedy, gdy samodzielnie uruchomisz film. Ustawienia plików cookies zmienisz w swojej przeglądarce.
+Strona **nie używa ciasteczek reklamowych**.
+
+- **Statystyki (Google Analytics)** — pliki analityczne zapisujemy **tylko po Twojej zgodzie** w pasku na dole strony. Dzięki nim wiemy, które treści są czytane i skąd przychodzą odwiedzający (art. 6 ust. 1 lit. a RODO). Bez zgody Google otrzymuje wyłącznie anonimowe sygnały bez identyfikatorów i plików cookies. Zgodę możesz w każdej chwili wycofać, czyszcząc dane strony w przeglądarce — pasek pojawi się ponownie.
+- **Pliki niezbędne** — do działania i bezpieczeństwa strony (Cloudflare).
+- **YouTube** — pliki pojawiają się dopiero wtedy, gdy samodzielnie uruchomisz film.
+
+Ustawienia plików cookies zmienisz też w swojej przeglądarce.
 
 ## 7. Zmiany polityki
 
-Aktualna wersja polityki jest zawsze dostępna na tej stronie. Ostatnia aktualizacja: październik 2026.
+Aktualna wersja polityki jest zawsze dostępna na tej stronie. Ostatnia aktualizacja: listopad 2026.

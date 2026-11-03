@@ -1,0 +1,29 @@
+---
+/*
+ * Google Analytics 4 z trybem zgody (Consent Mode v2).
+ * Domyślnie: brak zgody → GA nie zapisuje ciasteczek (wysyła tylko anonimowe sygnały bez identyfikatorów).
+ * Po kliknięciu „Akceptuję” w pasku zgody → pełna analityka. Wybór pamiętany w przeglądarce (localStorage).
+ * Działa tylko na sobotkavisual.pl (podglądy z Cloudflare nie psują statystyk).
+ */
+const GA_ID = 'G-YR5N7K6FYS';
+---
+<script is:inline define:vars={{ GA_ID }}>
+	(function () {
+		if (location.hostname !== 'sobotkavisual.pl' && location.hostname !== 'www.sobotkavisual.pl') return;
+		window.dataLayer = window.dataLayer || [];
+		function gtag() { dataLayer.push(arguments); }
+		window.gtag = gtag;
+		var saved = null;
+		try { saved = localStorage.getItem('svc-zgoda'); } catch (e) {}
+		gtag('consent', 'default', {
+			analytics_storage: saved === 'tak' ? 'granted' : 'denied',
+			ad_storage: 'denied', ad_user_data: 'denied', ad_personalization: 'denied',
+			wait_for_update: 500,
+		});
+		gtag('js', new Date());
+		gtag('config', GA_ID);
+		var s = document.createElement('script');
+		s.async = true; s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+		document.head.appendChild(s);
+	})();
+</script>

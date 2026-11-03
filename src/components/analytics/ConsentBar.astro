@@ -1,0 +1,100 @@
+---
+/*
+ * Pasek zgody na statystyki (Google Analytics) w stylu stopki: granat, siatka, różowy akcent.
+ * Z animowanym ciasteczkiem z buźką (mruga, podskakuje, sypie okruszki).
+ * Pokazuje się tylko, gdy odwiedzający jeszcze nie wybrał; wybór pamiętany w przeglądarce.
+ */
+---
+<div id="svc-zgoda" class="zg" role="dialog" aria-live="polite" aria-label="Zgoda na statystyki" hidden>
+	<span class="zg-grid" aria-hidden="true"></span>
+	<svg class="zg-cookie" viewBox="0 0 120 120" aria-hidden="true">
+		<defs>
+			<radialGradient id="zgc" cx=".38" cy=".32" r=".8"><stop offset="0" stop-color="#f6c47a" /><stop offset=".65" stop-color="#e09a4a" /><stop offset="1" stop-color="#b8702e" /></radialGradient>
+		</defs>
+		<g class="zg-crumbs">
+			<circle class="zg-cr" cx="96" cy="70" r="3" fill="#d88f42" style="--k:0" />
+			<circle class="zg-cr" cx="102" cy="60" r="2.2" fill="#b8702e" style="--k:1" />
+			<circle class="zg-cr" cx="92" cy="80" r="1.8" fill="#e5a65a" style="--k:2" />
+		</g>
+		<g class="zg-body">
+			<!-- ciastko z ugryzieniem w prawym górnym rogu -->
+			<path d="M60 12 A48 48 0 1 0 104 46 a10 10 0 0 1 -12 -10 a10 10 0 0 1 -12 -12 a10 10 0 0 1 -8 -11 A48 48 0 0 0 60 12 Z" fill="url(#zgc)" />
+			<path d="M60 12 A48 48 0 1 0 104 46 a10 10 0 0 1 -12 -10 a10 10 0 0 1 -12 -12 a10 10 0 0 1 -8 -11 A48 48 0 0 0 60 12 Z" fill="none" stroke="#8a4f1d" stroke-opacity=".35" stroke-width="2" />
+			<!-- kawałki czekolady -->
+			<g fill="#5a2e10">
+				<ellipse cx="34" cy="38" rx="5" ry="4" transform="rotate(-20 34 38)" />
+				<ellipse cx="82" cy="86" rx="5.5" ry="4.2" transform="rotate(15 82 86)" />
+				<ellipse cx="30" cy="80" rx="4.5" ry="3.6" />
+				<ellipse cx="58" cy="98" rx="4" ry="3.2" transform="rotate(-10 58 98)" />
+				<ellipse cx="88" cy="58" rx="3.6" ry="3" />
+			</g>
+			<!-- buźka -->
+			<g class="zg-face">
+				<g class="zg-eye"><ellipse cx="47" cy="56" rx="5" ry="6.5" fill="#2a1406" /><circle cx="48.6" cy="53.6" r="1.8" fill="#fff" /></g>
+				<g class="zg-eye zg-eye-r"><ellipse cx="73" cy="56" rx="5" ry="6.5" fill="#2a1406" /><circle cx="74.6" cy="53.6" r="1.8" fill="#fff" /></g>
+				<ellipse cx="38" cy="70" rx="6" ry="3.6" fill="#ff7a9c" opacity=".55" />
+				<ellipse cx="82" cy="70" rx="6" ry="3.6" fill="#ff7a9c" opacity=".55" />
+				<path class="zg-smile" d="M48 72 Q60 86 72 72" fill="none" stroke="#2a1406" stroke-width="4" stroke-linecap="round" />
+			</g>
+		</g>
+	</svg>
+	<div class="zg-txt">
+		<p class="zg-t">Ciasteczko?</p>
+		<p>Używamy Google Analytics, żeby wiedzieć, które treści są dla Ciebie przydatne. Bez reklam i bez sprzedawania danych. <a href="/polityka-prywatnosci/">Polityka prywatności</a></p>
+	</div>
+	<div class="zg-b">
+		<button type="button" data-z="nie" class="zg-no">Odrzucam</button>
+		<button type="button" data-z="tak" class="zg-ok">Akceptuję</button>
+	</div>
+</div>
+<style>
+	.zg { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 1000; max-width: 720px; margin: 0 auto; overflow: hidden;
+		display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 14px 18px; padding: 16px 20px 16px 16px; border-radius: 20px;
+		background: var(--color-navy-deep, #0a0630); color: var(--color-sky-mist, #d0c9c3); border: 1px solid rgba(255,255,255,.12); border-top: 3px solid var(--color-orange, #e41f49);
+		box-shadow: 0 24px 60px -24px rgba(0,0,0,.8); font-size: 14px; line-height: 1.5; animation: zg-in .6s cubic-bezier(.2,.9,.3,1.2) both; }
+	.zg[hidden] { display: none; }
+	.zg-grid { position: absolute; inset: 0; pointer-events: none; opacity: .5; background-image: linear-gradient(rgba(255,255,255,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.045) 1px, transparent 1px); background-size: 46px 46px; }
+	.zg > :not(.zg-grid) { position: relative; }
+	.zg-cookie { width: 84px; height: 84px; margin: -6px 0; overflow: visible; filter: drop-shadow(0 10px 14px rgba(0,0,0,.45)); }
+	.zg-t { margin: 0 0 2px; font-family: var(--font-display, sans-serif); font-weight: 800; font-size: 17px; color: #fff; }
+	.zg-txt p:last-child { margin: 0; }
+	.zg a { color: var(--color-orange-glow, #f78ba0); text-decoration: underline; }
+	.zg-b { display: flex; gap: 8px; }
+	.zg button { padding: 10px 18px; border-radius: 999px; font-weight: 800; font-size: 14px; cursor: pointer; transition: transform .2s, background .2s; white-space: nowrap; }
+	.zg-no { border: 1px solid rgba(255,255,255,.25); color: #fff; background: transparent; }
+	.zg-no:hover { background: rgba(255,255,255,.08); }
+	.zg-ok { border: 0; color: #fff; background: var(--color-orange, #e41f49); box-shadow: 0 10px 24px -10px rgba(228,31,73,.9); }
+	.zg-ok:hover { transform: translateY(-2px); }
+	/* animacje ciasteczka */
+	.zg-body { transform-box: fill-box; transform-origin: 50% 100%; animation: zg-bounce 2.6s ease-in-out infinite; }
+	.zg-eye { transform-box: fill-box; transform-origin: center; animation: zg-blink 4s infinite; }
+	.zg-eye-r { animation-name: zg-wink; animation-duration: 6s; }
+	.zg-smile { animation: zg-smile 2.6s ease-in-out infinite; }
+	.zg-cr { animation: zg-crumb 2.6s calc(var(--k) * .25s) ease-in infinite; }
+	@keyframes zg-in { from { opacity: 0; transform: translateY(30px) scale(.96); } to { opacity: 1; transform: none; } }
+	@keyframes zg-bounce { 0%, 100% { transform: translateY(0) rotate(0); } 30% { transform: translateY(-6px) rotate(-6deg); } 55% { transform: translateY(0) rotate(4deg) scale(1.03, .97); } 75% { transform: translateY(-2px) rotate(-2deg); } }
+	@keyframes zg-blink { 0%, 44%, 50%, 100% { transform: scaleY(1); } 47% { transform: scaleY(.1); } }
+	@keyframes zg-wink { 0%, 70%, 82%, 100% { transform: scaleY(1); } 74%, 78% { transform: scaleY(.1); } }
+	@keyframes zg-smile { 0%, 100% { d: path('M48 72 Q60 86 72 72'); } 50% { d: path('M46 71 Q60 90 74 71'); } }
+	@keyframes zg-crumb { 0% { transform: translate(0, 0); opacity: 0; } 15% { opacity: 1; } 100% { transform: translate(8px, 26px); opacity: 0; } }
+	@media (max-width: 640px) {
+		.zg { grid-template-columns: auto 1fr; padding: 14px; gap: 10px 12px; }
+		.zg-cookie { width: 56px; height: 56px; }
+		.zg-b { grid-column: 1 / -1; }
+		.zg-b button { flex: 1; }
+	}
+	@media (prefers-reduced-motion: reduce) { .zg, .zg-body, .zg-eye, .zg-smile, .zg-cr { animation: none; } }
+</style>
+<script>
+	const box = document.getElementById('svc-zgoda');
+	const prod = /(^|\.)sobotkavisual\.pl$/.test(location.hostname);
+	let saved: string | null = null;
+	try { saved = localStorage.getItem('svc-zgoda'); } catch {}
+	if (box && prod && !saved) box.hidden = false;
+	box?.querySelectorAll<HTMLButtonElement>('[data-z]').forEach((b) => b.addEventListener('click', () => {
+		const v = b.dataset.z!;
+		try { localStorage.setItem('svc-zgoda', v); } catch {}
+		(window as any).gtag?.('consent', 'update', { analytics_storage: v === 'tak' ? 'granted' : 'denied' });
+		box.hidden = true;
+	}));
+</script>
