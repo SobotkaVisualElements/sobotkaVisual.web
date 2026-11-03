@@ -1,0 +1,33 @@
+---
+/* Pasek zgody na statystyki (Google Analytics). Pokazuje się tylko, gdy użytkownik jeszcze nie wybrał. */
+---
+<div id="svc-zgoda" class="zg" role="dialog" aria-live="polite" aria-label="Zgoda na statystyki" hidden>
+	<p>Używamy Google Analytics, żeby wiedzieć, które treści są przydatne. Bez reklam i bez sprzedawania danych. <a href="/polityka-prywatnosci/">Więcej</a></p>
+	<div class="zg-b">
+		<button type="button" data-z="nie">Odrzucam</button>
+		<button type="button" data-z="tak" class="zg-ok">Akceptuję</button>
+	</div>
+</div>
+<style>
+	.zg { position: fixed; left: 16px; right: 16px; bottom: 16px; z-index: 1000; max-width: 560px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding: 14px 16px; border-radius: 16px;
+		background: rgba(18, 12, 60, .96); color: #e8e6f7; border: 1px solid rgba(255,255,255,.14); box-shadow: 0 20px 50px -20px rgba(0,0,0,.7); font-size: 14px; line-height: 1.45; backdrop-filter: blur(10px); }
+	.zg[hidden] { display: none; }
+	.zg p { flex: 1 1 260px; margin: 0; }
+	.zg a { color: #f78ba0; text-decoration: underline; }
+	.zg-b { display: flex; gap: 8px; }
+	.zg button { padding: 9px 16px; border-radius: 999px; font-weight: 700; font-size: 14px; cursor: pointer; border: 1px solid rgba(255,255,255,.25); color: #fff; background: transparent; }
+	.zg .zg-ok { background: #fff; color: #1a1150; border-color: #fff; }
+</style>
+<script>
+	const box = document.getElementById('svc-zgoda');
+	const prod = /(^|\.)sobotkavisual\.pl$/.test(location.hostname);
+	let saved: string | null = null;
+	try { saved = localStorage.getItem('svc-zgoda'); } catch {}
+	if (box && prod && !saved) box.hidden = false;
+	box?.querySelectorAll<HTMLButtonElement>('[data-z]').forEach((b) => b.addEventListener('click', () => {
+		const v = b.dataset.z!;
+		try { localStorage.setItem('svc-zgoda', v); } catch {}
+		(window as any).gtag?.('consent', 'update', { analytics_storage: v === 'tak' ? 'granted' : 'denied' });
+		box.hidden = true;
+	}));
+</script>

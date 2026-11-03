@@ -4,6 +4,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Seo from '../components/Seo.astro';
 import WhatsAppFab from '../components/ui/WhatsAppFab.astro';
+import Analytics from '../components/analytics/Analytics.astro';
+import ConsentBar from '../components/analytics/ConsentBar.astro';
 import { site } from '../site.config';
 
 interface Props {
@@ -26,6 +28,7 @@ const seo = Astro.props;
 <html lang={site.locale}>
 	<head>
 		<meta charset="utf-8" />
+		<Analytics />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -47,5 +50,6 @@ const seo = Astro.props;
 			<Footer />
 		</div>
 		<WhatsAppFab />
+		<ConsentBar />
 	</body>
 </html>
