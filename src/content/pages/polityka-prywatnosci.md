@@ -9,7 +9,7 @@ noindex: false
 
 ## 1. Administrator danych
 
-Administratorem danych osobowych jest **Sobotka Visual Creations Krzysztof Sobotka**, [adres siedziby — uzupełnij], Nysa, NIP: [uzupełnij]. Kontakt w sprawie danych: **kontakt@sobotkavisual.pl**, tel. 668 472 759.
+Administratorem danych osobowych jest **Krzysztof Sobotka**, prowadzący działalność gospodarczą pod firmą **Sobotka Visual Creations Krzysztof Sobotka** (Nysa, woj. opolskie), NIP: **7532467050**, wpisaną do CEIDG. Kontakt w sprawie danych: **kontakt@sobotkavisual.pl**, tel. 668 472 759.
 
 ## 2. Jakie dane zbieramy i po co
 
