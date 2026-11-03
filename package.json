@@ -34,7 +34,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && node scripts/slashes.mjs && pagefind --site dist && node scripts/indexnow.mjs",
+    "build": "astro build && node scripts/slashes.mjs && node scripts/markdown.mjs && pagefind --site dist && node scripts/indexnow.mjs",
     "preview": "astro preview",
     "astro": "astro"
   },
@@ -47,6 +47,7 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "pagefind": "^1.5.2"
+    "pagefind": "^1.5.2",
+    "turndown": "7.2.0"
   }
 }

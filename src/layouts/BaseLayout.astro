@@ -38,11 +38,12 @@ const seo = Astro.props;
 	rel="stylesheet"
 />
 		<Seo {...seo} />
+		{!seo.noindex && Astro.url.pathname.endsWith('/') && <link rel="alternate" type="text/markdown" href={`${Astro.url.pathname}index.md`} title="Wersja tekstowa (Markdown) dla agentów AI" />}
 	</head>
 	<body>
 		<div class="max-w-full overflow-x-clip">
 			<Header />
-			<slot />
+			<main id="tresc"><slot /></main>
 			<Footer />
 		</div>
 		<WhatsAppFab />
