@@ -83,7 +83,7 @@ const u = 'c3d' + Math.random().toString(36).slice(2, 7);
 					>
 						{it.video
 							? <video class="c3d-vid" data-src={it.video} poster={it.img || undefined} muted loop playsinline preload="none" draggable="false" controlslist="nodownload" disablepictureinpicture></video>
-							: it.img ? <img src={it.img} alt={it.clone ? '' : (it.alt || it.title || '')} loading={k < 6 ? 'eager' : 'lazy'} decoding="async" draggable="false" />
+							: it.img ? <img src={it.img} alt={it.clone ? '' : (it.alt || it.title || '')} loading={k < 3 && variant !== 'tlo' ? 'eager' : 'lazy'} fetchpriority={k === 0 ? 'auto' : 'low'} decoding="async" draggable="false" width={orientation === 'pion' ? 600 : 960} height={orientation === 'pion' ? 960 : (ratio === '16/9' ? 540 : 600)} />
 							: it.ext ? <span class:list={['c3d-ph', 'c3d-ext', `is-${it.ext.kind}`]}>{it.logo && <img class="c3d-ext-logo" src={it.logo} alt="" loading="lazy" />}<small>{it.category || it.ext.label}</small>{" "}<b set:html={tx(it.title || 'Zobacz rolkę')} /></span>
 							: <span class="c3d-ph"><small>{it.category}</small>{" "}<b set:html={tx(it.title)} /></span>}
 						{it.ext?.live && variant !== 'tlo' && <iframe class="c3d-live" data-live={it.ext.live} title={it.title || 'Rolka'} tabindex="-1" allow="autoplay; encrypted-media"></iframe>}
