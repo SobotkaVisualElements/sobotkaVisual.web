@@ -292,6 +292,7 @@ collections:
             fields:
               - { name: h1prefix, label: "Nagłówek — pierwsze słowo", widget: string }
               - { name: h1accent, label: "Nagłówek — słowo w kolorze", widget: string }
+              - { name: h1sub, label: "Nagłówek — dopisek pod spodem (ważny dla Google)", widget: string, required: false, hint: "Mała linijka pod dużym hasłem. Wpisz, czym się zajmujesz i gdzie." }
               - { name: lead, label: "Zdanie pod nagłówkiem", widget: text }
               - { name: ctaPrimaryLabel, label: "Przycisk główny — napis", widget: string }
               - { name: ctaPrimaryHref, label: "Przycisk główny — dokąd prowadzi", widget: string, default: "/#kontakt" }
