@@ -13,10 +13,8 @@ if ((h as any).videoUrl) h.video = (h as any).videoUrl; // film z Cloudflare R2 
 		<video
 			class="pointer-events-none absolute inset-0 z-0 hidden h-full w-full object-cover md:block"
 			style={`opacity:${(h.videoOpacity ?? 30) / 100}`}
-			autoplay muted loop playsinline preload="metadata" poster={h.poster || undefined}
-		>
-			<source src={h.video} />
-		</video>
+			muted loop playsinline preload="none" poster={h.poster || undefined} data-hero-video={h.video}
+		></video>
 	)}
 	{h.poster && !h.video && (
 		<img src={h.poster} alt="" class="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover" style={`opacity:${(h.videoOpacity ?? 30) / 100}`} />
@@ -27,7 +25,7 @@ if ((h as any).videoUrl) h.video = (h as any).videoUrl; // film z Cloudflare R2 
 
 	<div class="relative z-2 mx-auto max-w-[1200px] px-8 pt-24 pb-14">
 		<div class="max-w-[660px]">
-			<img src="/logo.svg" alt="Sobotka Visual Creations" class="h-9 w-auto md:h-11" />
+			<img src="/logo.svg" alt="Sobotka Visual Creations" width="197" height="44" class="h-9 w-auto md:h-11" />
 			<h1 class="mt-8 text-[40px] leading-[1.03] tracking-[-0.03em] md:text-[56px]">
 				{h.h1prefix} <span class="text-orange">{h.h1accent}</span>
 				{h.h1sub && <span class="mt-4 block text-[17px] leading-snug font-semibold tracking-normal text-sky-mist md:text-[19px]">{h.h1sub}</span>}
@@ -105,7 +103,7 @@ if ((h as any).videoUrl) h.video = (h as any).videoUrl; // film z Cloudflare R2 
 			"provider": { "@id": "https://sobotkavisual.pl/#firma" },
 			"areaServed": { "@type": "Country", "name": "Polska" },
 			"description": "Montaż długich form, animacje i motion design, rolki pionowe, miniatury, oprawa transmisyjna oraz produkcja wideo.",
-			"offers": { "@type": "Offer", "priceCurrency": "PLN", "lowPrice": "180", "highPrice": "12900", "url": "https://sobotkavisual.pl/generator" }
+			"offers": { "@type": "AggregateOffer", "priceCurrency": "PLN", "lowPrice": "180", "highPrice": "12900", "url": "https://sobotkavisual.pl/generator" }
 		},
 		{
 			"@type": "FAQPage",
@@ -128,3 +126,14 @@ if ((h as any).videoUrl) h.video = (h as any).videoUrl; // film z Cloudflare R2 
 		}
 	]
 })} />
+<script>
+	// film w tle: ładowany dopiero po wczytaniu strony, tylko na większych ekranach i bez trybu oszczędzania danych
+	// (7 MB nie blokuje już pierwszego wyświetlenia — szybszy LCP w PageSpeed/GTmetrix)
+	const v = document.querySelector<HTMLVideoElement>('video[data-hero-video]');
+	const saveData = (navigator as any).connection?.saveData;
+	const go = () => {
+		if (!v || saveData || !matchMedia('(min-width: 768px)').matches || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		v.src = v.dataset.heroVideo!; v.play().catch(() => {});
+	};
+	if (document.readyState === 'complete') setTimeout(go, 800); else addEventListener('load', () => setTimeout(go, 800), { once: true });
+</script>
