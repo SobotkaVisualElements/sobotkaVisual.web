@@ -1488,6 +1488,9 @@ content:
     - name: h1accent
       label: Nagłówek — słowo w kolorze
       type: string
+    - name: h1sub
+      label: Nagłówek — dopisek pod spodem (ważny dla Google)
+      type: string
     - name: lead
       label: Zdanie pod nagłówkiem
       type: text

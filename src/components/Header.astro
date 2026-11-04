@@ -31,7 +31,7 @@ const socials = [
 			<div class="hidden items-center gap-3.5 sm:flex">
 				{
 					socials.map((s) => (
-						<a href={s.href} aria-label={s.label} target="_blank" rel="noopener noreferrer" class="text-sky transition-colors hover:text-orange">
+						<a href={s.href} target="_blank" rel="noopener noreferrer me" class="text-sky transition-colors hover:text-orange"><span class="sr-only">{s.label}</span>
 							{s.icon === 'yt' && (
 								<svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6z"/></svg>
 							)}

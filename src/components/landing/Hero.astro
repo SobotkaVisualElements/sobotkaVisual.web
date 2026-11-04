@@ -5,7 +5,7 @@ const clients: { name: string; logo: string; height?: number }[] = (home as any)
 	{ name: 'Przemysław Langier', logo: '/langier.svg', height: 32 },
 	{ name: 'Betters', logo: '/betters.svg', height: 28 },
 ];
-const h = { h1prefix: 'Bądź', h1accent: 'wyjątkowy', lead: 'Motion design, montaż i color grading dla marek, które chcą pokazać światu swój potencjał.', ctaPrimaryLabel: 'Bezpłatna wycena', ctaPrimaryHref: '/#kontakt', ctaSecondaryLabel: 'Zobacz realizacje', ctaSecondaryHref: '/work', video: '', poster: '', videoOpacity: 30, clientsLabel: 'Zaufali nam', ...(home as any).hero };
+const h = { h1prefix: 'Bądź', h1accent: 'wyjątkowy', h1sub: 'Montaż wideo, animacja i motion design dla firm — Opole i cała Polska', lead: 'Motion design, montaż i color grading dla marek, które chcą pokazać światu swój potencjał.', ctaPrimaryLabel: 'Bezpłatna wycena', ctaPrimaryHref: '/#kontakt', ctaSecondaryLabel: 'Zobacz realizacje', ctaSecondaryHref: '/work', video: '', poster: '', videoOpacity: 30, clientsLabel: 'Zaufali nam', ...(home as any).hero };
 if ((h as any).videoUrl) h.video = (h as any).videoUrl; // film z Cloudflare R2 ma pierwszeństwo
 ---
 <section class="relative overflow-hidden bg-linear-155 from-navy to-navy-deep text-cloud">
@@ -30,6 +30,7 @@ if ((h as any).videoUrl) h.video = (h as any).videoUrl; // film z Cloudflare R2 
 			<img src="/logo.svg" alt="Sobotka Visual Creations" class="h-9 w-auto md:h-11" />
 			<h1 class="mt-8 text-[40px] leading-[1.03] tracking-[-0.03em] md:text-[56px]">
 				{h.h1prefix} <span class="text-orange">{h.h1accent}</span>
+				{h.h1sub && <span class="mt-4 block text-[17px] leading-snug font-semibold tracking-normal text-sky-mist md:text-[19px]">{h.h1sub}</span>}
 			</h1>
 			<p class="mt-6 max-w-[560px] text-[19px] leading-[1.55] text-sky">
 				{h.lead}

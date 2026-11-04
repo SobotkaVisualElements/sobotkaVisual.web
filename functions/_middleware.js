@@ -2,6 +2,9 @@
 // zamiast HTML dostaje czysty tekst strony (plik index.md tworzony przy budowaniu).
 // Przeglądarki dostają zwykły HTML — dla nich nic się nie zmienia.
 export async function onRequest({ request, next, env }) {
+	// jeden adres strony: www.sobotkavisual.pl → sobotkavisual.pl (301, ta sama ścieżka)
+	const u0 = new URL(request.url);
+	if (u0.hostname === 'www.sobotkavisual.pl') { u0.hostname = 'sobotkavisual.pl'; return Response.redirect(u0.toString(), 301); }
 	const accept = request.headers.get('Accept') || '';
 	if (request.method !== 'GET' || !/text\/markdown/i.test(accept)) return next();
 	const url = new URL(request.url);
