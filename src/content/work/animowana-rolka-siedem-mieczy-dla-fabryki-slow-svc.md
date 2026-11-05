@@ -14,7 +14,7 @@ tech:
   - Adobe After Effect
   - Adobe Premiere Pro
 cover: ''
-poster: https://media.sobotkavisual.pl/obrazy/Ryan_Siedem-Mieczy_Pion.jpg
+poster: https://media.sobotkavisual.pl/obrazy/siedem-mieczy-pion.jpg
 youtube: ''
 video: ''
 videoUrl: ''
@@ -42,7 +42,7 @@ blocks:
     caption: ''
     youtube: ''
     file: /uploads/realizacje/AnthonyRyan_SiedemMieczy_RolkaAnimowana_WEB.mp4
-    url: https://media.sobotkavisual.pl/filmy/siedem-mieczy-rolka.mp4
+    url: https://media.sobotkavisual.pl/filmy/siedem-mieczy-rolka-v2.mp4
     format: '9:16'
     mode: petla
   - type: oferta
