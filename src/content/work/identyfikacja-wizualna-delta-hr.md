@@ -16,8 +16,8 @@ tech:
   - Premiere Pro
   - After Effects
   - Photoshop
-cover: https://media.sobotkavisual.pl/obrazy/DeltaHR_Poziom.jpg
-poster: https://media.sobotkavisual.pl/obrazy/DeltaHR_Pion.jpg
+cover: https://media.sobotkavisual.pl/obrazy/deltahr-poziom.jpg
+poster: https://media.sobotkavisual.pl/obrazy/deltahr-pion.jpg
 youtube: ''
 video: ''
 videoUrl: ''

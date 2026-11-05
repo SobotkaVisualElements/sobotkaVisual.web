@@ -14,7 +14,7 @@ tech:
   - Adobe After Effect
   - Adobe Premiere Pro
 cover: ''
-poster: https://media.sobotkavisual.pl/obrazy/Pilipiuk_Wedrowycz-Lajdactwa_Pion.jpg
+poster: https://media.sobotkavisual.pl/obrazy/pilipiuk-lajdactwa-pion.jpg
 youtube: ''
 video: ''
 videoUrl: ''
@@ -42,7 +42,7 @@ blocks:
     caption: ''
     youtube: ''
     file: ''
-    url: https://media.sobotkavisual.pl/filmy/pilipiuk-lajdactwa-15s.mp4
+    url: https://media.sobotkavisual.pl/filmy/pilipiuk-lajdactwa-15s-v2.mp4
     format: '9:16'
     mode: petla
   - type: tekst
