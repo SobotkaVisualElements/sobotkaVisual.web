@@ -1,6 +1,6 @@
 ---
-title: Booktrailer Jakuba Wędrowycza dla Fabryki Słów
-description: 'Animacja promocyjna książki „Łajdactwa zebrane” Andrzeja Pilipiuka dla wydawnictwa Fabryka Słów: motion design, animowana typografia i montaż pod social media. Jak z ilustracji Andrzeja Łaskiego powstał 15-sekundowy animowany booktrailer nowego wydania Pilipiuka. 41 elementów, paralaksa i 40 godzin pracy.'
+title: 'Booktrailer dla Fabryki Słów: Jakub Wędrowycz w ruchu'
+description: 'Animowany booktrailer nowego wydania Pilipiuka dla Fabryki Słów: 41 elementów z ilustracji Andrzeja Łaskiego, paralaksa i 15 sekund ruchu.'
 category: Animacja
 client: Fabryka Słów
 clientLogo: /uploads/FabrykaSlowLogo.svg
@@ -53,9 +53,38 @@ blocks:
 
       Elementy podzieliliśmy na trzy warstwy:
 
-      - **tło** - animacja narracyjna,
-      - **środek** - animowana ramka z motywami z okładki,
-      - **przód** - tytuł książki.
+      - **tło** – animacja narracyjna,
+      - **środek** – animowana ramka z motywami z okładki,
+      - **przód** – tytuł książki.
+
+      ### Animacja: paralaksa jak przewracane kartki
+
+      W After Effects zbudowaliśmy trzy pięciosekundowe sekcje. Całość opiera się na paralaksie, która imituje głębię książkowych kartek i trzyma się stylistyki okładki.
+
+      Sekcja pierwsza nawiązuje do nagłówka okładki i sceny z UFO. Druga przenosi nas do stopki z wampirem na tle księżyca. Trzecia kończy się główną ilustracją, nawiązującą do Człowieka Witruwiańskiego, choć u nas to raczej Człowiek Wojsławicki.
+  - type: karuzela
+    images:
+      - image: https://media.sobotkavisual.pl/obrazy/pilipiuk-scena-1.jpg
+        caption: Animowany booktrailer Jakuba Wędrowycza, scena z UFO
+      - image: https://media.sobotkavisual.pl/obrazy/pilipiuk-scena-2.jpg
+        caption: Paralaksa z ilustracji Andrzeja Łaskiego, wampir na tle księżyca
+      - image: https://media.sobotkavisual.pl/obrazy/pilipiuk-scena-3.jpg
+        caption: Człowiek Wojsławicki, finałowa scena booktrailera
+  - type: tekst
+    text: |-
+      ### Dźwięk i kolor
+
+      Animację dopełniliśmy pełnym udźwiękowieniem: efektami, muzyką i masteringiem. Na końcu materiał przeszedł korekcję barwną (color grading) w Premiere Pro.
+
+      ### Efekt: 15 sekund i pomysł na prezent
+
+      Celem była promocja nowego wydania i hołd dla uniwersum Jakuba Wędrowycza. Rolka kończy się podkreśleniem wyjątkowości wydania tuż przed świętami, jako propozycji prezentu dla każdego, kto zna Wojsławice z kart książek.
+
+      **W liczbach:** 41 elementów graficznych, 3 warstwy, 3 sekcje, 15 sekund materiału, około 40 godzin pracy.
+
+      ### Chcesz podobny booktrailer?
+
+      Jesteśmy studiem motion designu z Opola. Robimy [animacje](/uslugi/), montaż wideo i animowane zapowiedzi książek z ilustracji, które już masz, bez planu zdjęciowego. Zobacz też naszą drugą realizację dla wydawnictwa, [rolkę do „Siedmiu mieczy”](/work/animowana-rolka-siedem-mieczy-dla-fabryki-slow-svc/), albo przeczytaj, [czym jest booktrailer i ile kosztuje](/booktrailer/). Ofertę i cennik znajdziesz poniżej.
   - type: oferta
     label: Sprawdź ofertę
     lead: ''
