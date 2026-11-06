@@ -1,6 +1,6 @@
 ---
 title: 'Animacje promocyjne — kanał Przemysław Langier'
-description: 'Zestaw animacji promocyjnych wspierających zasięgi i zapowiedzi materiałów na kanale.'
+description: 'Animacje promocyjne dla kanału Przemysława Langiera: zapowiedzi odcinków i krótkie formy, które budują zasięgi na YouTube i w social media.'
 category: 'Animacja'
 tech: ['After Effects']
 year: 2025

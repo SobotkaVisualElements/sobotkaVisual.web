@@ -11,7 +11,7 @@ export const site = {
   /** タイトルテンプレート。%s に各ページの title が入る */
   titleTemplate: '%s | Sobotka Visual',
   /** 既定の meta description。ページ側で上書き可能 */
-  description: 'Montaż, animacje i oprawa graficzna dla klubów sportowych, twórców i firm.',
+  description: 'Montaż wideo, animacja i motion design dla firm, twórców i klubów sportowych. Studio z Opola, działamy w całej Polsce. Wycena online w 60 sekund.',
   /** 本番 URL（末尾スラッシュなし）。デプロイ先に合わせて変更する */
   url: 'https://sobotkavisual.pl',
   /** コンテンツ言語 */

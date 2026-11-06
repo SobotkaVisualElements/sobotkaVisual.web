@@ -1,6 +1,6 @@
 ---
 title: 'Animowana prezentacja zawodników'
-description: 'Animowane prezentacje i sylwetki zawodników — czytelne, dynamiczne, w barwach klienta.'
+description: 'Animowane prezentacje i sylwetki zawodników dla klubów sportowych: czytelne, dynamiczne, w barwach klubu. Gotowe na transmisję i do social media.'
 category: 'Animacja'
 tech: ['After Effects', 'Illustrator']
 year: 2026
