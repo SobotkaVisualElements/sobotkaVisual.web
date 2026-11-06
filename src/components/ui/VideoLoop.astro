@@ -5,11 +5,11 @@
  *  - jedyna interakcja: nasz przycisk dźwięku (animowana ikona SVG)
  * Uwaga: żadna strona nie zablokuje pobrania w 100% — ale zwykły użytkownik nie ma tu przycisku ani menu.
  */
-interface Props { youtube?: string; file?: string; poster?: string; ratio?: '16:9' | '9:16' | '16:10'; title?: string; class?: string; eager?: boolean }
+interface Props { youtube?: string; file?: string; poster?: string; ratio?: '16:9' | '9:16' | '16:10' | '1:1'; title?: string; class?: string; eager?: boolean }
 const { youtube = '', file = '', poster, ratio = '16:9', title = 'Wideo', class: cls = '', eager = false } = Astro.props;
 const m = youtube.match(/(?:youtu\.be\/|v=|shorts\/|embed\/|live\/)([\w-]{11})/);
 const id = m ? m[1] : '';
-const ar = ratio === '9:16' ? 'aspect-[9/16]' : ratio === '16:10' ? 'aspect-[16/10]' : 'aspect-video';
+const ar = ratio === '9:16' ? 'aspect-[9/16]' : ratio === '1:1' ? 'aspect-square' : ratio === '16:10' ? 'aspect-[16/10]' : 'aspect-video';
 const src = id
 	? `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&mute=1&loop=1&playlist=${id}&controls=0&disablekb=1&fs=0&iv_load_policy=3&modestbranding=1&playsinline=1&rel=0&enablejsapi=1`
 	: '';

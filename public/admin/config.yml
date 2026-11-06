@@ -180,7 +180,7 @@ collections:
               - { name: youtube, label: "Link YouTube albo link do pliku MP4", widget: string, required: false, hint: "Link z YouTube albo link do pliku z biblioteki [media.sobotkavisual.pl](https://media.sobotkavisual.pl) (Kopiuj link) — oba zadziałają." }
               - { name: file, label: "albo plik MP4", widget: file, required: false }
               - { name: url, label: "albo link do filmu z media.sobotkavisual.pl (zalecane)", widget: string, required: false, hint: "Wybierz film w bibliotece [media.sobotkavisual.pl](https://media.sobotkavisual.pl) → Kopiuj link → wklej tutaj. Ma pierwszeństwo przed plikiem." }
-              - { name: format, label: "Format", widget: select, default: "16:9", options: ["16:9", "9:16"] }
+              - { name: format, label: "Format", widget: select, default: "16:9", options: ["16:9", "9:16", "1:1"] }
               - { name: mode, label: "Tryb", widget: select, default: petla, options: [{ label: "Pętla bez kontrolek + przycisk dźwięku", value: petla }, { label: "Zwykły odtwarzacz (dla długich filmów)", value: zwykly }] }
               - { name: caption, label: "Podpis", widget: string, required: false }
           - name: parallaksa
