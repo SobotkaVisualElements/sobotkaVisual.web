@@ -10,7 +10,7 @@ year: 2026
 date: 2026-11-06
 tech: []
 cover: ''
-poster: https://media.sobotkavisual.pl/obrazy/kuang-zapiski-z-tajpej-pion.jpg
+poster: https://media.sobotkavisual.pl/obrazy/kuang-plakat.jpg
 youtube: ''
 video: ''
 videoUrl: ''
@@ -21,7 +21,7 @@ blocks:
     caption: ''
     youtube: ''
     file: ''
-    url: https://media.sobotkavisual.pl/filmy/kuang-zapiski-z-tajpej-pion.mp4
+    url: https://media.sobotkavisual.pl/filmy/kuang-zapiski-z-tajpej-rolka.mp4
     format: '9:16'
     mode: petla
   - type: tekst
@@ -33,11 +33,11 @@ blocks:
       Narracja prowadzi przez jedno pytanie, rozpisane na dwie plansze: _„A co, jeśli pojedziesz na drugi koniec świata, żeby odnaleźć swoje korzenie… a odkryjesz, że wcale nie wiesz, gdzie jest twój dom?”_. Na koniec z wyspy wyłania się okładka książki, nazwisko autorki i tytuł.
   - type: karuzela
     images:
-      - image: https://media.sobotkavisual.pl/obrazy/kuang-scena-1.jpg
+      - image: https://media.sobotkavisual.pl/obrazy/kuang-kadr-1.jpg
         caption: Booktrailer „Zapiski z Tajpej”, pierwsza plansza z pytaniem o korzenie
-      - image: https://media.sobotkavisual.pl/obrazy/kuang-scena-2.jpg
+      - image: https://media.sobotkavisual.pl/obrazy/kuang-kadr-2.jpg
         caption: Miniaturowa wyspa z Taipei 101, kwitnącą wiśnią i pociągiem
-      - image: https://media.sobotkavisual.pl/obrazy/kuang-scena-3.jpg
+      - image: https://media.sobotkavisual.pl/obrazy/kuang-kadr-3.jpg
         caption: Finał booktrailera z okładką książki R.F. Kuang
   - type: tekst
     text: |-
