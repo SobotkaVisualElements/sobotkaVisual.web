@@ -1,6 +1,6 @@
 ---
 title: 'Booktrailer „Zapiski z Tajpej” R.F. Kuang dla Fabryki Słów'
-description: 'Animowany booktrailer książki „Zapiski z Tajpej” R.F. Kuang dla Fabryki Słów: miniaturowy świat z Tajpej, który kończy się okładką. 15 sekund w kwadracie.'
+description: 'Animowany booktrailer książki „Zapiski z Tajpej” R.F. Kuang dla Fabryki Słów: miniaturowy świat z Tajpej, który kończy się okładką. 15 sekund w pionie.'
 category: Animacja
 client: Fabryka Słów
 clientLogo: /uploads/FabrykaSlowLogo.svg
@@ -21,8 +21,8 @@ blocks:
     caption: ''
     youtube: ''
     file: ''
-    url: https://media.sobotkavisual.pl/filmy/kuang-zapiski-z-tajpej-15s.mp4
-    format: '1:1'
+    url: https://media.sobotkavisual.pl/filmy/kuang-zapiski-z-tajpej-pion.mp4
+    format: '9:16'
     mode: petla
   - type: tekst
     text: |-
@@ -41,7 +41,7 @@ blocks:
         caption: Finał booktrailera z okładką książki R.F. Kuang
   - type: tekst
     text: |-
-      **W liczbach:** 15 sekund, format kwadratowy 1:1 pod posty w social media.
+      **W liczbach:** 15 sekund, pionowa rolka 9:16 pod Reels, TikToka i Shorts.
 
       ### Chcesz podobny booktrailer?
 
