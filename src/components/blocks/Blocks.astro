@@ -174,11 +174,12 @@ function linePath(b: any) {
 			case 'wideo': {
 				const id = ytId(b.youtube);
 				const vert = b.format === '9:16';
+				const sq = b.format === '1:1';
 				// link do pliku (np. media.sobotkavisual.pl/...mp4) wklejony w pole YouTube też zadziała
 				const ytAsFile = /\.(mp4|webm|mov|m4v)(\?|#|$)/i.test(b.youtube || '') ? b.youtube : '';
 				const vfile = b.url || ytAsFile || b.file;
 				return (id || vfile) && (
-					<figure class:list={['svc-b', vert && 'svc-vertical']}>
+					<figure class:list={['svc-b', vert && 'svc-vertical', sq && 'svc-square']}>
 						{b.mode === 'zwykly' ? (
 							id ? (
 								<button type="button" class:list={['svc-yt svc-media', vert ? 'aspect-[9/16]' : 'aspect-video']} data-yt={id} aria-label={`Odtwórz: ${b.caption || 'wideo'}`}>
@@ -186,10 +187,10 @@ function linePath(b: any) {
 									<span class="svc-play" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z" fill="currentColor" /></svg></span>
 								</button>
 							) : (
-								<video src={vfile} controls controlslist="nodownload" preload="metadata" playsinline class:list={['svc-media', vert ? 'aspect-[9/16]' : 'aspect-video']} />
+								<video src={vfile} controls controlslist="nodownload" preload="metadata" playsinline class:list={['svc-media', vert ? 'aspect-[9/16]' : sq ? 'aspect-square' : 'aspect-video']} />
 							)
 						) : (
-							<VideoLoop youtube={b.youtube} file={vfile} ratio={vert ? '9:16' : '16:9'} title={b.caption || 'Wideo'} class="svc-media rounded-[16px]" />
+							<VideoLoop youtube={b.youtube} file={vfile} ratio={vert ? '9:16' : sq ? '1:1' : '16:9'} title={b.caption || 'Wideo'} class="svc-media rounded-[16px]" />
 						)}
 						{b.caption && <figcaption>{b.caption}</figcaption>}
 					</figure>
@@ -287,6 +288,7 @@ function linePath(b: any) {
 	.svc-blocks--light .gap-quote cite { color: rgba(10,6,48,.6); }
 	.svc-wide { width: 100vw; margin-inline: calc(50% - 50vw); overflow: clip; padding-block: 8px; }
 	.svc-vertical { max-width: 340px; margin-inline: auto; width: 100%; }
+	.svc-square { max-width: 520px; margin-inline: auto; width: 100%; }
 	.svc-text { font-size: 17px; line-height: 1.7; color: var(--muted); }
 	.svc-text p, .svc-text li { hyphens: auto; -webkit-hyphens: auto; text-wrap: pretty; }
 	@media (min-width: 560px) { .svc-text p, .svc-text li { text-align: justify; text-align-last: left; } }
